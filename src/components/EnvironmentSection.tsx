@@ -23,12 +23,14 @@ export default function EnvironmentSection() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const section = entry.target;
+          const section = entry.target;
 
+          if (entry.isIntersecting) {
             // 触发前台接待区的features淡入
             const frontDeskFeatures = section.querySelectorAll('.grid.grid-cols-2 > div');
             frontDeskFeatures.forEach((feature, index) => {
+              (feature as HTMLElement).style.opacity = '0';
+              (feature as HTMLElement).style.transform = 'translateY(10px)';
               setTimeout(() => {
                 (feature as HTMLElement).style.opacity = '1';
                 (feature as HTMLElement).style.transform = 'translateY(0)';
@@ -39,6 +41,20 @@ export default function EnvironmentSection() {
             const cards = section.querySelectorAll('[data-office-card]');
             cards.forEach((card, cardIndex) => {
               const cardEl = card as HTMLElement;
+
+              // 重置初始状态
+              const resetElements = (selector: string, transformValue: string) => {
+                const elements = cardEl.querySelectorAll(selector);
+                elements.forEach((el) => {
+                  const elem = el as HTMLElement;
+                  elem.style.opacity = '0';
+                  elem.style.transform = transformValue;
+                });
+              };
+
+              resetElements('h4', 'translateY(10px)');
+              resetElements('p.text-gray-600', 'translateY(10px)');
+              resetElements('[data-feature-item]', 'translateX(1rem)');
 
               // 触发标题淡入
               const title = cardEl.querySelector('h4');
@@ -70,12 +86,33 @@ export default function EnvironmentSection() {
                 });
               }, 550 + cardIndex * 150);
             });
+          } else {
+            // 元素离开视口时，重置状态
+            const frontDeskFeatures = section.querySelectorAll('.grid.grid-cols-2 > div');
+            frontDeskFeatures.forEach((feature) => {
+              const featureEl = feature as HTMLElement;
+              featureEl.style.opacity = '0';
+              featureEl.style.transform = 'translateY(10px)';
+            });
 
-            observer.unobserve(section);
+            const cards = section.querySelectorAll('[data-office-card]');
+            cards.forEach((card) => {
+              const cardEl = card as HTMLElement;
+              const elements = cardEl.querySelectorAll('h4, p.text-gray-600, [data-feature-item]');
+              elements.forEach((el) => {
+                const elem = el as HTMLElement;
+                elem.style.opacity = '0';
+                if (elem.tagName === 'H4' || elem.classList.contains('text-gray-600')) {
+                  elem.style.transform = 'translateY(10px)';
+                } else if (elem.hasAttribute('data-feature-item')) {
+                  elem.style.transform = 'translateX(1rem)';
+                }
+              });
+            });
           }
         });
       },
-      { threshold: 0.2, rootMargin: '0px 0px -100px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -200px 0px' }
     );
 
     if (sectionRefValue) {

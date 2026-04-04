@@ -22,20 +22,43 @@ export default function BusinessSection() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const section = entry.target;
+          const section = entry.target;
 
+          if (entry.isIntersecting) {
             // 触发业务卡片的内容淡入
-            const titles = section.querySelectorAll('[data-business-title]');
-            titles.forEach((title, cardIndex) => {
-              const cardEl = title.closest('.glass-card') as HTMLElement;
-              if (!cardEl) return;
+            const cards = section.querySelectorAll('.glass-card');
+            cards.forEach((card, cardIndex) => {
+              const cardEl = card as HTMLElement;
+
+              // 重置初始状态
+              const resetElements = (selector: string) => {
+                const elements = cardEl.querySelectorAll(selector);
+                elements.forEach((el) => {
+                  const elem = el as HTMLElement;
+                  elem.style.opacity = '0';
+                  if (elem.style.transform.includes('translateY')) {
+                    elem.style.transform = 'translateY(10px)';
+                  } else if (elem.style.transform.includes('translateX')) {
+                    elem.style.transform = 'translateX(1rem)';
+                  }
+                });
+              };
+
+              // 重置所有动画元素
+              resetElements('[data-business-title]');
+              resetElements('[data-business-subtitle]');
+              resetElements('[data-business-desc]');
+              resetElements('[data-business-feature]');
+              resetElements('[data-business-stats]');
 
               // 触发标题淡入
-              setTimeout(() => {
-                (title as HTMLElement).style.opacity = '1';
-                (title as HTMLElement).style.transform = 'translateY(0)';
-              }, 800 + cardIndex * 150);
+              const title = cardEl.querySelector('[data-business-title]');
+              if (title) {
+                setTimeout(() => {
+                  (title as HTMLElement).style.opacity = '1';
+                  (title as HTMLElement).style.transform = 'translateY(0)';
+                }, 800 + cardIndex * 150);
+              }
 
               // 触发副标题淡入
               const subtitle = cardEl.querySelector('[data-business-subtitle]');
@@ -73,8 +96,22 @@ export default function BusinessSection() {
                 }, 1100 + cardIndex * 150 + features.length * 100);
               }
             });
-
-            observer.unobserve(section);
+          } else {
+            // 元素离开视口时，重置状态
+            const cards = section.querySelectorAll('.glass-card');
+            cards.forEach((card) => {
+              const cardEl = card as HTMLElement;
+              const elements = cardEl.querySelectorAll('[data-business-title], [data-business-subtitle], [data-business-desc], [data-business-feature], [data-business-stats]');
+              elements.forEach((el) => {
+                const elem = el as HTMLElement;
+                elem.style.opacity = '0';
+                if (elem.style.transform.includes('translateY')) {
+                  elem.style.transform = 'translateY(10px)';
+                } else if (elem.style.transform.includes('translateX')) {
+                  elem.style.transform = 'translateX(1rem)';
+                }
+              });
+            });
           }
         });
       },
@@ -99,13 +136,32 @@ export default function BusinessSection() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const section = entry.target;
+          const section = entry.target;
 
+          if (entry.isIntersecting) {
             // 代表产品区域动画
             const productSections = section.querySelectorAll('[data-product-section]');
             productSections.forEach((prodSection, index) => {
               const prodEl = prodSection as HTMLElement;
+
+              // 重置产品section状态
+              prodEl.style.opacity = '0';
+              prodEl.style.transform = 'translateY(40px)';
+
+              // 重置内部元素
+              const items = prodEl.querySelectorAll('[data-scroll-item]');
+              items.forEach((item) => {
+                const itemEl = item as HTMLElement;
+                itemEl.style.opacity = '0';
+                if (itemEl.style.transform.includes('translateY')) {
+                  itemEl.style.transform = 'translateY(20px)';
+                } else if (itemEl.style.transform.includes('translateX')) {
+                  itemEl.style.transform = 'translateX(2.5rem)';
+                } else if (itemEl.style.transform.includes('scale')) {
+                  itemEl.style.transform = 'scale(0.95)';
+                }
+              });
+
               setTimeout(() => {
                 prodEl.style.opacity = '1';
                 prodEl.style.transform = 'translateY(0)';
@@ -113,22 +169,46 @@ export default function BusinessSection() {
 
               // 触发内部元素动画
               setTimeout(() => {
-                const items = prodEl.querySelectorAll('[data-scroll-item]');
                 items.forEach((item, itemIndex) => {
                   const itemEl = item as HTMLElement;
                   setTimeout(() => {
                     itemEl.style.opacity = '1';
-                    itemEl.style.transform = 'translateX(0) scale(1)';
+                    if (itemEl.style.transform.includes('translateY')) {
+                      itemEl.style.transform = 'translateY(0)';
+                    } else if (itemEl.style.transform.includes('translateX')) {
+                      itemEl.style.transform = 'translateX(0)';
+                    } else if (itemEl.style.transform.includes('scale')) {
+                      itemEl.style.transform = 'scale(1)';
+                    }
                   }, itemIndex * 200);
                 });
               }, 400 + index * 300);
             });
+          } else {
+            // 元素离开视口时，重置状态
+            const productSections = section.querySelectorAll('[data-product-section]');
+            productSections.forEach((prodSection) => {
+              const prodEl = prodSection as HTMLElement;
+              prodEl.style.opacity = '0';
+              prodEl.style.transform = 'translateY(40px)';
 
-            observer.unobserve(section);
+              const items = prodSection.querySelectorAll('[data-scroll-item]');
+              items.forEach((item) => {
+                const itemEl = item as HTMLElement;
+                itemEl.style.opacity = '0';
+                if (itemEl.style.transform.includes('translateY')) {
+                  itemEl.style.transform = 'translateY(20px)';
+                } else if (itemEl.style.transform.includes('translateX')) {
+                  itemEl.style.transform = 'translateX(2.5rem)';
+                } else if (itemEl.style.transform.includes('scale')) {
+                  itemEl.style.transform = 'scale(0.95)';
+                }
+              });
+            });
           }
         });
       },
-      { threshold: 0.2, rootMargin: '0px 0px -100px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -200px 0px' }
     );
 
     if (sectionRefValue) {
@@ -140,7 +220,8 @@ export default function BusinessSection() {
         observer.unobserve(sectionRefValue);
       }
     };
-  }, []);
+  }, [mounted]);
+
   const businesses = [
     {
       icon: GamepadIcon,
