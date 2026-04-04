@@ -114,7 +114,14 @@ export default function Footer() {
                   placeholder="您的邮箱"
                   className="flex-1 bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-blue-500"
                 />
-                <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors">
+                <button
+                  className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg transition-colors"
+                  style={{
+                    background: "rgba(37, 99, 235, 0.9)",
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)",
+                  }}
+                >
                   <Send className="w-4 h-4" />
                 </button>
               </div>

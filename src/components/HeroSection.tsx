@@ -106,8 +106,10 @@ export default function HeroSection() {
                 <Button
                   className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200"
                   style={{
-                    background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
-                    border: "none",
+                    background: "rgba(99, 102, 241, 0.85)",
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)",
+                    border: "1px solid rgba(255, 255, 255, 0.3)",
                     color: "white",
                     minWidth: "120px",
                   }}
@@ -120,8 +122,10 @@ export default function HeroSection() {
                 <Button
                   className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200"
                   style={{
-                    background: "white",
-                    border: "1px solid #e5e5e5",
+                    background: "rgba(255, 255, 255, 0.7)",
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)",
+                    border: "1px solid rgba(255, 255, 255, 0.5)",
                     color: "#666",
                     minWidth: "120px",
                   }}

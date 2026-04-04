@@ -171,7 +171,14 @@ export default function EnvironmentSection() {
           <p className="text-sm md:text-base text-blue-100 mb-5 md:mb-6 max-w-2xl mx-auto font-sans">
             如果你对我们的产品感兴趣，欢迎预约参观，聊聊想法
           </p>
-          <button className="bg-white text-blue-600 px-6 md:px-8 py-2.5 md:py-3 rounded-full font-bold hover:bg-blue-50 transition-colors text-sm md:text-base font-sans">
+          <button
+            className="bg-white text-blue-600 px-6 md:px-8 py-2.5 md:py-3 rounded-full font-bold hover:bg-blue-50 transition-colors text-sm md:text-base font-sans"
+            style={{
+              background: "rgba(255, 255, 255, 0.9)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
+            }}
+          >
             预约参观
           </button>
         </div>

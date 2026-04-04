@@ -157,7 +157,15 @@ export default function BusinessSection() {
                   </li>
                 ))}
               </ul>
-              <Button variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900 text-sm md:text-base font-sans">
+              <Button
+                variant="outline"
+                className="border-white text-white hover:bg-white hover:text-gray-900 text-sm md:text-base font-sans"
+                style={{
+                  background: "rgba(255, 255, 255, 0.1)",
+                  backdropFilter: "blur(20px)",
+                  WebkitBackdropFilter: "blur(20px)",
+                }}
+              >
                 查看全部产品
               </Button>
             </div>
