@@ -50,12 +50,8 @@ export default function PerformanceOptimizer() {
       if (isHighRefreshRate) {
         document.documentElement.classList.add('high-refresh-rate');
 
-        // 强制GPU加速所有元素
-        const allElements = document.querySelectorAll('*');
-        allElements.forEach((el) => {
-          (el as HTMLElement).style.transform = 'translateZ(0)';
-          (el as HTMLElement).style.willChange = 'auto';
-        });
+        // 注意：不强制给所有元素添加 transform，因为会破坏 fixed 定位
+        // 只在需要 GPU 加速的特定元素上使用 transform
 
         console.log('[Performance] 已启用120Hz+高刷新率优化');
       }

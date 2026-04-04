@@ -18,7 +18,8 @@ export default function Home() {
   return (
     <>
       <main className="min-h-screen">
-        <PerformanceOptimizer />
+        {/* 暂时禁用 PerformanceOptimizer 以测试按钮定位 */}
+        {/* <PerformanceOptimizer /> */}
         {/* <PerformanceMonitor /> */}
         <Navbar />
         <HeroSection />
