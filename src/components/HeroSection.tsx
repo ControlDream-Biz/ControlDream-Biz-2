@@ -18,50 +18,37 @@ export default function HeroSection() {
       </div>
 
       {/* Gradient Orbs */}
-      <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-blue-200/40 to-purple-200/40 rounded-full blur-3xl opacity-40 animate-pulse glass"></div>
-      <div className="absolute bottom-20 left-20 w-96 h-96 bg-gradient-to-br from-indigo-200/40 to-blue-200/40 rounded-full blur-3xl opacity-30 glass"></div>
+      <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-blue-200/50 to-purple-200/50 rounded-full blur-3xl opacity-50 animate-pulse glass animate-float animate-glow"></div>
+      <div className="absolute bottom-20 left-20 w-96 h-96 bg-gradient-to-br from-indigo-200/50 to-blue-200/50 rounded-full blur-3xl opacity-40 glass animate-float" style={{animationDelay: '1s'}}></div>
 
       {/* Content */}
       <div className="container mx-auto px-4 md:px-6 py-16 md:py-20 relative z-10">
-        <div className="max-w-4xl mx-auto text-center glass-card rounded-3xl p-6 md:p-8 lg:p-12">
+        <div className="max-w-4xl mx-auto text-center glass-card rounded-3xl p-6 md:p-8 lg:p-12 shadow-2xl animate-fade-in" style={{
+          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.08), 0 8px 20px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(255, 255, 255, 0.6) inset',
+        }}>
           {/* Tag */}
-          <div className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-white/70 backdrop-blur-md rounded-full text-xs md:text-base font-medium shadow-sm mb-8 md:mb-10 font-sans border border-white/50">
-            <span className="w-2 h-2 md:w-2.5 md:h-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full mr-2 md:mr-3 animate-pulse"></span>
+          <div className="inline-flex items-center px-4 py-2 md:px-6 md:py-3 bg-white/70 backdrop-blur-md rounded-full text-xs md:text-base font-medium shadow-lg mb-8 md:mb-10 font-sans border border-white/50 animate-fade-in hover-pulse cursor-default">
+            <span className="w-2 h-2 md:w-2.5 md:h-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full mr-2 md:mr-3 animate-pulse animate-glow"></span>
             创新科技 · 智造未来
           </div>
 
           {/* Description */}
           <div className="space-y-4 md:space-y-5 mb-8 md:mb-10">
-            <p className="text-base md:text-lg lg:text-xl text-slate-700 font-normal leading-relaxed max-w-4xl mx-auto font-sans">
+            <p className="text-base md:text-lg lg:text-xl text-slate-700 font-normal leading-relaxed max-w-4xl mx-auto font-sans animate-fade-in animate-delay-100">
               创梦计算机系统有限公司，专注于游戏开发、软件开发与硬件创新的<span className="font-semibold text-slate-900">高新技术企业</span>。
             </p>
-            <p className="text-sm md:text-base text-slate-600 leading-relaxed max-w-3xl mx-auto font-sans">
+            <p className="text-sm md:text-base text-slate-600 leading-relaxed max-w-3xl mx-auto font-sans animate-fade-in animate-delay-200">
               致力于为全球用户创造卓越数字体验，以技术创新驱动行业发展，用创意引领未来趋势。
             </p>
           </div>
 
           {/* Buttons */}
-          <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-10 md:mb-12">
+          <div className="flex flex-wrap justify-center gap-3 md:gap-4 mb-10 md:mb-12 animate-fade-in animate-delay-300">
             <Button
               size="lg"
-              className="px-6 md:px-8 h-10 md:h-12 text-sm md:text-base font-semibold font-sans shadow-lg"
+              className="px-6 md:px-8 h-10 md:h-12 text-sm md:text-base font-semibold font-sans shadow-xl glass-button"
               style={{
-                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(99, 102, 241, 0.95) 100%)',
-                backdropFilter: 'blur(10px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(10px) saturate(180%)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
-                boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4)',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 1) 0%, rgba(99, 102, 241, 1) 100%)';
-                e.currentTarget.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4), 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5)';
-                e.currentTarget.style.transform = 'translateY(-1px)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(99, 102, 241, 0.95) 100%)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4)';
-                e.currentTarget.style.transform = 'translateY(0)';
+                borderRadius: '12px',
               }}
             >
               探索更多
@@ -70,23 +57,27 @@ export default function HeroSection() {
             <Button
               size="lg"
               variant="outline"
-              className="px-6 md:px-8 h-10 md:h-12 text-sm md:text-base font-semibold font-sans"
+              className="px-6 md:px-8 h-10 md:h-12 text-sm md:text-base font-semibold font-sans glass-card"
               style={{
-                background: 'rgba(255, 255, 255, 0.7)',
-                backdropFilter: 'blur(20px) saturate(180%)',
-                WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                borderRadius: '12px',
+                background: 'rgba(255, 255, 255, 0.75)',
+                backdropFilter: 'blur(16px) saturate(150%)',
+                WebkitBackdropFilter: 'blur(16px) saturate(150%)',
                 border: '1px solid rgba(255, 255, 255, 0.5)',
                 color: '#334155',
-                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 0 rgba(0, 0, 0, 0.02)',
-                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                transition: 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)',
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)';
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.6)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.7)';
+                e.currentTarget.style.transform = 'translateY(-2px) scale(1.02)';
+                e.currentTarget.style.boxShadow = '0 12px 32px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.7)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.75)';
                 e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+                e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                e.currentTarget.style.boxShadow = 'none';
               }}
             >
               <Play className="mr-2 w-4 h-4" />
@@ -95,17 +86,17 @@ export default function HeroSection() {
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-3 md:gap-6 pt-6 md:pt-8 border-t border-slate-200/50">
-            <div className="glass-card rounded-2xl p-3 md:p-4 transition-all duration-300 hover:shadow-lg">
-              <div className="text-2xl md:text-3xl font-bold text-slate-900 font-sans">10+</div>
+          <div className="grid grid-cols-3 gap-3 md:gap-6 pt-6 md:pt-8 border-t border-slate-200/50 animate-fade-in animate-delay-400">
+            <div className="glass-card rounded-2xl p-3 md:p-4 transition-all duration-400 hover-pulse cursor-default group">
+              <div className="text-2xl md:text-3xl font-bold text-slate-900 font-sans group-hover:animate-jelly">10+</div>
               <div className="text-xs md:text-sm text-slate-600 mt-1 font-sans">年行业经验</div>
             </div>
-            <div className="glass-card rounded-2xl p-3 md:p-4 transition-all duration-300 hover:shadow-lg">
-              <div className="text-2xl md:text-3xl font-bold text-slate-900 font-sans">100+</div>
+            <div className="glass-card rounded-2xl p-3 md:p-4 transition-all duration-400 hover-pulse cursor-default group">
+              <div className="text-2xl md:text-3xl font-bold text-slate-900 font-sans group-hover:animate-jelly">100+</div>
               <div className="text-xs md:text-sm text-slate-600 mt-1 font-sans">游戏产品</div>
             </div>
-            <div className="glass-card rounded-2xl p-3 md:p-4 transition-all duration-300 hover:shadow-lg">
-              <div className="text-2xl md:text-3xl font-bold text-slate-900 font-sans">500+</div>
+            <div className="glass-card rounded-2xl p-3 md:p-4 transition-all duration-400 hover-pulse cursor-default group">
+              <div className="text-2xl md:text-3xl font-bold text-slate-900 font-sans group-hover:animate-jelly">500+</div>
               <div className="text-xs md:text-sm text-slate-600 mt-1 font-sans">合作伙伴</div>
             </div>
           </div>

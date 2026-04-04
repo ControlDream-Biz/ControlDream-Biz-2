@@ -109,7 +109,19 @@ export default function EnvironmentSection() {
             return (
               <div
                 key={areaIndex}
-                className="group relative bg-white/90 backdrop-blur-md border-2 border-gray-100 rounded-xl md:rounded-2xl overflow-hidden hover:border-blue-500 hover:shadow-2xl transition-all duration-300 glass-card"
+                className="group relative bg-white/90 backdrop-blur-md border-2 border-gray-100 rounded-xl md:rounded-2xl overflow-hidden hover:border-blue-500 hover:shadow-2xl transition-all duration-500 glass-card cursor-pointer"
+                style={{
+                  boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)',
+                  borderRadius: '20px',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-6px) scale(1.015)';
+                  e.currentTarget.style.boxShadow = '0 20px 60px rgba(59, 130, 246, 0.15), 0 8px 20px rgba(0, 0, 0, 0.08)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                  e.currentTarget.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)';
+                }}
               >
                 {/* Image */}
                 <div className="aspect-video relative overflow-hidden">

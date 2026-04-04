@@ -62,7 +62,19 @@ export default function BusinessSection() {
             return (
               <Card
                 key={index}
-                className="group hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-transparent overflow-hidden glass-card"
+                className="group hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-transparent overflow-hidden glass-card cursor-pointer"
+                style={{
+                  borderRadius: '20px',
+                  boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+                  e.currentTarget.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(0, 0, 0, 0.06)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                  e.currentTarget.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)';
+                }}
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${business.color} opacity-0 group-hover:opacity-5 transition-opacity`} />
 
@@ -79,7 +91,7 @@ export default function BusinessSection() {
 
                 <CardContent className="p-5 md:p-8 relative">
                   {/* Icon */}
-                  <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-gradient-to-br ${business.color} flex items-center justify-center mb-4 md:mb-5 shadow-lg -mt-10 md:-mt-12 relative z-10 border-4 border-white`}>
+                  <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-gradient-to-br ${business.color} flex items-center justify-center mb-4 md:mb-5 shadow-xl -mt-10 md:-mt-12 relative z-10 border-4 border-white transition-all duration-400 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-2xl`}>
                     <Icon className="w-6 h-6 md:w-7 md:h-7 text-white" />
                   </div>
 
