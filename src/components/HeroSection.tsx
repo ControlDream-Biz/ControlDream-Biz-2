@@ -7,10 +7,30 @@ import { useState, useEffect } from "react";
 
 export default function HeroSection() {
   const [mounted, setMounted] = useState(false);
+  const [textVisible, setTextVisible] = useState(false);
 
   useEffect(() => {
     setMounted(true);
+    const timer = setTimeout(() => {
+      setTextVisible(true);
+    }, 300);
+    return () => clearTimeout(timer);
   }, []);
+
+  const renderAnimatedText = (text: string, delay: number) => {
+    return text.split('').map((char, index) => (
+      <span
+        key={`${char}-${index}`}
+        className="char-animate inline-block"
+        style={{
+          transitionDelay: `${delay + index * 0.1}s`,
+          animationDelay: `${delay + index * 0.1}s`,
+        }}
+      >
+        {char === ' ' ? '\u00A0' : char}
+      </span>
+    ));
+  };
 
   return (
     <section
@@ -20,59 +40,74 @@ export default function HeroSection() {
     >
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
           <div className="text-left">
-            {/* Main Title */}
             <h1
               className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
-              data-scroll-animate
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s",
                 minHeight: "120px",
+                position: "relative",
               }}
             >
-              <span
-                data-gradient-text
-                style={{
-                  background: "linear-gradient(90deg, #EF4444 0%, #F97316 14%, #3B82F6 28%, #6366F1 42%, #8B5CF6 56%, #EC4899 70%, #EF4444 85%, #F97316 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  backgroundSize: "200% 100%",
-                  animation: "gradientMove 15s ease-in-out infinite alternate",
-                  WebkitAnimation: "gradientMove 15s ease-in-out infinite alternate",
-                  display: "inline-block",
-                  opacity: mounted ? 1 : 0,
-                  transform: mounted ? "translateY(0)" : "translateY(10px)",
-                  transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s",
-                }}
-              >
-                创新科技
-              </span>
+              <div className="relative inline-block">
+                <span
+                  className={`glow-text text-3d-effect ${textVisible ? 'char-animate visible' : 'char-animate'}`}
+                  style={{
+                    background: "linear-gradient(90deg, #EF4444 0%, #F97316 14%, #3B82F6 28%, #6366F1 42%, #8B5CF6 56%, #EC4899 70%, #EF4444 85%, #F97316 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    backgroundSize: "200% 100%",
+                    animation: textVisible ? "gradientMove 15s ease-in-out infinite alternate, glowPulse 3s ease-in-out infinite 0.8s" : "none",
+                    WebkitAnimation: textVisible ? "gradientMove 15s ease-in-out infinite alternate, glowPulse 3s ease-in-out infinite 0.8s" : "none",
+                    display: "inline-block",
+                    fontSize: "inherit",
+                    fontWeight: "inherit",
+                  }}
+                >
+                  {renderAnimatedText("创新科技", 0)}
+                </span>
+                <div
+                  className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl blur-2xl opacity-0 transition-all duration-700"
+                  style={{
+                    animation: textVisible ? "particleFloat 2s ease-in-out infinite" : "none",
+                    animationDelay: "0.8s",
+                    opacity: textVisible ? 1 : 0,
+                  }}
+                ></div>
+              </div>
               <br />
-              <span
-                data-gradient-text
-                style={{
-                  background: "linear-gradient(90deg, #8B5CF6 0%, #A855F7 16%, #EC4899 32%, #EF4444 48%, #F97316 64%, #3B82F6 80%, #8B5CF6 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  backgroundSize: "200% 100%",
-                  animation: "gradientMove 18s ease-in-out infinite alternate-reverse",
-                  WebkitAnimation: "gradientMove 18s ease-in-out infinite alternate-reverse",
-                  display: "inline-block",
-                  opacity: mounted ? 1 : 0,
-                  transform: mounted ? "translateY(0)" : "translateY(10px)",
-                  transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s",
-                }}
-              >
-                驱动未来
-              </span>
+              <div className="relative inline-block mt-2">
+                <span
+                  className={`glow-text text-3d-effect ${textVisible ? 'char-animate visible' : 'char-animate'}`}
+                  style={{
+                    background: "linear-gradient(90deg, #8B5CF6 0%, #A855F7 16%, #EC4899 32%, #EF4444 48%, #F97316 64%, #3B82F6 80%, #8B5CF6 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    backgroundSize: "200% 100%",
+                    animation: textVisible ? "gradientMove 18s ease-in-out infinite alternate-reverse, glowPulse 3s ease-in-out infinite 1.2s" : "none",
+                    WebkitAnimation: textVisible ? "gradientMove 18s ease-in-out infinite alternate-reverse, glowPulse 3s ease-in-out infinite 1.2s" : "none",
+                    display: "inline-block",
+                    fontSize: "inherit",
+                    fontWeight: "inherit",
+                  }}
+                >
+                  {renderAnimatedText("驱动未来", 0.4)}
+                </span>
+                <div
+                  className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-orange-500/20 rounded-2xl blur-2xl opacity-0 transition-all duration-700"
+                  style={{
+                    animation: textVisible ? "particleFloat 2s ease-in-out infinite reverse" : "none",
+                    animationDelay: "1.2s",
+                    opacity: textVisible ? 1 : 0,
+                  }}
+                ></div>
+              </div>
             </h1>
 
-            {/* Description */}
             <p
               className="text-base md:text-lg text-gray-600 leading-relaxed mb-8 max-w-2xl"
               style={{
@@ -86,7 +121,6 @@ export default function HeroSection() {
               用脚踏实地的态度打磨好产品。
             </p>
 
-            {/* CTA Buttons */}
             <div
               className="flex flex-col sm:flex-row gap-4"
               style={{
@@ -129,7 +163,6 @@ export default function HeroSection() {
               </Link>
             </div>
 
-            {/* Stats */}
             <div
               className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-gray-100"
               style={{
@@ -140,33 +173,20 @@ export default function HeroSection() {
               }}
             >
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
-                  8+
-                </div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">
-                  年持续投入
-                </div>
+                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">8+</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">年持续投入</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
-                  30+
-                </div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">
-                  自研产品
-                </div>
+                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">30+</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">自研产品</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
-                  20+
-                </div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">
-                  核心团队
-                </div>
+                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">20+</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">核心团队</div>
               </div>
             </div>
           </div>
 
-          {/* Right Content - Image/Graphic */}
           <div
             className="relative hidden lg:block"
             style={{
@@ -176,7 +196,6 @@ export default function HeroSection() {
             }}
           >
             <div className="relative">
-              {/* Main Image */}
               <div
                 className="relative rounded-2xl overflow-hidden shadow-2xl"
                 style={{
@@ -187,17 +206,12 @@ export default function HeroSection() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <div className="text-6xl mb-4">🚀</div>
-                    <div className="text-white text-xl font-semibold">
-                      科技创新
-                    </div>
-                    <div className="text-white/80 text-sm mt-2">
-                      驱动未来发展
-                    </div>
+                    <div className="text-white text-xl font-semibold">科技创新</div>
+                    <div className="text-white/80 text-sm mt-2">驱动未来发展</div>
                   </div>
                 </div>
               </div>
 
-              {/* Floating Card 1 */}
               <div
                 className="absolute -top-8 -left-8 bg-white rounded-xl shadow-lg p-4"
               >
@@ -206,17 +220,12 @@ export default function HeroSection() {
                     <span className="text-xl">💡</span>
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-gray-900">
-                      创新思维
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      持续突破
-                    </div>
+                    <div className="text-sm font-semibold text-gray-900">创新思维</div>
+                    <div className="text-xs text-gray-500">持续突破</div>
                   </div>
                 </div>
               </div>
 
-              {/* Floating Card 2 */}
               <div
                 className="absolute -bottom-8 -right-8 bg-white rounded-xl shadow-lg p-4"
               >
@@ -225,12 +234,8 @@ export default function HeroSection() {
                     <span className="text-xl">🎯</span>
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-gray-900">
-                      精准定位
-                    </div>
-                    <div className="text-xs text-gray-500">
-                      高效交付
-                    </div>
+                    <div className="text-sm font-semibold text-gray-900">精准定位</div>
+                    <div className="text-xs text-gray-500">高效交付</div>
                   </div>
                 </div>
               </div>
@@ -241,12 +246,8 @@ export default function HeroSection() {
 
       <style jsx>{`
         @keyframes gradientMove {
-          0% {
-            background-position: 0% 50%;
-          }
-          100% {
-            background-position: 100% 50%;
-          }
+          0% { background-position: 0% 50%; }
+          100% { background-position: 100% 50%; }
         }
       `}</style>
     </section>
