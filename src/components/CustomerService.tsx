@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { MessageCircle, X } from 'lucide-react';
+import { MessageCircle, X, Phone, Mail } from 'lucide-react';
 
 export default function CustomerService() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,22 +10,32 @@ export default function CustomerService() {
     <>
       {/* 客服按钮 */}
       <div
+        onClick={() => setIsOpen(!isOpen)}
         style={{
           position: 'fixed',
           bottom: '30px',
           right: '30px',
-          zIndex: 2147483647,
-          backgroundColor: '#16a34a',
           width: '60px',
           height: '60px',
           borderRadius: '50%',
+          backgroundColor: '#16a34a',
+          color: 'white',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'pointer',
           boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          zIndex: 2147483647,
+          transition: 'all 0.3s ease',
         }}
-        onClick={() => setIsOpen(!isOpen)}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'scale(1.1)';
+          e.currentTarget.style.boxShadow = '0 6px 8px rgba(0, 0, 0, 0.15)';
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'scale(1)';
+          e.currentTarget.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+        }}
         title="客服"
       >
         {isOpen ? <X size={30} color="white" /> : <MessageCircle size={30} color="white" />}
@@ -38,12 +48,13 @@ export default function CustomerService() {
             position: 'fixed',
             bottom: '100px',
             right: '100px',
-            zIndex: 2147483647,
-            backgroundColor: 'white',
             width: '320px',
+            backgroundColor: 'white',
             borderRadius: '16px',
             boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)',
             overflow: 'hidden',
+            zIndex: 2147483647,
+            animation: 'fadeIn 0.3s ease',
           }}
         >
           {/* 头部 */}
@@ -61,6 +72,7 @@ export default function CustomerService() {
           {/* 内容 */}
           <div style={{ padding: '16px' }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {/* 在线咨询 */}
               <div
                 style={{
                   display: 'flex',
@@ -70,6 +82,13 @@ export default function CustomerService() {
                   backgroundColor: '#f9fafb',
                   borderRadius: '8px',
                   cursor: 'pointer',
+                  transition: 'background-color 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f9fafb';
                 }}
               >
                 <div
@@ -91,6 +110,7 @@ export default function CustomerService() {
                 </div>
               </div>
 
+              {/* 电话咨询 */}
               <div
                 style={{
                   display: 'flex',
@@ -100,6 +120,13 @@ export default function CustomerService() {
                   backgroundColor: '#f9fafb',
                   borderRadius: '8px',
                   cursor: 'pointer',
+                  transition: 'background-color 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f9fafb';
                 }}
               >
                 <div
@@ -113,7 +140,7 @@ export default function CustomerService() {
                     justifyContent: 'center',
                   }}
                 >
-                  <span style={{ fontSize: '20px' }}>📞</span>
+                  <Phone size={20} color="#16a34a" />
                 </div>
                 <div>
                   <div style={{ fontWeight: '500', color: '#111827' }}>电话咨询</div>
@@ -121,6 +148,7 @@ export default function CustomerService() {
                 </div>
               </div>
 
+              {/* 邮件咨询 */}
               <div
                 style={{
                   display: 'flex',
@@ -130,6 +158,13 @@ export default function CustomerService() {
                   backgroundColor: '#f9fafb',
                   borderRadius: '8px',
                   cursor: 'pointer',
+                  transition: 'background-color 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f3f4f6';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#f9fafb';
                 }}
               >
                 <div
@@ -143,7 +178,7 @@ export default function CustomerService() {
                     justifyContent: 'center',
                   }}
                 >
-                  <span style={{ fontSize: '20px' }}>📧</span>
+                  <Mail size={20} color="#9333ea" />
                 </div>
                 <div>
                   <div style={{ fontWeight: '500', color: '#111827' }}>邮件咨询</div>
