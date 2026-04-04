@@ -61,6 +61,10 @@ export default function FloatingButtons() {
     backToTopBtn.style.backdropFilter = 'blur(12px)';
     backToTopBtn.style.webkitBackdropFilter = 'blur(12px)';
     backToTopBtn.style.border = '1px solid rgba(37, 99, 235, 0.4)';
+    backToTopBtn.style.boxShadow = `
+      inset 0 1px 2px rgba(255, 255, 255, 0.1),
+      0 4px 16px rgba(37, 99, 235, 0.2)
+    `;
     backToTopBtn.style.color = 'white';
     backToTopBtn.style.display = 'flex';
     backToTopBtn.style.alignItems = 'center';
@@ -69,26 +73,32 @@ export default function FloatingButtons() {
     backToTopBtn.style.fontWeight = 'bold';
     backToTopBtn.style.textShadow = '0 1px 3px rgba(0, 0, 0, 0.5)';
     backToTopBtn.style.cursor = 'pointer';
-    backToTopBtn.style.boxShadow = '0 4px 16px rgba(37, 99, 235, 0.2)';
-    backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out';
-    backToTopBtn.style.willChange = 'transform';
+    backToTopBtn.style.transition = 'transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.12s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.12s cubic-bezier(0.4, 0, 0.2, 1), border 0.12s cubic-bezier(0.4, 0, 0.2, 1)';
+    backToTopBtn.style.willChange = 'transform, background-color, border, box-shadow';
+    backToTopBtn.style.transformOrigin = 'center center';
     backToTopBtn.style.pointerEvents = 'auto';
     backToTopBtn.textContent = '↑';
 
     backToTopBtn.addEventListener('click', scrollToTop);
 
     backToTopBtn.addEventListener('mouseenter', () => {
-      backToTopBtn.style.transform = 'scale(1.1)';
-      backToTopBtn.style.boxShadow = '0 6px 20px rgba(37, 99, 235, 0.3)';
+      backToTopBtn.style.transform = 'scale(1.08)';
       backToTopBtn.style.backgroundColor = 'rgba(37, 99, 235, 0.25)';
       backToTopBtn.style.border = '1px solid rgba(37, 99, 235, 0.6)';
+      backToTopBtn.style.boxShadow = `
+        inset 0 1px 2px rgba(255, 255, 255, 0.2),
+        0 6px 20px rgba(37, 99, 235, 0.3)
+      `;
     });
 
     backToTopBtn.addEventListener('mouseleave', () => {
       backToTopBtn.style.transform = 'scale(1)';
-      backToTopBtn.style.boxShadow = '0 4px 16px rgba(37, 99, 235, 0.2)';
       backToTopBtn.style.backgroundColor = 'rgba(37, 99, 235, 0.1)';
       backToTopBtn.style.border = '1px solid rgba(37, 99, 235, 0.4)';
+      backToTopBtn.style.boxShadow = `
+        inset 0 1px 2px rgba(255, 255, 255, 0.1),
+        0 4px 16px rgba(37, 99, 235, 0.2)
+      `;
     });
 
     // 创建客服按钮 - 毛玻璃效果
@@ -101,6 +111,10 @@ export default function FloatingButtons() {
     customerServiceBtn.style.backdropFilter = 'blur(12px)';
     customerServiceBtn.style.webkitBackdropFilter = 'blur(12px)';
     customerServiceBtn.style.border = '1px solid rgba(22, 163, 74, 0.4)';
+    customerServiceBtn.style.boxShadow = `
+      inset 0 1px 2px rgba(255, 255, 255, 0.1),
+      0 4px 16px rgba(22, 163, 74, 0.2)
+    `;
     customerServiceBtn.style.color = 'white';
     customerServiceBtn.style.display = 'flex';
     customerServiceBtn.style.alignItems = 'center';
@@ -109,9 +123,9 @@ export default function FloatingButtons() {
     customerServiceBtn.style.fontWeight = 'bold';
     customerServiceBtn.style.textShadow = '0 1px 3px rgba(0, 0, 0, 0.5)';
     customerServiceBtn.style.cursor = 'pointer';
-    customerServiceBtn.style.boxShadow = '0 4px 16px rgba(22, 163, 74, 0.2)';
-    customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out';
-    customerServiceBtn.style.willChange = 'transform';
+    customerServiceBtn.style.transition = 'transform 0.12s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.12s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.12s cubic-bezier(0.4, 0, 0.2, 1), border 0.12s cubic-bezier(0.4, 0, 0.2, 1)';
+    customerServiceBtn.style.willChange = 'transform, background-color, border, box-shadow';
+    customerServiceBtn.style.transformOrigin = 'center center';
     customerServiceBtn.style.pointerEvents = 'auto';
     customerServiceBtn.textContent = '💬';
 
@@ -120,20 +134,26 @@ export default function FloatingButtons() {
     });
 
     customerServiceBtn.addEventListener('mouseenter', () => {
-      customerServiceBtn.style.transform = 'scale(1.1)';
-      customerServiceBtn.style.boxShadow = '0 6px 20px rgba(22, 163, 74, 0.3)';
+      customerServiceBtn.style.transform = 'scale(1.08)';
       customerServiceBtn.style.backgroundColor = 'rgba(22, 163, 74, 0.25)';
       customerServiceBtn.style.border = '1px solid rgba(22, 163, 74, 0.6)';
+      customerServiceBtn.style.boxShadow = `
+        inset 0 1px 2px rgba(255, 255, 255, 0.2),
+        0 6px 20px rgba(22, 163, 74, 0.3)
+      `;
     });
 
     customerServiceBtn.addEventListener('mouseleave', () => {
       customerServiceBtn.style.transform = 'scale(1)';
-      customerServiceBtn.style.boxShadow = '0 4px 16px rgba(22, 163, 74, 0.2)';
       customerServiceBtn.style.backgroundColor = 'rgba(22, 163, 74, 0.1)';
       customerServiceBtn.style.border = '1px solid rgba(22, 163, 74, 0.4)';
+      customerServiceBtn.style.boxShadow = `
+        inset 0 1px 2px rgba(255, 255, 255, 0.1),
+        0 4px 16px rgba(22, 163, 74, 0.2)
+      `;
     });
 
-    // 创建客服弹窗
+    // 创建客服弹窗 - 玻璃效果
     const customerServicePopup = document.createElement('div');
     customerServicePopup.id = 'customer-service-popup';
     customerServicePopup.style.position = 'fixed';
@@ -141,47 +161,55 @@ export default function FloatingButtons() {
     customerServicePopup.style.right = '65px';
     customerServicePopup.style.width = '280px';
     customerServicePopup.style.maxWidth = 'calc(100vw - 100px)';
-    customerServicePopup.style.backgroundColor = 'white';
-    customerServicePopup.style.borderRadius = '12px';
-    customerServicePopup.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.12)';
+    customerServicePopup.style.backgroundColor = 'rgba(255, 255, 255, 0.85)';
+    customerServicePopup.style.backdropFilter = 'blur(20px)';
+    customerServicePopup.style.webkitBackdropFilter = 'blur(20px)';
+    customerServicePopup.style.borderRadius = '16px';
+    customerServicePopup.style.border = '1px solid rgba(255, 255, 255, 0.5)';
+    customerServicePopup.style.boxShadow = `
+      inset 0 1px 2px rgba(255, 255, 255, 0.8),
+      0 8px 32px rgba(0, 0, 0, 0.1)
+    `;
     customerServicePopup.style.overflow = 'hidden';
     customerServicePopup.style.pointerEvents = 'auto';
     customerServicePopup.style.display = 'none';
-    customerServicePopup.style.animation = 'fadeIn 0.2s ease-out';
-    customerServicePopup.style.willChange = 'transform';
-    customerServicePopup.style.backdropFilter = 'blur(10px)';
+    customerServicePopup.style.transformOrigin = 'bottom right';
+    customerServicePopup.style.opacity = '0';
+    customerServicePopup.style.transform = 'scale(0.9) translateY(10px)';
+    customerServicePopup.style.willChange = 'opacity, transform';
     customerServicePopup.style.zIndex = '2147483647';
 
     customerServicePopup.innerHTML = `
-      <div style="background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); padding: 14px; color: white;">
-        <h3 style="font-size: 16px; font-weight: 600; margin: 0;">在线客服</h3>
-        <p style="font-size: 13px; opacity: 0.9; margin: 3px 0 0 0;">我们随时为您服务</p>
+      <div style="background: linear-gradient(135deg, rgba(22, 163, 74, 0.9) 0%, rgba(21, 128, 61, 0.9) 100%); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 14px; color: white; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%); pointer-events: none;"></div>
+        <h3 style="font-size: 16px; font-weight: 600; margin: 0; position: relative;">在线客服</h3>
+        <p style="font-size: 13px; opacity: 0.9; margin: 3px 0 0 0; position: relative;">我们随时为您服务</p>
       </div>
-      <div style="padding: 14px;">
+      <div style="padding: 14px; backdrop-filter: blur(10px);">
         <div style="display: flex; flex-direction: column; gap: 10px;">
-          <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background-color: #f9fafb; border-radius: 8px; cursor: pointer; transition: background-color 0.15s ease-out;">
-            <div style="width: 36px; height: 36px; background-color: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">💬</div>
+          <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background-color: rgba(249, 250, 251, 0.9); backdrop-filter: blur(5px); border-radius: 10px; cursor: pointer; transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(255, 255, 255, 0.3);">
+            <div style="width: 36px; height: 36px; background-color: rgba(219, 234, 254, 0.9); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; border: 1px solid rgba(255, 255, 255, 0.3);">💬</div>
             <div>
               <div style="font-weight: 500; color: #111827; font-size: 14px;">在线咨询</div>
               <div style="font-size: 12px; color: #6b7280;">即时回复</div>
             </div>
           </div>
-          <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background-color: #f9fafb; border-radius: 8px; cursor: pointer; transition: background-color 0.15s ease-out;">
-            <div style="width: 36px; height: 36px; background-color: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">📞</div>
+          <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background-color: rgba(249, 250, 251, 0.9); backdrop-filter: blur(5px); border-radius: 10px; cursor: pointer; transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(255, 255, 255, 0.3);">
+            <div style="width: 36px; height: 36px; background-color: rgba(220, 252, 231, 0.9); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; border: 1px solid rgba(255, 255, 255, 0.3);">📞</div>
             <div>
               <div style="font-weight: 500; color: #111827; font-size: 14px;">电话咨询</div>
               <div style="font-size: 12px; color: #6b7280;">400-123-4567</div>
             </div>
           </div>
-          <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background-color: #f9fafb; border-radius: 8px; cursor: pointer; transition: background-color 0.15s ease-out;">
-            <div style="width: 36px; height: 36px; background-color: #f3e8ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px;">📧</div>
+          <div style="display: flex; align-items: center; gap: 10px; padding: 10px; background-color: rgba(249, 250, 251, 0.9); backdrop-filter: blur(5px); border-radius: 10px; cursor: pointer; transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(255, 255, 255, 0.3);">
+            <div style="width: 36px; height: 36px; background-color: rgba(243, 232, 255, 0.9); backdrop-filter: blur(5px); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; border: 1px solid rgba(255, 255, 255, 0.3);">📧</div>
             <div>
               <div style="font-weight: 500; color: #111827; font-size: 14px;">邮件咨询</div>
               <div style="font-size: 12px; color: #6b7280;">contact@chuangmeng.com</div>
             </div>
           </div>
         </div>
-        <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 12px; color: #6b7280;">
+        <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(229, 231, 235, 0.5); text-align: center; font-size: 12px; color: #6b7280; backdrop-filter: blur(5px);">
           工作时间：周一至周五 9:00-18:00
         </div>
       </div>
@@ -192,6 +220,25 @@ export default function FloatingButtons() {
     buttonGroup.appendChild(backToTopBtn);
     buttonGroup.appendChild(customerServiceBtn);
 
+    // 添加弹窗内部元素的悬停效果
+    const addHoverEffects = () => {
+      const items = customerServicePopup.querySelectorAll('[style*="cursor: pointer"]');
+      items.forEach((item: HTMLElement) => {
+        item.addEventListener('mouseenter', () => {
+          item.style.backgroundColor = 'rgba(249, 250, 251, 1)';
+          item.style.transform = 'scale(1.02)';
+          item.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
+        });
+        item.addEventListener('mouseleave', () => {
+          item.style.backgroundColor = 'rgba(249, 250, 251, 0.9)';
+          item.style.transform = 'scale(1)';
+          item.style.boxShadow = 'none';
+        });
+      });
+    };
+
+    addHoverEffects();
+
     // 直接添加到 body
     document.body.appendChild(buttonGroup);
 
@@ -200,19 +247,53 @@ export default function FloatingButtons() {
       if (document.body.contains(buttonGroup)) {
         document.body.removeChild(buttonGroup);
       }
-      if (document.body.contains(customerServicePopup)) {
-        document.body.removeChild(customerServicePopup);
-      }
     };
   }, []);
 
-  // 更新弹窗显示
+  // 更新弹窗显示 - 极致丝滑动画
   useEffect(() => {
     const popup = document.getElementById('customer-service-popup');
     const btn = document.getElementById('customer-service-btn');
-    if (popup && btn) {
-      popup.style.display = isCustomerServiceOpen ? 'block' : 'none';
-      btn.textContent = isCustomerServiceOpen ? '✕' : '💬';
+    if (!popup || !btn) return;
+
+    if (isCustomerServiceOpen) {
+      // 显示弹窗 - 丝滑进入
+      popup.style.display = 'block';
+
+      // 使用 requestAnimationFrame 确保样式已应用
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          popup.style.transition = 'opacity 0.18s cubic-bezier(0.4, 0, 0.2, 1), transform 0.18s cubic-bezier(0.4, 0, 0.2, 1)';
+          popup.style.opacity = '1';
+          popup.style.transform = 'scale(1) translateY(0)';
+        });
+      });
+
+      btn.textContent = '✕';
+    } else {
+      // 隐藏弹窗 - 丝滑退出
+      popup.style.transition = 'opacity 0.15s cubic-bezier(0.4, 0, 0.2, 1), transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)';
+      popup.style.opacity = '0';
+      popup.style.transform = 'scale(0.9) translateY(10px)';
+
+      // 动画结束后隐藏元素
+      const animationEndHandler = () => {
+        if (!isCustomerServiceOpen) {
+          popup.style.display = 'none';
+        }
+        popup.removeEventListener('transitionend', animationEndHandler);
+      };
+
+      popup.addEventListener('transitionend', animationEndHandler);
+
+      // 兜底：150ms 后强制隐藏
+      setTimeout(() => {
+        if (!isCustomerServiceOpen && popup.style.display !== 'none') {
+          popup.style.display = 'none';
+        }
+      }, 150);
+
+      btn.textContent = '💬';
     }
   }, [isCustomerServiceOpen]);
 
