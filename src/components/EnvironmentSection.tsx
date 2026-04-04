@@ -17,7 +17,76 @@ export default function EnvironmentSection() {
   }, []);
 
   useEffect(() => {
-    // 已经用mounted state控制动画，不需要额外的IntersectionObserver
+    const sectionRefValue = sectionRef.current;
+
+    // 监听办公区域卡片
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const section = entry.target;
+
+            // 触发前台接待区的features淡入
+            const frontDeskFeatures = section.querySelectorAll('.grid.grid-cols-2 > div');
+            frontDeskFeatures.forEach((feature, index) => {
+              setTimeout(() => {
+                (feature as HTMLElement).style.opacity = '1';
+                (feature as HTMLElement).style.transform = 'translateY(0)';
+              }, 600 + index * 150);
+            });
+
+            // 触发办公区域卡片的动画
+            const cards = section.querySelectorAll('[data-office-card]');
+            cards.forEach((card, cardIndex) => {
+              const cardEl = card as HTMLElement;
+
+              // 触发标题淡入
+              const title = cardEl.querySelector('h4');
+              if (title) {
+                setTimeout(() => {
+                  (title as HTMLElement).style.opacity = '1';
+                  (title as HTMLElement).style.transform = 'translateY(0)';
+                }, 450 + cardIndex * 150);
+              }
+
+              // 触发描述淡入
+              const desc = cardEl.querySelector('p.text-gray-600');
+              if (desc) {
+                setTimeout(() => {
+                  (desc as HTMLElement).style.opacity = '1';
+                  (desc as HTMLElement).style.transform = 'translateY(0)';
+                }, 500 + cardIndex * 150);
+              }
+
+              // 触发features淡入
+              setTimeout(() => {
+                const features = cardEl.querySelectorAll('[data-feature-item]');
+                features.forEach((feature, featureIndex) => {
+                  const featureEl = feature as HTMLElement;
+                  setTimeout(() => {
+                    featureEl.style.opacity = '1';
+                    featureEl.style.transform = 'translateX(0)';
+                  }, featureIndex * 100);
+                });
+              }, 550 + cardIndex * 150);
+            });
+
+            observer.unobserve(section);
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -100px 0px' }
+    );
+
+    if (sectionRefValue) {
+      observer.observe(sectionRefValue);
+    }
+
+    return () => {
+      if (sectionRefValue) {
+        observer.unobserve(sectionRefValue);
+      }
+    };
   }, [mounted]);
   const areas = [
     {
@@ -72,8 +141,7 @@ export default function EnvironmentSection() {
           className="text-center mb-12 md:mb-16 transition-all duration-1000 ease-out"
           style={{
             opacity: mounted ? 1 : 0,
-            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-            willChange: 'opacity, transform'
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)'
           }}
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-4 font-sans">
@@ -90,7 +158,6 @@ export default function EnvironmentSection() {
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(40px)',
-            willChange: 'opacity, transform',
             transitionDelay: '0.2s'
           }}
         >
@@ -118,7 +185,10 @@ export default function EnvironmentSection() {
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-3xl mx-auto mt-4 md:mt-6">
                 {areas[0].features.map((feature, index) => (
-                  <div key={index} className="flex items-center justify-center space-x-2 text-xs md:text-sm">
+                  <div key={index} className="flex items-center justify-center space-x-2 text-xs md:text-sm opacity-0 transition-all duration-600 ease-out" style={{
+                    transform: 'translateY(10px)',
+                    transitionDelay: `${600 + index * 150}ms`
+                  }}>
                     <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                     <span className="text-gray-700 font-sans">{feature}</span>
                   </div>
@@ -137,12 +207,12 @@ export default function EnvironmentSection() {
               <div
                 key={areaIndex}
                 className="group relative bg-white/90 backdrop-blur-md border-2 border-gray-100 rounded-xl md:rounded-2xl overflow-hidden hover:border-blue-500 hover:shadow-2xl transition-all duration-500 glass-card cursor-pointer"
+                data-office-card
                 style={{
                   boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)',
                   borderRadius: '20px',
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(40px)',
-                  willChange: 'opacity, transform',
                   transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
                   transitionDelay: `${0.3 + index * 0.15}s`
                 }}
@@ -177,15 +247,25 @@ export default function EnvironmentSection() {
 
                 {/* Content */}
                 <div className="p-5 md:p-6">
-                  <h4 className="text-lg md:text-xl font-bold text-gray-900 mb-2 font-sans">{area.title}</h4>
-                  <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-3 md:mb-4 font-sans">
+                  <h4 className="text-lg md:text-xl font-bold text-gray-900 mb-2 font-sans opacity-0 transition-all duration-600 ease-out" style={{
+                    transform: 'translateY(10px)',
+                    transitionDelay: `${450 + index * 150}ms`
+                  }}>{area.title}</h4>
+                  <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-3 md:mb-4 font-sans opacity-0 transition-all duration-600 ease-out" style={{
+                    transform: 'translateY(10px)',
+                    transitionDelay: `${500 + index * 150}ms`
+                  }}>
                     {area.description}
                   </p>
                   <div className="space-y-1.5 md:space-y-2">
                     {area.features.map((feature, i) => (
                       <div
                         key={i}
-                        className="flex items-center space-x-2 text-xs md:text-sm text-gray-600 font-sans"
+                        className="flex items-center space-x-2 text-xs md:text-sm text-gray-600 font-sans opacity-0 transition-all duration-600 ease-out"
+                        style={{
+                          transform: 'translateX(1rem)'
+                        }}
+                        data-feature-item
                       >
                         <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
                         <span>{feature}</span>

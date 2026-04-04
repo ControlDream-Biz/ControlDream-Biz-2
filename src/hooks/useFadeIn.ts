@@ -16,7 +16,6 @@ export function useFadeInAnimation() {
       el.style.opacity = '0';
       el.style.transform = 'translateY(30px)';
       el.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out';
-      el.style.willChange = 'opacity, transform';
     });
 
     // 创建 IntersectionObserver

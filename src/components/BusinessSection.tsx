@@ -8,11 +8,49 @@ import { useEffect, useRef, useState } from 'react';
 
 export default function BusinessSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const businessSectionRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // 监听业务卡片的features淡入
+  useEffect(() => {
+    const businessSectionValue = businessSectionRef.current;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const section = entry.target;
+
+            // 触发业务卡片的features淡入
+            const features = section.querySelectorAll('[data-business-feature]');
+            features.forEach((feature, index) => {
+              setTimeout(() => {
+                (feature as HTMLElement).style.opacity = '1';
+                (feature as HTMLElement).style.transform = 'translateX(0)';
+              }, index * 100);
+            });
+
+            observer.unobserve(section);
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -100px 0px' }
+    );
+
+    if (businessSectionValue) {
+      observer.observe(businessSectionValue);
+    }
+
+    return () => {
+      if (businessSectionValue) {
+        observer.unobserve(businessSectionValue);
+      }
+    };
+  }, [mounted]);
 
   useEffect(() => {
     const sectionRefValue = sectionRef.current;
@@ -97,15 +135,13 @@ export default function BusinessSection() {
 
   return (
     <section id="business" className="py-20 md:py-24 relative overflow-hidden">
-
-      <div className="container mx-auto px-4 md:px-6 relative z-10">
+      <div className="container mx-auto px-4 md:px-6 relative z-10" ref={businessSectionRef}>
         {/* Section Header */}
         <div
-          className="text-center mb-12 md:mb-16 opacity-0 transition-all duration-1000 ease-out"
+          className="text-center mb-12 md:mb-16 transition-all duration-1000 ease-out"
           style={{
             opacity: mounted ? 1 : 0,
-            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-            willChange: 'opacity, transform'
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)'
           }}
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-4 font-sans">
@@ -130,7 +166,6 @@ export default function BusinessSection() {
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(40px)',
                   transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
-                  willChange: 'opacity, transform',
                   transitionDelay: `${index * 0.15}s`
                 }}
                 onMouseEnter={(e) => {
@@ -181,7 +216,11 @@ export default function BusinessSection() {
                     {business.features.map((feature, i) => (
                       <div
                         key={i}
-                        className="flex items-center space-x-2 text-xs md:text-sm text-gray-700 font-sans"
+                        className="flex items-center space-x-2 text-xs md:text-sm text-gray-700 font-sans opacity-0 transition-all duration-600 ease-out"
+                        style={{
+                          transform: 'translateX(1rem)'
+                        }}
+                        data-business-feature
                       >
                         <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${business.color}`} />
                         <span>{feature}</span>
@@ -225,8 +264,7 @@ export default function BusinessSection() {
             <div
               className="product-section opacity-0 transition-all duration-1000 ease-out"
               style={{
-                transform: 'translateY(40px)',
-                willChange: 'opacity, transform'
+                transform: 'translateY(40px)'
               }}
               data-product-section
             >
@@ -250,8 +288,7 @@ export default function BusinessSection() {
                           className="flex items-start space-x-3 opacity-0 transition-all duration-700 ease-out"
                           style={{
                             transform: 'translateX(2.5rem)',
-                            transitionDelay: `${index * 200}ms`,
-                            willChange: 'opacity, transform'
+                            transitionDelay: `${index * 200}ms`
                           }}
                           data-scroll-item
                         >
@@ -267,8 +304,7 @@ export default function BusinessSection() {
                 </div>
                 <div className="order-1 lg:order-2 relative aspect-video bg-gray-700/80 rounded-xl md:rounded-2xl overflow-hidden glass-card opacity-0 transition-all duration-1000 ease-out"
                      style={{
-                       transform: 'scale(0.95)',
-                       willChange: 'opacity, transform'
+                       transform: 'scale(0.95)'
                      }}
                      data-scroll-item>
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -288,16 +324,14 @@ export default function BusinessSection() {
             <div
               className="product-section opacity-0 transition-all duration-1000 ease-out"
               style={{
-                transform: 'translateY(40px)',
-                willChange: 'opacity, transform'
+                transform: 'translateY(40px)'
               }}
               data-product-section
             >
               <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div className="relative aspect-video bg-gray-700/80 rounded-xl md:rounded-2xl overflow-hidden glass-card opacity-0 transition-all duration-1000 ease-out"
                      style={{
-                       transform: 'scale(0.95)',
-                       willChange: 'opacity, transform'
+                       transform: 'scale(0.95)'
                      }}
                      data-scroll-item>
                   <div className="absolute inset-0 flex items-center justify-center">
@@ -329,8 +363,7 @@ export default function BusinessSection() {
                           className="flex items-start space-x-3 opacity-0 transition-all duration-700 ease-out"
                           style={{
                             transform: 'translateX(2.5rem)',
-                            transitionDelay: `${index * 200}ms`,
-                            willChange: 'opacity, transform'
+                            transitionDelay: `${index * 200}ms`
                           }}
                           data-scroll-item
                         >
@@ -351,8 +384,7 @@ export default function BusinessSection() {
             <div
               className="product-section opacity-0 transition-all duration-1000 ease-out"
               style={{
-                transform: 'translateY(40px)',
-                willChange: 'opacity, transform'
+                transform: 'translateY(40px)'
               }}
               data-product-section
             >
@@ -376,8 +408,7 @@ export default function BusinessSection() {
                           className="flex items-start space-x-3 opacity-0 transition-all duration-700 ease-out"
                           style={{
                             transform: 'translateX(2.5rem)',
-                            transitionDelay: `${index * 200}ms`,
-                            willChange: 'opacity, transform'
+                            transitionDelay: `${index * 200}ms`
                           }}
                           data-scroll-item
                         >
@@ -393,8 +424,7 @@ export default function BusinessSection() {
                 </div>
                 <div className="order-1 lg:order-2 relative aspect-video bg-gray-700/80 rounded-xl md:rounded-2xl overflow-hidden glass-card opacity-0 transition-all duration-1000 ease-out"
                      style={{
-                       transform: 'scale(0.95)',
-                       willChange: 'opacity, transform'
+                       transform: 'scale(0.95)'
                      }}
                      data-scroll-item>
                   <div className="absolute inset-0 flex items-center justify-center">

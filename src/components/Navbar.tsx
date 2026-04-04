@@ -67,7 +67,7 @@ export default function Navbar() {
       >
         {/* Logo */}
         <Link href="#home" className="flex items-center space-x-1">
-          <div className="relative w-10 h-10 flex-shrink-0 -mt-0.5">
+          <div className="relative w-10 h-10 flex-shrink-0 -mt-2">
             <Image
               src="/logo-cm-final.png"
               alt="创梦计算机系统有限公司"

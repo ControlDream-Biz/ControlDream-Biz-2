@@ -59,7 +59,7 @@ export default function FloatingButtons() {
     backToTopBtn.style.borderRadius = '50%';
     backToTopBtn.style.backgroundColor = 'rgba(14, 165, 233, 0.1)';
     backToTopBtn.style.backdropFilter = 'blur(12px)';
-    backToTopBtn.style.webkitBackdropFilter = 'blur(12px)';
+    (backToTopBtn.style as any).webkitBackdropFilter = 'blur(12px)';
     backToTopBtn.style.border = '1px solid rgba(14, 165, 233, 0.2)';
     backToTopBtn.style.color = 'white';
     backToTopBtn.style.display = 'flex';
@@ -69,7 +69,6 @@ export default function FloatingButtons() {
     backToTopBtn.style.cursor = 'pointer';
     backToTopBtn.style.boxShadow = '0 4px 16px rgba(14, 165, 233, 0.3)';
     backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out';
-    backToTopBtn.style.willChange = 'transform';
     backToTopBtn.style.pointerEvents = 'auto';
     backToTopBtn.textContent = '↑';
 
@@ -97,7 +96,7 @@ export default function FloatingButtons() {
     customerServiceBtn.style.borderRadius = '50%';
     customerServiceBtn.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
     customerServiceBtn.style.backdropFilter = 'blur(12px)';
-    customerServiceBtn.style.webkitBackdropFilter = 'blur(12px)';
+    (customerServiceBtn.style as any).webkitBackdropFilter = 'blur(12px)';
     customerServiceBtn.style.border = '1px solid rgba(239, 68, 68, 0.2)';
     customerServiceBtn.style.color = 'white';
     customerServiceBtn.style.display = 'flex';
@@ -107,7 +106,6 @@ export default function FloatingButtons() {
     customerServiceBtn.style.cursor = 'pointer';
     customerServiceBtn.style.boxShadow = '0 4px 16px rgba(239, 68, 68, 0.3)';
     customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out';
-    customerServiceBtn.style.willChange = 'transform';
     customerServiceBtn.style.pointerEvents = 'auto';
     customerServiceBtn.textContent = '💬';
 
@@ -139,7 +137,7 @@ export default function FloatingButtons() {
     customerServicePopup.style.maxWidth = 'calc(100vw - 100px)';
     customerServicePopup.style.backgroundColor = 'rgba(255, 255, 255, 0.85)';
     customerServicePopup.style.backdropFilter = 'blur(20px)';
-    customerServicePopup.style.webkitBackdropFilter = 'blur(20px)';
+    (customerServicePopup.style as any).webkitBackdropFilter = 'blur(20px)';
     customerServicePopup.style.borderRadius = '16px';
     customerServicePopup.style.border = '1px solid rgba(255, 255, 255, 0.5)';
     customerServicePopup.style.boxShadow = `
@@ -152,7 +150,6 @@ export default function FloatingButtons() {
     customerServicePopup.style.transformOrigin = 'bottom right';
     customerServicePopup.style.opacity = '0';
     customerServicePopup.style.transform = 'scale(0.9) translateY(10px)';
-    customerServicePopup.style.willChange = 'opacity, transform';
     customerServicePopup.style.zIndex = '2147483647';
 
     customerServicePopup.innerHTML = `
@@ -199,16 +196,17 @@ export default function FloatingButtons() {
     // 添加弹窗内部元素的悬停效果
     const addHoverEffects = () => {
       const items = customerServicePopup.querySelectorAll('[style*="cursor: pointer"]');
-      items.forEach((item: HTMLElement) => {
-        item.addEventListener('mouseenter', () => {
-          item.style.backgroundColor = 'rgba(249, 250, 251, 1)';
-          item.style.transform = 'scale(1.02)';
-          item.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
+      items.forEach((item) => {
+        const element = item as HTMLElement;
+        element.addEventListener('mouseenter', () => {
+          element.style.backgroundColor = 'rgba(249, 250, 251, 1)';
+          element.style.transform = 'scale(1.02)';
+          element.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.08)';
         });
-        item.addEventListener('mouseleave', () => {
-          item.style.backgroundColor = 'rgba(249, 250, 251, 0.9)';
-          item.style.transform = 'scale(1)';
-          item.style.boxShadow = 'none';
+        element.addEventListener('mouseleave', () => {
+          element.style.backgroundColor = 'rgba(249, 250, 251, 0.9)';
+          element.style.transform = 'scale(1)';
+          element.style.boxShadow = 'none';
         });
       });
     };
