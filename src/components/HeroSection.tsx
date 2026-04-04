@@ -17,18 +17,58 @@ export default function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
+  // 为每个字符计算爆炸散开的位置
+  const getCharAnimation = (char: string, index: number, total: number, delay: number) => {
+    // 计算散开位置：从四面八方散开
+    // 使用极坐标将字符分布到圆周上
+    const angle = (index / total) * Math.PI * 2; // 0 到 2π
+    const radius = 150; // 散开半径
+
+    const offsetX = Math.cos(angle) * radius;
+    const offsetY = Math.sin(angle) * radius;
+
+    // 随机缩放和旋转，增加爆炸效果
+    const scale = 0.3 + Math.random() * 0.3; // 0.3-0.6
+    const rotation = angle * (180 / Math.PI) + (Math.random() - 0.5) * 60;
+
+    return {
+      style: {
+        transitionDelay: `${delay + index * 0.05}s`,
+      }
+    };
+  };
+
   const renderAnimatedText = (text: string, delay: number) => {
-    return text.split('').map((char, index) => (
-      <span
-        key={`${char}-${index}`}
-        className="inline-block"
-        style={{
-          transitionDelay: `${delay + index * 0.08}s`,
-        }}
-      >
-        {char === ' ' ? '\u00A0' : char}
-      </span>
-    ));
+    const chars = text.split('');
+    const total = chars.length;
+
+    return chars.map((char, index) => {
+      // 计算散开位置
+      const angle = (index / total) * Math.PI * 2;
+      const radius = 150;
+      const offsetX = Math.cos(angle) * radius;
+      const offsetY = Math.sin(angle) * radius;
+
+      // 随机缩放和旋转
+      const scale = 0.3 + Math.random() * 0.4;
+      const rotation = angle * (180 / Math.PI) + (Math.random() - 0.5) * 60;
+
+      return (
+        <span
+          key={`${char}-${index}`}
+          className="char-explode inline-block"
+          style={{
+            '--offset-x': `${offsetX}px`,
+            '--offset-y': `${offsetY}px`,
+            '--scale': scale,
+            '--rotation': `${rotation}deg`,
+            transitionDelay: `${delay + index * 0.06}s`,
+          } as any}
+        >
+          {char === ' ' ? '\u00A0' : char}
+        </span>
+      );
+    });
   };
 
   return (
@@ -50,7 +90,7 @@ export default function HeroSection() {
                 position: "relative",
               }}
             >
-              <div className={`relative inline-block ${textVisible ? 'char-animate visible' : 'char-animate'}`}>
+              <div className={`relative inline-block ${textVisible ? 'text-visible' : 'text-hidden'}`}>
                 <span
                   className="glow-text text-3d-effect inline-block"
                   style={{
@@ -78,7 +118,7 @@ export default function HeroSection() {
                 ></div>
               </div>
               <br />
-              <div className={`relative inline-block mt-2 ${textVisible ? 'char-animate visible' : 'char-animate'}`} style={{ transitionDelay: '0.32s' }}>
+              <div className={`relative inline-block mt-2 ${textVisible ? 'text-visible' : 'text-hidden'}`} style={{ transitionDelay: '0.48s' }}>
                 <span
                   className="glow-text text-3d-effect inline-block"
                   style={{
