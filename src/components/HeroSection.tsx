@@ -38,21 +38,34 @@ export default function HeroSection() {
 
             {/* Main Title */}
             <h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.1s",
               }}
             >
-              创新科技
-              <br />
               <span
                 style={{
-                  background: "linear-gradient(135deg, #FF416C 0%, #FF4B2B 50%, #6366F1 100%)",
+                  background: "linear-gradient(135deg, #FF416C 0%, #FF4B2B 25%, #6366F1 50%, #FF4B2B 75%, #FF416C 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
+                  backgroundSize: "200% 200%",
+                  animation: "gradientFlow 3s ease infinite",
+                }}
+              >
+                创新科技
+              </span>
+              <br />
+              <span
+                style={{
+                  background: "linear-gradient(135deg, #FF416C 0%, #FF4B2B 25%, #6366F1 50%, #FF4B2B 75%, #FF416C 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  backgroundSize: "200% 200%",
+                  animation: "gradientFlow 3s ease infinite",
                 }}
               >
                 驱动未来
@@ -231,6 +244,18 @@ export default function HeroSection() {
           }
           50% {
             transform: translateY(-20px);
+          }
+        }
+
+        @keyframes gradientFlow {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
           }
         }
 
