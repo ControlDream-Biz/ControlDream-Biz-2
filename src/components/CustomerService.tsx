@@ -11,7 +11,7 @@ export default function CustomerService() {
       {/* 客服按钮 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-[9999] w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center group"
+        className="fixed bottom-6 right-6 z-[9999] w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center justify-center group animate-float-button"
         style={{
           transform: 'translateZ(0)',
           willChange: 'transform',

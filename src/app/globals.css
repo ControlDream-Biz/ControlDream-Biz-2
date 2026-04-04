@@ -694,6 +694,20 @@ body {
   }
 }
 
+/* 悬浮按钮动画 */
+@keyframes floatButton {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.animate-float-button {
+  animation: floatButton 3s ease-in-out infinite;
+}
+
 /* 144Hz+ 超高刷新率优化 */
 @media screen and (min-width: 1440px) {
   html,
