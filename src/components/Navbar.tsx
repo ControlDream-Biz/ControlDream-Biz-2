@@ -86,9 +86,9 @@ export default function Navbar() {
             </Button>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile menu button - Apple style elastic animation */}
           <button
-            className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-400 hover:bg-gray-100/80"
+            className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-2xl transition-all duration-300 hover:bg-gray-100/80 active:scale-95"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             style={{
               backdropFilter: 'blur(10px)',
@@ -97,30 +97,41 @@ export default function Navbar() {
             <div className="relative w-6 h-6">
               {/* Top line */}
               <span
-                className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all duration-400 ease-out ${
-                  mobileMenuOpen ? 'top-3 rotate-45' : 'top-0'
+                className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all ${
+                  mobileMenuOpen ? 'top-2.5 rotate-45' : 'top-0'
                 }`}
                 style={{
+                  transitionDuration: '0.4s',
                   transitionTimingFunction: mobileMenuOpen
-                    ? 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
-                    : 'cubic-bezier(0.4, 0, 0.2, 1)',
+                    ? 'cubic-bezier(0.68, -0.6, 0.32, 1.6)'
+                    : 'cubic-bezier(0.32, 0, 0.68, 0)',
+                  transform: mobileMenuOpen ? 'translateY(6px) rotate(45deg) scaleX(1.1)' : 'translateY(0) rotate(0) scaleX(1)',
                 }}
               />
               {/* Middle line */}
               <span
-                className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all duration-300 ease-out ${
-                  mobileMenuOpen ? 'opacity-0' : 'top-3'
+                className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all ${
+                  mobileMenuOpen ? 'opacity-0' : 'top-2.5'
                 }`}
+                style={{
+                  transitionDuration: '0.3s',
+                  transitionTimingFunction: mobileMenuOpen
+                    ? 'cubic-bezier(0.68, -0.6, 0.32, 1.6)'
+                    : 'cubic-bezier(0.32, 0, 0.68, 0)',
+                  transform: mobileMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
+                }}
               />
               {/* Bottom line */}
               <span
-                className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all duration-400 ease-out ${
-                  mobileMenuOpen ? 'top-3 -rotate-45' : 'top-6'
+                className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all ${
+                  mobileMenuOpen ? 'top-2.5 -rotate-45' : 'top-5'
                 }`}
                 style={{
+                  transitionDuration: '0.4s',
                   transitionTimingFunction: mobileMenuOpen
-                    ? 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
-                    : 'cubic-bezier(0.4, 0, 0.2, 1)',
+                    ? 'cubic-bezier(0.68, -0.6, 0.32, 1.6)'
+                    : 'cubic-bezier(0.32, 0, 0.68, 0)',
+                  transform: mobileMenuOpen ? 'translateY(6px) rotate(-45deg) scaleX(1.1)' : 'translateY(0) rotate(0) scaleX(1)',
                 }}
               />
             </div>
