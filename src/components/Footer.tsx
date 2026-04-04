@@ -12,7 +12,7 @@ export default function Footer() {
           {/* Company Info */}
           <div className="space-y-6">
             <div className="flex items-center space-x-1">
-              <div className="relative w-11 h-11 -mt-0.5">
+              <div className="relative w-10 h-10 -mt-0.5">
                 <Image
                   src="/logo-cm-final.png"
                   alt="创梦计算机系统有限公司"
@@ -21,8 +21,8 @@ export default function Footer() {
                 />
               </div>
               <div>
-                <h3 className="text-sm font-bold leading-tight">创梦计算机系统有限公司</h3>
-                <p className="text-[10px] text-gray-400 mt-0">
+                <h3 className="text-xs font-bold leading-tight">创梦计算机系统有限公司</h3>
+                <p className="text-[9px] text-gray-400 mt-0">
                   Chuangmeng Computer System
                 </p>
               </div>

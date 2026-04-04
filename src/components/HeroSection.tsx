@@ -47,7 +47,16 @@ export default function HeroSection() {
             >
               创新科技
               <br />
-              <span className="text-blue-600">驱动未来</span>
+              <span
+                style={{
+                  background: "linear-gradient(135deg, #FF416C 0%, #FF4B2B 50%, #6366F1 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
+                驱动未来
+              </span>
             </h1>
 
             {/* Description */}
