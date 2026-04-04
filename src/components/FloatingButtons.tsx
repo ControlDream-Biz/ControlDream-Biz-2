@@ -1,13 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { ArrowUp, X, MessageCircle, Phone, Mail } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export default function FloatingButtons() {
   const [isCustomerServiceOpen, setIsCustomerServiceOpen] = useState(false);
-  const backToTopRef = useRef<HTMLDivElement>(null);
-  const customerServiceRef = useRef<HTMLDivElement>(null);
-  const popupRef = useRef<HTMLDivElement>(null);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -17,154 +13,187 @@ export default function FloatingButtons() {
   };
 
   useEffect(() => {
-    // 使用 window.scroll 事件动态更新按钮位置
+    // 创建容器 - 使用 position: absolute + 动态计算
+    const container = document.createElement('div');
+    container.id = 'floating-buttons-container';
+    container.style.position = 'absolute';
+    container.style.left = '0';
+    container.style.width = '100%';
+    container.style.pointerEvents = 'none';
+    container.style.zIndex = '2147483647';
+    container.style.top = '0';
+
+    // 创建返回顶部按钮
+    const backToTopBtn = document.createElement('div');
+    backToTopBtn.id = 'back-to-top-btn';
+    backToTopBtn.style.width = '60px';
+    backToTopBtn.style.height = '60px';
+    backToTopBtn.style.backgroundColor = '#2563eb';
+    backToTopBtn.style.color = 'white';
+    backToTopBtn.style.display = 'flex';
+    backToTopBtn.style.alignItems = 'center';
+    backToTopBtn.style.justifyContent = 'center';
+    backToTopBtn.style.fontSize = '24px';
+    backToTopBtn.style.pointerEvents = 'auto';
+    backToTopBtn.style.cursor = 'pointer';
+    backToTopBtn.style.borderRadius = '50%';
+    backToTopBtn.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+    backToTopBtn.style.transition = 'transform 0.2s';
+    backToTopBtn.textContent = '↑';
+    backToTopBtn.onclick = scrollToTop;
+
+    backToTopBtn.onmouseenter = () => {
+      backToTopBtn.style.transform = 'scale(1.1)';
+    };
+
+    backToTopBtn.onmouseleave = () => {
+      backToTopBtn.style.transform = 'scale(1)';
+    };
+
+    // 创建客服按钮
+    const customerServiceBtn = document.createElement('div');
+    customerServiceBtn.id = 'customer-service-btn';
+    customerServiceBtn.style.width = '60px';
+    customerServiceBtn.style.height = '60px';
+    customerServiceBtn.style.backgroundColor = '#16a34a';
+    customerServiceBtn.style.color = 'white';
+    customerServiceBtn.style.display = 'flex';
+    customerServiceBtn.style.alignItems = 'center';
+    customerServiceBtn.style.justifyContent = 'center';
+    customerServiceBtn.style.fontSize = '24px';
+    customerServiceBtn.style.pointerEvents = 'auto';
+    customerServiceBtn.style.cursor = 'pointer';
+    customerServiceBtn.style.borderRadius = '50%';
+    customerServiceBtn.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+    customerServiceBtn.style.transition = 'transform 0.2s';
+    customerServiceBtn.textContent = '💬';
+
+    customerServiceBtn.onclick = () => {
+      setIsCustomerServiceOpen(!isCustomerServiceOpen);
+    };
+
+    customerServiceBtn.onmouseenter = () => {
+      customerServiceBtn.style.transform = 'scale(1.1)';
+    };
+
+    customerServiceBtn.onmouseleave = () => {
+      customerServiceBtn.style.transform = 'scale(1)';
+    };
+
+    // 创建客服弹窗
+    const customerServicePopup = document.createElement('div');
+    customerServicePopup.id = 'customer-service-popup';
+    customerServicePopup.style.width = '320px';
+    customerServicePopup.style.backgroundColor = 'white';
+    customerServicePopup.style.borderRadius = '16px';
+    customerServicePopup.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.15)';
+    customerServicePopup.style.overflow = 'hidden';
+    customerServicePopup.style.pointerEvents = 'auto';
+    customerServicePopup.style.display = 'none';
+    customerServicePopup.style.animation = 'fadeIn 0.2s ease';
+
+    customerServicePopup.innerHTML = `
+      <div style="background-color: #16a34a; padding: 16px; color: white;">
+        <h3 style="font-size: 18px; font-weight: bold; margin: 0;">在线客服</h3>
+        <p style="font-size: 14px; opacity: 0.9; margin: 4px 0 0 0;">我们随时为您服务</p>
+      </div>
+      <div style="padding: 16px;">
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background-color: #f9fafb; border-radius: 8px;">
+            <div style="width: 40px; height: 40px; background-color: #dbeafe; border-radius: 50%; display: flex; align-items: center; justify-content: center;">💬</div>
+            <div>
+              <div style="font-weight: 500; color: #111827;">在线咨询</div>
+              <div style="font-size: 12px; color: #6b7280;">即时回复</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background-color: #f9fafb; border-radius: 8px;">
+            <div style="width: 40px; height: 40px; background-color: #dcfce7; border-radius: 50%; display: flex; align-items: center; justify-content: center;">📞</div>
+            <div>
+              <div style="font-weight: 500; color: #111827;">电话咨询</div>
+              <div style="font-size: 12px; color: #6b7280;">400-123-4567</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background-color: #f9fafb; border-radius: 8px;">
+            <div style="width: 40px; height: 40px; background-color: #f3e8ff; border-radius: 50%; display: flex; align-items: center; justify-content: center;">📧</div>
+            <div>
+              <div style="font-weight: 500; color: #111827;">邮件咨询</div>
+              <div style="font-size: 12px; color: #6b7280;">contact@chuangmeng.com</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e5e7eb; text-align: center; font-size: 12px; color: #6b7280;">
+          工作时间：周一至周五 9:00-18:00
+        </div>
+      </div>
+    `;
+
+    // 添加到容器
+    container.appendChild(backToTopBtn);
+    container.appendChild(customerServiceBtn);
+    container.appendChild(customerServicePopup);
+
+    // 添加到 body
+    document.body.appendChild(container);
+
+    // 关键：动态计算位置（不使用 fixed）
     const updateButtonPosition = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
 
-      // 计算按钮相对于视口底部的位置
-      if (backToTopRef.current) {
-        backToTopRef.current.style.position = 'absolute';
-        backToTopRef.current.style.top = `${scrollY + viewportHeight - 280}px`;
-      }
+      // 更新容器位置 - 根据滚动位置动态计算
+      container.style.top = `${scrollY}px`;
+      container.style.height = `${viewportHeight}px`;
 
-      if (customerServiceRef.current) {
-        customerServiceRef.current.style.position = 'absolute';
-        customerServiceRef.current.style.top = `${scrollY + viewportHeight - 180}px`;
-      }
+      // 更新按钮位置 - 使用 absolute 定位在容器内
+      backToTopBtn.style.position = 'absolute';
+      backToTopBtn.style.bottom = '80px';
+      backToTopBtn.style.right = '20px';
 
-      if (popupRef.current && isCustomerServiceOpen) {
-        popupRef.current.style.position = 'absolute';
-        popupRef.current.style.top = `${scrollY + viewportHeight - 280}px`;
-      }
+      customerServiceBtn.style.position = 'absolute';
+      customerServiceBtn.style.bottom = '20px';
+      customerServiceBtn.style.right = '20px';
+
+      customerServicePopup.style.position = 'absolute';
+      customerServicePopup.style.bottom = '80px';
+      customerServicePopup.style.right = '100px';
+      customerServicePopup.style.display = isCustomerServiceOpen ? 'block' : 'none';
+      customerServiceBtn.textContent = isCustomerServiceOpen ? '✕' : '💬';
     };
 
     // 初始化位置
     updateButtonPosition();
 
-    // 监听滚动事件
-    window.addEventListener('scroll', updateButtonPosition);
-    window.addEventListener('resize', updateButtonPosition);
-
-    return () => {
-      window.removeEventListener('scroll', updateButtonPosition);
-      window.removeEventListener('resize', updateButtonPosition);
+    // 监听滚动和缩放事件
+    const handleScroll = () => {
+      requestAnimationFrame(updateButtonPosition);
     };
+
+    const handleResize = () => {
+      requestAnimationFrame(updateButtonPosition);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', handleResize);
+
+    // 清理函数
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleResize);
+      if (document.body.contains(container)) {
+        document.body.removeChild(container);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const popup = document.getElementById('customer-service-popup');
+    const btn = document.getElementById('customer-service-btn');
+    if (popup && btn) {
+      popup.style.display = isCustomerServiceOpen ? 'block' : 'none';
+      btn.textContent = isCustomerServiceOpen ? '✕' : '💬';
+    }
   }, [isCustomerServiceOpen]);
 
-  return (
-    <>
-      {/* 容器，使用 position: relative 作为定位基准 */}
-      <div
-        id="floating-buttons-wrapper"
-        style={{
-          position: 'relative',
-          width: '100%',
-          height: '100%',
-          pointerEvents: 'none',
-          zIndex: 2147483647,
-        }}
-      >
-        {/* 返回顶部按钮 */}
-        <div
-          ref={backToTopRef}
-          onClick={scrollToTop}
-          style={{
-            position: 'absolute',
-            right: '20px',
-            width: '60px',
-            height: '60px',
-            backgroundColor: '#2563eb',
-            color: 'white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '24px',
-            pointerEvents: 'auto',
-            cursor: 'pointer',
-            borderRadius: '50%',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-          }}
-          title="返回顶部"
-        >
-          ↑
-        </div>
-
-        {/* 客服按钮 */}
-        <div
-          ref={customerServiceRef}
-          onClick={() => setIsCustomerServiceOpen(!isCustomerServiceOpen)}
-          style={{
-            position: 'absolute',
-            right: '20px',
-            width: '60px',
-            height: '60px',
-            backgroundColor: '#16a34a',
-            color: 'white',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '24px',
-            pointerEvents: 'auto',
-            cursor: 'pointer',
-            borderRadius: '50%',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-          }}
-          title="客服"
-        >
-          {isCustomerServiceOpen ? '✕' : '💬'}
-        </div>
-
-        {/* 客服弹窗 */}
-        {isCustomerServiceOpen && (
-          <div
-            ref={popupRef}
-            style={{
-              position: 'absolute',
-              right: '100px',
-              width: '320px',
-              backgroundColor: 'white',
-              borderRadius: '16px',
-              boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)',
-              overflow: 'hidden',
-              pointerEvents: 'auto',
-            }}
-          >
-            <div style={{ backgroundColor: '#16a34a', padding: '16px', color: 'white' }}>
-              <h3 style={{ fontSize: '18px', fontWeight: 'bold', margin: 0 }}>在线客服</h3>
-              <p style={{ fontSize: '14px', opacity: 0.9, margin: '4px 0 0 0' }}>我们随时为您服务</p>
-            </div>
-            <div style={{ padding: '16px' }}>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', backgroundColor: '#f9fafb', borderRadius: '8px' }}>
-                  <div style={{ width: '40px', height: '40px', backgroundColor: '#dbeafe', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>💬</div>
-                  <div>
-                    <div style={{ fontWeight: '500', color: '#111827' }}>在线咨询</div>
-                    <div style={{ fontSize: '12px', color: '#6b7280' }}>即时回复</div>
-                  </div>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', backgroundColor: '#f9fafb', borderRadius: '8px' }}>
-                  <div style={{ width: '40px', height: '40px', backgroundColor: '#dcfce7', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>📞</div>
-                  <div>
-                    <div style={{ fontWeight: '500', color: '#111827' }}>电话咨询</div>
-                    <div style={{ fontSize: '12px', color: '#6b7280' }}>400-123-4567</div>
-                  </div>
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px', backgroundColor: '#f9fafb', borderRadius: '8px' }}>
-                  <div style={{ width: '40px', height: '40px', backgroundColor: '#f3e8ff', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>📧</div>
-                  <div>
-                    <div style={{ fontWeight: '500', color: '#111827' }}>邮件咨询</div>
-                    <div style={{ fontSize: '12px', color: '#6b7280' }}>contact@chuangmeng.com</div>
-                  </div>
-                </div>
-              </div>
-              <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid #e5e7eb', textAlign: 'center', fontSize: '12px', color: '#6b7280' }}>
-                工作时间：周一至周五 9:00-18:00
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-    </>
-  );
+  return null;
 }
