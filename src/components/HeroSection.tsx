@@ -36,12 +36,12 @@ export default function HeroSection() {
               <span
                 className="animate-gradient-text"
                 style={{
-                  background: "linear-gradient(135deg, #EF4444 0%, #3B82F6 50%, #8B5CF6 100%)",
+                  background: "linear-gradient(90deg, #EF4444, #3B82F6, #8B5CF6, #EF4444)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  backgroundSize: "200% 200%",
-                  animation: "gradientMove 3s ease-in-out infinite",
+                  backgroundSize: "300% 100%",
+                  animation: "gradientMove 2s linear infinite",
                 }}
               >
                 创新科技
@@ -50,13 +50,13 @@ export default function HeroSection() {
               <span
                 className="animate-gradient-text"
                 style={{
-                  background: "linear-gradient(135deg, #8B5CF6 0%, #EF4444 50%, #3B82F6 100%)",
+                  background: "linear-gradient(90deg, #8B5CF6, #EF4444, #3B82F6, #8B5CF6)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  backgroundSize: "200% 200%",
-                  animation: "gradientMove 3s ease-in-out infinite",
-                  animationDelay: "1.5s",
+                  backgroundSize: "300% 100%",
+                  animation: "gradientMove 2s linear infinite",
+                  animationDelay: "0s",
                 }}
               >
                 驱动未来
@@ -251,10 +251,10 @@ export default function HeroSection() {
         }
 
         @keyframes gradientMove {
-          0%, 100% {
+          0% {
             backgroundPosition: 0% 50%;
           }
-          50% {
+          100% {
             backgroundPosition: 100% 50%;
           }
         }
