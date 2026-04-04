@@ -11,17 +11,22 @@ export default function BackToTop() {
   };
 
   return (
-    <button
-      onClick={scrollToTop}
-      className="fixed bottom-32 right-6 z-[9999] w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center justify-center group animate-float-button"
-      style={{
-        transform: 'translateZ(0)',
-        willChange: 'transform',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
-      }}
-      aria-label="返回顶部"
-    >
+    <div className="fixed bottom-32 right-6 z-[100000] pointer-events-none">
+      <button
+        onClick={scrollToTop}
+        className="pointer-events-auto w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center justify-center group animate-float-button"
+        style={{
+          transform: 'translateZ(0)',
+          willChange: 'transform',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+          position: 'fixed',
+          bottom: '128px',
+          right: '24px',
+          zIndex: 100000,
+        }}
+        aria-label="返回顶部"
+      >
       {/* 发光效果 */}
       <div
         className="absolute inset-0 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 opacity-0 group-hover:opacity-30 transition-opacity duration-300"
@@ -42,5 +47,6 @@ export default function BackToTop() {
       {/* 图标 */}
       <ArrowUp className="w-5 h-5 relative z-10 group-hover:-translate-y-0.5 transition-transform duration-300" />
     </button>
+    </div>
   );
 }
