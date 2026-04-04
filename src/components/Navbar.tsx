@@ -41,7 +41,7 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-4 h-full flex items-center justify-between max-w-7xl">
         {/* Logo */}
-        <Link href="#home" className="flex items-center space-x-2">
+        <Link href="#home" className="flex items-center space-x-1.5">
           <div className="relative w-11 h-11 flex-shrink-0">
             <Image
               src="/logo-cm-final.png"
