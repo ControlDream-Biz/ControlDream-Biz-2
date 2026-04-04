@@ -15,7 +15,7 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center bg-white"
+      className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center"
       style={{ minHeight: 'calc(100vh - 60px)' }}
     >
       <div className="container mx-auto px-4 max-w-7xl">
@@ -34,7 +34,7 @@ export default function HeroSection() {
             >
               <div className="w-2 h-2 rounded-full bg-blue-600" />
               <span className="text-xs font-medium text-blue-600 uppercase tracking-wide">
-                用心做产品
+                用心创造价值
               </span>
             </div>
 
@@ -104,12 +104,23 @@ export default function HeroSection() {
             >
               <Link href="#contact">
                 <Button
-                  className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200"
+                  className="h-12 px-8 text-sm font-medium rounded-lg transition-all duration-200 glass-button"
                   style={{
-                    background: "linear-gradient(135deg, #0052D9 0%, #0066FF 100%)",
-                    border: "none",
-                    color: "white",
+                    background: "linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.25) 100%)",
+                    backdropFilter: "blur(20px) saturate(180%)",
+                    WebkitBackdropFilter: "blur(20px) saturate(180%)",
+                    border: "1px solid rgba(139, 92, 246, 0.2)",
+                    color: "#6366F1",
                     minWidth: "120px",
+                    boxShadow: "0 8px 32px rgba(99, 102, 241, 0.1), 0 2px 8px rgba(139, 92, 246, 0.05)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "linear-gradient(135deg, rgba(99, 102, 241, 0.4) 0%, rgba(139, 92, 246, 0.35) 100%)";
+                    e.currentTarget.style.boxShadow = "0 12px 40px rgba(99, 102, 241, 0.15), 0 4px 12px rgba(139, 92, 246, 0.08)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.25) 100%)";
+                    e.currentTarget.style.boxShadow = "0 8px 32px rgba(99, 102, 241, 0.1), 0 2px 8px rgba(139, 92, 246, 0.05)";
                   }}
                 >
                   了解产品
@@ -118,12 +129,23 @@ export default function HeroSection() {
               </Link>
               <Link href="#services">
                 <Button
-                  className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg hover:bg-gray-50 transition-all duration-200"
+                  className="h-12 px-8 text-sm font-medium rounded-lg transition-all duration-200 glass-button"
                   style={{
-                    background: "white",
-                    border: "1px solid #e5e5e5",
-                    color: "#666",
+                    background: "linear-gradient(135deg, rgba(236, 72, 153, 0.25) 0%, rgba(244, 114, 182, 0.2) 100%)",
+                    backdropFilter: "blur(20px) saturate(180%)",
+                    WebkitBackdropFilter: "blur(20px) saturate(180%)",
+                    border: "1px solid rgba(236, 72, 153, 0.15)",
+                    color: "#EC4899",
                     minWidth: "120px",
+                    boxShadow: "0 8px 32px rgba(236, 72, 153, 0.1), 0 2px 8px rgba(244, 114, 182, 0.05)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "linear-gradient(135deg, rgba(236, 72, 153, 0.35) 0%, rgba(244, 114, 182, 0.3) 100%)";
+                    e.currentTarget.style.boxShadow = "0 12px 40px rgba(236, 72, 153, 0.15), 0 4px 12px rgba(244, 114, 182, 0.08)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "linear-gradient(135deg, rgba(236, 72, 153, 0.25) 0%, rgba(244, 114, 182, 0.2) 100%)";
+                    e.currentTarget.style.boxShadow = "0 8px 32px rgba(236, 72, 153, 0.1), 0 2px 8px rgba(244, 114, 182, 0.05)";
                   }}
                 >
                   关于我们

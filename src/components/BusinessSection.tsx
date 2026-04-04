@@ -38,9 +38,7 @@ export default function BusinessSection() {
   ];
 
   return (
-    <section id="business" className="py-20 md:py-24 bg-gradient-to-b from-slate-100/80 via-white/90 to-blue-50/80 relative overflow-hidden">
-      {/* Glass Background */}
-      <div className="absolute inset-0 glass opacity-40"></div>
+    <section id="business" className="py-20 md:py-24 relative overflow-hidden">
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section Header */}

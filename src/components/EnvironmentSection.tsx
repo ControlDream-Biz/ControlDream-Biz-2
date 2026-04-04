@@ -49,9 +49,7 @@ export default function EnvironmentSection() {
   ];
 
   return (
-    <section id="environment" className="py-20 md:py-24 bg-gradient-to-b from-blue-50/80 via-white/90 to-slate-100/80 relative overflow-hidden">
-      {/* Glass Background */}
-      <div className="absolute inset-0 glass opacity-40"></div>
+    <section id="environment" className="py-20 md:py-24 relative overflow-hidden">
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section Header */}
