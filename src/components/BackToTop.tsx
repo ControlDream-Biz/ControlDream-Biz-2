@@ -11,19 +11,25 @@ export default function BackToTop() {
   };
 
   return (
-    <button
-      onClick={scrollToTop}
-      className="fixed bottom-8 right-8 z-[99999] w-16 h-16 bg-blue-600 hover:bg-blue-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-all duration-300"
-      style={{
-        position: 'fixed',
-        bottom: '2rem',
-        right: '2rem',
-        zIndex: 99999,
-        opacity: 1,
-      }}
-      aria-label="返回顶部"
+    <div style={{
+      position: 'fixed',
+      bottom: '100px',
+      right: '30px',
+      zIndex: 2147483647,  /* 最大可能的 z-index */
+      backgroundColor: '#2563eb',
+      width: '60px',
+      height: '60px',
+      borderRadius: '50%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    }}
+    onClick={scrollToTop}
+    title="返回顶部"
     >
-      <ArrowUp className="w-8 h-8" />
-    </button>
+      <ArrowUp size={30} color="white" />
+    </div>
   );
 }
