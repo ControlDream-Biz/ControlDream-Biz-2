@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { GamepadIcon, Code, Cpu } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ export default function BusinessSection() {
       icon: GamepadIcon,
       title: '游戏开发',
       subtitle: 'Game Development',
+      image: '/game-dev.jpg',
       description: '专注于自主研发手机游戏类产品，打造精品游戏IP，为全球玩家带来沉浸式游戏体验。涵盖休闲益智、角色扮演、策略竞技等多个品类。',
       features: ['自研游戏引擎', '跨平台开发', '精品IP运营', '全球发行'],
       color: 'from-purple-500 to-indigo-600',
@@ -19,6 +21,7 @@ export default function BusinessSection() {
       icon: Code,
       title: '软件开发',
       subtitle: 'Software Development',
+      image: '/software-dev.jpg',
       description: '提供全方位的基础软件开发服务，包括企业级应用、云平台解决方案、移动应用开发等，助力企业数字化转型。',
       features: ['企业级应用', '云服务架构', '移动开发', '定制解决方案'],
       color: 'from-blue-500 to-cyan-600',
@@ -28,6 +31,7 @@ export default function BusinessSection() {
       icon: Cpu,
       title: '硬件创新',
       subtitle: 'Hardware Innovation',
+      image: '/hardware-innovation.jpg',
       description: '致力于智能硬件产品的研发与创新，聚焦物联网、人工智能等领域，打造软硬件一体化的智能解决方案。',
       features: ['物联网设备', 'AI硬件', '智能终端', '定制开发'],
       color: 'from-emerald-500 to-teal-600',
@@ -58,10 +62,22 @@ export default function BusinessSection() {
                 className="group hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-transparent overflow-hidden"
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${business.color} opacity-0 group-hover:opacity-5 transition-opacity`} />
+
+                {/* Image */}
+                <div className="relative aspect-video overflow-hidden">
+                  <Image
+                    src={business.image}
+                    alt={business.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                </div>
+
                 <CardContent className="p-8 relative">
                   {/* Icon */}
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${business.color} flex items-center justify-center mb-6 shadow-lg`}>
-                    <Icon className="w-8 h-8 text-white" />
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${business.color} flex items-center justify-center mb-5 shadow-lg -mt-12 relative z-10 border-4 border-white`}>
+                    <Icon className="w-7 h-7 text-white" />
                   </div>
 
                   {/* Title */}

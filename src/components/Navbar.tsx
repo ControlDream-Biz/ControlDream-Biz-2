@@ -38,16 +38,16 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="#home" className="flex items-center space-x-3">
-            <div className="relative w-12 h-12">
+            <div className="relative w-10 h-10">
               <Image
-                src="/logo.jpg"
+                src="/logo-transparent.png"
                 alt="创梦计算机系统有限公司"
                 fill
                 className="object-contain"
               />
             </div>
             <span
-              className={`text-xl font-bold transition-colors ${
+              className={`text-lg font-bold transition-colors tracking-tight ${
                 scrolled ? 'text-black' : 'text-black'
               }`}
             >

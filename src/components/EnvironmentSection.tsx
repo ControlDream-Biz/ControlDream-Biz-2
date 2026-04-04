@@ -14,30 +14,35 @@ export default function EnvironmentSection() {
     {
       title: '开放式办公区',
       icon: Users,
+      image: '/office-space.jpg',
       description: '现代化的开放式办公环境，促进团队协作与沟通。配备人体工学座椅、智能办公设备，为员工提供舒适高效的工作空间。',
       features: ['工位灵活布局', '智能照明系统', '隔音玻璃', '中央空调'],
     },
     {
       title: '会议空间',
       icon: Monitor,
+      image: null,
       description: '配备先进的会议设施，包括智能大屏、视频会议系统、多媒体投影设备，满足不同规模的会议需求。',
       features: ['智能会议系统', '多屏显示', '隔音设计', '视频会议'],
     },
     {
       title: '员工休闲区',
       icon: Coffee,
+      image: null,
       description: '温馨舒适的休闲区域，包括咖啡厅、茶水间、阅读角等，为员工提供放松身心的空间，激发创意灵感。',
       features: ['咖啡吧', '阅读空间', '休闲座椅', '自动售货机'],
     },
     {
       title: '创新实验室',
       icon: Building2,
+      image: null,
       description: '专业的研发空间，配备高性能计算机、测试设备，为游戏开发和硬件创新提供技术支持。',
       features: ['高性能设备', '测试环境', '研发专区', '协作空间'],
     },
     {
       title: '高管办公室',
       icon: Armchair,
+      image: null,
       description: '私密而舒适的独立办公空间，配备完善的办公设施，展现企业领导力与专业形象。',
       features: ['独立办公区', '小型会议区', '智能控制系统', '私密空间'],
     },
@@ -60,34 +65,31 @@ export default function EnvironmentSection() {
         <div className="mb-16 bg-gradient-to-br from-blue-50 to-gray-50 rounded-3xl p-8 lg:p-12">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="relative">
-              <div className="aspect-[4/3] bg-white rounded-2xl shadow-xl overflow-hidden">
-                {/* Front Desk Visualization */}
-                <div className="relative w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 p-8 flex items-center justify-center">
-                  {/* Company Logo Wall */}
-                  <div className="absolute top-4 left-1/2 transform -translate-x-1/2 text-center">
-                    <div className="relative w-24 h-24 mx-auto mb-2">
+              <div className="aspect-[4/3] bg-white rounded-2xl shadow-xl overflow-hidden relative">
+                <Image
+                  src="/reception.jpg"
+                  alt="前台接待区"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+
+                {/* Company Logo Overlay */}
+                <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-sm rounded-2xl px-6 py-3 shadow-xl">
+                  <div className="flex items-center space-x-3">
+                    <div className="relative w-12 h-12">
                       <Image
-                        src="/logo.jpg"
+                        src="/logo-transparent.png"
                         alt="创梦 LOGO"
                         fill
                         className="object-contain"
                       />
                     </div>
-                    <p className="text-sm font-bold text-gray-800">创梦计算机系统有限公司</p>
-                    <p className="text-xs text-gray-600">Chuangmeng Computer System Co., Ltd.</p>
-                  </div>
-
-                  {/* Front Desk */}
-                  <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-                    <div className="bg-white rounded-lg shadow-lg px-8 py-4">
-                      <div className="w-64 h-4 bg-gray-800 rounded"></div>
-                      <div className="mt-2 text-xs text-gray-500 text-center font-medium">前台接待区 Front Desk</div>
+                    <div>
+                      <p className="text-xs font-bold text-gray-900">创梦计算机系统有限公司</p>
+                      <p className="text-[10px] text-gray-600">Chuangmeng Computer System</p>
                     </div>
                   </div>
-
-                  {/* Decorative Elements */}
-                  <div className="absolute top-4 left-4 w-8 h-8 bg-blue-600/20 rounded-full"></div>
-                  <div className="absolute bottom-4 right-4 w-12 h-12 bg-blue-600/10 rounded-full"></div>
                 </div>
               </div>
 
@@ -136,14 +138,23 @@ export default function EnvironmentSection() {
                 key={areaIndex}
                 className="group relative bg-white border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-blue-500 hover:shadow-2xl transition-all duration-300"
               >
-                {/* Image Placeholder */}
-                <div className="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 relative overflow-hidden">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <Icon className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                      <p className="text-sm font-medium text-gray-600">{area.title}</p>
+                {/* Image */}
+                <div className="aspect-video relative overflow-hidden">
+                  {area.image ? (
+                    <Image
+                      src={area.image}
+                      alt={area.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                      <div className="text-center">
+                        <Icon className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                        <p className="text-sm font-medium text-gray-600">{area.title}</p>
+                      </div>
                     </div>
-                  </div>
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </div>
 

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Building2, MapPin, Calendar, TrendingUp } from 'lucide-react';
+import { MapPin, Calendar, TrendingUp } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 export default function BuildingSection() {
@@ -51,21 +51,20 @@ export default function BuildingSection() {
           {/* Left - Building Image */}
           <div className="relative">
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
-              {/* Building placeholder */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <Building2 className="w-24 h-24 text-gray-400 mx-auto mb-4" />
-                  <p className="text-gray-500 font-medium">创梦总部大厦效果图</p>
-                  <p className="text-gray-400 text-sm mt-2">Building Rendering</p>
-                </div>
-              </div>
+              <Image
+                src="/building.jpg"
+                alt="创梦总部大厦"
+                fill
+                className="object-cover"
+                priority
+              />
 
               {/* Logo on building */}
               <div className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm rounded-2xl px-8 py-4 shadow-xl">
                 <div className="flex items-center space-x-3">
                   <div className="relative w-16 h-16">
                     <Image
-                      src="/logo.jpg"
+                      src="/logo-transparent.png"
                       alt="创梦 LOGO"
                       fill
                       className="object-contain"
