@@ -32,7 +32,7 @@ export default function HeroSection() {
             >
               <div className="w-2 h-2 rounded-full bg-blue-600" />
               <span className="text-xs font-medium text-blue-600 uppercase tracking-wide">
-                专注创新科技
+                引领产业变革
               </span>
             </div>
 
@@ -47,12 +47,12 @@ export default function HeroSection() {
             >
               <span
                 style={{
-                  background: "linear-gradient(135deg, #FF416C 0%, #FF4B2B 25%, #6366F1 50%, #FF4B2B 75%, #FF416C 100%)",
+                  background: "linear-gradient(45deg, #FF416C 0%, #FF4B2B 20%, #6366F1 40%, #EC4899 60%, #8B5CF6 80%, #FF416C 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  backgroundSize: "200% 200%",
-                  animation: "gradientFlow 3s ease infinite",
+                  backgroundSize: "300% 300%",
+                  animation: "gradientFlow1 2s ease-in-out infinite",
                 }}
               >
                 创新科技
@@ -60,12 +60,12 @@ export default function HeroSection() {
               <br />
               <span
                 style={{
-                  background: "linear-gradient(135deg, #FF416C 0%, #FF4B2B 25%, #6366F1 50%, #FF4B2B 75%, #FF416C 100%)",
+                  background: "linear-gradient(-45deg, #8B5CF6 0%, #EC4899 25%, #FF4B2B 50%, #6366F1 75%, #FF416C 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  backgroundSize: "200% 200%",
-                  animation: "gradientFlow 3s ease infinite",
+                  backgroundSize: "250% 250%",
+                  animation: "gradientFlow2 3s ease-out infinite",
                 }}
               >
                 驱动未来
@@ -247,15 +247,36 @@ export default function HeroSection() {
           }
         }
 
-        @keyframes gradientFlow {
+        @keyframes gradientFlow1 {
           0% {
             background-position: 0% 50%;
+          }
+          25% {
+            background-position: 50% 0%;
           }
           50% {
             background-position: 100% 50%;
           }
+          75% {
+            background-position: 50% 100%;
+          }
           100% {
             background-position: 0% 50%;
+          }
+        }
+
+        @keyframes gradientFlow2 {
+          0% {
+            background-position: 100% 0%;
+          }
+          33% {
+            background-position: 0% 100%;
+          }
+          66% {
+            background-position: 50% 50%;
+          }
+          100% {
+            background-position: 100% 0%;
           }
         }
 
