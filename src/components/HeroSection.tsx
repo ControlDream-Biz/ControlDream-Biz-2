@@ -34,24 +34,29 @@ export default function HeroSection() {
               }}
             >
               <span
+                className="animate-gradient-text"
                 style={{
                   background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
                   backgroundSize: "200% 200%",
+                  animation: "gradientMove 3s ease-in-out infinite",
                 }}
               >
                 创新科技
               </span>
               <br />
               <span
+                className="animate-gradient-text"
                 style={{
                   background: "linear-gradient(135deg, #EC4899 0%, #6366F1 50%, #8B5CF6 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
                   backgroundSize: "200% 200%",
+                  animation: "gradientMove 3s ease-in-out infinite",
+                  animationDelay: "1.5s",
                 }}
               >
                 驱动未来
@@ -242,6 +247,15 @@ export default function HeroSection() {
           }
           50% {
             transform: translateY(-20px);
+          }
+        }
+
+        @keyframes gradientMove {
+          0%, 100% {
+            backgroundPosition: 0% 50%;
+          }
+          50% {
+            backgroundPosition: 100% 50%;
           }
         }
 

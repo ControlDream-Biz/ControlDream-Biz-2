@@ -172,7 +172,7 @@ body {
 }
 
 .animate-menu-slide-down {
-  animation: menuSlideDown 0.2s cubic-bezier(0.33, 1, 0.68, 1) forwards;
+  animation: menuSlideDown 0.1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
 }
 
 /* 悬停放大效果 */
