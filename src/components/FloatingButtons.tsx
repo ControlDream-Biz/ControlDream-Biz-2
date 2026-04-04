@@ -121,32 +121,40 @@ export default function FloatingButtons() {
       if (!hasMoved) {
         scrollToTop();
       } else {
-        // 以十字线为轴吸附
+        // 吸附到四个角落（左上、右上、左下、右下）
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
         const buttonSize = 40;
-        const buttonHalfSize = buttonSize / 2;
 
         let finalLeft = parseInt(backToTopBtn.style.left) || 0;
         let finalTop = parseInt(backToTopBtn.style.top) || 0;
 
-        const centerX = viewportWidth / 2 - buttonHalfSize;
-        const centerY = viewportHeight / 2 - buttonHalfSize;
-        const snapThreshold = 50; // 吸附阈值
+        const centerX = viewportWidth / 2;
+        const centerY = viewportHeight / 2;
 
-        // 检查是否接近垂直中心线
-        if (Math.abs(finalLeft - centerX) < snapThreshold) {
-          finalLeft = centerX;
+        // 判断按钮在哪个区域
+        let snapX: number;
+        let snapY: number;
+
+        if (finalLeft < centerX) {
+          // 左侧区域
+          snapX = 0; // 吸附到左边
+        } else {
+          // 右侧区域
+          snapX = viewportWidth - buttonSize; // 吸附到右边
         }
 
-        // 检查是否接近水平中心线
-        if (Math.abs(finalTop - centerY) < snapThreshold) {
-          finalTop = centerY;
+        if (finalTop < centerY) {
+          // 上半部分
+          snapY = 0; // 吸附到上边
+        } else {
+          // 下半部分
+          snapY = viewportHeight - buttonSize; // 吸附到下边
         }
 
         // 应用吸附后的位置
-        backToTopBtn.style.left = `${finalLeft}px`;
-        backToTopBtn.style.top = `${finalTop}px`;
+        backToTopBtn.style.left = `${snapX}px`;
+        backToTopBtn.style.top = `${snapY}px`;
         backToTopBtn.style.right = 'auto';
         backToTopBtn.style.bottom = 'auto';
 
@@ -262,31 +270,34 @@ export default function FloatingButtons() {
       if (!csHasMoved) {
         setIsCustomerServiceOpen(!isCustomerServiceOpen);
       } else {
-        // 以十字线为轴吸附
+        // 吸附到四个角落
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
         const buttonSize = 40;
-        const buttonHalfSize = buttonSize / 2;
 
         let finalLeft = parseInt(customerServiceBtn.style.left) || 0;
         let finalTop = parseInt(customerServiceBtn.style.top) || 0;
 
-        const centerX = viewportWidth / 2 - buttonHalfSize;
-        const centerY = viewportHeight / 2 - buttonHalfSize;
-        const snapThreshold = 50;
+        const centerX = viewportWidth / 2;
+        const centerY = viewportHeight / 2;
 
-        // 检查是否接近垂直中心线
-        if (Math.abs(finalLeft - centerX) < snapThreshold) {
-          finalLeft = centerX;
+        let snapX: number;
+        let snapY: number;
+
+        if (finalLeft < centerX) {
+          snapX = 0;
+        } else {
+          snapX = viewportWidth - buttonSize;
         }
 
-        // 检查是否接近水平中心线
-        if (Math.abs(finalTop - centerY) < snapThreshold) {
-          finalTop = centerY;
+        if (finalTop < centerY) {
+          snapY = 0;
+        } else {
+          snapY = viewportHeight - buttonSize;
         }
 
-        customerServiceBtn.style.left = `${finalLeft}px`;
-        customerServiceBtn.style.top = `${finalTop}px`;
+        customerServiceBtn.style.left = `${snapX}px`;
+        customerServiceBtn.style.top = `${snapY}px`;
         customerServiceBtn.style.right = 'auto';
         customerServiceBtn.style.bottom = 'auto';
 
