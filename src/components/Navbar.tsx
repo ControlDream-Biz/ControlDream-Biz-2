@@ -150,22 +150,19 @@ export default function Navbar() {
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.5) inset',
             }}
           >
-            {navItems.map((item, index) => (
+            {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="block text-base font-medium text-gray-700 hover:text-blue-600 transition-all duration-300 py-2 px-4 rounded-lg hover:bg-blue-50/50 animate-menu-item-fade-in"
-                style={{
-                  animationDelay: `${0.05 + index * 0.04}s`,
-                }}
+                className="block text-base font-medium text-gray-700 hover:text-blue-600 transition-all duration-300 py-2 px-4 rounded-lg hover:bg-blue-50/50"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item.name}
               </Link>
             ))}
             <Button
-              className="w-full glass-button font-semibold mt-4 animate-menu-item-fade-in"
-              style={{ borderRadius: '14px', height: '48px', animationDelay: '0.25s' }}
+              className="w-full glass-button font-semibold mt-4"
+              style={{ borderRadius: '14px', height: '48px' }}
               onClick={() => setMobileMenuOpen(false)}
             >
               联系我们
