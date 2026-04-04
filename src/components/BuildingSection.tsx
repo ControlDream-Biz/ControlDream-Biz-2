@@ -64,7 +64,7 @@ export default function BuildingSection() {
                 <div className="flex items-center space-x-3">
                   <div className="relative w-16 h-16">
                     <Image
-                      src="/logo-transparent.png"
+                      src="/logo-cm-final.png"
                       alt="创梦 LOGO"
                       fill
                       className="object-contain"

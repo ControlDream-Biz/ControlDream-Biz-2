@@ -40,7 +40,7 @@ export default function Navbar() {
           <Link href="#home" className="flex items-center space-x-3">
             <div className="relative w-10 h-10">
               <Image
-                src="/logo-transparent.png"
+                src="/logo-cm-final.png"
                 alt="创梦计算机系统有限公司"
                 fill
                 className="object-contain"

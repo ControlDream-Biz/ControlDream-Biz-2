@@ -75,7 +75,7 @@ export default function HeroSection() {
               <div className="absolute inset-0 bg-white rounded-3xl shadow-2xl overflow-hidden backdrop-blur-xl">
                 <div className="relative w-full h-full flex items-center justify-center bg-gradient-to-br from-white via-gray-50 to-white p-16">
                   <Image
-                    src="/logo-transparent.png"
+                    src="/logo-cm-final.png"
                     alt="创梦 LOGO"
                     width={500}
                     height={500}
