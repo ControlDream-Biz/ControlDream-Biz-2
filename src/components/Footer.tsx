@@ -22,7 +22,7 @@ export default function Footer() {
               </div>
               <div>
                 <h3 className="text-sm font-bold leading-tight">创梦计算机系统有限公司</h3>
-                <p className="text-[10px] text-gray-400 uppercase tracking-wide mt-0.5">
+                <p className="text-[10px] text-gray-400 mt-0">
                   Chuangmeng Computer System
                 </p>
               </div>

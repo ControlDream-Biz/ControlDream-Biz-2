@@ -54,7 +54,7 @@ export default function Navbar() {
             <span className="text-sm font-bold tracking-tight text-gray-900 leading-none">
               创梦计算机系统有限公司
             </span>
-            <span className="text-[10px] font-medium text-gray-500 tracking-wide uppercase mt-0.5">
+            <span className="text-[10px] font-medium text-gray-500 mt-0">
               Chuangmeng Computer System
             </span>
           </div>
