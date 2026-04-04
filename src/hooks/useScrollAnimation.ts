@@ -136,7 +136,18 @@ export function autoScrollAnimate() {
       return;
     }
 
-    // 添加动画
+    // 检查元素是否已经在视口内
+    const rect = element.getBoundingClientRect();
+    const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+
+    // 如果已经在视口内，立即显示，不添加动画
+    if (isVisible) {
+      element.classList.add('opacity-100', 'translate-y-0');
+      element.setAttribute('data-scroll-animate', 'visible');
+      return;
+    }
+
+    // 添加动画（仅在视口外的元素）
     addScrollAnimation(element as HTMLElement, {
       delay: Math.min(index * 30, 600), // 最多延迟600ms
       direction: 'up',
