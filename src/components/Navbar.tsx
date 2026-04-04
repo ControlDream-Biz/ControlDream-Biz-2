@@ -41,8 +41,8 @@ export default function Navbar() {
     >
       <div className="container mx-auto px-4 h-full flex items-center justify-between max-w-7xl">
         {/* Logo */}
-        <Link href="#home" className="flex items-center space-x-3">
-          <div className="relative w-10 h-10 flex-shrink-0">
+        <Link href="#home" className="flex items-center space-x-2.5">
+          <div className="relative w-9 h-9 flex-shrink-0">
             <Image
               src="/logo-cm-final.png"
               alt="创梦计算机系统有限公司"
@@ -51,10 +51,10 @@ export default function Navbar() {
             />
           </div>
           <div className="flex flex-col flex-shrink-0">
-            <span className="text-base font-bold tracking-tight text-gray-900 leading-none">
+            <span className="text-sm font-bold tracking-tight text-gray-900 leading-none">
               创梦计算机系统有限公司
             </span>
-            <span className="text-xs font-medium text-gray-500 tracking-wide uppercase mt-0.5">
+            <span className="text-[10px] font-medium text-gray-500 tracking-wide uppercase mt-0.5">
               Chuangmeng Computer System
             </span>
           </div>
