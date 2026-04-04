@@ -216,7 +216,7 @@ export default function EnvironmentSection() {
             return (
               <div
                 key={areaIndex}
-                className="group relative bg-white/90 backdrop-blur-md border-2 border-gray-100 rounded-xl md:rounded-2xl overflow-hidden hover:border-blue-500 hover:shadow-2xl transition-all duration-500 glass-card cursor-pointer"
+                className="group relative bg-white/90 backdrop-blur-md border-2 border-gray-100 rounded-xl md:rounded-2xl overflow-hidden hover:border-blue-500 hover:shadow-2xl transition-all duration-500 glass-card cursor-pointer hover-lift mouse-glow card-3d"
                 data-office-card
                 style={{
                   boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)',

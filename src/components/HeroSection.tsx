@@ -25,14 +25,16 @@ export default function HeroSection() {
             {/* Main Title */}
             <h1
               className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
+              data-scroll-animate
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
-                transition: "all 0.6s ease-out 0.1s",
+                transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s",
                 minHeight: "120px",
               }}
             >
               <span
+                data-gradient-text
                 style={{
                   background: "linear-gradient(90deg, #EF4444 0%, #F97316 14%, #3B82F6 28%, #6366F1 42%, #8B5CF6 56%, #EC4899 70%, #EF4444 85%, #F97316 100%)",
                   WebkitBackgroundClip: "text",
@@ -42,12 +44,16 @@ export default function HeroSection() {
                   animation: "gradientMove 15s ease-in-out infinite alternate",
                   WebkitAnimation: "gradientMove 15s ease-in-out infinite alternate",
                   display: "inline-block",
+                  opacity: mounted ? 1 : 0,
+                  transform: mounted ? "translateY(0)" : "translateY(10px)",
+                  transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s",
                 }}
               >
                 创新科技
               </span>
               <br />
               <span
+                data-gradient-text
                 style={{
                   background: "linear-gradient(90deg, #8B5CF6 0%, #A855F7 16%, #EC4899 32%, #EF4444 48%, #F97316 64%, #3B82F6 80%, #8B5CF6 100%)",
                   WebkitBackgroundClip: "text",
@@ -57,6 +63,9 @@ export default function HeroSection() {
                   animation: "gradientMove 18s ease-in-out infinite alternate-reverse",
                   WebkitAnimation: "gradientMove 18s ease-in-out infinite alternate-reverse",
                   display: "inline-block",
+                  opacity: mounted ? 1 : 0,
+                  transform: mounted ? "translateY(0)" : "translateY(10px)",
+                  transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.3s",
                 }}
               >
                 驱动未来
@@ -89,7 +98,7 @@ export default function HeroSection() {
             >
               <Link href="#contact">
                 <Button
-                  className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200"
+                  className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200 ripple-effect magnetic-btn"
                   style={{
                     background: "rgba(99, 102, 241, 0.85)",
                     backdropFilter: "blur(20px)",
@@ -105,7 +114,7 @@ export default function HeroSection() {
               </Link>
               <Link href="#services">
                 <Button
-                  className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200"
+                  className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200 ripple-effect magnetic-btn"
                   style={{
                     background: "rgba(255, 255, 255, 0.7)",
                     backdropFilter: "blur(20px)",

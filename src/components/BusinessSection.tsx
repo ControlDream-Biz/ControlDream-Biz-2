@@ -263,7 +263,7 @@ export default function BusinessSection() {
             return (
               <Card
                 key={index}
-                className="group hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-transparent overflow-hidden glass-card cursor-pointer"
+                className="group hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-transparent overflow-hidden glass-card cursor-pointer hover-lift mouse-glow card-3d"
                 data-business-card
                 style={{
                   borderRadius: '20px',
@@ -274,11 +274,11 @@ export default function BusinessSection() {
                   transitionDelay: `${index * 0.15}s`
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
+                  e.currentTarget.style.transform = 'translateY(-8px) scale(1.02) rotateX(2deg)';
                   e.currentTarget.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(0, 0, 0, 0.06)';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0) scale(1)';
+                  e.currentTarget.style.transform = 'translateY(0) scale(1) rotateX(0deg)';
                   e.currentTarget.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)';
                 }}
               >

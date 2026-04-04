@@ -335,52 +335,8 @@ body::before {
   -webkit-backdrop-filter: blur(40px) saturate(150%);
   z-index: -2;
   pointer-events: none;
-  animation: liquidFlow 24s ease-in-out infinite;
-  will-change: filter;
-  /* 移除 transform，避免创建新的包含块影响 fixed 定位 */
-  /* transform: translateZ(0); */
-  /* backface-visibility: hidden; */
   min-width: 120vw;
   min-height: 120vh;
-}
-
-@keyframes liquidFlow {
-  0% {
-    transform: translate(0, 0) translateZ(0);
-    filter: brightness(1);
-  }
-  12.5% {
-    transform: translate(0.75%, 0.5%) translateZ(0);
-    filter: brightness(1.01);
-  }
-  25% {
-    transform: translate(1.5%, 1%) translateZ(0);
-    filter: brightness(1.02);
-  }
-  37.5% {
-    transform: translate(0.75%, 1.25%) translateZ(0);
-    filter: brightness(1.01);
-  }
-  50% {
-    transform: translate(-1%, 1.5%) translateZ(0);
-    filter: brightness(0.98);
-  }
-  62.5% {
-    transform: translate(-1.25%, 0.75%) translateZ(0);
-    filter: brightness(0.99);
-  }
-  75% {
-    transform: translate(-1.5%, -1%) translateZ(0);
-    filter: brightness(1.01);
-  }
-  87.5% {
-    transform: translate(-0.75%, -0.5%) translateZ(0);
-    filter: brightness(1.005);
-  }
-  100% {
-    transform: translate(0, 0) translateZ(0);
-    filter: brightness(1);
-  }
 }
 
 body::after {
@@ -395,52 +351,8 @@ body::after {
   -webkit-backdrop-filter: blur(50px) saturate(150%);
   z-index: -2;
   pointer-events: none;
-  animation: liquidFlow2 30s ease-in-out infinite reverse;
-  will-change: filter;
-  /* 移除 transform，避免创建新的包含块影响 fixed 定位 */
-  /* transform: translateZ(0); */
-  /* backface-visibility: hidden; */
   min-width: 120vw;
   min-height: 120vh;
-}
-
-@keyframes liquidFlow2 {
-  0% {
-    transform: translate(0, 0) translateZ(0);
-    filter: brightness(1);
-  }
-  12.5% {
-    transform: translate(-0.75%, 0.5%) translateZ(0);
-    filter: brightness(0.995);
-  }
-  25% {
-    transform: translate(-1.5%, 1%) translateZ(0);
-    filter: brightness(0.99);
-  }
-  37.5% {
-    transform: translate(-0.5%, 0.75%) translateZ(0);
-    filter: brightness(1.005);
-  }
-  50% {
-    transform: translate(1%, -1.5%) translateZ(0);
-    filter: brightness(1.01);
-  }
-  62.5% {
-    transform: translate(0.75%, -0.75%) translateZ(0);
-    filter: brightness(1.005);
-  }
-  75% {
-    transform: translate(1%, 1%) translateZ(0);
-    filter: brightness(0.98);
-  }
-  87.5% {
-    transform: translate(0.5%, 0.5%) translateZ(0);
-    filter: brightness(0.99);
-  }
-  100% {
-    transform: translate(0, 0) translateZ(0);
-    filter: brightness(1);
-  }
 }
 
 body {
@@ -654,91 +566,8 @@ body {
   animation: scalePulse 2s ease-in-out infinite;
 }
 
-/* ========== 120Hz 高刷新率强制优化 ========== */
-
-/* 强制120Hz刷新率支持 */
-@media (min-width: 768px) {
-  html,
-  body {
-    /* 强制高刷新率渲染 */
-    animation: force-120hz 0.0167s infinite linear;
-  }
-
-  @keyframes force-120hz {
-    0% { opacity: 0.9999; }
-    100% { opacity: 1; }
-  }
-}
-
-/* 120Hz动画优化 */
-@media screen and (min-width: 1024px) {
-  /* 液态背景加速 */
-  body::before,
-  body::after {
-    animation-duration: 20s !important;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-  }
-
-  /* 所有动画加速 */
-  * {
-    animation-duration: 1.2s !important;
-    transition-duration: 0.3s !important;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-  }
-
-  /* 移除 GPU 强制加速，避免破坏 fixed 定位 */
-  /* transform 会创建新的包含块，导致 position: fixed 失效 */
-}
-
-/* 悬浮按钮动画 */
-@keyframes floatButton {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
-}
-
-.animate-float-button {
-  animation: floatButton 3s ease-in-out infinite;
-}
-
-/* 144Hz+ 超高刷新率优化 */
-@media screen and (min-width: 1440px) {
-  html,
-  body {
-    /* 强制144Hz渲染 */
-    animation: force-144hz 0.00694s infinite linear;
-  }
-
-  @keyframes force-144hz {
-    0% { opacity: 0.9999; }
-    100% { opacity: 1; }
-  }
-
-  * {
-    animation-duration: 1s !important;
-    transition-duration: 0.25s !important;
-  }
-
-  body::before,
-  body::after {
-    animation-duration: 16s !important;
-  }
-}
-
-/* 性能优化 - GPU加速 */
-.gpu-accelerated {
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  will-change: transform;
-  /* 强制硬件合成层 */
-  contain: layout style paint;
-}
+/* 性能优化 - 移除强制120Hz动画，避免掉帧 */
+/* 浏览器会自动根据显示器刷新率渲染，无需强制动画 */
 
 /* 平滑动画优化 */
 .smooth-animation {
@@ -748,57 +577,13 @@ body {
   -webkit-backface-visibility: hidden;
   perspective: 1000px;
   -webkit-perspective: 1000px;
-  /* 120Hz优化 */
-  animation-iteration-count: infinite;
 }
 
 /* 减少 repaint 和 reflow */
 .optimized-element {
   contain: layout style paint;
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
   /* 防止子元素影响布局 */
   isolation: isolate;
-}
-
-/* 高刷新率优化 */
-@media (hover: hover) and (pointer: fine) {
-  .smooth-animation {
-    animation-duration: 1.5s;
-  }
-}
-
-/* 强制硬件加速 */
-.force-gpu {
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  perspective: 1000px;
-  -webkit-perspective: 1000px;
-  will-change: transform;
-  contain: layout style paint;
-}
-
-/* 120Hz专用动画类 */
-.hz-120 {
-  /* 确保在120Hz下运行 */
-  animation: hz-120-loop 0.0167s infinite;
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-@keyframes hz-120-loop {
-  0% { transform: translateZ(0) scale(1); }
-  100% { transform: translateZ(0) scale(1.0001); }
-}
-
-/* 优化滚动性能 */
-html {
-  scroll-behavior: smooth;
-  /* 强制GPU加速滚动 */
-  overflow-x: hidden;
-  -webkit-overflow-scrolling: touch;
 }
 
 /* ========== 滚动动画效果 ========== */
@@ -830,11 +615,8 @@ html {
   transition:
     opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
     transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  will-change: opacity, transform;
-  contain: layout style paint;
 }
 
 /* 文本元素特殊优化 */
@@ -844,17 +626,15 @@ h3[data-scroll-animate],
 h4[data-scroll-animate],
 h5[data-scroll-animate],
 h6[data-scroll-animate] {
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 p[data-scroll-animate],
 span[data-scroll-animate],
 div[data-scroll-animate] {
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* 滚动动画进入视口时的效果 */
@@ -865,43 +645,346 @@ div[data-scroll-animate] {
 @keyframes scrollFadeIn {
   from {
     opacity: 0;
-    transform: translateY(2rem) translateZ(0);
+    transform: translateY(2rem);
   }
   to {
     opacity: 1;
-    transform: translateY(0) translateZ(0);
+    transform: translateY(0);
   }
 }
 
-/* 优化移动端性能 - 强制120Hz */
+/* 渐变文字动画优化 */
+@keyframes gradientText {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient-text-optimized {
+  background-size: 200% 100%;
+  animation: gradientText 15s ease-in-out infinite;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: background-position;
+}
+
+/* 优化液态背景动画 - 使用transform3d替代transform */
+@keyframes liquidFlowOptimized {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  12.5% {
+    transform: translate3d(0.75%, 0.5%, 0);
+  }
+  25% {
+    transform: translate3d(1.5%, 1%, 0);
+  }
+  37.5% {
+    transform: translate3d(0.75%, 1.25%, 0);
+  }
+  50% {
+    transform: translate3d(-1%, 1.5%, 0);
+  }
+  62.5% {
+    transform: translate3d(-1.25%, 0.75%, 0);
+  }
+  75% {
+    transform: translate3d(-1.5%, -1%, 0);
+  }
+  87.5% {
+    transform: translate3d(-0.75%, -0.5%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes liquidFlow2Optimized {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  12.5% {
+    transform: translate3d(-0.75%, 0.5%, 0);
+  }
+  25% {
+    transform: translate3d(-1.5%, 1%, 0);
+  }
+  37.5% {
+    transform: translate3d(-0.5%, 0.75%, 0);
+  }
+  50% {
+    transform: translate3d(1%, -1.5%, 0);
+  }
+  62.5% {
+    transform: translate3d(0.75%, -0.75%, 0);
+  }
+  75% {
+    transform: translate3d(1%, 1%, 0);
+  }
+  87.5% {
+    transform: translate3d(0.5%, 0.5%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* 优化后的液态背景 - 仅在非移动设备上使用transform */
+@media (min-width: 768px) {
+  body::before {
+    animation: liquidFlowOptimized 24s ease-in-out infinite;
+  }
+  body::after {
+    animation: liquidFlow2Optimized 30s ease-in-out infinite reverse;
+  }
+}
+
+/* 移动端禁用transform动画，避免影响fixed定位 */
 @media (max-width: 767px) {
-  /* 强制120Hz渲染 */
-  html,
-  body {
-    animation: force-120hz-mobile 0.0167s infinite linear;
-  }
-
-  @keyframes force-120hz-mobile {
-    0% { opacity: 0.9999; }
-    100% { opacity: 1; }
-  }
-
-  /* 动画加速 */
-  *,
-  *::before,
-  *::after {
-    animation-duration: 1.2s !important;
-    transition-duration: 0.3s !important;
-    animation-timing-function: cubic-bezier(0.4, 0. 0.2, 1) !important;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-  }
-
-  /* 液态背景加速 */
   body::before,
   body::after {
-    animation-duration: 20s !important;
+    animation: none;
+    filter: brightness(1);
   }
+}
 
-  /* 移除 GPU强制加速，避免破坏 fixed 定位 */
-  /* 注意：transform 会创建新的包含块，导致 fixed 定位失效 */
+/* ========== 全站交互优化 ========== */
+
+/* 3D卡片倾斜效果 */
+.card-3d {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.card-3d:hover {
+  transform: rotateX(2deg) rotateY(2deg) translateZ(10px);
+}
+
+/* 鼠标跟随光晕效果 */
+.mouse-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.mouse-glow::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.3) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease-out, height 0.6s ease-out;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.mouse-glow:hover::before {
+  width: 400px;
+  height: 400px;
+}
+
+/* 按钮波纹效果 */
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+  pointer-events: none;
+}
+
+.ripple-effect:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* 磁吸按钮效果 */
+.magnetic-btn {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 悬浮卡片增强效果 */
+.hover-lift {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* 镜面反射效果 */
+.mirror-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.mirror-effect::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.8s ease-in-out;
+}
+
+.mirror-effect:hover::before {
+  transform: translateX(100%);
+}
+
+/* 文本高亮效果 */
+.text-highlight {
+  position: relative;
+  display: inline-block;
+}
+
+.text-highlight::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #6366F1, #EC4899);
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.text-highlight:hover::before {
+  width: 100%;
+}
+
+/* 滚动显示动画优化 */
+@keyframes scrollFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scroll-animate-up {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-animate-up.visible {
+  opacity: 1;
+  animation: scrollFadeUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes scrollFadeLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.scroll-animate-left {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-animate-left.visible {
+  opacity: 1;
+  animation: scrollFadeLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes scrollFadeRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.scroll-animate-right {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-animate-right.visible {
+  opacity: 1;
+  animation: scrollFadeRight 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes scrollFadeScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.scroll-animate-scale {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-animate-scale.visible {
+  opacity: 1;
+  animation: scrollFadeScale 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* 优化滚动性能 */
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 减少不必要的重绘 */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 优化动画元素的层级 */
+[data-scroll-animate],
+.scroll-animate-up,
+.scroll-animate-left,
+.scroll-animate-right,
+.scroll-animate-scale {
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
