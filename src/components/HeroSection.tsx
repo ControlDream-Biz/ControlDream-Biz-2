@@ -114,6 +114,7 @@ export default function HeroSection() {
                   style={{
                     borderColor: "#e5e5e5",
                     color: "#666",
+                    borderWidth: "1px",
                   }}
                 >
                   关于我们
