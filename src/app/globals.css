@@ -15,10 +15,6 @@
 
 /* 优化渲染性能 */
 html {
-  /* 强制合成层 */
-  will-change: transform;
-  -webkit-will-change: transform;
-
   /* 优化字体渲染 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -670,14 +666,8 @@ body {
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
-  /* GPU强制加速 */
-  *::before,
-  *::after {
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
+  /* 移除 GPU 强制加速，避免破坏 fixed 定位 */
+  /* transform 会创建新的包含块，导致 position: fixed 失效 */
 }
 
 /* 悬浮按钮动画 */
