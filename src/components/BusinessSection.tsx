@@ -12,51 +12,62 @@ export default function BusinessSection() {
   useEffect(() => {
     const sectionRefValue = sectionRef.current;
 
-    // 为每个产品区块添加独立的滚动观察器
-    const observeSection = (section: Element) => {
-      const sectionObserver = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              // 触发该区块内的元素动画
-              const items = section.querySelectorAll('[data-scroll-item]');
-              items.forEach((item, index) => {
-                setTimeout(() => {
-                  const itemElement = item as HTMLElement;
-                  itemElement.classList.remove('opacity-0', 'translate-x-10', 'scale-95');
-                  itemElement.style.transform = 'translateX(0) scale(1)';
-                  itemElement.style.opacity = '1';
-                }, index * 200);
-              });
+    // 监听整个区域
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const section = entry.target;
+
+            // 1. 标题动画
+            const header = section.querySelector('[data-scroll-animate="header"]');
+            if (header) {
+              const headerEl = header as HTMLElement;
+              setTimeout(() => {
+                headerEl.style.opacity = '1';
+                headerEl.style.transform = 'translateY(0)';
+              }, 200);
             }
-          });
-        },
-        { threshold: 0.3 }
-      );
 
-      sectionObserver.observe(section);
-    };
+            // 2. 三大产品卡片动画
+            const cards = section.querySelectorAll('.business-card');
+            cards.forEach((card, index) => {
+              const cardEl = card as HTMLElement;
+              setTimeout(() => {
+                cardEl.style.opacity = '1';
+                cardEl.style.transform = 'translateY(0)';
+              }, 400 + index * 150);
+            });
 
-    const observerOptions = {
-      threshold: 0.2,
-      rootMargin: '0px 0px -100px 0px'
-    };
+            // 3. 代表产品区域动画
+            const productSections = section.querySelectorAll('[data-product-section]');
+            productSections.forEach((prodSection, index) => {
+              const prodEl = prodSection as HTMLElement;
+              setTimeout(() => {
+                prodEl.style.opacity = '1';
+                prodEl.style.transform = 'translateY(0)';
+              }, 700 + index * 300);
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          // 触发产品区块的动画
-          const sections = document.querySelectorAll('[data-scroll]');
-          sections.forEach((section, index) => {
-            setTimeout(() => {
-              section.classList.remove('opacity-0', 'translate-y-20');
-            }, index * 300);
-            // 为每个区块添加独立的观察器
-            observeSection(section);
-          });
-        }
-      });
-    }, observerOptions);
+              // 触发内部元素动画
+              setTimeout(() => {
+                const items = prodEl.querySelectorAll('[data-scroll-item]');
+                items.forEach((item, itemIndex) => {
+                  const itemEl = item as HTMLElement;
+                  setTimeout(() => {
+                    itemEl.classList.remove('opacity-0', 'translate-x-10', 'scale-95');
+                    itemEl.style.transform = 'translateX(0) scale(1)';
+                    itemEl.style.opacity = '1';
+                  }, itemIndex * 200);
+                });
+              }, 900 + index * 300);
+            });
+
+            observer.unobserve(section);
+          }
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -100px 0px' }
+    );
 
     if (sectionRefValue) {
       observer.observe(sectionRefValue);
@@ -103,8 +114,15 @@ export default function BusinessSection() {
     <section id="business" className="py-20 md:py-24 relative overflow-hidden">
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
-        {/* Section Header */}
-        <div className="text-center mb-12 md:mb-16">
+        {/* Section Header - 苹果风格动画 */}
+        <div
+          className="text-center mb-12 md:mb-16 opacity-0 transition-all duration-1000 ease-out"
+          style={{
+            transform: 'translateY(30px)',
+            willChange: 'opacity, transform'
+          }}
+          data-scroll-animate="header"
+        >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-4 font-sans">
             三大产品领域
           </h2>
@@ -120,10 +138,12 @@ export default function BusinessSection() {
             return (
               <Card
                 key={index}
-                className="group hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-transparent overflow-hidden glass-card cursor-pointer"
+                className="group hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-transparent overflow-hidden glass-card cursor-pointer business-card opacity-0"
                 style={{
                   borderRadius: '20px',
                   boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)',
+                  transform: 'translateY(40px)',
+                  willChange: 'opacity, transform'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
@@ -215,12 +235,12 @@ export default function BusinessSection() {
           <div className="space-y-16 md:space-y-24">
             {/* 产品1 - 梦幻三国 */}
             <div
-              className="product-section opacity-0 transform translate-y-20 transition-all duration-1000 ease-out"
+              className="product-section opacity-0 transition-all duration-1000 ease-out"
               style={{
-                transitionProperty: 'opacity, transform',
+                transform: 'translateY(40px)',
                 willChange: 'opacity, transform'
               }}
-              data-scroll
+              data-product-section
             >
               <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div className="order-2 lg:order-1">
@@ -278,12 +298,12 @@ export default function BusinessSection() {
 
             {/* 产品2 - 创梦云平台 */}
             <div
-              className="product-section opacity-0 transform translate-y-20 transition-all duration-1000 ease-out"
+              className="product-section opacity-0 transition-all duration-1000 ease-out"
               style={{
-                transitionProperty: 'opacity, transform',
+                transform: 'translateY(40px)',
                 willChange: 'opacity, transform'
               }}
-              data-scroll
+              data-product-section
             >
               <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div className="relative aspect-video bg-gray-700/80 rounded-xl md:rounded-2xl overflow-hidden glass-card opacity-0 transition-all duration-1000 ease-out"
@@ -341,12 +361,12 @@ export default function BusinessSection() {
 
             {/* 产品3 - 智能家居系统 */}
             <div
-              className="product-section opacity-0 transform translate-y-20 transition-all duration-1000 ease-out"
+              className="product-section opacity-0 transition-all duration-1000 ease-out"
               style={{
-                transitionProperty: 'opacity, transform',
+                transform: 'translateY(40px)',
                 willChange: 'opacity, transform'
               }}
-              data-scroll
+              data-product-section
             >
               <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div className="order-2 lg:order-1">
