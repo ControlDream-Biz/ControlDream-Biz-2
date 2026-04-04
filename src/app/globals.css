@@ -128,16 +128,19 @@ body {
 }
 
 @keyframes gradient {
-  0%, 100% {
+  0% {
     background-position: 0% 50%;
   }
-  100% {
+  50% {
     background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
 .animate-gradient {
-  animation: gradient 12s linear infinite;
+  animation: gradient 15s ease-in-out infinite;
   background-size: 400% auto;
 }
 
@@ -145,15 +148,18 @@ body {
   0% {
     background-position: 0% 50%;
   }
-  100% {
+  50% {
     background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }
 
 .animate-gradient-text {
-  background-size: 400% 100%;
-  animation: gradientMove 12s linear infinite;
-  -webkit-animation: gradientMove 12s linear infinite;
+  background-size: 200% 100%;
+  animation: gradientMove 15s ease-in-out infinite;
+  -webkit-animation: gradientMove 15s ease-in-out infinite;
 }
 
 /* iOS应用打开风格动画 - 从按钮位置线性放大弹出 */

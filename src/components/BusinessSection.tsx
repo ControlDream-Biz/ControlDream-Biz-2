@@ -25,13 +25,55 @@ export default function BusinessSection() {
           if (entry.isIntersecting) {
             const section = entry.target;
 
-            // 触发业务卡片的features淡入
-            const features = section.querySelectorAll('[data-business-feature]');
-            features.forEach((feature, index) => {
-              setTimeout(() => {
-                (feature as HTMLElement).style.opacity = '1';
-                (feature as HTMLElement).style.transform = 'translateX(0)';
-              }, index * 100);
+            // 触发业务卡片的内容淡入
+            const cards = section.querySelectorAll('.group.glass-card');
+            cards.forEach((card, cardIndex) => {
+              const cardEl = card as HTMLElement;
+
+              // 触发标题淡入
+              const title = cardEl.querySelector('[data-business-title]');
+              if (title) {
+                setTimeout(() => {
+                  (title as HTMLElement).style.opacity = '1';
+                  (title as HTMLElement).style.transform = 'translateY(0)';
+                }, 800 + cardIndex * 150);
+              }
+
+              // 触发副标题淡入
+              const subtitle = cardEl.querySelector('[data-business-subtitle]');
+              if (subtitle) {
+                setTimeout(() => {
+                  (subtitle as HTMLElement).style.opacity = '1';
+                  (subtitle as HTMLElement).style.transform = 'translateY(0)';
+                }, 900 + cardIndex * 150);
+              }
+
+              // 触发描述淡入
+              const desc = cardEl.querySelector('[data-business-desc]');
+              if (desc) {
+                setTimeout(() => {
+                  (desc as HTMLElement).style.opacity = '1';
+                  (desc as HTMLElement).style.transform = 'translateY(0)';
+                }, 1000 + cardIndex * 150);
+              }
+
+              // 触发features淡入
+              const features = cardEl.querySelectorAll('[data-business-feature]');
+              features.forEach((feature, featureIndex) => {
+                setTimeout(() => {
+                  (feature as HTMLElement).style.opacity = '1';
+                  (feature as HTMLElement).style.transform = 'translateX(0)';
+                }, 1100 + cardIndex * 150 + featureIndex * 100);
+              });
+
+              // 触发stats淡入
+              const stats = cardEl.querySelector('[data-business-stats]');
+              if (stats) {
+                setTimeout(() => {
+                  (stats as HTMLElement).style.opacity = '1';
+                  (stats as HTMLElement).style.transform = 'translateY(0)';
+                }, 1100 + cardIndex * 150 + features.length * 100);
+              }
             });
 
             observer.unobserve(section);
@@ -199,15 +241,21 @@ export default function BusinessSection() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-1 font-sans">
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-1 font-sans opacity-0 transition-all duration-600 ease-out" style={{
+                    transform: 'translateY(10px)'
+                  }} data-business-title>
                     {business.title}
                   </h3>
-                  <p className="text-xs md:text-sm text-gray-500 mb-3 md:mb-4 font-medium font-sans">
+                  <p className="text-xs md:text-sm text-gray-500 mb-3 md:mb-4 font-medium font-sans opacity-0 transition-all duration-600 ease-out" style={{
+                    transform: 'translateY(10px)'
+                  }} data-business-subtitle>
                     {business.subtitle}
                   </p>
 
                   {/* Description */}
-                  <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-4 md:mb-6 font-sans">
+                  <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-4 md:mb-6 font-sans opacity-0 transition-all duration-600 ease-out" style={{
+                    transform: 'translateY(10px)'
+                  }} data-business-desc>
                     {business.description}
                   </p>
 
@@ -229,7 +277,9 @@ export default function BusinessSection() {
                   </div>
 
                   {/* Stats */}
-                  <div className="pt-3 md:pt-4 border-t border-gray-200">
+                  <div className="pt-3 md:pt-4 border-t border-gray-200 opacity-0 transition-all duration-600 ease-out" style={{
+                    transform: 'translateY(10px)'
+                  }} data-business-stats>
                     <div className="flex items-baseline space-x-2">
                       <span className={`text-2xl md:text-3xl font-bold bg-gradient-to-r ${business.color} bg-clip-text text-transparent font-sans`}>
                         {business.stats.value}

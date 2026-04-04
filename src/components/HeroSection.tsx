@@ -34,13 +34,13 @@ export default function HeroSection() {
             >
               <span
                 style={{
-                  background: "linear-gradient(90deg, #EF4444, #3B82F6, #8B5CF6, #EF4444)",
+                  background: "linear-gradient(90deg, #EF4444 0%, #F97316 14%, #3B82F6 28%, #6366F1 42%, #8B5CF6 56%, #EC4899 70%, #EF4444 85%, #F97316 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  backgroundSize: "300% 100%",
-                  animation: "gradientMove 8s linear infinite",
-                  WebkitAnimation: "gradientMove 8s linear infinite",
+                  backgroundSize: "200% 100%",
+                  animation: "gradientMove 15s ease-in-out infinite alternate",
+                  WebkitAnimation: "gradientMove 15s ease-in-out infinite alternate",
                   display: "inline-block",
                 }}
               >
@@ -49,13 +49,13 @@ export default function HeroSection() {
               <br />
               <span
                 style={{
-                  background: "linear-gradient(90deg, #8B5CF6, #EF4444, #3B82F6, #8B5CF6)",
+                  background: "linear-gradient(90deg, #8B5CF6 0%, #A855F7 16%, #EC4899 32%, #EF4444 48%, #F97316 64%, #3B82F6 80%, #8B5CF6 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  backgroundSize: "300% 100%",
-                  animation: "gradientMove 10s linear infinite reverse",
-                  WebkitAnimation: "gradientMove 10s linear infinite reverse",
+                  backgroundSize: "200% 100%",
+                  animation: "gradientMove 18s ease-in-out infinite alternate-reverse",
+                  WebkitAnimation: "gradientMove 18s ease-in-out infinite alternate-reverse",
                   display: "inline-block",
                 }}
               >
