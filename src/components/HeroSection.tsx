@@ -30,26 +30,22 @@ export default function HeroSection() {
             创新科技 · 智造未来
           </div>
 
-          {/* Title */}
-          <div className="mb-10">
-            <h1 className="text-3xl lg:text-5xl font-bold font-serif tracking-wide leading-[1.15]">
-              <span className="block bg-gradient-to-r from-red-500 via-blue-500 to-purple-600 bg-clip-text text-transparent drop-shadow-lg animate-gradient bg-[length:200%_auto]">
-                创梦计算机系统
-              </span>
-              <span className="block bg-gradient-to-r from-purple-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-lg animate-gradient bg-[length:200%_auto] mt-1 lg:mt-2">
-                有限公司
-              </span>
-            </h1>
-          </div>
-
           {/* Description */}
-          <div className="space-y-4 mb-10">
-            <p className="text-xl lg:text-2xl text-slate-700 font-normal leading-relaxed max-w-3xl mx-auto font-serif">
-              专注于<span className="font-semibold text-slate-900">游戏开发</span>、<span className="font-semibold text-slate-900">软件开发</span>与<span className="font-semibold text-slate-900">硬件创新</span>
+          <div className="space-y-6 mb-10">
+            <p className="text-xl lg:text-2xl text-slate-700 font-normal leading-relaxed max-w-4xl mx-auto font-serif">
+              创梦计算机系统有限公司是一家<span className="font-semibold text-slate-900">高新技术企业</span>，致力于为全球用户提供卓越的数字体验。
             </p>
-            <p className="text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto font-serif">
-              用技术驱动梦想，用创意点亮未来。我们致力于为全球用户创造卓越的数字体验。
-            </p>
+            <div className="space-y-4 max-w-3xl mx-auto">
+              <p className="text-lg text-slate-600 leading-relaxed font-serif">
+                我们专注于<span className="font-semibold text-slate-900">游戏开发</span>、<span className="font-semibold text-slate-900">软件开发</span>与<span className="font-semibold text-slate-900">硬件创新</span>三大核心领域，凭借深厚的技术积累和创新精神，打造了众多广受好评的产品与服务。
+              </p>
+              <p className="text-lg text-slate-600 leading-relaxed font-serif">
+                自成立以来，我们始终坚持以技术驱动梦想，以创意点亮未来，通过持续的研发投入和严格的质量控制，为客户创造持续的价值，推动行业的技术进步与创新发展。
+              </p>
+              <p className="text-base text-slate-500 leading-relaxed font-serif">
+                我们的游戏产品涵盖休闲益智、角色扮演、策略竞技等多个品类，累计服务用户超过千万；软件开发团队为企业级应用、云平台解决方案、移动应用开发提供全方位支持；硬件创新部门在物联网、人工智能等领域不断突破，打造软硬件一体化的智能解决方案。
+              </p>
+            </div>
           </div>
 
           {/* Buttons */}
