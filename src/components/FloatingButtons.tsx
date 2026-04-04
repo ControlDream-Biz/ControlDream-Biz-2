@@ -40,7 +40,7 @@ export default function FloatingButtons() {
       }
     }
 
-    // 创建容器
+    // 创建容器 - 直接使用 fixed 定位
     const container = document.createElement('div');
     container.id = 'floating-buttons-container';
     container.style.position = 'fixed';
@@ -66,14 +66,14 @@ export default function FloatingButtons() {
     backToTopBtn.style.cursor = 'move';
     backToTopBtn.style.borderRadius = '50%';
     backToTopBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
-    backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, left 0.2s ease, top 0.2s ease, right 0.2s ease, bottom 0.2s ease';
+    backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
     backToTopBtn.style.willChange = 'transform';
     backToTopBtn.style.position = 'absolute';
     backToTopBtn.style.right = `${backToTopPos.x}px`;
     backToTopBtn.style.bottom = `${backToTopPos.y}px`;
     backToTopBtn.textContent = '↑';
 
-    // 拖拽逻辑 - 返回顶部按钮
+    // 拖拽逻辑
     let isDragging = false;
     let startX: number, startY: number;
     let offsetX: number, offsetY: number;
@@ -92,7 +92,7 @@ export default function FloatingButtons() {
       backToTopBtn.style.transition = 'none';
     };
 
-    const handleBackToTopMove = (clientX: number, clientY: number) => {
+    const handleMove = (clientX: number, clientY: number) => {
       if (!isDragging) return;
 
       hasMoved = true;
@@ -112,90 +112,60 @@ export default function FloatingButtons() {
       backToTopBtn.style.bottom = 'auto';
     };
 
-    const handleBackToTopEnd = () => {
+    const handleEnd = () => {
       if (!isDragging) return;
 
       isDragging = false;
-      backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, left 0.2s ease, top 0.2s ease, right 0.2s ease, bottom 0.2s ease';
+      backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
 
       if (!hasMoved) {
         scrollToTop();
       } else {
-        // 吸附到四个角落
+        const rect = backToTopBtn.getBoundingClientRect();
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        const buttonSize = 40;
 
-        let finalLeft = parseInt(backToTopBtn.style.left) || 0;
-        let finalTop = parseInt(backToTopBtn.style.top) || 0;
-
-        const splitX = viewportWidth * 0.35;
-        const splitY = viewportHeight * 0.35;
-
-        let snapX: number;
-        let snapY: number;
-
-        if (finalLeft < splitX) {
-          snapX = 0;
-        } else {
-          snapX = viewportWidth - buttonSize;
-        }
-
-        if (finalTop < splitY) {
-          snapY = 0;
-        } else {
-          snapY = viewportHeight - buttonSize;
-        }
-
-        backToTopBtn.style.left = `${snapX}px`;
-        backToTopBtn.style.top = `${snapY}px`;
-        backToTopBtn.style.right = 'auto';
-        backToTopBtn.style.bottom = 'auto';
-
-        setTimeout(() => {
-          const rect = backToTopBtn.getBoundingClientRect();
-          const newPosition = {
-            x: viewportWidth - rect.right,
-            y: viewportHeight - rect.bottom
-          };
-          localStorage.setItem('backToTopPosition', JSON.stringify(newPosition));
-        }, 250);
+        const newPosition = {
+          x: viewportWidth - rect.right,
+          y: viewportHeight - rect.bottom
+        };
+        localStorage.setItem('backToTopPosition', JSON.stringify(newPosition));
       }
     };
 
-    backToTopBtn.addEventListener('mousedown', (e) => {
+    backToTopBtn.onmousedown = (e) => {
       e.preventDefault();
       handleBackToTopStart(e.clientX, e.clientY);
-    });
+    };
 
-    backToTopBtn.addEventListener('touchstart', (e) => {
+    backToTopBtn.ontouchstart = (e) => {
       e.preventDefault();
       const touch = e.touches[0];
       handleBackToTopStart(touch.clientX, touch.clientY);
-    }, { passive: false });
+    };
 
-    document.addEventListener('mousemove', (e) => handleBackToTopMove(e.clientX, e.clientY));
+    document.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
     document.addEventListener('touchmove', (e) => {
       const touch = e.touches[0];
-      handleBackToTopMove(touch.clientX, touch.clientY);
+      handleMove(touch.clientX, touch.clientY);
     }, { passive: false });
 
-    document.addEventListener('mouseup', handleBackToTopEnd);
-    document.addEventListener('touchend', handleBackToTopEnd);
+    document.addEventListener('mouseup', handleEnd);
+    document.addEventListener('touchend', handleEnd);
 
-    backToTopBtn.addEventListener('mouseenter', () => {
+    backToTopBtn.onmouseenter = () => {
       if (!isDragging) {
         backToTopBtn.style.transform = 'scale(1.1)';
         backToTopBtn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.25)';
       }
-    });
+    };
 
-    backToTopBtn.addEventListener('mouseleave', () => {
+    backToTopBtn.onmouseleave = () => {
       if (!isDragging) {
         backToTopBtn.style.transform = 'scale(1)';
         backToTopBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
       }
-    });
+    };
 
     // 创建客服按钮
     const customerServiceBtn = document.createElement('div');
@@ -212,21 +182,23 @@ export default function FloatingButtons() {
     customerServiceBtn.style.cursor = 'move';
     customerServiceBtn.style.borderRadius = '50%';
     customerServiceBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
-    customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, left 0.2s ease, top 0.2s ease, right 0.2s ease, bottom 0.2s ease';
+    customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
     customerServiceBtn.style.willChange = 'transform';
     customerServiceBtn.style.position = 'absolute';
     customerServiceBtn.style.right = `${customerServicePos.x}px`;
     customerServiceBtn.style.bottom = `${customerServicePos.y}px`;
     customerServiceBtn.textContent = '💬';
 
-    // 拖拽逻辑 - 客服按钮
     let csIsDragging = false;
+    let csStartX: number, csStartY: number;
     let csOffsetX: number, csOffsetY: number;
     let csHasMoved = false;
 
     const handleCustomerServiceStart = (clientX: number, clientY: number) => {
       csIsDragging = true;
       csHasMoved = false;
+      csStartX = clientX;
+      csStartY = clientY;
 
       const rect = customerServiceBtn.getBoundingClientRect();
       csOffsetX = clientX - rect.left;
@@ -259,86 +231,47 @@ export default function FloatingButtons() {
       if (!csIsDragging) return;
 
       csIsDragging = false;
-      customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, left 0.2s ease, top 0.2s ease, right 0.2s ease, bottom 0.2s ease';
+      customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
 
       if (!csHasMoved) {
         setIsCustomerServiceOpen(!isCustomerServiceOpen);
       } else {
-        // 吸附到四个角落
+        const rect = customerServiceBtn.getBoundingClientRect();
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
-        const buttonSize = 40;
 
-        let finalLeft = parseInt(customerServiceBtn.style.left) || 0;
-        let finalTop = parseInt(customerServiceBtn.style.top) || 0;
-
-        const splitX = viewportWidth * 0.35;
-        const splitY = viewportHeight * 0.35;
-
-        let snapX: number;
-        let snapY: number;
-
-        if (finalLeft < splitX) {
-          snapX = 0;
-        } else {
-          snapX = viewportWidth - buttonSize;
-        }
-
-        if (finalTop < splitY) {
-          snapY = 0;
-        } else {
-          snapY = viewportHeight - buttonSize;
-        }
-
-        customerServiceBtn.style.left = `${snapX}px`;
-        customerServiceBtn.style.top = `${snapY}px`;
-        customerServiceBtn.style.right = 'auto';
-        customerServiceBtn.style.bottom = 'auto';
-
-        setTimeout(() => {
-          const rect = customerServiceBtn.getBoundingClientRect();
-          const newPosition = {
-            x: viewportWidth - rect.right,
-            y: viewportHeight - rect.bottom
-          };
-          localStorage.setItem('customerServicePosition', JSON.stringify(newPosition));
-        }, 250);
+        const newPosition = {
+          x: viewportWidth - rect.right,
+          y: viewportHeight - rect.bottom
+        };
+        localStorage.setItem('customerServicePosition', JSON.stringify(newPosition));
       }
     };
 
-    customerServiceBtn.addEventListener('mousedown', (e) => {
+    customerServiceBtn.onmousedown = (e) => {
       e.preventDefault();
       handleCustomerServiceStart(e.clientX, e.clientY);
-    });
+    };
 
-    customerServiceBtn.addEventListener('touchstart', (e) => {
+    customerServiceBtn.ontouchstart = (e) => {
       e.preventDefault();
       const touch = e.touches[0];
       handleCustomerServiceStart(touch.clientX, touch.clientY);
-    }, { passive: false });
+    };
 
-    customerServiceBtn.addEventListener('mouseenter', () => {
+    customerServiceBtn.onmouseenter = () => {
       if (!csIsDragging) {
         customerServiceBtn.style.transform = 'scale(1.1)';
         customerServiceBtn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.25)';
       }
-    });
+    };
 
-    customerServiceBtn.addEventListener('mouseleave', () => {
+    customerServiceBtn.onmouseleave = () => {
       if (!csIsDragging) {
         customerServiceBtn.style.transform = 'scale(1)';
         customerServiceBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
       }
-    });
-
-    document.addEventListener('mousemove', (e) => handleCustomerServiceMove(e.clientX, e.clientY));
-    document.addEventListener('touchmove', (e) => {
-      const touch = e.touches[0];
-      handleCustomerServiceMove(touch.clientX, touch.clientY);
-    }, { passive: false });
-
-    document.addEventListener('mouseup', handleCustomerServiceEnd);
-    document.addEventListener('touchend', handleCustomerServiceEnd);
+    };
 
     // 创建客服弹窗
     const customerServicePopup = document.createElement('div');
@@ -397,26 +330,18 @@ export default function FloatingButtons() {
     container.appendChild(backToTopBtn);
     container.appendChild(customerServiceBtn);
 
-    // 添加到 body
+    // 添加到 body 的最外层（避开所有 transform）
     document.body.appendChild(container);
 
     // 清理函数
     return () => {
-      document.removeEventListener('mousemove', (e) => handleBackToTopMove(e.clientX, e.clientY));
+      document.removeEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
       document.removeEventListener('touchmove', (e) => {
         const touch = e.touches[0];
-        handleBackToTopMove(touch.clientX, touch.clientY);
+        handleMove(touch.clientX, touch.clientY);
       });
-      document.removeEventListener('mouseup', handleBackToTopEnd);
-      document.removeEventListener('touchend', handleBackToTopEnd);
-
-      document.removeEventListener('mousemove', (e) => handleCustomerServiceMove(e.clientX, e.clientY));
-      document.removeEventListener('touchmove', (e) => {
-        const touch = e.touches[0];
-        handleCustomerServiceMove(touch.clientX, touch.clientY);
-      });
-      document.removeEventListener('mouseup', handleCustomerServiceEnd);
-      document.removeEventListener('touchend', handleCustomerServiceEnd);
+      document.removeEventListener('mouseup', handleEnd);
+      document.removeEventListener('touchend', handleEnd);
 
       if (document.body.contains(container)) {
         document.body.removeChild(container);
@@ -431,6 +356,7 @@ export default function FloatingButtons() {
     if (popup && btn) {
       popup.style.display = isCustomerServiceOpen ? 'block' : 'none';
 
+      // 计算弹窗位置
       const btnRect = btn.getBoundingClientRect();
       const viewportWidth = window.innerWidth;
       const viewportHeight = window.innerHeight;
