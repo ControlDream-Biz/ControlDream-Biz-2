@@ -44,10 +44,10 @@ export default function BusinessSection() {
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 font-serif">
             三大核心业务
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto font-serif">
             以技术创新为驱动，构建多元化的业务生态体系
           </p>
         </div>
@@ -81,15 +81,15 @@ export default function BusinessSection() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-2xl font-bold text-gray-900 mb-1">
+                  <h3 className="text-2xl font-bold text-gray-900 mb-1 font-serif">
                     {business.title}
                   </h3>
-                  <p className="text-sm text-gray-500 mb-4 font-medium">
+                  <p className="text-sm text-gray-500 mb-4 font-medium font-serif">
                     {business.subtitle}
                   </p>
 
                   {/* Description */}
-                  <p className="text-gray-600 leading-relaxed mb-6">
+                  <p className="text-gray-600 leading-relaxed mb-6 font-serif">
                     {business.description}
                   </p>
 
@@ -98,7 +98,7 @@ export default function BusinessSection() {
                     {business.features.map((feature, i) => (
                       <div
                         key={i}
-                        className="flex items-center space-x-2 text-sm text-gray-700"
+                        className="flex items-center space-x-2 text-sm text-gray-700 font-serif"
                       >
                         <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${business.color}`} />
                         <span>{feature}</span>
@@ -109,10 +109,10 @@ export default function BusinessSection() {
                   {/* Stats */}
                   <div className="pt-4 border-t border-gray-200">
                     <div className="flex items-baseline space-x-2">
-                      <span className={`text-3xl font-bold bg-gradient-to-r ${business.color} bg-clip-text text-transparent`}>
+                      <span className={`text-3xl font-bold bg-gradient-to-r ${business.color} bg-clip-text text-transparent font-serif`}>
                         {business.stats.value}
                       </span>
-                      <span className="text-sm text-gray-600">{business.stats.label}</span>
+                      <span className="text-sm text-gray-600 font-serif">{business.stats.label}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -125,10 +125,10 @@ export default function BusinessSection() {
         <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-12 text-white">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h3 className="text-3xl font-bold mb-4">
+              <h3 className="text-3xl font-bold mb-4 font-serif">
                 精选案例
               </h3>
-              <p className="text-gray-300 leading-relaxed mb-6">
+              <p className="text-gray-300 leading-relaxed mb-6 font-serif">
                 我们的团队成功交付了众多标杆项目，涵盖多个领域和平台。
                 每一个项目都是我们技术实力和创新能力的最佳证明。
               </p>
@@ -140,9 +140,9 @@ export default function BusinessSection() {
                 ].map((item, index) => (
                   <li key={index} className="flex items-start space-x-3">
                     <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-xs font-bold">{index + 1}</span>
+                      <span className="text-xs font-bold font-serif">{index + 1}</span>
                     </div>
-                    <span className="text-gray-200">{item}</span>
+                    <span className="text-gray-200 font-serif">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -155,7 +155,7 @@ export default function BusinessSection() {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center text-gray-400">
                   <GamepadIcon className="w-16 h-16 mx-auto mb-4" />
-                  <p className="font-medium">项目展示区域</p>
+                  <p className="font-medium font-serif">项目展示区域</p>
                 </div>
               </div>
             </div>

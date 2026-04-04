@@ -53,10 +53,10 @@ export default function EnvironmentSection() {
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 font-serif">
             办公环境
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto font-serif">
             现代化、智能化、人性化的办公空间，激发创造力，提升工作效率
           </p>
         </div>
@@ -72,16 +72,16 @@ export default function EnvironmentSection() {
                     <Mail className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <div className="font-bold text-gray-900 text-lg">前台接待</div>
-                    <div className="text-sm text-gray-600">Welcome Area</div>
+                    <div className="font-bold text-gray-900 text-lg font-serif">前台接待</div>
+                    <div className="text-sm text-gray-600 font-serif">Welcome Area</div>
                   </div>
                 </div>
               </div>
 
-              <h3 className="text-3xl font-bold text-gray-900 mb-6">
+              <h3 className="text-3xl font-bold text-gray-900 mb-6 font-serif">
                 专业形象 · 温馨接待
               </h3>
-              <p className="text-gray-600 leading-relaxed max-w-3xl mx-auto">
+              <p className="text-gray-600 leading-relaxed max-w-3xl mx-auto font-serif">
                 前台接待区是公司的第一道门面，我们以简约大气的设计风格，
                 融入公司LOGO和品牌标识，营造出专业、现代的企业形象。
                 背景墙巧妙地展示公司名称，让每位来访者在第一时间感受到创梦的品牌魅力。
@@ -90,7 +90,7 @@ export default function EnvironmentSection() {
                 {areas[0].features.map((feature, index) => (
                   <div key={index} className="flex items-center justify-center space-x-2 text-sm">
                     <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                    <span className="text-gray-700">{feature}</span>
+                    <span className="text-gray-700 font-serif">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -121,7 +121,7 @@ export default function EnvironmentSection() {
                     <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
                       <div className="text-center">
                         <Icon className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                        <p className="text-sm font-medium text-gray-600">{area.title}</p>
+                        <p className="text-sm font-medium text-gray-600 font-serif">{area.title}</p>
                       </div>
                     </div>
                   )}
@@ -130,15 +130,15 @@ export default function EnvironmentSection() {
 
                 {/* Content */}
                 <div className="p-6">
-                  <h4 className="text-xl font-bold text-gray-900 mb-2">{area.title}</h4>
-                  <p className="text-gray-600 text-sm leading-relaxed mb-4">
+                  <h4 className="text-xl font-bold text-gray-900 mb-2 font-serif">{area.title}</h4>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4 font-serif">
                     {area.description}
                   </p>
                   <div className="space-y-2">
                     {area.features.map((feature, i) => (
                       <div
                         key={i}
-                        className="flex items-center space-x-2 text-xs text-gray-600"
+                        className="flex items-center space-x-2 text-xs text-gray-600 font-serif"
                       >
                         <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
                         <span>{feature}</span>
@@ -153,13 +153,13 @@ export default function EnvironmentSection() {
 
         {/* Call to Action */}
         <div className="mt-16 text-center bg-gradient-to-r from-blue-600 to-blue-800 rounded-3xl p-12">
-          <h3 className="text-2xl font-bold text-white mb-4">
+          <h3 className="text-2xl font-bold text-white mb-4 font-serif">
             欢迎参观我们的办公环境
           </h3>
-          <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
+          <p className="text-blue-100 mb-6 max-w-2xl mx-auto font-serif">
             预约参观，亲身体验创梦的专业办公空间和现代化设施
           </p>
-          <button className="bg-white text-blue-600 px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition-colors">
+          <button className="bg-white text-blue-600 px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition-colors font-serif">
             预约参观
           </button>
         </div>

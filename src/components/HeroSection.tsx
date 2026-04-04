@@ -5,7 +5,11 @@ import { ArrowRight, Play } from 'lucide-react';
 
 export default function HeroSection() {
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-blue-50 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Glass Background Layer */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-blue-50"></div>
+      <div className="absolute inset-0 glass opacity-30"></div>
+
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-[0.03]">
         <div className="absolute inset-0" style={{
@@ -14,25 +18,25 @@ export default function HeroSection() {
       </div>
 
       {/* Gradient Orbs */}
-      <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-blue-200 to-purple-200 rounded-full blur-3xl opacity-30 animate-pulse"></div>
-      <div className="absolute bottom-20 left-20 w-96 h-96 bg-gradient-to-br from-indigo-200 to-blue-200 rounded-full blur-3xl opacity-20"></div>
+      <div className="absolute top-20 right-20 w-96 h-96 bg-gradient-to-br from-blue-200 to-purple-200 rounded-full blur-3xl opacity-30 animate-pulse glass"></div>
+      <div className="absolute bottom-20 left-20 w-96 h-96 bg-gradient-to-br from-indigo-200 to-blue-200 rounded-full blur-3xl opacity-20 glass"></div>
 
       {/* Content */}
       <div className="container mx-auto px-6 py-20 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center glass-card rounded-3xl p-8 lg:p-12">
           {/* Tag */}
-          <div className="inline-flex items-center px-5 py-2.5 bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-700 rounded-full text-sm font-medium shadow-sm mb-8 font-sans">
+          <div className="inline-flex items-center px-5 py-2.5 bg-white/60 backdrop-blur-md rounded-full text-sm font-medium shadow-sm mb-8 font-serif border border-white/40">
             <span className="w-2 h-2 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full mr-2.5 animate-pulse"></span>
             创新科技 · 智造未来
           </div>
 
           {/* Title */}
-          <div className="space-y-3 mb-10">
-            <h1 className="text-3xl lg:text-5xl font-bold font-display tracking-tight leading-tight">
-              <span className="block bg-gradient-to-r from-red-500 via-blue-500 to-purple-600 bg-clip-text text-transparent bg-[length:300%_auto] animate-gradient">
+          <div className="space-y-2 mb-10">
+            <h1 className="text-3xl lg:text-5xl font-bold font-serif tracking-wide leading-[1.15]">
+              <span className="block bg-gradient-to-r from-red-500 via-blue-500 to-purple-600 bg-clip-text text-transparent drop-shadow-lg animate-gradient bg-[length:200%_auto]">
                 创梦计算机系统
               </span>
-              <span className="block bg-gradient-to-r from-purple-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent bg-[length:300%_auto] animate-gradient mt-2">
+              <span className="block bg-gradient-to-r from-purple-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-lg animate-gradient bg-[length:200%_auto] mt-1 lg:mt-2">
                 有限公司
               </span>
             </h1>
@@ -47,29 +51,71 @@ export default function HeroSection() {
 
           {/* Buttons */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
-            <Button size="lg" className="bg-gradient-to-r from-blue-700 to-indigo-700 text-white hover:from-blue-800 hover:to-indigo-800 px-8 h-12 text-base font-semibold shadow-lg shadow-blue-500/25 font-sans">
+            <Button
+              size="lg"
+              className="px-8 h-12 text-base font-semibold font-serif shadow-lg"
+              style={{
+                background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(99, 102, 241, 0.95) 100%)',
+                backdropFilter: 'blur(10px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(10px) saturate(180%)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 1) 0%, rgba(99, 102, 241, 1) 100%)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(59, 130, 246, 0.4), 0 3px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5)';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(99, 102, 241, 0.95) 100%)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3), 0 2px 4px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4)';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
+            >
               探索更多
               <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
-            <Button size="lg" variant="outline" className="px-8 h-12 text-base font-semibold border-2 border-slate-200 hover:bg-slate-50 text-slate-700 font-sans">
+            <Button
+              size="lg"
+              variant="outline"
+              className="px-8 h-12 text-base font-semibold font-serif"
+              style={{
+                background: 'rgba(255, 255, 255, 0.7)',
+                backdropFilter: 'blur(20px) saturate(180%)',
+                WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                border: '1px solid rgba(255, 255, 255, 0.5)',
+                color: '#334155',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06), 0 2px 4px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 0 rgba(0, 0, 0, 0.02)',
+                transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.6)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.7)';
+                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+              }}
+            >
               <Play className="mr-2 w-4 h-4" />
               观看视频
             </Button>
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-3 gap-8 pt-8 border-t border-slate-200">
-            <div>
-              <div className="text-3xl font-bold text-slate-900 font-sans">10+</div>
-              <div className="text-sm text-slate-600 mt-1 font-sans">年行业经验</div>
+          <div className="grid grid-cols-3 gap-6 pt-8 border-t border-slate-200/50">
+            <div className="glass-card rounded-2xl p-4 transition-all duration-300 hover:shadow-lg">
+              <div className="text-3xl font-bold text-slate-900 font-serif">10+</div>
+              <div className="text-sm text-slate-600 mt-1 font-serif">年行业经验</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-slate-900 font-sans">100+</div>
-              <div className="text-sm text-slate-600 mt-1 font-sans">游戏产品</div>
+            <div className="glass-card rounded-2xl p-4 transition-all duration-300 hover:shadow-lg">
+              <div className="text-3xl font-bold text-slate-900 font-serif">100+</div>
+              <div className="text-sm text-slate-600 mt-1 font-serif">游戏产品</div>
             </div>
-            <div>
-              <div className="text-3xl font-bold text-slate-900 font-sans">500+</div>
-              <div className="text-sm text-slate-600 mt-1 font-sans">合作伙伴</div>
+            <div className="glass-card rounded-2xl p-4 transition-all duration-300 hover:shadow-lg">
+              <div className="text-3xl font-bold text-slate-900 font-serif">500+</div>
+              <div className="text-sm text-slate-600 mt-1 font-serif">合作伙伴</div>
             </div>
           </div>
         </div>
@@ -77,8 +123,8 @@ export default function HeroSection() {
 
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <div className="w-6 h-10 border-2 border-slate-300 rounded-full flex items-start justify-center p-2">
-          <div className="w-1.5 h-3 bg-slate-400 rounded-full"></div>
+        <div className="glass-card w-8 h-12 border border-slate-300/50 rounded-full flex items-start justify-center p-2">
+          <div className="w-1.5 h-3 bg-slate-500 rounded-full"></div>
         </div>
       </div>
     </section>
