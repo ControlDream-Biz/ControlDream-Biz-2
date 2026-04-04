@@ -34,12 +34,14 @@ export default function HeroSection() {
               }}
             >
               <span
-                className="animate-gradient-text"
                 style={{
                   background: "linear-gradient(90deg, #EF4444, #3B82F6, #8B5CF6, #EF4444)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
+                  backgroundSize: "300% 100%",
+                  animation: "gradientMove 3s linear infinite",
+                  WebkitAnimation: "gradientMove 3s linear infinite",
                   display: "inline-block",
                 }}
               >
@@ -47,12 +49,14 @@ export default function HeroSection() {
               </span>
               <br />
               <span
-                className="animate-gradient-text"
                 style={{
                   background: "linear-gradient(90deg, #8B5CF6, #EF4444, #3B82F6, #8B5CF6)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
+                  backgroundSize: "300% 100%",
+                  animation: "gradientMove 3s linear infinite",
+                  WebkitAnimation: "gradientMove 3s linear infinite",
                   display: "inline-block",
                 }}
               >
@@ -244,6 +248,15 @@ export default function HeroSection() {
           }
           50% {
             transform: translateY(-20px);
+          }
+        }
+
+        @keyframes gradientMove {
+          0% {
+            background-position: 0% 50%;
+          }
+          100% {
+            background-position: 100% 50%;
           }
         }
 
