@@ -42,7 +42,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4 h-full flex items-center justify-between max-w-7xl">
         {/* Logo */}
         <Link href="#home" className="flex items-center space-x-2.5">
-          <div className="relative w-9 h-9 flex-shrink-0">
+          <div className="relative w-12 h-12 flex-shrink-0">
             <Image
               src="/logo-cm-final.png"
               alt="创梦计算机系统有限公司"

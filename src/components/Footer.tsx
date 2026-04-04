@@ -12,7 +12,7 @@ export default function Footer() {
           {/* Company Info */}
           <div className="space-y-6">
             <div className="flex items-center space-x-2.5">
-              <div className="relative w-10 h-10">
+              <div className="relative w-12 h-12">
                 <Image
                   src="/logo-cm-final.png"
                   alt="创梦计算机系统有限公司"
