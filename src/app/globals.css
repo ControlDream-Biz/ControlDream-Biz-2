@@ -3,6 +3,54 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ========== 全局性能优化 - 强制120Hz ========== */
+
+/* 强制GPU加速 */
+* {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* 高刷新率优化 */
+@media (min-width: 1024px) {
+  * {
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+}
+
+/* 优化渲染性能 */
+html {
+  /* 强制合成层 */
+  will-change: transform;
+  -webkit-will-change: transform;
+
+  /* 优化字体渲染 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* 优化文本渲染 */
+  text-rendering: optimizeSpeed;
+}
+
+/* 优化滚动容器 */
+body {
+  /* GPU加速 */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+
+  /* 优化滚动 */
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: smooth;
+
+  /* 防止滚动闪烁 */
+  scrollbar-width: thin;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -298,21 +346,41 @@ body::before {
 }
 
 @keyframes liquidFlow {
-  0%, 100% {
+  0% {
     transform: translate(0, 0) translateZ(0);
-    filter: none;
+    filter: brightness(1);
+  }
+  12.5% {
+    transform: translate(0.75%, 0.5%) translateZ(0);
+    filter: brightness(1.01);
   }
   25% {
     transform: translate(1.5%, 1%) translateZ(0);
     filter: brightness(1.02);
   }
+  37.5% {
+    transform: translate(0.75%, 1.25%) translateZ(0);
+    filter: brightness(1.01);
+  }
   50% {
     transform: translate(-1%, 1.5%) translateZ(0);
     filter: brightness(0.98);
   }
+  62.5% {
+    transform: translate(-1.25%, 0.75%) translateZ(0);
+    filter: brightness(0.99);
+  }
   75% {
     transform: translate(-1.5%, -1%) translateZ(0);
     filter: brightness(1.01);
+  }
+  87.5% {
+    transform: translate(-0.75%, -0.5%) translateZ(0);
+    filter: brightness(1.005);
+  }
+  100% {
+    transform: translate(0, 0) translateZ(0);
+    filter: brightness(1);
   }
 }
 
@@ -341,21 +409,41 @@ body::after {
 }
 
 @keyframes liquidFlow2 {
-  0%, 100% {
+  0% {
     transform: translate(0, 0) translateZ(0);
-    filter: none;
+    filter: brightness(1);
+  }
+  12.5% {
+    transform: translate(-0.75%, 0.5%) translateZ(0);
+    filter: brightness(0.995);
   }
   25% {
     transform: translate(-1.5%, 1%) translateZ(0);
     filter: brightness(0.99);
   }
+  37.5% {
+    transform: translate(-0.5%, 0.75%) translateZ(0);
+    filter: brightness(1.005);
+  }
   50% {
     transform: translate(1%, -1.5%) translateZ(0);
     filter: brightness(1.01);
   }
+  62.5% {
+    transform: translate(0.75%, -0.75%) translateZ(0);
+    filter: brightness(1.005);
+  }
   75% {
     transform: translate(1%, 1%) translateZ(0);
     filter: brightness(0.98);
+  }
+  87.5% {
+    transform: translate(0.5%, 0.5%) translateZ(0);
+    filter: brightness(0.99);
+  }
+  100% {
+    transform: translate(0, 0) translateZ(0);
+    filter: brightness(1);
   }
 }
 
@@ -572,6 +660,73 @@ body {
   animation: scalePulse 2s ease-in-out infinite;
 }
 
+/* ========== 120Hz 高刷新率强制优化 ========== */
+
+/* 强制120Hz刷新率支持 */
+@media (min-width: 768px) {
+  html,
+  body {
+    /* 强制高刷新率渲染 */
+    animation: force-120hz 0.0167s infinite linear;
+  }
+
+  @keyframes force-120hz {
+    0% { opacity: 0.9999; }
+    100% { opacity: 1; }
+  }
+}
+
+/* 120Hz动画优化 */
+@media screen and (min-width: 1024px) {
+  /* 液态背景加速 */
+  body::before,
+  body::after {
+    animation-duration: 20s !important;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  /* 所有动画加速 */
+  * {
+    animation-duration: 1.2s !important;
+    transition-duration: 0.3s !important;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+  }
+
+  /* GPU强制加速 */
+  *::before,
+  *::after {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+}
+
+/* 144Hz+ 超高刷新率优化 */
+@media screen and (min-width: 1440px) {
+  html,
+  body {
+    /* 强制144Hz渲染 */
+    animation: force-144hz 0.00694s infinite linear;
+  }
+
+  @keyframes force-144hz {
+    0% { opacity: 0.9999; }
+    100% { opacity: 1; }
+  }
+
+  * {
+    animation-duration: 1s !important;
+    transition-duration: 0.25s !important;
+  }
+
+  body::before,
+  body::after {
+    animation-duration: 16s !important;
+  }
+}
+
 /* 性能优化 - GPU加速 */
 .gpu-accelerated {
   transform: translateZ(0);
@@ -579,6 +734,8 @@ body {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   will-change: transform;
+  /* 强制硬件合成层 */
+  contain: layout style paint;
 }
 
 /* 平滑动画优化 */
@@ -589,6 +746,8 @@ body {
   -webkit-backface-visibility: hidden;
   perspective: 1000px;
   -webkit-perspective: 1000px;
+  /* 120Hz优化 */
+  animation-iteration-count: infinite;
 }
 
 /* 减少 repaint 和 reflow */
@@ -596,20 +755,14 @@ body {
   contain: layout style paint;
   transform: translateZ(0);
   -webkit-transform: translateZ(0);
+  /* 防止子元素影响布局 */
+  isolation: isolate;
 }
 
 /* 高刷新率优化 */
 @media (hover: hover) and (pointer: fine) {
   .smooth-animation {
     animation-duration: 1.5s;
-  }
-}
-
-/* 120Hz+ 高刷新率设备优化 */
-@media screen and (min-width: 1024px) {
-  * {
-    animation-duration: 1.2s !important;
-    transition-duration: 0.3s !important;
   }
 }
 
@@ -621,4 +774,42 @@ body {
   -webkit-backface-visibility: hidden;
   perspective: 1000px;
   -webkit-perspective: 1000px;
+  will-change: transform;
+  contain: layout style paint;
+}
+
+/* 120Hz专用动画类 */
+.hz-120 {
+  /* 确保在120Hz下运行 */
+  animation: hz-120-loop 0.0167s infinite;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+@keyframes hz-120-loop {
+  0% { transform: translateZ(0) scale(1); }
+  100% { transform: translateZ(0) scale(1.0001); }
+}
+
+/* 优化滚动性能 */
+html {
+  scroll-behavior: smooth;
+  /* 强制GPU加速滚动 */
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 优化移动端性能 */
+@media (max-width: 767px) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1.5s !important;
+    transition-duration: 0.4s !important;
+  }
+
+  body::before,
+  body::after {
+    animation-duration: 30s !important;
+  }
 }
