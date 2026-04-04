@@ -67,7 +67,7 @@ export default function EnvironmentSection() {
             <div className="relative">
               <div className="aspect-[4/3] bg-white rounded-2xl shadow-xl overflow-hidden relative">
                 <Image
-                  src="/reception-fixed.jpg"
+                  src="/reception-final.jpg"
                   alt="前台接待区"
                   fill
                   className="object-cover"
