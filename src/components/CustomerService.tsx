@@ -11,7 +11,7 @@ export default function CustomerService() {
       {/* 客服按钮 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-6 right-6 z-[100] w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center group"
+        className="fixed bottom-6 right-6 z-[9999] w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center group"
         style={{
           transform: 'translateZ(0)',
           willChange: 'transform',
@@ -48,7 +48,7 @@ export default function CustomerService() {
       {/* 客服弹窗 */}
       {isOpen && (
         <div
-          className="fixed bottom-24 right-6 z-50 w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden animate-menu-slide-down"
+          className="fixed bottom-24 right-6 z-[9999] w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden animate-menu-slide-down"
           style={{
             transform: 'translateZ(0)',
             willChange: 'transform, opacity',
