@@ -11,7 +11,7 @@ export default function BusinessSection() {
       icon: GamepadIcon,
       title: '游戏开发',
       subtitle: 'Game Development',
-      image: '/game-dev-final.jpg',
+      image: '/game-dev-updated.jpg',
       description: '专注于自主研发手机游戏类产品，打造精品游戏IP，为全球玩家带来沉浸式游戏体验。涵盖休闲益智、角色扮演、策略竞技等多个品类。',
       features: ['自研游戏引擎', '跨平台开发', '精品IP运营', '全球发行'],
       color: 'from-purple-500 to-indigo-600',
