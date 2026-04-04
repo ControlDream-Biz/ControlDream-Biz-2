@@ -11,51 +11,33 @@ export default function CustomerService() {
       {/* 客服按钮 */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed bottom-16 right-6 z-[10000] w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center justify-center group animate-float-button"
+        className="fixed bottom-24 right-8 z-[99999] w-16 h-16 bg-green-600 hover:bg-green-700 text-white rounded-full shadow-2xl flex items-center justify-center transition-all duration-300"
         style={{
-          transform: 'translateZ(0)',
-          willChange: 'transform',
-          backdropFilter: 'blur(10px)',
-          WebkitBackdropFilter: 'blur(10px)',
+          position: 'fixed',
+          bottom: '6rem',
+          right: '2rem',
+          zIndex: 99999,
+          opacity: 1,
         }}
         aria-label="客服"
       >
-        {/* 发光效果 */}
-        <div
-          className="absolute inset-0 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 opacity-0 group-hover:opacity-30 transition-opacity duration-300"
-          style={{
-            filter: 'blur(8px)',
-          }}
-        />
-
-        {/* 脉冲动画 */}
-        <div
-          className="absolute inset-0 rounded-full border-2 border-green-400 opacity-0 animate-ping"
-          style={{
-            animation: 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite',
-            animationDelay: '1s',
-          }}
-        />
-
-        {/* 图标 */}
-        {isOpen ? (
-          <X className="w-6 h-6 relative z-10 transition-transform duration-300" />
-        ) : (
-          <MessageCircle className="w-6 h-6 relative z-10 group-hover:scale-110 transition-transform duration-300" />
-        )}
+        {isOpen ? <X className="w-8 h-8" /> : <MessageCircle className="w-8 h-8" />}
       </button>
 
       {/* 客服弹窗 */}
       {isOpen && (
         <div
-          className="fixed bottom-32 right-6 z-[10000] w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden animate-menu-slide-down"
+          className="fixed bottom-24 right-24 z-[99999] w-80 bg-white rounded-2xl shadow-2xl overflow-hidden"
           style={{
-            transform: 'translateZ(0)',
-            willChange: 'transform, opacity',
+            position: 'fixed',
+            bottom: '6rem',
+            right: '6rem',
+            zIndex: 99999,
+            opacity: 1,
           }}
         >
           {/* 头部 */}
-          <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-4 text-white">
+          <div className="bg-green-600 p-4 text-white">
             <h3 className="text-lg font-bold">在线客服</h3>
             <p className="text-sm opacity-90">我们随时为您服务</p>
           </div>

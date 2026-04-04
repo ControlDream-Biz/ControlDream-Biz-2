@@ -39,10 +39,6 @@ html {
 
 /* 优化滚动容器 */
 body {
-  /* GPU加速 */
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-
   /* 优化滚动 */
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: smooth;
@@ -440,9 +436,7 @@ body::after {
 
 body {
   @apply font-sans;
-  /* GPU加速优化 */
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
+  /* GPU加速优化 - 注意：移除 transform 避免影响 fixed 定位 */
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -905,16 +899,10 @@ div[data-scroll-animate] {
     animation-duration: 20s !important;
   }
 
-  /* GPU强制加速 */
-  * {
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
-
-  *::before,
-  *::after {
+  /* GPU强制加速 - 只对子元素应用，不影响 body 的 fixed 定位 */
+  body > *,
+  body > *::before,
+  body > *::after {
     transform: translateZ(0);
     -webkit-transform: translateZ(0);
     backface-visibility: hidden;
