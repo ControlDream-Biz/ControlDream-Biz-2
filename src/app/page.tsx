@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
-import BuildingSection from '@/components/BuildingSection';
 import BusinessSection from '@/components/BusinessSection';
 import EnvironmentSection from '@/components/EnvironmentSection';
 import Footer from '@/components/Footer';
@@ -16,7 +15,6 @@ export default function Home() {
     <main className="min-h-screen">
       <Navbar />
       <HeroSection />
-      <BuildingSection />
       <BusinessSection />
       <EnvironmentSection />
       <Footer />

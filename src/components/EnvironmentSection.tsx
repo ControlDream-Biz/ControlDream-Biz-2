@@ -63,44 +63,32 @@ export default function EnvironmentSection() {
 
         {/* Feature Highlight - Front Desk */}
         <div className="mb-16 bg-gradient-to-br from-blue-50 to-gray-50 rounded-3xl p-8 lg:p-12">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="relative">
-              <div className="aspect-[4/3] bg-white rounded-2xl shadow-xl overflow-hidden relative">
-                <Image
-                  src="/reception-final.jpg"
-                  alt="前台接待区"
-                  fill
-                  className="object-cover"
-                  priority
-                />
-              </div>
-
-              {/* Info Cards */}
-              <div className="absolute -bottom-6 -right-6 bg-white rounded-xl shadow-xl p-4">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
-                    <Mail className="w-5 h-5 text-white" />
+          <div className="grid lg:grid-cols-1 gap-8">
+            <div className="text-center">
+              {/* Info Card */}
+              <div className="inline-flex bg-white rounded-xl shadow-xl p-6 mb-8">
+                <div className="flex items-center space-x-4">
+                  <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center">
+                    <Mail className="w-7 h-7 text-white" />
                   </div>
                   <div>
-                    <div className="font-bold text-gray-900 text-sm">前台接待</div>
-                    <div className="text-xs text-gray-600">Welcome Area</div>
+                    <div className="font-bold text-gray-900 text-lg">前台接待</div>
+                    <div className="text-sm text-gray-600">Welcome Area</div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div className="space-y-6">
-              <h3 className="text-3xl font-bold text-gray-900">
+              <h3 className="text-3xl font-bold text-gray-900 mb-6">
                 专业形象 · 温馨接待
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-gray-600 leading-relaxed max-w-3xl mx-auto">
                 前台接待区是公司的第一道门面，我们以简约大气的设计风格，
                 融入公司LOGO和品牌标识，营造出专业、现代的企业形象。
                 背景墙巧妙地展示公司名称，让每位来访者在第一时间感受到创梦的品牌魅力。
               </p>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mt-6">
                 {areas[0].features.map((feature, index) => (
-                  <div key={index} className="flex items-center space-x-2 text-sm">
+                  <div key={index} className="flex items-center justify-center space-x-2 text-sm">
                     <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                     <span className="text-gray-700">{feature}</span>
                   </div>
