@@ -13,7 +13,7 @@ export default function HeroSection() {
     setMounted(true);
     const timer = setTimeout(() => {
       setTextVisible(true);
-    }, 300);
+    }, 100);
     return () => clearTimeout(timer);
   }, []);
 
@@ -21,10 +21,9 @@ export default function HeroSection() {
     return text.split('').map((char, index) => (
       <span
         key={`${char}-${index}`}
-        className="char-animate inline-block"
+        className="inline-block"
         style={{
-          transitionDelay: `${delay + index * 0.1}s`,
-          animationDelay: `${delay + index * 0.1}s`,
+          transitionDelay: `${delay + index * 0.08}s`,
         }}
       >
         {char === ' ' ? '\u00A0' : char}
@@ -51,9 +50,9 @@ export default function HeroSection() {
                 position: "relative",
               }}
             >
-              <div className="relative inline-block">
+              <div className={`relative inline-block ${textVisible ? 'char-animate visible' : 'char-animate'}`}>
                 <span
-                  className={`glow-text text-3d-effect ${textVisible ? 'char-animate visible' : 'char-animate'}`}
+                  className="glow-text text-3d-effect inline-block"
                   style={{
                     background: "linear-gradient(90deg, #EF4444 0%, #F97316 14%, #3B82F6 28%, #6366F1 42%, #8B5CF6 56%, #EC4899 70%, #EF4444 85%, #F97316 100%)",
                     WebkitBackgroundClip: "text",
@@ -79,9 +78,9 @@ export default function HeroSection() {
                 ></div>
               </div>
               <br />
-              <div className="relative inline-block mt-2">
+              <div className={`relative inline-block mt-2 ${textVisible ? 'char-animate visible' : 'char-animate'}`} style={{ transitionDelay: '0.32s' }}>
                 <span
-                  className={`glow-text text-3d-effect ${textVisible ? 'char-animate visible' : 'char-animate'}`}
+                  className="glow-text text-3d-effect inline-block"
                   style={{
                     background: "linear-gradient(90deg, #8B5CF6 0%, #A855F7 16%, #EC4899 32%, #EF4444 48%, #F97316 64%, #3B82F6 80%, #8B5CF6 100%)",
                     WebkitBackgroundClip: "text",
@@ -95,7 +94,7 @@ export default function HeroSection() {
                     fontWeight: "inherit",
                   }}
                 >
-                  {renderAnimatedText("驱动未来", 0.4)}
+                  {renderAnimatedText("驱动未来", 0)}
                 </span>
                 <div
                   className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-orange-500/20 rounded-2xl blur-2xl opacity-0 transition-all duration-700"
