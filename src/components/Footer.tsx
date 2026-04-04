@@ -28,7 +28,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-gray-400 leading-relaxed text-sm">
-              专注自主研发，打造具有核心竞争力的独立产品。在游戏、软件、硬件领域持续创新，用产品改变世界。
+              在游戏、软件、硬件领域持续投入，用心做好每一款产品。
             </p>
           </div>
 

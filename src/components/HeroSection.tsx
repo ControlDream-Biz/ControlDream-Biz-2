@@ -32,7 +32,7 @@ export default function HeroSection() {
             >
               <div className="w-2 h-2 rounded-full bg-blue-600" />
               <span className="text-xs font-medium text-blue-600 uppercase tracking-wide">
-                引领产业变革
+                坚持长期主义
               </span>
             </div>
 
@@ -81,8 +81,8 @@ export default function HeroSection() {
                 transition: "all 0.6s ease-out 0.2s",
               }}
             >
-              创梦科技专注自主研发，打造具有核心竞争力的独立产品。
-              我们在游戏、软件、硬件领域持续创新，用产品改变世界。
+              我们专注于自主研发，在游戏、软件、硬件领域持续投入，
+              用脚踏实地的态度打磨好产品。
             </p>
 
             {/* CTA Buttons */}
@@ -103,7 +103,7 @@ export default function HeroSection() {
                     color: "white",
                   }}
                 >
-                  开始合作
+                  了解产品
                   <ChevronRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
@@ -116,7 +116,7 @@ export default function HeroSection() {
                     color: "#666",
                   }}
                 >
-                  了解更多
+                  关于我们
                 </Button>
               </Link>
             </div>
@@ -132,26 +132,26 @@ export default function HeroSection() {
             >
               <div>
                 <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
-                  10+
+                  8+
                 </div>
                 <div className="text-xs text-gray-500 uppercase tracking-wide">
-                  年行业经验
+                  年持续投入
                 </div>
               </div>
               <div>
                 <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
-                  200+
+                  30+
                 </div>
                 <div className="text-xs text-gray-500 uppercase tracking-wide">
-                  成功项目
+                  自研产品
                 </div>
               </div>
               <div>
                 <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
-                  50+
+                  20+
                 </div>
                 <div className="text-xs text-gray-500 uppercase tracking-wide">
-                  专业团队
+                  核心团队
                 </div>
               </div>
             </div>

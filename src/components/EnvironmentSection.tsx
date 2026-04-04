@@ -60,7 +60,7 @@ export default function EnvironmentSection() {
             办公环境
           </h2>
           <p className="text-base md:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto font-sans">
-            现代化、智能化、人性化的办公空间，激发创造力，提升工作效率
+            为团队创造一个舒适的工作环境
           </p>
         </div>
 
@@ -82,12 +82,11 @@ export default function EnvironmentSection() {
               </div>
 
               <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-6 font-sans">
-                专业形象 · 温馨接待
+                简约大方的前台
               </h3>
               <p className="text-sm md:text-base text-gray-600 leading-relaxed max-w-3xl mx-auto font-sans">
-                前台接待区是公司的第一道门面，我们以简约大气的设计风格，
-                融入公司LOGO和品牌标识，营造出专业、现代的企业形象。
-                背景墙巧妙地展示公司名称，让每位来访者在第一时间感受到创梦的品牌魅力。
+                前台是我们公司的第一印象，我们采用简约大方的设计风格，
+                融入公司LOGO，营造出专业、整洁的接待氛围。
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-3xl mx-auto mt-4 md:mt-6">
                 {areas[0].features.map((feature, index) => (
@@ -169,10 +168,10 @@ export default function EnvironmentSection() {
         {/* Call to Action */}
         <div className="mt-12 md:mt-16 text-center bg-gradient-to-r from-blue-600/95 to-blue-800/95 backdrop-blur-md rounded-2xl md:rounded-3xl p-8 md:p-12 glass-dark">
           <h3 className="text-xl md:text-2xl font-bold text-white mb-3 md:mb-4 font-sans">
-            欢迎参观我们的办公环境
+            欢迎来我们办公室坐坐
           </h3>
           <p className="text-sm md:text-base text-blue-100 mb-5 md:mb-6 max-w-2xl mx-auto font-sans">
-            预约参观，亲身体验创梦的专业办公空间和现代化设施
+            如果你对我们的产品感兴趣，欢迎预约参观，聊聊想法
           </p>
           <button className="bg-white text-blue-600 px-6 md:px-8 py-2.5 md:py-3 rounded-full font-bold hover:bg-blue-50 transition-colors text-sm md:text-base font-sans">
             预约参观
