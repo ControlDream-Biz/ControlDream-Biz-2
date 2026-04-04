@@ -1,9 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export default function FloatingButtons() {
   const [isCustomerServiceOpen, setIsCustomerServiceOpen] = useState(false);
+  const rafRef = useRef<number>();
+  const containerRef = useRef<HTMLDivElement>();
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -13,7 +15,7 @@ export default function FloatingButtons() {
   };
 
   useEffect(() => {
-    // 创建容器 - 使用 position: absolute + 动态计算
+    // 创建容器
     const container = document.createElement('div');
     container.id = 'floating-buttons-container';
     container.style.position = 'absolute';
@@ -134,18 +136,19 @@ export default function FloatingButtons() {
 
     // 添加到 body
     document.body.appendChild(container);
+    containerRef.current = container;
 
-    // 关键：动态计算位置（不使用 fixed）
+    // 关键：使用持续的 requestAnimationFrame 循环，每一帧都更新位置
     const updateButtonPosition = () => {
       const scrollY = window.scrollY;
       const viewportHeight = window.innerHeight;
       const viewportWidth = window.innerWidth;
 
-      // 更新容器位置 - 根据滚动位置动态计算
+      // 更新容器位置
       container.style.top = `${scrollY}px`;
       container.style.height = `${viewportHeight}px`;
 
-      // 更新按钮位置 - 使用 absolute 定位在容器内
+      // 更新按钮位置
       backToTopBtn.style.position = 'absolute';
       backToTopBtn.style.bottom = '80px';
       backToTopBtn.style.right = '20px';
@@ -159,27 +162,19 @@ export default function FloatingButtons() {
       customerServicePopup.style.right = '100px';
       customerServicePopup.style.display = isCustomerServiceOpen ? 'block' : 'none';
       customerServiceBtn.textContent = isCustomerServiceOpen ? '✕' : '💬';
+
+      // 下一帧继续更新
+      rafRef.current = requestAnimationFrame(updateButtonPosition);
     };
 
-    // 初始化位置
-    updateButtonPosition();
-
-    // 监听滚动和缩放事件
-    const handleScroll = () => {
-      requestAnimationFrame(updateButtonPosition);
-    };
-
-    const handleResize = () => {
-      requestAnimationFrame(updateButtonPosition);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
+    // 启动动画循环
+    rafRef.current = requestAnimationFrame(updateButtonPosition);
 
     // 清理函数
     return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
       if (document.body.contains(container)) {
         document.body.removeChild(container);
       }
