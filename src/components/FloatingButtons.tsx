@@ -4,7 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 
 export default function FloatingButtons() {
   const [isCustomerServiceOpen, setIsCustomerServiceOpen] = useState(false);
-  const rafRef = useRef<number>();
   const containerRef = useRef<HTMLDivElement>();
 
   const scrollToTop = () => {
@@ -15,24 +14,25 @@ export default function FloatingButtons() {
   };
 
   useEffect(() => {
-    // 创建容器
+    // 创建容器 - 使用 sticky 定位
     const container = document.createElement('div');
     container.id = 'floating-buttons-container';
-    container.style.position = 'fixed';
+    container.style.position = 'sticky';
+    container.style.position = '-webkit-sticky';
+    container.style.bottom = '0';
     container.style.left = '0';
-    container.style.top = '0';
     container.style.width = '100%';
-    container.style.height = '100%';
+    container.style.height = '0';
     container.style.pointerEvents = 'none';
     container.style.zIndex = '2147483647';
-    container.style.willChange = 'transform';
+    container.style.display = 'flex';
+    container.style.justifyContent = 'flex-end';
+    container.style.alignItems = 'flex-end';
+    container.style.paddingBottom = '20px';
 
     // 创建返回顶部按钮
     const backToTopBtn = document.createElement('div');
     backToTopBtn.id = 'back-to-top-btn';
-    backToTopBtn.style.position = 'absolute';
-    backToTopBtn.style.bottom = '80px';
-    backToTopBtn.style.right = '20px';
     backToTopBtn.style.width = '60px';
     backToTopBtn.style.height = '60px';
     backToTopBtn.style.backgroundColor = '#2563eb';
@@ -45,8 +45,10 @@ export default function FloatingButtons() {
     backToTopBtn.style.cursor = 'pointer';
     backToTopBtn.style.borderRadius = '50%';
     backToTopBtn.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-    backToTopBtn.style.transition = 'transform 0.2s';
+    backToTopBtn.style.transition = 'transform 0.1s ease-out';
     backToTopBtn.style.willChange = 'transform';
+    backToTopBtn.style.marginRight = '20px';
+    backToTopBtn.style.flexShrink = '0';
     backToTopBtn.textContent = '↑';
     backToTopBtn.onclick = scrollToTop;
 
@@ -61,9 +63,6 @@ export default function FloatingButtons() {
     // 创建客服按钮
     const customerServiceBtn = document.createElement('div');
     customerServiceBtn.id = 'customer-service-btn';
-    customerServiceBtn.style.position = 'absolute';
-    customerServiceBtn.style.bottom = '20px';
-    customerServiceBtn.style.right = '20px';
     customerServiceBtn.style.width = '60px';
     customerServiceBtn.style.height = '60px';
     customerServiceBtn.style.backgroundColor = '#16a34a';
@@ -76,8 +75,10 @@ export default function FloatingButtons() {
     customerServiceBtn.style.cursor = 'pointer';
     customerServiceBtn.style.borderRadius = '50%';
     customerServiceBtn.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-    customerServiceBtn.style.transition = 'transform 0.2s';
+    customerServiceBtn.style.transition = 'transform 0.1s ease-out';
     customerServiceBtn.style.willChange = 'transform';
+    customerServiceBtn.style.marginRight = '20px';
+    customerServiceBtn.style.flexShrink = '0';
     customerServiceBtn.textContent = '💬';
 
     customerServiceBtn.onclick = () => {
@@ -95,9 +96,6 @@ export default function FloatingButtons() {
     // 创建客服弹窗
     const customerServicePopup = document.createElement('div');
     customerServicePopup.id = 'customer-service-popup';
-    customerServicePopup.style.position = 'absolute';
-    customerServicePopup.style.bottom = '80px';
-    customerServicePopup.style.right = '100px';
     customerServicePopup.style.width = '320px';
     customerServicePopup.style.backgroundColor = 'white';
     customerServicePopup.style.borderRadius = '16px';
@@ -105,8 +103,10 @@ export default function FloatingButtons() {
     customerServicePopup.style.overflow = 'hidden';
     customerServicePopup.style.pointerEvents = 'auto';
     customerServicePopup.style.display = 'none';
-    customerServicePopup.style.animation = 'fadeIn 0.2s ease';
+    customerServicePopup.style.animation = 'fadeIn 0.15s ease-out';
     customerServicePopup.style.willChange = 'transform';
+    customerServicePopup.style.marginRight = '100px';
+    customerServicePopup.style.flexShrink = '0';
 
     customerServicePopup.innerHTML = `
       <div style="background-color: #16a34a; padding: 16px; color: white;">
@@ -144,35 +144,28 @@ export default function FloatingButtons() {
     `;
 
     // 添加到容器
+    container.appendChild(customerServicePopup);
     container.appendChild(backToTopBtn);
     container.appendChild(customerServiceBtn);
-    container.appendChild(customerServicePopup);
 
-    // 添加到 body
+    // 添加到 body 的最末尾
     document.body.appendChild(container);
     containerRef.current = container;
 
-    // 使用 transform 来更新位置，性能最好（不会触发重排）
-    const updateButtonPosition = () => {
-      const scrollY = window.scrollY;
-
-      // 使用 transform 代替 top，不会触发重排，性能最高
-      container.style.transform = `translateY(${scrollY}px)`;
-      customerServicePopup.style.display = isCustomerServiceOpen ? 'block' : 'none';
-      customerServiceBtn.textContent = isCustomerServiceOpen ? '✕' : '💬';
-
-      // 下一帧继续更新
-      rafRef.current = requestAnimationFrame(updateButtonPosition);
+    // 更新弹窗显示状态
+    const updatePopupDisplay = () => {
+      if (customerServicePopup) {
+        customerServicePopup.style.display = isCustomerServiceOpen ? 'block' : 'none';
+      }
+      if (customerServiceBtn) {
+        customerServiceBtn.textContent = isCustomerServiceOpen ? '✕' : '💬';
+      }
     };
 
-    // 启动动画循环
-    rafRef.current = requestAnimationFrame(updateButtonPosition);
+    updatePopupDisplay();
 
     // 清理函数
     return () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
       if (document.body.contains(container)) {
         document.body.removeChild(container);
       }
