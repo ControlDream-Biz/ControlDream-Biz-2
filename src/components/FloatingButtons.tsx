@@ -121,7 +121,7 @@ export default function FloatingButtons() {
       if (!hasMoved) {
         scrollToTop();
       } else {
-        // 吸附到四个角落（左上、右上、左下、右下）
+        // 吸附到四个角落（调整区域大小，让角落区域更大）
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
         const buttonSize = 40;
@@ -129,26 +129,24 @@ export default function FloatingButtons() {
         let finalLeft = parseInt(backToTopBtn.style.left) || 0;
         let finalTop = parseInt(backToTopBtn.style.top) || 0;
 
-        const centerX = viewportWidth / 2;
-        const centerY = viewportHeight / 2;
+        // 调整分界线：从 50% 改为 35%，让角落区域更大
+        const splitX = viewportWidth * 0.35; // 左侧 35%，右侧 65%
+        const splitY = viewportHeight * 0.35; // 上侧 35%，下侧 65%
 
-        // 判断按钮在哪个区域
         let snapX: number;
         let snapY: number;
 
-        if (finalLeft < centerX) {
-          // 左侧区域
+        // 判断水平位置（左侧 35% vs 右侧 65%）
+        if (finalLeft < splitX) {
           snapX = 0; // 吸附到左边
         } else {
-          // 右侧区域
           snapX = viewportWidth - buttonSize; // 吸附到右边
         }
 
-        if (finalTop < centerY) {
-          // 上半部分
+        // 判断垂直位置（上侧 35% vs 下侧 65%）
+        if (finalTop < splitY) {
           snapY = 0; // 吸附到上边
         } else {
-          // 下半部分
           snapY = viewportHeight - buttonSize; // 吸附到下边
         }
 
@@ -270,7 +268,7 @@ export default function FloatingButtons() {
       if (!csHasMoved) {
         setIsCustomerServiceOpen(!isCustomerServiceOpen);
       } else {
-        // 吸附到四个角落
+        // 吸附到四个角落（调整区域大小）
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
         const buttonSize = 40;
@@ -278,19 +276,20 @@ export default function FloatingButtons() {
         let finalLeft = parseInt(customerServiceBtn.style.left) || 0;
         let finalTop = parseInt(customerServiceBtn.style.top) || 0;
 
-        const centerX = viewportWidth / 2;
-        const centerY = viewportHeight / 2;
+        // 调整分界线：从 50% 改为 35%
+        const splitX = viewportWidth * 0.35;
+        const splitY = viewportHeight * 0.35;
 
         let snapX: number;
         let snapY: number;
 
-        if (finalLeft < centerX) {
+        if (finalLeft < splitX) {
           snapX = 0;
         } else {
           snapX = viewportWidth - buttonSize;
         }
 
-        if (finalTop < centerY) {
+        if (finalTop < splitY) {
           snapY = 0;
         } else {
           snapY = viewportHeight - buttonSize;
