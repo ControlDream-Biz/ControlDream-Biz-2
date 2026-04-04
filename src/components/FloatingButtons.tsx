@@ -18,35 +18,37 @@ export default function FloatingButtons() {
     if (isInitialized.current) return;
     isInitialized.current = true;
 
-    // 创建容器 - 使用 fixed 定位固定在视窗右下角
-    const container = document.createElement('div');
-    container.id = 'floating-buttons-container';
-    container.style.position = 'fixed';
-    container.style.top = '0';
-    container.style.left = '0';
-    container.style.width = '100vw';
-    container.style.height = '100vh';
-    container.style.pointerEvents = 'none';
-    container.style.zIndex = '2147483647';
-    container.style.overflow = 'hidden';
-    container.style.paddingBottom = 'env(safe-area-inset-bottom)'; // 适配底部安全区域
+    // 从 localStorage 读取保存的位置
+    const savedBackToTopPos = localStorage.getItem('backToTopPosition');
+    const savedCustomerServicePos = localStorage.getItem('customerServicePosition');
 
-    // 创建按钮组容器（竖排，固定在右下角）
-    const buttonGroup = document.createElement('div');
-    buttonGroup.style.position = 'absolute';
-    // 使用 calc 确保按钮不会被浏览器菜单栏挡住
-    buttonGroup.style.bottom = 'calc(20px + env(safe-area-inset-bottom))';
-    buttonGroup.style.right = '20px';
-    buttonGroup.style.display = 'flex';
-    buttonGroup.style.flexDirection = 'column';
-    buttonGroup.style.gap = '12px';
-    buttonGroup.style.pointerEvents = 'auto';
+    let backToTopBottom = 100;
+    let customerServiceBottom = 30;
 
-    // 创建返回顶部按钮
+    if (savedBackToTopPos) {
+      try {
+        backToTopBottom = JSON.parse(savedBackToTopPos).y;
+      } catch (e) {
+        console.error('Failed to parse backToTopPosition:', e);
+      }
+    }
+    if (savedCustomerServicePos) {
+      try {
+        customerServiceBottom = JSON.parse(savedCustomerServicePos).y;
+      } catch (e) {
+        console.error('Failed to parse customerServicePosition:', e);
+      }
+    }
+
+    // 创建返回顶部按钮 - 直接使用 position: fixed
     const backToTopBtn = document.createElement('div');
     backToTopBtn.id = 'back-to-top-btn';
+    backToTopBtn.style.position = 'fixed';
+    backToTopBtn.style.bottom = `${backToTopBottom}px`;
+    backToTopBtn.style.right = '30px';
     backToTopBtn.style.width = '40px';
     backToTopBtn.style.height = '40px';
+    backToTopBtn.style.borderRadius = '50%';
     backToTopBtn.style.backgroundColor = 'rgba(37, 99, 235, 0.9)';
     backToTopBtn.style.color = 'white';
     backToTopBtn.style.display = 'flex';
@@ -54,11 +56,11 @@ export default function FloatingButtons() {
     backToTopBtn.style.justifyContent = 'center';
     backToTopBtn.style.fontSize = '18px';
     backToTopBtn.style.cursor = 'pointer';
-    backToTopBtn.style.borderRadius = '50%';
     backToTopBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
     backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
     backToTopBtn.style.willChange = 'transform';
-    backToTopBtn.style.flexShrink = '0';
+    backToTopBtn.style.zIndex = '2147483647';
+    backToTopBtn.style.pointerEvents = 'auto';
     backToTopBtn.textContent = '↑';
 
     backToTopBtn.addEventListener('click', scrollToTop);
@@ -73,11 +75,15 @@ export default function FloatingButtons() {
       backToTopBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
     });
 
-    // 创建客服按钮
+    // 创建客服按钮 - 直接使用 position: fixed
     const customerServiceBtn = document.createElement('div');
     customerServiceBtn.id = 'customer-service-btn';
+    customerServiceBtn.style.position = 'fixed';
+    customerServiceBtn.style.bottom = `${customerServiceBottom}px`;
+    customerServiceBtn.style.right = '30px';
     customerServiceBtn.style.width = '40px';
     customerServiceBtn.style.height = '40px';
+    customerServiceBtn.style.borderRadius = '50%';
     customerServiceBtn.style.backgroundColor = 'rgba(22, 163, 74, 0.9)';
     customerServiceBtn.style.color = 'white';
     customerServiceBtn.style.display = 'flex';
@@ -85,11 +91,11 @@ export default function FloatingButtons() {
     customerServiceBtn.style.justifyContent = 'center';
     customerServiceBtn.style.fontSize = '18px';
     customerServiceBtn.style.cursor = 'pointer';
-    customerServiceBtn.style.borderRadius = '50%';
     customerServiceBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
     customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
     customerServiceBtn.style.willChange = 'transform';
-    customerServiceBtn.style.flexShrink = '0';
+    customerServiceBtn.style.zIndex = '2147483647';
+    customerServiceBtn.style.pointerEvents = 'auto';
     customerServiceBtn.textContent = '💬';
 
     customerServiceBtn.addEventListener('click', () => {
@@ -106,11 +112,14 @@ export default function FloatingButtons() {
       customerServiceBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
     });
 
-    // 创建客服弹窗
+    // 创建客服弹窗 - 直接使用 position: fixed
     const customerServicePopup = document.createElement('div');
     customerServicePopup.id = 'customer-service-popup';
+    customerServicePopup.style.position = 'fixed';
+    customerServicePopup.style.bottom = `${customerServiceBottom + 70}px`;
+    customerServicePopup.style.right = '30px';
     customerServicePopup.style.width = '280px';
-    customerServicePopup.style.maxWidth = 'calc(100vw - 80px)';
+    customerServicePopup.style.maxWidth = 'calc(100vw - 60px)';
     customerServicePopup.style.backgroundColor = 'white';
     customerServicePopup.style.borderRadius = '12px';
     customerServicePopup.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.12)';
@@ -120,7 +129,7 @@ export default function FloatingButtons() {
     customerServicePopup.style.animation = 'fadeIn 0.2s ease-out';
     customerServicePopup.style.willChange = 'transform';
     customerServicePopup.style.backdropFilter = 'blur(10px)';
-    customerServicePopup.style.flexShrink = '0';
+    customerServicePopup.style.zIndex = '2147483647';
 
     customerServicePopup.innerHTML = `
       <div style="background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); padding: 14px; color: white;">
@@ -157,21 +166,21 @@ export default function FloatingButtons() {
       </div>
     `;
 
-    // 添加到按钮组（竖排）
-    buttonGroup.appendChild(customerServicePopup);
-    buttonGroup.appendChild(backToTopBtn);
-    buttonGroup.appendChild(customerServiceBtn);
-
-    // 添加到容器
-    container.appendChild(buttonGroup);
-
-    // 添加到 body
-    document.body.appendChild(container);
+    // 直接添加到 body
+    document.body.appendChild(customerServicePopup);
+    document.body.appendChild(backToTopBtn);
+    document.body.appendChild(customerServiceBtn);
 
     // 清理函数
     return () => {
-      if (document.body.contains(container)) {
-        document.body.removeChild(container);
+      if (document.body.contains(backToTopBtn)) {
+        document.body.removeChild(backToTopBtn);
+      }
+      if (document.body.contains(customerServiceBtn)) {
+        document.body.removeChild(customerServiceBtn);
+      }
+      if (document.body.contains(customerServicePopup)) {
+        document.body.removeChild(customerServicePopup);
       }
     };
   }, []);
