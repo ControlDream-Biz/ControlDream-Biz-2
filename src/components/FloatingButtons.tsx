@@ -226,20 +226,20 @@ export default function FloatingButtons() {
     };
   }, []);
 
-  // 更新弹窗显示 - 极速动画（再快3倍）
+  // 更新弹窗显示 - 超极速动画（再快3倍）
   useEffect(() => {
     const popup = document.getElementById('customer-service-popup');
     const btn = document.getElementById('customer-service-btn');
     if (!popup || !btn) return;
 
     if (isCustomerServiceOpen) {
-      // 显示弹窗 - 极速进入
+      // 显示弹窗 - 超极速进入
       popup.style.display = 'block';
 
       // 使用 requestAnimationFrame 确保样式已应用
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          popup.style.transition = 'opacity 0.03s cubic-bezier(0.4, 0, 0.2, 1), transform 0.03s cubic-bezier(0.4, 0, 0.2, 1)';
+          popup.style.transition = 'opacity 0.01s cubic-bezier(0.4, 0, 0.2, 1), transform 0.01s cubic-bezier(0.4, 0, 0.2, 1)';
           popup.style.opacity = '1';
           popup.style.transform = 'scale(1) translateY(0)';
         });
@@ -247,8 +247,8 @@ export default function FloatingButtons() {
 
       btn.textContent = '✕';
     } else {
-      // 隐藏弹窗 - 极速退出
-      popup.style.transition = 'opacity 0.03s cubic-bezier(0.4, 0, 0.2, 1), transform 0.03s cubic-bezier(0.4, 0, 0.2, 1)';
+      // 隐藏弹窗 - 超极速退出
+      popup.style.transition = 'opacity 0.01s cubic-bezier(0.4, 0, 0.2, 1), transform 0.01s cubic-bezier(0.4, 0, 0.2, 1)';
       popup.style.opacity = '0';
       popup.style.transform = 'scale(0.9) translateY(10px)';
 
@@ -262,12 +262,12 @@ export default function FloatingButtons() {
 
       popup.addEventListener('transitionend', animationEndHandler);
 
-      // 兜底：30ms 后强制隐藏
+      // 兜底：10ms 后强制隐藏
       setTimeout(() => {
         if (!isCustomerServiceOpen && popup.style.display !== 'none') {
           popup.style.display = 'none';
         }
-      }, 30);
+      }, 10);
 
       btn.textContent = '💬';
     }
