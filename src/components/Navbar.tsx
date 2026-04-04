@@ -28,11 +28,12 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'glass-nav py-3'
-          : 'bg-transparent py-4'
+          ? 'bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100'
+          : 'bg-white'
       }`}
+      style={{ backdropFilter: scrolled ? 'blur(20px)' : 'none' }}
     >
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
@@ -46,123 +47,112 @@ export default function Navbar() {
                 className="object-contain"
               />
             </div>
-            <span
-              className="text-lg font-bold transition-colors tracking-tight font-sans animate-gradient"
-              style={{
-                background: 'linear-gradient(135deg, #ef4444 0%, #3b82f6 50%, #9333ea 100%)',
-                backgroundSize: '200% auto',
-                WebkitBackgroundClip: 'text',
-                backgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
+            <span className="text-base font-semibold tracking-tight text-gray-900">
               创梦计算机系统有限公司
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-1">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-all duration-300 relative group"
-                style={{ padding: '8px 12px', borderRadius: '8px' }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(59, 130, 246, 0.08)';
-                  e.currentTarget.style.transform = 'translateY(-1px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
+                className="text-sm font-medium text-gray-600 hover:text-blue-600 transition-colors duration-200 px-5 py-2 rounded-lg hover:bg-blue-50/50"
               >
                 {item.name}
-                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 transition-all duration-300 group-hover:w-3/4 group-hover:left-1/8 rounded-full"></span>
               </Link>
             ))}
-            <Button className="glass-button font-semibold" style={{ borderRadius: '10px' }}>
+            <Button
+              className="font-medium"
+              style={{
+                borderRadius: '12px',
+                height: '40px',
+                background: 'linear-gradient(135deg, #0052D9 0%, #0066FF 100%)',
+                border: 'none',
+                color: 'white',
+              }}
+            >
               联系我们
             </Button>
           </div>
 
-          {/* Mobile menu button - Apple style elastic animation */}
+          {/* Mobile menu button */}
           <button
-            className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-2xl transition-all duration-300 hover:bg-gray-100/80 active:scale-95"
+            className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-lg transition-colors duration-200 hover:bg-gray-100"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            style={{
-              backdropFilter: 'blur(10px)',
-            }}
           >
-            <div className="relative w-6 h-6">
+            <div className="relative w-5 h-5">
               {/* Top line */}
               <span
-                className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all ${
+                className={`absolute left-0 w-5 h-0.5 bg-gray-800 rounded-full transition-all ${
                   mobileMenuOpen ? 'top-2.5 rotate-45' : 'top-0'
                 }`}
                 style={{
-                  transitionDuration: '0.4s',
-                  transitionTimingFunction: mobileMenuOpen
-                    ? 'cubic-bezier(0.68, -0.6, 0.32, 1.6)'
-                    : 'cubic-bezier(0.32, 0, 0.68, 0)',
-                  transform: mobileMenuOpen ? 'translateY(6px) rotate(45deg) scaleX(1.1)' : 'translateY(0) rotate(0) scaleX(1)',
+                  transitionDuration: '0.3s',
                 }}
               />
               {/* Middle line */}
               <span
-                className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all ${
-                  mobileMenuOpen ? 'opacity-0' : 'top-2.5'
+                className={`absolute left-0 w-5 h-0.5 bg-gray-800 rounded-full transition-all ${
+                  mobileMenuOpen ? 'opacity-0' : 'top-2'
                 }`}
                 style={{
-                  transitionDuration: '0.3s',
-                  transitionTimingFunction: mobileMenuOpen
-                    ? 'cubic-bezier(0.68, -0.6, 0.32, 1.6)'
-                    : 'cubic-bezier(0.32, 0, 0.68, 0)',
-                  transform: mobileMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
+                  transitionDuration: '0.2s',
                 }}
               />
               {/* Bottom line */}
               <span
-                className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all ${
-                  mobileMenuOpen ? 'top-2.5 -rotate-45' : 'top-5'
+                className={`absolute left-0 w-5 h-0.5 bg-gray-800 rounded-full transition-all ${
+                  mobileMenuOpen ? 'top-2.5 -rotate-45' : 'top-4'
                 }`}
                 style={{
-                  transitionDuration: '0.4s',
-                  transitionTimingFunction: mobileMenuOpen
-                    ? 'cubic-bezier(0.68, -0.6, 0.32, 1.6)'
-                    : 'cubic-bezier(0.32, 0, 0.68, 0)',
-                  transform: mobileMenuOpen ? 'translateY(6px) rotate(-45deg) scaleX(1.1)' : 'translateY(0) rotate(0) scaleX(1)',
+                  transitionDuration: '0.3s',
                 }}
               />
             </div>
           </button>
         </div>
 
-        {/* Mobile Navigation - Apple style elastic animation */}
+        {/* Mobile Navigation - iOS应用打开风格动画 */}
         {mobileMenuOpen && (
           <div
-            className="md:hidden mt-4 pb-4 space-y-4 animate-menu-slide-down"
+            className="md:hidden animate-menu-slide-down"
             style={{
-              backdropFilter: 'blur(20px) saturate(150%)',
-              background: 'rgba(255, 255, 255, 0.95)',
-              borderRadius: '20px',
-              padding: '24px',
-              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.5) inset',
+              position: 'absolute',
+              top: '60px',
+              right: '0',
+              left: '0',
+              zIndex: 40,
+              backdropFilter: 'blur(20px) saturate(180%)',
+              background: 'rgba(255, 255, 255, 0.92)',
+              borderRadius: '0 0 24px 24px',
+              padding: '32px 24px',
+              boxShadow: '0 8px 40px rgba(0, 0, 0, 0.08), 0 2px 16px rgba(0, 0, 0, 0.04)',
+              transformOrigin: 'top center',
             }}
           >
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="block text-base font-medium text-gray-700 hover:text-blue-600 transition-all duration-300 py-2 px-4 rounded-lg hover:bg-blue-50/50"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                {item.name}
-              </Link>
-            ))}
+            <div className="space-y-3">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="block text-base font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 py-3 px-4 rounded-xl hover:bg-blue-50"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
             <Button
-              className="w-full glass-button font-semibold mt-4"
-              style={{ borderRadius: '14px', height: '48px' }}
+              className="w-full mt-6 font-medium"
+              style={{
+                borderRadius: '16px',
+                height: '52px',
+                background: 'linear-gradient(135deg, #0052D9 0%, #0066FF 100%)',
+                border: 'none',
+                color: 'white',
+              }}
               onClick={() => setMobileMenuOpen(false)}
             >
               联系我们
