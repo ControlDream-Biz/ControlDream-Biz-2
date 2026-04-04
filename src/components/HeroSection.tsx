@@ -16,6 +16,7 @@ export default function HeroSection() {
     <section
       id="home"
       className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center bg-white"
+      style={{ minHeight: 'calc(100vh - 60px)' }}
     >
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -28,11 +29,12 @@ export default function HeroSection() {
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out",
+                willChange: mounted ? "auto" : "transform, opacity",
               }}
             >
               <div className="w-2 h-2 rounded-full bg-blue-600" />
               <span className="text-xs font-medium text-blue-600 uppercase tracking-wide">
-                坚持长期主义
+                用心做产品
               </span>
             </div>
 
@@ -43,6 +45,8 @@ export default function HeroSection() {
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.1s",
+                willChange: mounted ? "auto" : "transform, opacity",
+                minHeight: "120px",
               }}
             >
               <span
@@ -79,6 +83,8 @@ export default function HeroSection() {
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.2s",
+                willChange: mounted ? "auto" : "transform, opacity",
+                minHeight: "60px",
               }}
             >
               我们专注于自主研发，在游戏、软件、硬件领域持续投入，
@@ -92,6 +98,8 @@ export default function HeroSection() {
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.3s",
+                willChange: mounted ? "auto" : "transform, opacity",
+                minHeight: "48px",
               }}
             >
               <Link href="#contact">
@@ -101,6 +109,7 @@ export default function HeroSection() {
                     background: "linear-gradient(135deg, #0052D9 0%, #0066FF 100%)",
                     border: "none",
                     color: "white",
+                    minWidth: "120px",
                   }}
                 >
                   了解产品
@@ -109,12 +118,12 @@ export default function HeroSection() {
               </Link>
               <Link href="#services">
                 <Button
-                  variant="outline"
-                  className="h-12 px-8 text-sm font-medium rounded-lg hover:bg-gray-50 transition-all duration-200"
+                  className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg hover:bg-gray-50 transition-all duration-200"
                   style={{
-                    borderColor: "#e5e5e5",
+                    background: "white",
+                    border: "1px solid #e5e5e5",
                     color: "#666",
-                    borderWidth: "1px",
+                    minWidth: "120px",
                   }}
                 >
                   关于我们
@@ -129,6 +138,8 @@ export default function HeroSection() {
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.4s",
+                willChange: mounted ? "auto" : "transform, opacity",
+                minHeight: "80px",
               }}
             >
               <div>

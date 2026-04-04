@@ -33,13 +33,19 @@ export default function Navbar() {
           ? 'bg-white/98 backdrop-blur-xl shadow-sm'
           : 'bg-white'
       }`}
-      style={{ 
-        backdropFilter: scrolled ? 'blur(20px)' : 'none',
+      style={{
         height: '60px',
-        borderBottom: scrolled ? '1px solid #e5e5e5' : 'none',
+        minHeight: '60px',
       }}
     >
-      <div className="container mx-auto px-4 h-full flex items-center justify-between max-w-7xl">
+      <div
+        className="container mx-auto px-4 h-full flex items-center justify-between max-w-7xl"
+        style={{
+          backdropFilter: scrolled ? 'blur(20px)' : 'none',
+          borderBottom: scrolled ? '1px solid #e5e5e5' : 'none',
+          transition: 'all 0.3s ease',
+        }}
+      >
         {/* Logo */}
         <Link href="#home" className="flex items-center space-x-1">
           <div className="relative w-10 h-10 flex-shrink-0 -mt-0.5">

@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: '%s | 创梦计算机系统有限公司',
   },
   description:
-    '创梦计算机系统有限公司，专注于自主游戏开发、基础软件开发与硬件创新，致力于为用户创造卓越的数字体验。',
+    '创梦计算机系统有限公司，在游戏、软件、硬件领域持续投入，用心做好每一款产品。',
   keywords: [
     '创梦',
     '创梦计算机系统',
@@ -38,10 +38,20 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: '创梦计算机系统有限公司' }],
   generator: 'Next.js',
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+    userScalable: true,
+  },
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0a0a0a' },
+  ],
   openGraph: {
     title: '创梦计算机系统有限公司',
     description:
-      '专注于自主游戏开发、基础软件开发与硬件创新，致力于为用户创造卓越的数字体验。',
+      '在游戏、软件、硬件领域持续投入，用心做好每一款产品。',
     siteName: '创梦计算机系统有限公司',
     locale: 'zh_CN',
     type: 'website',
