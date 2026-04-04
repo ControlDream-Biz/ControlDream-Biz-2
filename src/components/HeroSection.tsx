@@ -34,13 +34,13 @@ export default function HeroSection() {
             >
               <span
                 style={{
-                  background: "linear-gradient(90deg, #EF4444, #3B82F6, #8B5CF6, #EF4444)",
+                  background: "linear-gradient(90deg, #EF4444 0%, #3B82F6 25%, #8B5CF6 50%, #EF4444 75%, #EF4444 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  backgroundSize: "300% 100%",
-                  animation: "gradientMove 8s linear infinite",
-                  WebkitAnimation: "gradientMove 8s linear infinite",
+                  backgroundSize: "400% 100%",
+                  animation: "gradientMove 12s linear infinite",
+                  WebkitAnimation: "gradientMove 12s linear infinite",
                   display: "inline-block",
                 }}
               >
@@ -49,13 +49,13 @@ export default function HeroSection() {
               <br />
               <span
                 style={{
-                  background: "linear-gradient(90deg, #8B5CF6, #EF4444, #3B82F6, #8B5CF6)",
+                  background: "linear-gradient(90deg, #8B5CF6 0%, #EF4444 25%, #3B82F6 50%, #8B5CF6 75%, #8B5CF6 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  backgroundSize: "300% 100%",
-                  animation: "gradientMove 8s linear infinite",
-                  WebkitAnimation: "gradientMove 8s linear infinite",
+                  backgroundSize: "400% 100%",
+                  animation: "gradientMove 12s linear infinite",
+                  WebkitAnimation: "gradientMove 12s linear infinite",
                   display: "inline-block",
                 }}
               >

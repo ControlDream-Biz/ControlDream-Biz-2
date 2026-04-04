@@ -137,8 +137,8 @@ body {
 }
 
 .animate-gradient {
-  animation: gradient 8s linear infinite;
-  background-size: 300% auto;
+  animation: gradient 12s linear infinite;
+  background-size: 400% auto;
 }
 
 @keyframes gradientMove {
@@ -151,9 +151,9 @@ body {
 }
 
 .animate-gradient-text {
-  background-size: 300% 100%;
-  animation: gradientMove 8s linear infinite;
-  -webkit-animation: gradientMove 8s linear infinite;
+  background-size: 400% 100%;
+  animation: gradientMove 12s linear infinite;
+  -webkit-animation: gradientMove 12s linear infinite;
 }
 
 /* iOS应用打开风格动画 - 从按钮位置线性放大弹出 */
