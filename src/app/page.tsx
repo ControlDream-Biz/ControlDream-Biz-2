@@ -4,6 +4,7 @@ import HeroSection from '@/components/HeroSection';
 import BusinessSection from '@/components/BusinessSection';
 import EnvironmentSection from '@/components/EnvironmentSection';
 import Footer from '@/components/Footer';
+import BackToTop from '@/components/BackToTop';
 import PerformanceOptimizer from '@/components/PerformanceOptimizer';
 // import PerformanceMonitor from '@/components/PerformanceMonitor';
 
@@ -22,6 +23,7 @@ export default function Home() {
       <BusinessSection />
       <EnvironmentSection />
       <Footer />
+      <BackToTop />
     </main>
   );
 }

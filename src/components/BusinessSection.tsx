@@ -22,9 +22,10 @@ export default function BusinessSection() {
               const items = section.querySelectorAll('[data-scroll-item]');
               items.forEach((item, index) => {
                 setTimeout(() => {
-                  item.classList.remove('opacity-0', 'translate-x-10', 'scale-95');
-                  item.style.transform = 'translateX(0) scale(1)';
-                  item.style.opacity = '1';
+                  const itemElement = item as HTMLElement;
+                  itemElement.classList.remove('opacity-0', 'translate-x-10', 'scale-95');
+                  itemElement.style.transform = 'translateX(0) scale(1)';
+                  itemElement.style.opacity = '1';
                 }, index * 200);
               });
             }
@@ -137,12 +138,14 @@ export default function BusinessSection() {
 
                 {/* Image */}
                 <div className="relative aspect-video overflow-hidden">
-                  <Image
-                    src={business.image}
-                    alt={business.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
+                  {business.image && (
+                    <Image
+                      src={business.image}
+                      alt={business.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                  )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 </div>
 

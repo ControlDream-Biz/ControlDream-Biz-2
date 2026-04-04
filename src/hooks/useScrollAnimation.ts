@@ -93,10 +93,16 @@ export function addScrollAnimation(
  * 为所有文本元素自动添加滚动动画
  */
 export function autoScrollAnimate() {
-  // 只选择特定的文本元素，避免选择所有div
-  const textElements = document.querySelectorAll(
-    'h1, h2, h3, h4, h5, h6, p.text, span.text, .text-content, [data-animate-text]'
-  );
+  // 选择所有可能的文本元素
+  const selectors = [
+    'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+    'p', 'span',
+    '.text-\\[\\d+px\\]', // Tailwind动态文本类
+    '[data-animate-text]'
+  ];
+
+  const selector = selectors.join(', ');
+  const textElements = document.querySelectorAll(selector);
 
   textElements.forEach((element, index) => {
     // 跳过已经添加动画的元素
@@ -104,23 +110,35 @@ export function autoScrollAnimate() {
       return;
     }
 
+    // 跳过导航栏、按钮等交互元素
+    const parentInteractive = element.closest('button, a, nav, [role="button"]');
+    if (parentInteractive) {
+      return;
+    }
+
     // 只为有内容的文本元素添加动画
     const textContent = element.textContent?.trim();
-    if (!textContent || textContent.length < 2) {
+    if (!textContent || textContent.length < 1) {
       return;
     }
 
     // 检查父元素是否已有动画
-    const parentHasAnimation = element.parentElement?.hasAttribute(
-      'data-scroll-animate'
-    );
+    let parent = element.parentElement;
+    let parentHasAnimation = false;
+    while (parent && parent !== document.body) {
+      if (parent.hasAttribute('data-scroll-animate') && parent !== element) {
+        parentHasAnimation = true;
+        break;
+      }
+      parent = parent.parentElement;
+    }
     if (parentHasAnimation) {
       return;
     }
 
     // 添加动画
     addScrollAnimation(element as HTMLElement, {
-      delay: Math.min(index * 50, 500), // 最多延迟500ms
+      delay: Math.min(index * 30, 600), // 最多延迟600ms
       direction: 'up',
     });
   });

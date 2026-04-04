@@ -5,7 +5,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 export function use120Hz() {
-  const rafRef = useRef<number>();
+  const rafRef = useRef<number | undefined>(undefined);
   const lastTimeRef = useRef<number>(0);
 
   useEffect(() => {

@@ -16,6 +16,27 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // 点击空白处自动关闭移动端菜单
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (mobileMenuOpen) {
+        const target = event.target as HTMLElement;
+        // 检查点击是否在导航栏或菜单内
+        const navbar = target.closest('nav');
+        const menu = target.closest('[data-mobile-menu]');
+
+        if (!navbar && !menu) {
+          setMobileMenuOpen(false);
+        }
+      }
+    };
+
+    if (mobileMenuOpen) {
+      document.addEventListener('click', handleClickOutside);
+      return () => document.removeEventListener('click', handleClickOutside);
+    }
+  }, [mobileMenuOpen]);
+
   const navItems = [
     { name: '首页', href: '#home' },
     { name: '关于我们', href: '#about' },
@@ -116,6 +137,7 @@ export default function Navbar() {
         {/* Mobile Navigation - iOS应用打开风格动画 */}
         {mobileMenuOpen && (
           <div
+            data-mobile-menu="true"
             className="md:hidden animate-menu-slide-down"
             style={{
               position: 'absolute',
