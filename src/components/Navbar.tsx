@@ -45,17 +45,17 @@ export default function Navbar() {
           <div className="relative w-10 h-10 flex-shrink-0">
             <Image
               src="/logo-cm-final.png"
-              alt="创梦科技"
+              alt="创梦计算机系统有限公司"
               fill
               className="object-contain"
             />
           </div>
           <div className="flex flex-col flex-shrink-0">
             <span className="text-base font-bold tracking-tight text-gray-900 leading-none">
-              创梦科技
+              创梦计算机系统有限公司
             </span>
             <span className="text-xs font-medium text-gray-500 tracking-wide uppercase mt-0.5">
-              DreamTech
+              Chuangmeng Computer System
             </span>
           </div>
         </Link>

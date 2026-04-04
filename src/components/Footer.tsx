@@ -15,15 +15,15 @@ export default function Footer() {
               <div className="relative w-12 h-12">
                 <Image
                   src="/logo-cm-final.png"
-                  alt="创梦 LOGO"
+                  alt="创梦计算机系统有限公司"
                   fill
                   className="object-contain"
                 />
               </div>
               <div>
-                <h3 className="text-lg font-bold leading-tight">创梦科技</h3>
+                <h3 className="text-lg font-bold leading-tight">创梦计算机系统有限公司</h3>
                 <p className="text-xs text-gray-400 uppercase tracking-wide mt-0.5">
-                  DreamTech
+                  Chuangmeng Computer System
                 </p>
               </div>
             </div>
