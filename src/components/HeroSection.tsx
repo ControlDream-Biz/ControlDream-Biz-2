@@ -25,26 +25,19 @@ export default function HeroSection() {
       <div className="container mx-auto px-6 py-20 relative z-10">
         <div className="max-w-4xl mx-auto text-center glass-card rounded-3xl p-8 lg:p-12">
           {/* Tag */}
-          <div className="inline-flex items-center px-5 py-2.5 bg-white/60 backdrop-blur-md rounded-full text-sm font-medium shadow-sm mb-8 font-serif border border-white/40">
-            <span className="w-2 h-2 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full mr-2.5 animate-pulse"></span>
-            创新科技 · 智造未来
+          <div className="inline-flex items-center px-6 py-3 bg-white/60 backdrop-blur-md rounded-full text-lg font-medium shadow-sm mb-10 font-serif border border-white/40">
+            <span className="w-2.5 h-2.5 bg-gradient-to-r from-red-500 via-blue-500 to-purple-600 rounded-full mr-3 animate-pulse"></span>
+            <span className="bg-gradient-to-r from-red-500 via-blue-500 to-purple-600 bg-clip-text text-transparent font-bold">
+              创新科技 · 智造未来
+            </span>
           </div>
 
-          {/* Title */}
-          <div className="space-y-2 mb-10">
-            <h1 className="text-3xl lg:text-5xl font-bold font-serif tracking-wide leading-[1.15]">
-              <span className="block bg-gradient-to-r from-red-500 via-blue-500 to-purple-600 bg-clip-text text-transparent drop-shadow-lg animate-gradient bg-[length:200%_auto]">
-                创梦计算机系统
-              </span>
-              <span className="block bg-gradient-to-r from-purple-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent drop-shadow-lg animate-gradient bg-[length:200%_auto] mt-1 lg:mt-2">
-                有限公司
-              </span>
-            </h1>
-
-            <p className="text-lg lg:text-xl text-slate-600 font-normal leading-relaxed max-w-3xl mx-auto font-sans">
-              专注于<span className="font-semibold text-slate-900">游戏开发</span>、<span className="font-semibold text-slate-900">软件开发</span>与<span className="font-semibold text-slate-900">硬件创新</span>
+          {/* Description */}
+          <div className="space-y-4 mb-10">
+            <p className="text-xl lg:text-2xl text-slate-700 font-normal leading-relaxed max-w-3xl mx-auto font-serif">
+              专注于<span className="font-semibold bg-gradient-to-r from-red-500 via-blue-500 to-purple-600 bg-clip-text text-transparent">游戏开发</span>、<span className="font-semibold bg-gradient-to-r from-purple-600 via-blue-500 to-cyan-500 bg-clip-text text-transparent">软件开发</span>与<span className="font-semibold bg-gradient-to-r from-emerald-500 via-teal-500 to-blue-500 bg-clip-text text-transparent">硬件创新</span>
             </p>
-            <p className="text-base text-slate-500 leading-relaxed max-w-2xl mx-auto font-sans">
+            <p className="text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto font-serif">
               用技术驱动梦想，用创意点亮未来。我们致力于为全球用户创造卓越的数字体验。
             </p>
           </div>
