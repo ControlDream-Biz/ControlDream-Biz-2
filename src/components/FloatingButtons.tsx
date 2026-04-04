@@ -66,7 +66,7 @@ export default function FloatingButtons() {
     backToTopBtn.style.cursor = 'move';
     backToTopBtn.style.borderRadius = '50%';
     backToTopBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
-    backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
+    backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, left 0.2s ease, top 0.2s ease, right 0.2s ease, bottom 0.2s ease';
     backToTopBtn.style.willChange = 'transform';
     backToTopBtn.style.position = 'absolute';
     backToTopBtn.style.right = `${backToTopPos.x}px`;
@@ -116,20 +116,51 @@ export default function FloatingButtons() {
       if (!isDragging) return;
 
       isDragging = false;
-      backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
+      backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, left 0.2s ease, top 0.2s ease, right 0.2s ease, bottom 0.2s ease';
 
       if (!hasMoved) {
         scrollToTop();
       } else {
-        const rect = backToTopBtn.getBoundingClientRect();
+        // 自动吸附到视窗边缘，确保完全可见
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
+        const buttonSize = 40;
 
-        const newPosition = {
-          x: viewportWidth - rect.right,
-          y: viewportHeight - rect.bottom
-        };
-        localStorage.setItem('backToTopPosition', JSON.stringify(newPosition));
+        let finalLeft = parseInt(backToTopBtn.style.left) || 0;
+        let finalTop = parseInt(backToTopBtn.style.top) || 0;
+
+        // 检查是否靠近边缘，自动吸附
+        const edgeThreshold = 50; // 边缘吸附阈值
+
+        // 左右边缘吸附
+        if (finalLeft < edgeThreshold) {
+          finalLeft = 0;
+        } else if (finalLeft > viewportWidth - buttonSize - edgeThreshold) {
+          finalLeft = viewportWidth - buttonSize;
+        }
+
+        // 上下边缘吸附
+        if (finalTop < edgeThreshold) {
+          finalTop = 0;
+        } else if (finalTop > viewportHeight - buttonSize - edgeThreshold) {
+          finalTop = viewportHeight - buttonSize;
+        }
+
+        // 应用吸附后的位置
+        backToTopBtn.style.left = `${finalLeft}px`;
+        backToTopBtn.style.top = `${finalTop}px`;
+        backToTopBtn.style.right = 'auto';
+        backToTopBtn.style.bottom = 'auto';
+
+        // 等待动画完成后保存位置
+        setTimeout(() => {
+          const rect = backToTopBtn.getBoundingClientRect();
+          const newPosition = {
+            x: viewportWidth - rect.right,
+            y: viewportHeight - rect.bottom
+          };
+          localStorage.setItem('backToTopPosition', JSON.stringify(newPosition));
+        }, 250);
       }
     };
 
@@ -182,7 +213,7 @@ export default function FloatingButtons() {
     customerServiceBtn.style.cursor = 'move';
     customerServiceBtn.style.borderRadius = '50%';
     customerServiceBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
-    customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
+    customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, left 0.2s ease, top 0.2s ease, right 0.2s ease, bottom 0.2s ease';
     customerServiceBtn.style.willChange = 'transform';
     customerServiceBtn.style.position = 'absolute';
     customerServiceBtn.style.right = `${customerServicePos.x}px`;
@@ -190,15 +221,12 @@ export default function FloatingButtons() {
     customerServiceBtn.textContent = '💬';
 
     let csIsDragging = false;
-    let csStartX: number, csStartY: number;
     let csOffsetX: number, csOffsetY: number;
     let csHasMoved = false;
 
     const handleCustomerServiceStart = (clientX: number, clientY: number) => {
       csIsDragging = true;
       csHasMoved = false;
-      csStartX = clientX;
-      csStartY = clientY;
 
       const rect = customerServiceBtn.getBoundingClientRect();
       csOffsetX = clientX - rect.left;
@@ -231,20 +259,46 @@ export default function FloatingButtons() {
       if (!csIsDragging) return;
 
       csIsDragging = false;
-      customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
+      customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, left 0.2s ease, top 0.2s ease, right 0.2s ease, bottom 0.2s ease';
 
       if (!csHasMoved) {
         setIsCustomerServiceOpen(!isCustomerServiceOpen);
       } else {
-        const rect = customerServiceBtn.getBoundingClientRect();
+        // 自动吸附到视窗边缘
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
+        const buttonSize = 40;
 
-        const newPosition = {
-          x: viewportWidth - rect.right,
-          y: viewportHeight - rect.bottom
-        };
-        localStorage.setItem('customerServicePosition', JSON.stringify(newPosition));
+        let finalLeft = parseInt(customerServiceBtn.style.left) || 0;
+        let finalTop = parseInt(customerServiceBtn.style.top) || 0;
+
+        const edgeThreshold = 50;
+
+        if (finalLeft < edgeThreshold) {
+          finalLeft = 0;
+        } else if (finalLeft > viewportWidth - buttonSize - edgeThreshold) {
+          finalLeft = viewportWidth - buttonSize;
+        }
+
+        if (finalTop < edgeThreshold) {
+          finalTop = 0;
+        } else if (finalTop > viewportHeight - buttonSize - edgeThreshold) {
+          finalTop = viewportHeight - buttonSize;
+        }
+
+        customerServiceBtn.style.left = `${finalLeft}px`;
+        customerServiceBtn.style.top = `${finalTop}px`;
+        customerServiceBtn.style.right = 'auto';
+        customerServiceBtn.style.bottom = 'auto';
+
+        setTimeout(() => {
+          const rect = customerServiceBtn.getBoundingClientRect();
+          const newPosition = {
+            x: viewportWidth - rect.right,
+            y: viewportHeight - rect.bottom
+          };
+          localStorage.setItem('customerServicePosition', JSON.stringify(newPosition));
+        }, 250);
       }
     };
 
