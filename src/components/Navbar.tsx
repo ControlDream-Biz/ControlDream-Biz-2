@@ -156,8 +156,7 @@ export default function Navbar() {
                 href={item.href}
                 className="block text-base font-medium text-gray-700 hover:text-blue-600 transition-all duration-300 py-2 px-4 rounded-lg hover:bg-blue-50/50 animate-menu-item-fade-in"
                 style={{
-                  animationDelay: `${index * 0.06}s`,
-                  transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  animationDelay: `${0.05 + index * 0.04}s`,
                 }}
                 onClick={() => setMobileMenuOpen(false)}
               >
@@ -166,7 +165,7 @@ export default function Navbar() {
             ))}
             <Button
               className="w-full glass-button font-semibold mt-4 animate-menu-item-fade-in"
-              style={{ borderRadius: '14px', height: '48px', animationDelay: '0.3s' }}
+              style={{ borderRadius: '14px', height: '48px', animationDelay: '0.25s' }}
               onClick={() => setMobileMenuOpen(false)}
             >
               联系我们
