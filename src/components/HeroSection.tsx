@@ -29,7 +29,6 @@ export default function HeroSection() {
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.1s",
-                willChange: mounted ? "auto" : "transform, opacity",
                 minHeight: "120px",
               }}
             >
@@ -40,8 +39,8 @@ export default function HeroSection() {
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
                   backgroundSize: "300% 100%",
-                  animation: "gradientMove 3s linear infinite",
-                  WebkitAnimation: "gradientMove 3s linear infinite",
+                  animation: "gradientMove 8s linear infinite",
+                  WebkitAnimation: "gradientMove 8s linear infinite",
                   display: "inline-block",
                 }}
               >
@@ -55,8 +54,8 @@ export default function HeroSection() {
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
                   backgroundSize: "300% 100%",
-                  animation: "gradientMove 3s linear infinite",
-                  WebkitAnimation: "gradientMove 3s linear infinite",
+                  animation: "gradientMove 8s linear infinite",
+                  WebkitAnimation: "gradientMove 8s linear infinite",
                   display: "inline-block",
                 }}
               >
@@ -71,7 +70,6 @@ export default function HeroSection() {
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.2s",
-                willChange: mounted ? "auto" : "transform, opacity",
                 minHeight: "60px",
               }}
             >
@@ -86,7 +84,6 @@ export default function HeroSection() {
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.3s",
-                willChange: mounted ? "auto" : "transform, opacity",
                 minHeight: "48px",
               }}
             >
@@ -130,7 +127,6 @@ export default function HeroSection() {
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.4s",
-                willChange: mounted ? "auto" : "transform, opacity",
                 minHeight: "80px",
               }}
             >
@@ -194,10 +190,7 @@ export default function HeroSection() {
 
               {/* Floating Card 1 */}
               <div
-                className="absolute -top-8 -left-8 bg-white rounded-xl shadow-lg p-4 animate-float"
-                style={{
-                  animation: "float 6s ease-in-out infinite",
-                }}
+                className="absolute -top-8 -left-8 bg-white rounded-xl shadow-lg p-4"
               >
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
@@ -217,9 +210,6 @@ export default function HeroSection() {
               {/* Floating Card 2 */}
               <div
                 className="absolute -bottom-8 -right-8 bg-white rounded-xl shadow-lg p-4"
-                style={{
-                  animation: "float 6s ease-in-out infinite 3s",
-                }}
               >
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
@@ -241,16 +231,6 @@ export default function HeroSection() {
       </div>
 
       <style jsx>{`
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0px);
-          }
-          50% {
-            transform: translateY(-20px);
-          }
-        }
-
         @keyframes gradientMove {
           0% {
             background-position: 0% 50%;
@@ -258,10 +238,6 @@ export default function HeroSection() {
           100% {
             background-position: 100% 50%;
           }
-        }
-
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
         }
       `}</style>
     </section>
