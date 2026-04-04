@@ -14,21 +14,30 @@ export default function FloatingButtons() {
   };
 
   useEffect(() => {
-    // 创建容器 - 使用 sticky 定位
+    // 创建一个覆盖整个文档高度的容器
     const container = document.createElement('div');
     container.id = 'floating-buttons-container';
-    container.style.position = 'sticky';
-    container.style.position = '-webkit-sticky';
-    container.style.top = '70%';
+    container.style.position = 'absolute';
+    container.style.top = '0';
     container.style.left = '0';
     container.style.width = '100%';
-    container.style.height = '0';
+    container.style.height = '100%';
     container.style.pointerEvents = 'none';
     container.style.zIndex = '2147483647';
-    container.style.display = 'flex';
-    container.style.justifyContent = 'flex-end';
-    container.style.alignItems = 'flex-end';
-    container.style.paddingRight = '20px';
+
+    // 创建 sticky 包装器
+    const stickyWrapper = document.createElement('div');
+    stickyWrapper.style.position = 'sticky';
+    stickyWrapper.style.position = '-webkit-sticky';
+    stickyWrapper.style.top = '0';
+    stickyWrapper.style.left = '0';
+    stickyWrapper.style.width = '100%';
+    stickyWrapper.style.height = '100vh';
+    stickyWrapper.style.pointerEvents = 'none';
+    stickyWrapper.style.display = 'flex';
+    stickyWrapper.style.justifyContent = 'flex-end';
+    stickyWrapper.style.alignItems = 'flex-end';
+    stickyWrapper.style.paddingRight = '20px';
 
     // 创建按钮组容器（竖排）
     const buttonGroup = document.createElement('div');
@@ -36,6 +45,7 @@ export default function FloatingButtons() {
     buttonGroup.style.flexDirection = 'column';
     buttonGroup.style.gap = '10px';
     buttonGroup.style.pointerEvents = 'auto';
+    buttonGroup.style.marginBottom = '70vh'; // 让按钮位于屏幕70%的位置
 
     // 创建返回顶部按钮
     const backToTopBtn = document.createElement('div');
@@ -158,10 +168,13 @@ export default function FloatingButtons() {
     buttonGroup.appendChild(backToTopBtn);
     buttonGroup.appendChild(customerServiceBtn);
 
-    // 添加到容器
-    container.appendChild(buttonGroup);
+    // 添加到 sticky 容器
+    stickyWrapper.appendChild(buttonGroup);
 
-    // 添加到 body 的最末尾
+    // 添加到外层容器
+    container.appendChild(stickyWrapper);
+
+    // 添加到 body
     document.body.appendChild(container);
     containerRef.current = container;
 
