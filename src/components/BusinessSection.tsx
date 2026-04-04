@@ -26,18 +26,16 @@ export default function BusinessSection() {
             const section = entry.target;
 
             // 触发业务卡片的内容淡入
-            const cards = section.querySelectorAll('.group.glass-card');
-            cards.forEach((card, cardIndex) => {
-              const cardEl = card as HTMLElement;
+            const titles = section.querySelectorAll('[data-business-title]');
+            titles.forEach((title, cardIndex) => {
+              const cardEl = title.closest('.glass-card') as HTMLElement;
+              if (!cardEl) return;
 
               // 触发标题淡入
-              const title = cardEl.querySelector('[data-business-title]');
-              if (title) {
-                setTimeout(() => {
-                  (title as HTMLElement).style.opacity = '1';
-                  (title as HTMLElement).style.transform = 'translateY(0)';
-                }, 800 + cardIndex * 150);
-              }
+              setTimeout(() => {
+                (title as HTMLElement).style.opacity = '1';
+                (title as HTMLElement).style.transform = 'translateY(0)';
+              }, 800 + cardIndex * 150);
 
               // 触发副标题淡入
               const subtitle = cardEl.querySelector('[data-business-subtitle]');
@@ -80,7 +78,7 @@ export default function BusinessSection() {
           }
         });
       },
-      { threshold: 0.2, rootMargin: '0px 0px -100px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -200px 0px' }
     );
 
     if (businessSectionValue) {
@@ -320,10 +318,14 @@ export default function BusinessSection() {
               <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div className="order-2 lg:order-1">
                   <div className="space-y-4 md:space-y-6">
-                    <h4 className="text-xl md:text-2xl font-bold font-sans mb-2">
+                    <h4 className="text-xl md:text-2xl font-bold font-sans mb-2 opacity-0 transition-all duration-700 ease-out" style={{
+                      transform: 'translateY(20px)'
+                    }} data-scroll-item>
                       《梦幻三国》
                     </h4>
-                    <p className="text-sm md:text-base text-gray-300 leading-relaxed font-sans">
+                    <p className="text-sm md:text-base text-gray-300 leading-relaxed font-sans opacity-0 transition-all duration-700 ease-out" style={{
+                      transform: 'translateY(20px)'
+                    }} data-scroll-item>
                       一款我们用心打造的RPG手游，融合经典三国历史与现代游戏体验。
                     </p>
                     <div className="space-y-3">
@@ -394,10 +396,14 @@ export default function BusinessSection() {
                 </div>
                 <div>
                   <div className="space-y-4 md:space-y-6">
-                    <h4 className="text-xl md:text-2xl font-bold font-sans mb-2">
+                    <h4 className="text-xl md:text-2xl font-bold font-sans mb-2 opacity-0 transition-all duration-700 ease-out" style={{
+                      transform: 'translateY(20px)'
+                    }} data-scroll-item>
                       《创梦云平台》
                     </h4>
-                    <p className="text-sm md:text-base text-gray-300 leading-relaxed font-sans">
+                    <p className="text-sm md:text-base text-gray-300 leading-relaxed font-sans opacity-0 transition-all duration-700 ease-out" style={{
+                      transform: 'translateY(20px)'
+                    }} data-scroll-item>
                       实用的企业级SaaS产品，帮助企业高效管理业务流程。
                     </p>
                     <div className="space-y-3">
@@ -438,10 +444,14 @@ export default function BusinessSection() {
               <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
                 <div className="order-2 lg:order-1">
                   <div className="space-y-4 md:space-y-6">
-                    <h4 className="text-xl md:text-2xl font-bold font-sans mb-2">
+                    <h4 className="text-xl md:text-2xl font-bold font-sans mb-2 opacity-0 transition-all duration-700 ease-out" style={{
+                      transform: 'translateY(20px)'
+                    }} data-scroll-item>
                       智能家居系统
                     </h4>
-                    <p className="text-sm md:text-base text-gray-300 leading-relaxed font-sans">
+                    <p className="text-sm md:text-base text-gray-300 leading-relaxed font-sans opacity-0 transition-all duration-700 ease-out" style={{
+                      transform: 'translateY(20px)'
+                    }} data-scroll-item>
                       软硬件一体化的探索，为用户提供智能化的家居体验。
                     </p>
                     <div className="space-y-3">

@@ -76,10 +76,10 @@ export default function Navbar() {
             />
           </div>
           <div className="flex flex-col flex-shrink-0">
-            <span className="text-xs font-bold tracking-tight text-gray-900 leading-tight">
+            <span className="text-xs font-bold leading-tight text-gray-900">
               创梦计算机系统有限公司
             </span>
-            <span className="text-[9px] font-medium text-gray-500 mt-0">
+            <span className="text-[9px] text-gray-500 mt-0">
               Chuangmeng Computer System
             </span>
           </div>
