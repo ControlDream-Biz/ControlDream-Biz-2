@@ -50,32 +50,14 @@ export default function BuildingSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left - Building Image */}
           <div className="relative">
-            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200">
+            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shadow-2xl">
               <Image
-                src="/building.jpg"
+                src="/building-real.jpg"
                 alt="创梦总部大厦"
                 fill
                 className="object-cover"
                 priority
               />
-
-              {/* Logo on building */}
-              <div className="absolute top-8 left-1/2 transform -translate-x-1/2 bg-white/90 backdrop-blur-sm rounded-2xl px-8 py-4 shadow-xl">
-                <div className="flex items-center space-x-3">
-                  <div className="relative w-16 h-16">
-                    <Image
-                      src="/logo-cm-final.png"
-                      alt="创梦 LOGO"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <div className="text-left">
-                    <div className="text-2xl font-bold text-gray-900">创梦</div>
-                    <div className="text-sm text-gray-600">Computer System</div>
-                  </div>
-                </div>
-              </div>
 
               {/* Building Info Badge */}
               <div className="absolute bottom-8 left-8 bg-white/95 backdrop-blur-sm rounded-xl px-6 py-4 shadow-lg">

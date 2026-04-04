@@ -67,30 +67,12 @@ export default function EnvironmentSection() {
             <div className="relative">
               <div className="aspect-[4/3] bg-white rounded-2xl shadow-xl overflow-hidden relative">
                 <Image
-                  src="/reception.jpg"
+                  src="/reception-real.jpg"
                   alt="前台接待区"
                   fill
                   className="object-cover"
                   priority
                 />
-
-                {/* Company Logo Overlay */}
-                <div className="absolute top-4 left-1/2 transform -translate-x-1/2 bg-white/95 backdrop-blur-sm rounded-2xl px-6 py-3 shadow-xl">
-                  <div className="flex items-center space-x-3">
-                    <div className="relative w-12 h-12">
-                      <Image
-                        src="/logo-cm-final.png"
-                        alt="创梦 LOGO"
-                        fill
-                        className="object-contain"
-                      />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-gray-900">创梦计算机系统有限公司</p>
-                      <p className="text-[10px] text-gray-600">Chuangmeng Computer System</p>
-                    </div>
-                  </div>
-                </div>
               </div>
 
               {/* Info Cards */}
