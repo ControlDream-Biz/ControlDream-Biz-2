@@ -25,18 +25,18 @@ export default function HeroSection() {
       <div className="container mx-auto px-6 py-20 relative z-10">
         <div className="max-w-4xl mx-auto text-center glass-card rounded-3xl p-8 lg:p-12">
           {/* Tag */}
-          <div className="inline-flex items-center px-6 py-3 bg-white/60 backdrop-blur-md rounded-full text-lg font-medium shadow-sm mb-10 font-serif border border-white/40">
+          <div className="inline-flex items-center px-6 py-3 bg-white/60 backdrop-blur-md rounded-full text-base font-medium shadow-sm mb-10 font-sans border border-white/40">
             <span className="w-2.5 h-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full mr-3 animate-pulse"></span>
             创新科技 · 智造未来
           </div>
 
           {/* Description */}
           <div className="space-y-5 mb-10">
-            <p className="text-xl lg:text-2xl text-slate-700 font-normal leading-relaxed max-w-4xl mx-auto font-serif">
-              创梦计算机系统有限公司，一家致力于为全球用户创造卓越数字体验的<span className="font-semibold text-slate-900">高新技术企业</span>。
+            <p className="text-lg lg:text-xl text-slate-700 font-normal leading-relaxed max-w-4xl mx-auto font-sans">
+              创梦计算机系统有限公司，专注于游戏开发、软件开发与硬件创新的<span className="font-semibold text-slate-900">高新技术企业</span>。
             </p>
-            <p className="text-lg text-slate-600 leading-relaxed max-w-3xl mx-auto font-serif">
-              我们专注于<span className="font-semibold text-slate-900">游戏开发</span>、<span className="font-semibold text-slate-900">软件开发</span>与<span className="font-semibold text-slate-900">硬件创新</span>三大核心领域，用技术驱动梦想，用创意点亮未来。
+            <p className="text-base text-slate-600 leading-relaxed max-w-3xl mx-auto font-sans">
+              致力于为全球用户创造卓越数字体验，以技术创新驱动行业发展，用创意引领未来趋势。
             </p>
           </div>
 
@@ -44,7 +44,7 @@ export default function HeroSection() {
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             <Button
               size="lg"
-              className="px-8 h-12 text-base font-semibold font-serif shadow-lg"
+              className="px-8 h-12 text-base font-semibold font-sans shadow-lg"
               style={{
                 background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(99, 102, 241, 0.95) 100%)',
                 backdropFilter: 'blur(10px) saturate(180%)',
@@ -70,7 +70,7 @@ export default function HeroSection() {
             <Button
               size="lg"
               variant="outline"
-              className="px-8 h-12 text-base font-semibold font-serif"
+              className="px-8 h-12 text-base font-semibold font-sans"
               style={{
                 background: 'rgba(255, 255, 255, 0.7)',
                 backdropFilter: 'blur(20px) saturate(180%)',
@@ -97,16 +97,16 @@ export default function HeroSection() {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-6 pt-8 border-t border-slate-200/50">
             <div className="glass-card rounded-2xl p-4 transition-all duration-300 hover:shadow-lg">
-              <div className="text-3xl font-bold text-slate-900 font-serif">10+</div>
-              <div className="text-sm text-slate-600 mt-1 font-serif">年行业经验</div>
+              <div className="text-3xl font-bold text-slate-900 font-sans">10+</div>
+              <div className="text-sm text-slate-600 mt-1 font-sans">年行业经验</div>
             </div>
             <div className="glass-card rounded-2xl p-4 transition-all duration-300 hover:shadow-lg">
-              <div className="text-3xl font-bold text-slate-900 font-serif">100+</div>
-              <div className="text-sm text-slate-600 mt-1 font-serif">游戏产品</div>
+              <div className="text-3xl font-bold text-slate-900 font-sans">100+</div>
+              <div className="text-sm text-slate-600 mt-1 font-sans">游戏产品</div>
             </div>
             <div className="glass-card rounded-2xl p-4 transition-all duration-300 hover:shadow-lg">
-              <div className="text-3xl font-bold text-slate-900 font-serif">500+</div>
-              <div className="text-sm text-slate-600 mt-1 font-serif">合作伙伴</div>
+              <div className="text-3xl font-bold text-slate-900 font-sans">500+</div>
+              <div className="text-sm text-slate-600 mt-1 font-sans">合作伙伴</div>
             </div>
           </div>
         </div>

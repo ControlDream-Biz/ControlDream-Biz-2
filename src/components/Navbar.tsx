@@ -47,7 +47,7 @@ export default function Navbar() {
               />
             </div>
             <span
-              className="text-lg font-bold transition-colors tracking-tight font-serif animate-gradient"
+              className="text-lg font-bold transition-colors tracking-tight font-sans animate-gradient"
               style={{
                 background: 'linear-gradient(135deg, #ef4444 0%, #3b82f6 50%, #9333ea 100%)',
                 backgroundSize: '200% auto',
