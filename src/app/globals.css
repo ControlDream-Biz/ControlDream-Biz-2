@@ -115,11 +115,11 @@
 @keyframes menuSlideDown {
   0% {
     opacity: 0;
-    transform: translateY(10px) scale(0.85);
+    transform: translateY(15px) scale(0.75);
   }
-  80% {
+  85% {
     opacity: 1;
-    transform: translateY(0) scale(1.03);
+    transform: translateY(0) scale(1.05);
   }
   100% {
     opacity: 1;
@@ -128,18 +128,18 @@
 }
 
 .animate-menu-slide-down {
-  animation: menuSlideDown 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: menuSlideDown 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 /* 苹果风格菜单项淡入 - 从小到大渐现 */
 @keyframes menuItemFadeIn {
   0% {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.85);
   }
-  85% {
+  90% {
     opacity: 1;
-    transform: scale(1.02);
+    transform: scale(1.04);
   }
   100% {
     opacity: 1;
@@ -148,7 +148,7 @@
 }
 
 .animate-menu-item-fade-in {
-  animation: menuItemFadeIn 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: menuItemFadeIn 0.38s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 /* 悬停放大效果 */
