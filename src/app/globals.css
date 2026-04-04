@@ -5,22 +5,12 @@
 
 /* ========== 全局性能优化 - 强制120Hz ========== */
 
-/* 强制GPU加速 */
-* {
-  transform: translateZ(0);
-  -webkit-transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
+/* 移除强制GPU加速，因为会破坏 fixed 定位 */
+/* 注意：transform 会创建新的包含块，导致 position: fixed 失效 */
 
-/* 高刷新率优化 */
+/* 高刷新率优化 - 移除 transform */
 @media (min-width: 1024px) {
-  * {
-    transform: translate3d(0, 0, 0);
-    -webkit-transform: translate3d(0, 0, 0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
+  /* 不再给所有元素添加 transform */
 }
 
 /* 优化渲染性能 */
@@ -329,9 +319,10 @@ body::before {
   z-index: -2;
   pointer-events: none;
   animation: liquidFlow 24s ease-in-out infinite;
-  will-change: transform, filter;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+  will-change: filter;
+  /* 移除 transform，避免创建新的包含块影响 fixed 定位 */
+  /* transform: translateZ(0); */
+  /* backface-visibility: hidden; */
   min-width: 120vw;
   min-height: 120vh;
 }
@@ -388,9 +379,10 @@ body::after {
   z-index: -2;
   pointer-events: none;
   animation: liquidFlow2 30s ease-in-out infinite reverse;
-  will-change: transform;
-  transform: translateZ(0);
-  backface-visibility: hidden;
+  will-change: filter;
+  /* 移除 transform，避免创建新的包含块影响 fixed 定位 */
+  /* transform: translateZ(0); */
+  /* backface-visibility: hidden; */
   min-width: 120vw;
   min-height: 120vh;
 }
@@ -889,7 +881,7 @@ div[data-scroll-animate] {
   *::after {
     animation-duration: 1.2s !important;
     transition-duration: 0.3s !important;
-    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+    animation-timing-function: cubic-bezier(0.4, 0. 0.2, 1) !important;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
@@ -899,13 +891,6 @@ div[data-scroll-animate] {
     animation-duration: 20s !important;
   }
 
-  /* GPU强制加速 - 只对子元素应用，不影响 body 的 fixed 定位 */
-  body > *,
-  body > *::before,
-  body > *::after {
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-  }
+  /* 移除 GPU强制加速，避免破坏 fixed 定位 */
+  /* 注意：transform 会创建新的包含块，导致 fixed 定位失效 */
 }
