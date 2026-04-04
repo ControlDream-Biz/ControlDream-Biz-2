@@ -30,139 +30,117 @@ export default function Navbar() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/98 backdrop-blur-xl shadow-sm border-b border-gray-100'
+          ? 'bg-white/98 backdrop-blur-xl shadow-sm'
           : 'bg-white'
       }`}
       style={{ 
         backdropFilter: scrolled ? 'blur(20px)' : 'none',
-        height: '56px',
+        height: '60px',
+        borderBottom: scrolled ? '1px solid #e5e5e5' : 'none',
       }}
     >
-      <div className="container mx-auto px-4 h-full flex items-center justify-between">
-          {/* Logo */}
-          <Link href="#home" className="flex items-center space-x-2">
-            <div className="relative w-8 h-8 flex-shrink-0">
-              <Image
-                src="/logo-cm-final.png"
-                alt="创梦计算机系统有限公司"
-                fill
-                className="object-contain"
-              />
-            </div>
-            <span className="text-sm font-semibold tracking-tight text-gray-900 flex-shrink-0 hidden sm:block">
-              创梦计算机系统有限公司
-            </span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-1">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-xs font-medium text-gray-600 hover:text-blue-600 transition-colors duration-200 px-4 py-2 rounded-lg hover:bg-blue-50/50"
-              >
-                {item.name}
-              </Link>
-            ))}
-            <Button
-              className="font-medium text-xs"
-              style={{
-                borderRadius: '10px',
-                height: '36px',
-                paddingLeft: '16px',
-                paddingRight: '16px',
-                background: 'linear-gradient(135deg, #0052D9 0%, #0066FF 100%)',
-                border: 'none',
-                color: 'white',
-              }}
-            >
-              联系我们
-            </Button>
+      <div className="container mx-auto px-4 h-full flex items-center justify-between max-w-7xl">
+        {/* Logo */}
+        <Link href="#home" className="flex items-center space-x-3">
+          <div className="relative w-10 h-10 flex-shrink-0">
+            <Image
+              src="/logo-cm-final.png"
+              alt="创梦科技"
+              fill
+              className="object-contain"
+            />
           </div>
+          <div className="flex flex-col flex-shrink-0">
+            <span className="text-base font-bold tracking-tight text-gray-900 leading-none">
+              创梦科技
+            </span>
+            <span className="text-xs font-medium text-gray-500 tracking-wide uppercase mt-0.5">
+              DreamTech
+            </span>
+          </div>
+        </Link>
 
-          {/* Mobile menu button */}
-          <button
-            className="md:hidden relative w-9 h-9 flex items-center justify-center rounded-lg transition-colors duration-200 hover:bg-gray-100 flex-shrink-0"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            <div className="relative w-4 h-4">
-              {/* Top line */}
-              <span
-                className={`absolute left-0 w-4 h-0.5 bg-gray-800 rounded-full transition-all ${
-                  mobileMenuOpen ? 'top-2 rotate-45' : 'top-0'
-                }`}
-                style={{
-                  transitionDuration: '0.3s',
-                }}
-              />
-              {/* Middle line */}
-              <span
-                className={`absolute left-0 w-4 h-0.5 bg-gray-800 rounded-full transition-all ${
-                  mobileMenuOpen ? 'opacity-0' : 'top-1.5'
-                }`}
-                style={{
-                  transitionDuration: '0.2s',
-                }}
-              />
-              {/* Bottom line */}
-              <span
-                className={`absolute left-0 w-4 h-0.5 bg-gray-800 rounded-full transition-all ${
-                  mobileMenuOpen ? 'top-2 -rotate-45' : 'top-3'
-                }`}
-                style={{
-                  transitionDuration: '0.3s',
-                }}
-              />
-            </div>
-          </button>
-
-          {/* Mobile Navigation - iOS应用打开风格动画 */}
-          {mobileMenuOpen && (
-            <div
-              className="md:hidden animate-menu-slide-down"
-              style={{
-                position: 'absolute',
-                top: '56px',
-                right: '0',
-                left: '0',
-                zIndex: 40,
-                backdropFilter: 'blur(20px) saturate(180%)',
-                background: 'rgba(255, 255, 255, 0.96)',
-                borderRadius: '0 0 20px 20px',
-                padding: '20px 16px',
-                boxShadow: '0 8px 40px rgba(0, 0, 0, 0.08), 0 2px 16px rgba(0, 0, 0, 0.04)',
-                transformOrigin: 'top center',
-              }}
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center space-x-8">
+          {navItems.map((item) => (
+            <Link
+              key={item.name}
+              href={item.href}
+              className="text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200"
             >
-              <div className="space-y-1">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    href={item.href}
-                    className="block text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors duration-200 py-3 px-4 rounded-lg hover:bg-blue-50"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-              </div>
-              <Button
-                className="w-full mt-5 font-medium text-sm"
-                style={{
-                  borderRadius: '12px',
-                  height: '44px',
-                  background: 'linear-gradient(135deg, #0052D9 0%, #0066FF 100%)',
-                  border: 'none',
-                  color: 'white',
-                }}
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                联系我们
-              </Button>
-            </div>
-          )}
+              {item.name}
+            </Link>
+          ))}
         </div>
+
+        {/* Mobile menu button */}
+        <button
+          className="md:hidden relative w-10 h-10 flex items-center justify-center rounded transition-colors duration-200 hover:bg-gray-100 flex-shrink-0"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          <div className="relative w-5 h-5">
+            {/* Top line */}
+            <span
+              className={`absolute left-0 w-5 h-0.5 bg-gray-800 rounded-full transition-all ${
+                mobileMenuOpen ? 'top-2.5 rotate-45' : 'top-0'
+              }`}
+              style={{
+                transitionDuration: '0.3s',
+              }}
+            />
+            {/* Middle line */}
+            <span
+              className={`absolute left-0 w-5 h-0.5 bg-gray-800 rounded-full transition-all ${
+                mobileMenuOpen ? 'opacity-0' : 'top-2'
+              }`}
+              style={{
+                transitionDuration: '0.2s',
+              }}
+            />
+            {/* Bottom line */}
+            <span
+              className={`absolute left-0 w-5 h-0.5 bg-gray-800 rounded-full transition-all ${
+                mobileMenuOpen ? 'top-2.5 -rotate-45' : 'top-4'
+              }`}
+              style={{
+                transitionDuration: '0.3s',
+              }}
+            />
+          </div>
+        </button>
+
+        {/* Mobile Navigation - iOS应用打开风格动画 */}
+        {mobileMenuOpen && (
+          <div
+            className="md:hidden animate-menu-slide-down"
+            style={{
+              position: 'absolute',
+              top: '60px',
+              right: '0',
+              left: '0',
+              zIndex: 40,
+              backdropFilter: 'blur(20px)',
+              background: 'rgba(255, 255, 255, 0.98)',
+              padding: '24px 20px',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+              transformOrigin: 'top center',
+            }}
+          >
+            <div className="space-y-0">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="block text-base font-medium text-gray-800 hover:text-blue-600 transition-colors duration-200 py-4 px-4 border-b border-gray-100 last:border-0"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
     </nav>
   );
 }

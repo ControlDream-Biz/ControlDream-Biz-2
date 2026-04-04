@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { Mail, Phone, MapPin, Facebook, Twitter, Linkedin, Github, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -14,39 +14,29 @@ export default function Footer() {
             <div className="flex items-center space-x-3">
               <div className="relative w-12 h-12">
                 <Image
-                  src="/logo-dark.jpg"
+                  src="/logo-cm-final.png"
                   alt="创梦 LOGO"
                   fill
                   className="object-contain"
                 />
               </div>
               <div>
-                <h3 className="text-lg font-bold">创梦计算机系统有限公司</h3>
-                <p className="text-xs text-gray-400">Chuangmeng Computer System</p>
+                <h3 className="text-lg font-bold leading-tight">创梦科技</h3>
+                <p className="text-xs text-gray-400 uppercase tracking-wide mt-0.5">
+                  DreamTech
+                </p>
               </div>
             </div>
             <p className="text-gray-400 leading-relaxed text-sm">
               专注于自主游戏开发、基础软件开发与硬件创新，致力于为用户创造卓越的数字体验。
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-600 transition-colors">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-400 transition-colors">
-                <Twitter className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-blue-700 transition-colors">
-                <Linkedin className="w-5 h-5" />
-              </a>
-              <a href="#" className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-gray-600 transition-colors">
-                <Github className="w-5 h-5" />
-              </a>
-            </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-bold mb-6">快速链接</h4>
+            <h4 className="text-sm font-bold mb-6 uppercase tracking-wide">
+              快速链接
+            </h4>
             <ul className="space-y-3">
               {[
                 { name: '首页', href: '#home' },
@@ -70,7 +60,9 @@ export default function Footer() {
 
           {/* Business */}
           <div>
-            <h4 className="text-lg font-bold mb-6">业务领域</h4>
+            <h4 className="text-sm font-bold mb-6 uppercase tracking-wide">
+              业务领域
+            </h4>
             <ul className="space-y-3">
               {[
                 { name: '游戏开发', desc: '自研精品游戏' },
@@ -92,7 +84,9 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-bold mb-6">联系我们</h4>
+            <h4 className="text-sm font-bold mb-6 uppercase tracking-wide">
+              联系我们
+            </h4>
             <ul className="space-y-4">
               <li className="flex items-start space-x-3">
                 <MapPin className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />
@@ -107,7 +101,7 @@ export default function Footer() {
               </li>
               <li className="flex items-center space-x-3">
                 <Mail className="w-5 h-5 text-blue-500 flex-shrink-0" />
-                <span className="text-gray-400 text-sm">contact@chuangmeng.com</span>
+                <span className="text-gray-400 text-sm">contact@dreamtech.com</span>
               </li>
             </ul>
 

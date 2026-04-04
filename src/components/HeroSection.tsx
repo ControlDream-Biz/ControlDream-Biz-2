@@ -1,95 +1,234 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Play } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function HeroSection() {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden bg-white">
-      {/* 简洁的背景 */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-blue-50/30"></div>
+    <section
+      id="home"
+      className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center bg-white"
+    >
+      <div className="container mx-auto px-4 max-w-7xl">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
+          <div className="text-left">
+            {/* Tag */}
+            <div
+              className="inline-flex items-center space-x-2 px-4 py-2 rounded-full border border-blue-100 bg-blue-50 mb-6"
+              style={{
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? "translateY(0)" : "translateY(20px)",
+                transition: "all 0.6s ease-out",
+              }}
+            >
+              <div className="w-2 h-2 rounded-full bg-blue-600" />
+              <span className="text-xs font-medium text-blue-600 uppercase tracking-wide">
+                专注创新科技
+              </span>
+            </div>
 
-      {/* Content */}
-      <div className="container mx-auto px-4 py-12 relative z-10">
-        <div className="max-w-4xl mx-auto text-center">
-          {/* Tag */}
-          <div
-            className="inline-flex items-center px-3 py-1.5 bg-blue-50 rounded-full text-xs font-medium text-blue-600 mb-6"
-          >
-            <span className="w-1.5 h-1.5 bg-blue-600 rounded-full mr-2"></span>
-            创新科技 · 智造未来
-          </div>
-
-          {/* Description */}
-          <div className="space-y-4 mb-10">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-              创梦计算机系统有限公司
+            {/* Main Title */}
+            <h1
+              className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight mb-6"
+              style={{
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? "translateY(0)" : "translateY(20px)",
+                transition: "all 0.6s ease-out 0.1s",
+              }}
+            >
+              创新科技
+              <br />
+              <span className="text-blue-600">驱动未来</span>
             </h1>
-            <p className="text-base md:text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
-              专注于游戏开发、软件开发与硬件创新的<span className="font-semibold text-gray-900">高新技术企业</span>
-            </p>
-            <p className="text-sm text-gray-500 leading-relaxed max-w-2xl mx-auto">
-              致力于为全球用户创造卓越数字体验，以技术创新驱动行业发展，用创意引领未来趋势。
-            </p>
-          </div>
 
-          {/* Buttons */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
-            <Button
-              size="lg"
-              className="px-6 h-10 text-sm font-medium"
+            {/* Description */}
+            <p
+              className="text-base md:text-lg text-gray-600 leading-relaxed mb-8 max-w-2xl"
               style={{
-                borderRadius: '10px',
-                background: 'linear-gradient(135deg, #0052D9 0%, #0066FF 100%)',
-                border: 'none',
-                color: 'white',
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? "translateY(0)" : "translateY(20px)",
+                transition: "all 0.6s ease-out 0.2s",
               }}
             >
-              探索更多
-              <ArrowRight className="ml-2 w-4 h-4" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="px-6 h-10 text-sm font-medium"
+              创梦科技致力于通过创新技术，为客户提供最优质的解决方案。
+              我们在游戏、软件、硬件领域不断突破，助力企业数字化转型。
+            </p>
+
+            {/* CTA Buttons */}
+            <div
+              className="flex flex-col sm:flex-row gap-4"
               style={{
-                borderRadius: '10px',
-                border: '1px solid #e5e7eb',
-                color: '#374151',
-                backgroundColor: 'white',
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? "translateY(0)" : "translateY(20px)",
+                transition: "all 0.6s ease-out 0.3s",
               }}
             >
-              <Play className="mr-2 w-4 h-4" />
-              观看视频
-            </Button>
-          </div>
+              <Link href="#contact">
+                <Button
+                  className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200"
+                  style={{
+                    background: "linear-gradient(135deg, #0052D9 0%, #0066FF 100%)",
+                    border: "none",
+                    color: "white",
+                  }}
+                >
+                  开始合作
+                  <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
+              <Link href="#services">
+                <Button
+                  variant="outline"
+                  className="h-12 px-8 text-sm font-medium rounded-lg hover:bg-gray-50 transition-all duration-200"
+                  style={{
+                    borderColor: "#e5e5e5",
+                    color: "#666",
+                  }}
+                >
+                  了解更多
+                </Button>
+              </Link>
+            </div>
 
-          {/* Stats */}
-          <div className="grid grid-cols-3 gap-4 md:gap-8 pt-6 border-t border-gray-200">
-            {[
-              { value: '10+', label: '年行业经验' },
-              { value: '100+', label: '游戏产品' },
-              { value: '500+', label: '合作伙伴' }
-            ].map((stat, index) => (
-              <div key={index} className="text-center">
+            {/* Stats */}
+            <div
+              className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-gray-100"
+              style={{
+                opacity: mounted ? 1 : 0,
+                transform: mounted ? "translateY(0)" : "translateY(20px)",
+                transition: "all 0.6s ease-out 0.4s",
+              }}
+            >
+              <div>
                 <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
-                  {stat.value}
+                  10+
                 </div>
-                <div className="text-xs text-gray-500">
-                  {stat.label}
+                <div className="text-xs text-gray-500 uppercase tracking-wide">
+                  年行业经验
                 </div>
               </div>
-            ))}
+              <div>
+                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+                  200+
+                </div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">
+                  成功项目
+                </div>
+              </div>
+              <div>
+                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">
+                  50+
+                </div>
+                <div className="text-xs text-gray-500 uppercase tracking-wide">
+                  专业团队
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Content - Image/Graphic */}
+          <div
+            className="relative hidden lg:block"
+            style={{
+              opacity: mounted ? 1 : 0,
+              transform: mounted ? "translateX(0)" : "translateX(40px)",
+              transition: "all 0.8s ease-out 0.2s",
+            }}
+          >
+            <div className="relative">
+              {/* Main Image */}
+              <div
+                className="relative rounded-2xl overflow-hidden shadow-2xl"
+                style={{
+                  background: "linear-gradient(135deg, #0052D9 0%, #0066FF 100%)",
+                  aspectRatio: "4/3",
+                }}
+              >
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <div className="text-6xl mb-4">🚀</div>
+                    <div className="text-white text-xl font-semibold">
+                      科技创新
+                    </div>
+                    <div className="text-white/80 text-sm mt-2">
+                      驱动未来发展
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating Card 1 */}
+              <div
+                className="absolute -top-8 -left-8 bg-white rounded-xl shadow-lg p-4 animate-float"
+                style={{
+                  animation: "float 6s ease-in-out infinite",
+                }}
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                    <span className="text-xl">💡</span>
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-gray-900">
+                      创新思维
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      持续突破
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating Card 2 */}
+              <div
+                className="absolute -bottom-8 -right-8 bg-white rounded-xl shadow-lg p-4"
+                style={{
+                  animation: "float 6s ease-in-out infinite 3s",
+                }}
+              >
+                <div className="flex items-center space-x-3">
+                  <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
+                    <span className="text-xl">🎯</span>
+                  </div>
+                  <div>
+                    <div className="text-sm font-semibold text-gray-900">
+                      精准定位
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      高效交付
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-        <div className="w-5 h-9 border-2 border-gray-300 rounded-full flex items-start justify-center p-2">
-          <div className="w-1 h-2 bg-gray-400 rounded-full"></div>
-        </div>
-      </div>
+      <style jsx>{`
+        @keyframes float {
+          0%,
+          100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-20px);
+          }
+        }
+
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+      `}</style>
     </section>
   );
 }
