@@ -27,11 +27,13 @@ export default function HeroSection() {
           </div>
 
           {/* Title */}
-          <div className="space-y-6 mb-10">
+          <div className="space-y-3 mb-10">
             <h1 className="text-3xl lg:text-5xl font-bold tracking-tight leading-tight">
-              <span className="block text-slate-900">创梦</span>
-              <span className="block bg-gradient-to-r from-blue-700 via-indigo-600 to-blue-700 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
-                计算机系统有限公司
+              <span className="block bg-gradient-to-r from-purple-600 via-violet-500 to-indigo-600 bg-clip-text text-transparent bg-[length:300%_auto] animate-gradient">
+                创梦计算机系统
+              </span>
+              <span className="block bg-gradient-to-r from-cyan-600 via-blue-500 to-indigo-600 bg-clip-text text-transparent bg-[length:300%_auto] animate-gradient mt-2">
+                有限公司
               </span>
             </h1>
 
