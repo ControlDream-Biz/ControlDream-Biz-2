@@ -138,15 +138,15 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Navigation - Apple style elastic animation */}
         {mobileMenuOpen && (
           <div
-            className="md:hidden mt-4 pb-4 space-y-4 animate-fade-in"
+            className="md:hidden mt-4 pb-4 space-y-4 animate-menu-slide-down"
             style={{
               backdropFilter: 'blur(20px) saturate(150%)',
               background: 'rgba(255, 255, 255, 0.95)',
-              borderRadius: '16px',
-              padding: '20px',
+              borderRadius: '20px',
+              padding: '24px',
               boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.5) inset',
             }}
           >
@@ -154,9 +154,9 @@ export default function Navbar() {
               <Link
                 key={item.name}
                 href={item.href}
-                className="block text-base font-medium text-gray-700 hover:text-blue-600 transition-all duration-300 py-2 px-4 rounded-lg hover:bg-blue-50/50 animate-fade-in"
+                className="block text-base font-medium text-gray-700 hover:text-blue-600 transition-all duration-300 py-2 px-4 rounded-lg hover:bg-blue-50/50 animate-menu-item-fade-in"
                 style={{
-                  animationDelay: `${index * 50}ms`,
+                  animationDelay: `${index * 0.06}s`,
                   transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
                 }}
                 onClick={() => setMobileMenuOpen(false)}
@@ -165,8 +165,8 @@ export default function Navbar() {
               </Link>
             ))}
             <Button
-              className="w-full glass-button font-semibold mt-4"
-              style={{ borderRadius: '12px', height: '44px' }}
+              className="w-full glass-button font-semibold mt-4 animate-menu-item-fade-in"
+              style={{ borderRadius: '14px', height: '48px', animationDelay: '0.3s' }}
               onClick={() => setMobileMenuOpen(false)}
             >
               联系我们
