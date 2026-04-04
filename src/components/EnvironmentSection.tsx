@@ -16,113 +16,87 @@ export default function EnvironmentSection() {
     setMounted(true);
   }, []);
 
+  // 监听办公区域卡片独立淡入动画
   useEffect(() => {
-    const sectionRefValue = sectionRef.current;
+    const animateOfficeCard = (card: HTMLElement) => {
+      // 重置初始状态
+      const resetElements = (selector: string, transformValue: string) => {
+        const elements = card.querySelectorAll(selector);
+        elements.forEach((el) => {
+          const elem = el as HTMLElement;
+          elem.style.opacity = '0';
+          elem.style.transform = transformValue;
+        });
+      };
 
-    // 监听办公区域卡片
+      resetElements('h4', 'translateY(10px)');
+      resetElements('p.text-gray-600', 'translateY(10px)');
+      resetElements('[data-feature-item]', 'translateX(1rem)');
+
+      // 触发标题淡入
+      const title = card.querySelector('h4');
+      if (title) {
+        setTimeout(() => {
+          (title as HTMLElement).style.opacity = '1';
+          (title as HTMLElement).style.transform = 'translateY(0)';
+        }, 100);
+      }
+
+      // 触发描述淡入
+      const desc = card.querySelector('p.text-gray-600');
+      if (desc) {
+        setTimeout(() => {
+          (desc as HTMLElement).style.opacity = '1';
+          (desc as HTMLElement).style.transform = 'translateY(0)';
+        }, 200);
+      }
+
+      // 触发features淡入
+      setTimeout(() => {
+        const features = card.querySelectorAll('[data-feature-item]');
+        features.forEach((feature, featureIndex) => {
+          const featureEl = feature as HTMLElement;
+          setTimeout(() => {
+            featureEl.style.opacity = '1';
+            featureEl.style.transform = 'translateX(0)';
+          }, featureIndex * 100);
+        });
+      }, 300);
+    };
+
+    const resetOfficeCard = (card: HTMLElement) => {
+      const elements = card.querySelectorAll('h4, p.text-gray-600, [data-feature-item]');
+      elements.forEach((el) => {
+        const elem = el as HTMLElement;
+        elem.style.opacity = '0';
+        if (elem.tagName === 'H4' || elem.classList.contains('text-gray-600')) {
+          elem.style.transform = 'translateY(10px)';
+        } else if (elem.hasAttribute('data-feature-item')) {
+          elem.style.transform = 'translateX(1rem)';
+        }
+      });
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const section = entry.target;
-
+          const card = entry.target as HTMLElement;
           if (entry.isIntersecting) {
-            // 触发前台接待区的features淡入
-            const frontDeskFeatures = section.querySelectorAll('.grid.grid-cols-2 > div');
-            frontDeskFeatures.forEach((feature, index) => {
-              (feature as HTMLElement).style.opacity = '0';
-              (feature as HTMLElement).style.transform = 'translateY(10px)';
-              setTimeout(() => {
-                (feature as HTMLElement).style.opacity = '1';
-                (feature as HTMLElement).style.transform = 'translateY(0)';
-              }, 600 + index * 150);
-            });
-
-            // 触发办公区域卡片的动画
-            const cards = section.querySelectorAll('[data-office-card]');
-            cards.forEach((card, cardIndex) => {
-              const cardEl = card as HTMLElement;
-
-              // 重置初始状态
-              const resetElements = (selector: string, transformValue: string) => {
-                const elements = cardEl.querySelectorAll(selector);
-                elements.forEach((el) => {
-                  const elem = el as HTMLElement;
-                  elem.style.opacity = '0';
-                  elem.style.transform = transformValue;
-                });
-              };
-
-              resetElements('h4', 'translateY(10px)');
-              resetElements('p.text-gray-600', 'translateY(10px)');
-              resetElements('[data-feature-item]', 'translateX(1rem)');
-
-              // 触发标题淡入
-              const title = cardEl.querySelector('h4');
-              if (title) {
-                setTimeout(() => {
-                  (title as HTMLElement).style.opacity = '1';
-                  (title as HTMLElement).style.transform = 'translateY(0)';
-                }, 450 + cardIndex * 150);
-              }
-
-              // 触发描述淡入
-              const desc = cardEl.querySelector('p.text-gray-600');
-              if (desc) {
-                setTimeout(() => {
-                  (desc as HTMLElement).style.opacity = '1';
-                  (desc as HTMLElement).style.transform = 'translateY(0)';
-                }, 500 + cardIndex * 150);
-              }
-
-              // 触发features淡入
-              setTimeout(() => {
-                const features = cardEl.querySelectorAll('[data-feature-item]');
-                features.forEach((feature, featureIndex) => {
-                  const featureEl = feature as HTMLElement;
-                  setTimeout(() => {
-                    featureEl.style.opacity = '1';
-                    featureEl.style.transform = 'translateX(0)';
-                  }, featureIndex * 100);
-                });
-              }, 550 + cardIndex * 150);
-            });
+            animateOfficeCard(card);
           } else {
-            // 元素离开视口时，重置状态
-            const frontDeskFeatures = section.querySelectorAll('.grid.grid-cols-2 > div');
-            frontDeskFeatures.forEach((feature) => {
-              const featureEl = feature as HTMLElement;
-              featureEl.style.opacity = '0';
-              featureEl.style.transform = 'translateY(10px)';
-            });
-
-            const cards = section.querySelectorAll('[data-office-card]');
-            cards.forEach((card) => {
-              const cardEl = card as HTMLElement;
-              const elements = cardEl.querySelectorAll('h4, p.text-gray-600, [data-feature-item]');
-              elements.forEach((el) => {
-                const elem = el as HTMLElement;
-                elem.style.opacity = '0';
-                if (elem.tagName === 'H4' || elem.classList.contains('text-gray-600')) {
-                  elem.style.transform = 'translateY(10px)';
-                } else if (elem.hasAttribute('data-feature-item')) {
-                  elem.style.transform = 'translateX(1rem)';
-                }
-              });
-            });
+            resetOfficeCard(card);
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -200px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -100px 0px' }
     );
 
-    if (sectionRefValue) {
-      observer.observe(sectionRefValue);
-    }
+    // 观察每个独立的办公区域卡片
+    const cards = document.querySelectorAll('[data-office-card]');
+    cards.forEach((card) => observer.observe(card));
 
     return () => {
-      if (sectionRefValue) {
-        observer.unobserve(sectionRefValue);
-      }
+      cards.forEach((card) => observer.unobserve(card));
     };
   }, [mounted]);
   const areas = [

@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 export default function FloatingButtons() {
   const [isCustomerServiceOpen, setIsCustomerServiceOpen] = useState(false);
   const isInitialized = useRef(false);
+  const shouldHidePopup = useRef(false);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -17,28 +18,6 @@ export default function FloatingButtons() {
     // 防止重复初始化
     if (isInitialized.current) return;
     isInitialized.current = true;
-
-    // 从 localStorage 读取保存的位置
-    const savedBackToTopPos = localStorage.getItem('backToTopPosition');
-    const savedCustomerServicePos = localStorage.getItem('customerServicePosition');
-
-    let backToTopBottom = 100;
-    let customerServiceBottom = 30;
-
-    if (savedBackToTopPos) {
-      try {
-        backToTopBottom = JSON.parse(savedBackToTopPos).y;
-      } catch (e) {
-        console.error('Failed to parse backToTopPosition:', e);
-      }
-    }
-    if (savedCustomerServicePos) {
-      try {
-        customerServiceBottom = JSON.parse(savedCustomerServicePos).y;
-      } catch (e) {
-        console.error('Failed to parse customerServicePosition:', e);
-      }
-    }
 
     // 创建按钮组容器 - 纵向排列
     const buttonGroup = document.createElement('div');
@@ -59,7 +38,8 @@ export default function FloatingButtons() {
     backToTopBtn.style.borderRadius = '50%';
     backToTopBtn.style.backgroundColor = 'rgba(14, 165, 233, 0.1)';
     backToTopBtn.style.backdropFilter = 'blur(12px)';
-    (backToTopBtn.style as any).webkitBackdropFilter = 'blur(12px)';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    backToTopBtn.style['webkitBackdropFilter' as any] = 'blur(12px)';
     backToTopBtn.style.border = '1px solid rgba(14, 165, 233, 0.2)';
     backToTopBtn.style.color = 'white';
     backToTopBtn.style.display = 'flex';
@@ -96,7 +76,8 @@ export default function FloatingButtons() {
     customerServiceBtn.style.borderRadius = '50%';
     customerServiceBtn.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
     customerServiceBtn.style.backdropFilter = 'blur(12px)';
-    (customerServiceBtn.style as any).webkitBackdropFilter = 'blur(12px)';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    customerServiceBtn.style['webkitBackdropFilter' as any] = 'blur(12px)';
     customerServiceBtn.style.border = '1px solid rgba(239, 68, 68, 0.2)';
     customerServiceBtn.style.color = 'white';
     customerServiceBtn.style.display = 'flex';
@@ -137,7 +118,8 @@ export default function FloatingButtons() {
     customerServicePopup.style.maxWidth = 'calc(100vw - 100px)';
     customerServicePopup.style.backgroundColor = 'rgba(255, 255, 255, 0.85)';
     customerServicePopup.style.backdropFilter = 'blur(20px)';
-    (customerServicePopup.style as any).webkitBackdropFilter = 'blur(20px)';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    customerServicePopup.style['webkitBackdropFilter' as any] = 'blur(20px)';
     customerServicePopup.style.borderRadius = '16px';
     customerServicePopup.style.border = '1px solid rgba(255, 255, 255, 0.5)';
     customerServicePopup.style.boxShadow = `
@@ -222,7 +204,7 @@ export default function FloatingButtons() {
         document.body.removeChild(buttonGroup);
       }
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // 更新弹窗显示 - 最快速度动画（1ms）
   useEffect(() => {
@@ -248,6 +230,7 @@ export default function FloatingButtons() {
       });
 
       btn.textContent = '✕';
+      shouldHidePopup.current = false;
     } else {
       // 隐藏弹窗
       popup.style.transition = 'opacity 0.001s cubic-bezier(0.4, 0, 0.2, 1), transform 0.001s cubic-bezier(0.4, 0, 0.2, 1)';
@@ -255,8 +238,9 @@ export default function FloatingButtons() {
       popup.style.transform = 'scale(0.9) translateY(10px)';
 
       // 动画结束后隐藏
+      shouldHidePopup.current = true;
       setTimeout(() => {
-        if (!isCustomerServiceOpen) {
+        if (shouldHidePopup.current) {
           popup.style.display = 'none';
         }
       }, 1);

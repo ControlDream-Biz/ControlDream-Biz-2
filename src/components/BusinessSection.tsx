@@ -15,210 +15,194 @@ export default function BusinessSection() {
     setMounted(true);
   }, []);
 
-  // 监听业务卡片的features淡入
+  // 监听业务卡片独立淡入动画
   useEffect(() => {
-    const businessSectionValue = businessSectionRef.current;
+    const animateCard = (card: HTMLElement) => {
+      // 重置初始状态
+      const resetElements = (selector: string) => {
+        const elements = card.querySelectorAll(selector);
+        elements.forEach((el) => {
+          const elem = el as HTMLElement;
+          elem.style.opacity = '0';
+          if (elem.style.transform.includes('translateY')) {
+            elem.style.transform = 'translateY(10px)';
+          } else if (elem.style.transform.includes('translateX')) {
+            elem.style.transform = 'translateX(1rem)';
+          }
+        });
+      };
+
+      // 重置所有动画元素
+      resetElements('[data-business-title]');
+      resetElements('[data-business-subtitle]');
+      resetElements('[data-business-desc]');
+      resetElements('[data-business-feature]');
+      resetElements('[data-business-stats]');
+
+      // 触发标题淡入
+      const title = card.querySelector('[data-business-title]');
+      if (title) {
+        setTimeout(() => {
+          (title as HTMLElement).style.opacity = '1';
+          (title as HTMLElement).style.transform = 'translateY(0)';
+        }, 100);
+      }
+
+      // 触发副标题淡入
+      const subtitle = card.querySelector('[data-business-subtitle]');
+      if (subtitle) {
+        setTimeout(() => {
+          (subtitle as HTMLElement).style.opacity = '1';
+          (subtitle as HTMLElement).style.transform = 'translateY(0)';
+        }, 200);
+      }
+
+      // 触发描述淡入
+      const desc = card.querySelector('[data-business-desc]');
+      if (desc) {
+        setTimeout(() => {
+          (desc as HTMLElement).style.opacity = '1';
+          (desc as HTMLElement).style.transform = 'translateY(0)';
+        }, 300);
+      }
+
+      // 触发features淡入
+      const features = card.querySelectorAll('[data-business-feature]');
+      features.forEach((feature, featureIndex) => {
+        setTimeout(() => {
+          (feature as HTMLElement).style.opacity = '1';
+          (feature as HTMLElement).style.transform = 'translateX(0)';
+        }, 400 + featureIndex * 100);
+      });
+
+      // 触发stats淡入
+      const stats = card.querySelector('[data-business-stats]');
+      if (stats) {
+        setTimeout(() => {
+          (stats as HTMLElement).style.opacity = '1';
+          (stats as HTMLElement).style.transform = 'translateY(0)';
+        }, 400 + features.length * 100);
+      }
+    };
+
+    const resetCard = (card: HTMLElement) => {
+      const elements = card.querySelectorAll('[data-business-title], [data-business-subtitle], [data-business-desc], [data-business-feature], [data-business-stats]');
+      elements.forEach((el) => {
+        const elem = el as HTMLElement;
+        elem.style.opacity = '0';
+        if (elem.style.transform.includes('translateY')) {
+          elem.style.transform = 'translateY(10px)';
+        } else if (elem.style.transform.includes('translateX')) {
+          elem.style.transform = 'translateX(1rem)';
+        }
+      });
+    };
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const section = entry.target;
-
+          const card = entry.target as HTMLElement;
           if (entry.isIntersecting) {
-            // 触发业务卡片的内容淡入
-            const cards = section.querySelectorAll('.glass-card');
-            cards.forEach((card, cardIndex) => {
-              const cardEl = card as HTMLElement;
-
-              // 重置初始状态
-              const resetElements = (selector: string) => {
-                const elements = cardEl.querySelectorAll(selector);
-                elements.forEach((el) => {
-                  const elem = el as HTMLElement;
-                  elem.style.opacity = '0';
-                  if (elem.style.transform.includes('translateY')) {
-                    elem.style.transform = 'translateY(10px)';
-                  } else if (elem.style.transform.includes('translateX')) {
-                    elem.style.transform = 'translateX(1rem)';
-                  }
-                });
-              };
-
-              // 重置所有动画元素
-              resetElements('[data-business-title]');
-              resetElements('[data-business-subtitle]');
-              resetElements('[data-business-desc]');
-              resetElements('[data-business-feature]');
-              resetElements('[data-business-stats]');
-
-              // 触发标题淡入
-              const title = cardEl.querySelector('[data-business-title]');
-              if (title) {
-                setTimeout(() => {
-                  (title as HTMLElement).style.opacity = '1';
-                  (title as HTMLElement).style.transform = 'translateY(0)';
-                }, 800 + cardIndex * 150);
-              }
-
-              // 触发副标题淡入
-              const subtitle = cardEl.querySelector('[data-business-subtitle]');
-              if (subtitle) {
-                setTimeout(() => {
-                  (subtitle as HTMLElement).style.opacity = '1';
-                  (subtitle as HTMLElement).style.transform = 'translateY(0)';
-                }, 900 + cardIndex * 150);
-              }
-
-              // 触发描述淡入
-              const desc = cardEl.querySelector('[data-business-desc]');
-              if (desc) {
-                setTimeout(() => {
-                  (desc as HTMLElement).style.opacity = '1';
-                  (desc as HTMLElement).style.transform = 'translateY(0)';
-                }, 1000 + cardIndex * 150);
-              }
-
-              // 触发features淡入
-              const features = cardEl.querySelectorAll('[data-business-feature]');
-              features.forEach((feature, featureIndex) => {
-                setTimeout(() => {
-                  (feature as HTMLElement).style.opacity = '1';
-                  (feature as HTMLElement).style.transform = 'translateX(0)';
-                }, 1100 + cardIndex * 150 + featureIndex * 100);
-              });
-
-              // 触发stats淡入
-              const stats = cardEl.querySelector('[data-business-stats]');
-              if (stats) {
-                setTimeout(() => {
-                  (stats as HTMLElement).style.opacity = '1';
-                  (stats as HTMLElement).style.transform = 'translateY(0)';
-                }, 1100 + cardIndex * 150 + features.length * 100);
-              }
-            });
+            animateCard(card);
           } else {
-            // 元素离开视口时，重置状态
-            const cards = section.querySelectorAll('.glass-card');
-            cards.forEach((card) => {
-              const cardEl = card as HTMLElement;
-              const elements = cardEl.querySelectorAll('[data-business-title], [data-business-subtitle], [data-business-desc], [data-business-feature], [data-business-stats]');
-              elements.forEach((el) => {
-                const elem = el as HTMLElement;
-                elem.style.opacity = '0';
-                if (elem.style.transform.includes('translateY')) {
-                  elem.style.transform = 'translateY(10px)';
-                } else if (elem.style.transform.includes('translateX')) {
-                  elem.style.transform = 'translateX(1rem)';
-                }
-              });
-            });
+            resetCard(card);
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -200px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -100px 0px' }
     );
 
-    if (businessSectionValue) {
-      observer.observe(businessSectionValue);
-    }
+    // 观察每个独立的业务卡片
+    const cards = document.querySelectorAll('[data-business-card]');
+    cards.forEach((card) => observer.observe(card));
 
     return () => {
-      if (businessSectionValue) {
-        observer.unobserve(businessSectionValue);
-      }
+      cards.forEach((card) => observer.unobserve(card));
     };
   }, [mounted]);
 
+  // 监听代表产品独立淡入动画
   useEffect(() => {
-    const sectionRefValue = sectionRef.current;
+    const animateProduct = (productSection: HTMLElement) => {
+      // 重置产品section状态
+      productSection.style.opacity = '0';
+      productSection.style.transform = 'translateY(40px)';
 
-    // 监听代表产品区域
+      // 重置内部元素
+      const items = productSection.querySelectorAll('[data-scroll-item]');
+      items.forEach((item) => {
+        const itemEl = item as HTMLElement;
+        itemEl.style.opacity = '0';
+        if (itemEl.style.transform.includes('translateY')) {
+          itemEl.style.transform = 'translateY(20px)';
+        } else if (itemEl.style.transform.includes('translateX')) {
+          itemEl.style.transform = 'translateX(2.5rem)';
+        } else if (itemEl.style.transform.includes('scale')) {
+          itemEl.style.transform = 'scale(0.95)';
+        }
+      });
+
+      setTimeout(() => {
+        productSection.style.opacity = '1';
+        productSection.style.transform = 'translateY(0)';
+      }, 200);
+
+      // 触发内部元素动画
+      setTimeout(() => {
+        items.forEach((item, itemIndex) => {
+          const itemEl = item as HTMLElement;
+          setTimeout(() => {
+            itemEl.style.opacity = '1';
+            if (itemEl.style.transform.includes('translateY')) {
+              itemEl.style.transform = 'translateY(0)';
+            } else if (itemEl.style.transform.includes('translateX')) {
+              itemEl.style.transform = 'translateX(0)';
+            } else if (itemEl.style.transform.includes('scale')) {
+              itemEl.style.transform = 'scale(1)';
+            }
+          }, itemIndex * 200);
+        });
+      }, 400);
+    };
+
+    const resetProduct = (productSection: HTMLElement) => {
+      productSection.style.opacity = '0';
+      productSection.style.transform = 'translateY(40px)';
+
+      const items = productSection.querySelectorAll('[data-scroll-item]');
+      items.forEach((item) => {
+        const itemEl = item as HTMLElement;
+        itemEl.style.opacity = '0';
+        if (itemEl.style.transform.includes('translateY')) {
+          itemEl.style.transform = 'translateY(20px)';
+        } else if (itemEl.style.transform.includes('translateX')) {
+          itemEl.style.transform = 'translateX(2.5rem)';
+        } else if (itemEl.style.transform.includes('scale')) {
+          itemEl.style.transform = 'scale(0.95)';
+        }
+      });
+    };
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const section = entry.target;
-
+          const productSection = entry.target as HTMLElement;
           if (entry.isIntersecting) {
-            // 代表产品区域动画
-            const productSections = section.querySelectorAll('[data-product-section]');
-            productSections.forEach((prodSection, index) => {
-              const prodEl = prodSection as HTMLElement;
-
-              // 重置产品section状态
-              prodEl.style.opacity = '0';
-              prodEl.style.transform = 'translateY(40px)';
-
-              // 重置内部元素
-              const items = prodEl.querySelectorAll('[data-scroll-item]');
-              items.forEach((item) => {
-                const itemEl = item as HTMLElement;
-                itemEl.style.opacity = '0';
-                if (itemEl.style.transform.includes('translateY')) {
-                  itemEl.style.transform = 'translateY(20px)';
-                } else if (itemEl.style.transform.includes('translateX')) {
-                  itemEl.style.transform = 'translateX(2.5rem)';
-                } else if (itemEl.style.transform.includes('scale')) {
-                  itemEl.style.transform = 'scale(0.95)';
-                }
-              });
-
-              setTimeout(() => {
-                prodEl.style.opacity = '1';
-                prodEl.style.transform = 'translateY(0)';
-              }, 200 + index * 300);
-
-              // 触发内部元素动画
-              setTimeout(() => {
-                items.forEach((item, itemIndex) => {
-                  const itemEl = item as HTMLElement;
-                  setTimeout(() => {
-                    itemEl.style.opacity = '1';
-                    if (itemEl.style.transform.includes('translateY')) {
-                      itemEl.style.transform = 'translateY(0)';
-                    } else if (itemEl.style.transform.includes('translateX')) {
-                      itemEl.style.transform = 'translateX(0)';
-                    } else if (itemEl.style.transform.includes('scale')) {
-                      itemEl.style.transform = 'scale(1)';
-                    }
-                  }, itemIndex * 200);
-                });
-              }, 400 + index * 300);
-            });
+            animateProduct(productSection);
           } else {
-            // 元素离开视口时，重置状态
-            const productSections = section.querySelectorAll('[data-product-section]');
-            productSections.forEach((prodSection) => {
-              const prodEl = prodSection as HTMLElement;
-              prodEl.style.opacity = '0';
-              prodEl.style.transform = 'translateY(40px)';
-
-              const items = prodSection.querySelectorAll('[data-scroll-item]');
-              items.forEach((item) => {
-                const itemEl = item as HTMLElement;
-                itemEl.style.opacity = '0';
-                if (itemEl.style.transform.includes('translateY')) {
-                  itemEl.style.transform = 'translateY(20px)';
-                } else if (itemEl.style.transform.includes('translateX')) {
-                  itemEl.style.transform = 'translateX(2.5rem)';
-                } else if (itemEl.style.transform.includes('scale')) {
-                  itemEl.style.transform = 'scale(0.95)';
-                }
-              });
-            });
+            resetProduct(productSection);
           }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -200px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -100px 0px' }
     );
 
-    if (sectionRefValue) {
-      observer.observe(sectionRefValue);
-    }
+    // 观察每个独立的产品section
+    const productSections = document.querySelectorAll('[data-product-section]');
+    productSections.forEach((section) => observer.observe(section));
 
     return () => {
-      if (sectionRefValue) {
-        observer.unobserve(sectionRefValue);
-      }
+      productSections.forEach((section) => observer.unobserve(section));
     };
   }, [mounted]);
 
@@ -280,6 +264,7 @@ export default function BusinessSection() {
               <Card
                 key={index}
                 className="group hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-transparent overflow-hidden glass-card cursor-pointer"
+                data-business-card
                 style={{
                   borderRadius: '20px',
                   boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)',
