@@ -226,48 +226,34 @@ export default function FloatingButtons() {
     };
   }, []);
 
-  // 更新弹窗显示 - 超极速动画（再快3倍）
+  // 更新弹窗显示 - 瞬时动画（立即出现）
   useEffect(() => {
     const popup = document.getElementById('customer-service-popup');
     const btn = document.getElementById('customer-service-btn');
     if (!popup || !btn) return;
 
     if (isCustomerServiceOpen) {
-      // 显示弹窗 - 超极速进入
+      // 显示弹窗 - 立即出现
       popup.style.display = 'block';
 
-      // 使用 requestAnimationFrame 确保样式已应用
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          popup.style.transition = 'opacity 0.01s cubic-bezier(0.4, 0, 0.2, 1), transform 0.01s cubic-bezier(0.4, 0, 0.2, 1)';
-          popup.style.opacity = '1';
-          popup.style.transform = 'scale(1) translateY(0)';
-        });
-      });
+      // 立即应用最终状态
+      popup.style.transition = 'none';
+      popup.style.opacity = '1';
+      popup.style.transform = 'scale(1) translateY(0)';
 
       btn.textContent = '✕';
     } else {
-      // 隐藏弹窗 - 超极速退出
-      popup.style.transition = 'opacity 0.01s cubic-bezier(0.4, 0, 0.2, 1), transform 0.01s cubic-bezier(0.4, 0, 0.2, 1)';
+      // 隐藏弹窗 - 立即消失
+      popup.style.transition = 'none';
       popup.style.opacity = '0';
       popup.style.transform = 'scale(0.9) translateY(10px)';
 
-      // 动画结束后隐藏元素
-      const animationEndHandler = () => {
+      // 立即隐藏
+      setTimeout(() => {
         if (!isCustomerServiceOpen) {
           popup.style.display = 'none';
         }
-        popup.removeEventListener('transitionend', animationEndHandler);
-      };
-
-      popup.addEventListener('transitionend', animationEndHandler);
-
-      // 兜底：10ms 后强制隐藏
-      setTimeout(() => {
-        if (!isCustomerServiceOpen && popup.style.display !== 'none') {
-          popup.style.display = 'none';
-        }
-      }, 10);
+      }, 0);
 
       btn.textContent = '💬';
     }
