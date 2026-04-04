@@ -40,12 +40,20 @@ export default function FloatingButtons() {
       }
     }
 
-    // 创建返回顶部按钮 - 直接使用 position: fixed
+    // 创建按钮组容器 - 纵向排列
+    const buttonGroup = document.createElement('div');
+    buttonGroup.style.position = 'fixed';
+    buttonGroup.style.bottom = '100px';
+    buttonGroup.style.left = '30px';
+    buttonGroup.style.display = 'flex';
+    buttonGroup.style.flexDirection = 'column';
+    buttonGroup.style.gap = '12px';
+    buttonGroup.style.zIndex = '2147483647';
+    buttonGroup.style.pointerEvents = 'auto';
+
+    // 创建返回顶部按钮
     const backToTopBtn = document.createElement('div');
     backToTopBtn.id = 'back-to-top-btn';
-    backToTopBtn.style.position = 'fixed';
-    backToTopBtn.style.bottom = `${backToTopBottom}px`;
-    backToTopBtn.style.right = '30px';
     backToTopBtn.style.width = '40px';
     backToTopBtn.style.height = '40px';
     backToTopBtn.style.borderRadius = '50%';
@@ -59,7 +67,6 @@ export default function FloatingButtons() {
     backToTopBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
     backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
     backToTopBtn.style.willChange = 'transform';
-    backToTopBtn.style.zIndex = '2147483647';
     backToTopBtn.style.pointerEvents = 'auto';
     backToTopBtn.textContent = '↑';
 
@@ -75,12 +82,9 @@ export default function FloatingButtons() {
       backToTopBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
     });
 
-    // 创建客服按钮 - 直接使用 position: fixed
+    // 创建客服按钮
     const customerServiceBtn = document.createElement('div');
     customerServiceBtn.id = 'customer-service-btn';
-    customerServiceBtn.style.position = 'fixed';
-    customerServiceBtn.style.bottom = `${customerServiceBottom}px`;
-    customerServiceBtn.style.right = '30px';
     customerServiceBtn.style.width = '40px';
     customerServiceBtn.style.height = '40px';
     customerServiceBtn.style.borderRadius = '50%';
@@ -94,7 +98,6 @@ export default function FloatingButtons() {
     customerServiceBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
     customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
     customerServiceBtn.style.willChange = 'transform';
-    customerServiceBtn.style.zIndex = '2147483647';
     customerServiceBtn.style.pointerEvents = 'auto';
     customerServiceBtn.textContent = '💬';
 
@@ -112,14 +115,43 @@ export default function FloatingButtons() {
       customerServiceBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
     });
 
-    // 创建客服弹窗 - 直接使用 position: fixed
+    // 创建第三个按钮（新增）- 可以是其他功能，比如分享或收藏
+    const thirdBtn = document.createElement('div');
+    thirdBtn.id = 'third-btn';
+    thirdBtn.style.width = '40px';
+    thirdBtn.style.height = '40px';
+    thirdBtn.style.borderRadius = '50%';
+    thirdBtn.style.backgroundColor = 'rgba(244, 63, 94, 0.9)';
+    thirdBtn.style.color = 'white';
+    thirdBtn.style.display = 'flex';
+    thirdBtn.style.alignItems = 'center';
+    thirdBtn.style.justifyContent = 'center';
+    thirdBtn.style.fontSize = '18px';
+    thirdBtn.style.cursor = 'pointer';
+    thirdBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
+    thirdBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
+    thirdBtn.style.willChange = 'transform';
+    thirdBtn.style.pointerEvents = 'auto';
+    thirdBtn.textContent = '⭐';
+
+    thirdBtn.addEventListener('mouseenter', () => {
+      thirdBtn.style.transform = 'scale(1.1)';
+      thirdBtn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.25)';
+    });
+
+    thirdBtn.addEventListener('mouseleave', () => {
+      thirdBtn.style.transform = 'scale(1)';
+      thirdBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
+    });
+
+    // 创建客服弹窗
     const customerServicePopup = document.createElement('div');
     customerServicePopup.id = 'customer-service-popup';
     customerServicePopup.style.position = 'fixed';
-    customerServicePopup.style.bottom = `${customerServiceBottom + 70}px`;
-    customerServicePopup.style.right = '30px';
+    customerServicePopup.style.bottom = '100px';
+    customerServicePopup.style.left = '80px';
     customerServicePopup.style.width = '280px';
-    customerServicePopup.style.maxWidth = 'calc(100vw - 60px)';
+    customerServicePopup.style.maxWidth = 'calc(100vw - 100px)';
     customerServicePopup.style.backgroundColor = 'white';
     customerServicePopup.style.borderRadius = '12px';
     customerServicePopup.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.12)';
@@ -166,18 +198,19 @@ export default function FloatingButtons() {
       </div>
     `;
 
+    // 添加到按钮组（纵向排列）
+    buttonGroup.appendChild(customerServicePopup);
+    buttonGroup.appendChild(backToTopBtn);
+    buttonGroup.appendChild(customerServiceBtn);
+    buttonGroup.appendChild(thirdBtn);
+
     // 直接添加到 body
-    document.body.appendChild(customerServicePopup);
-    document.body.appendChild(backToTopBtn);
-    document.body.appendChild(customerServiceBtn);
+    document.body.appendChild(buttonGroup);
 
     // 清理函数
     return () => {
-      if (document.body.contains(backToTopBtn)) {
-        document.body.removeChild(backToTopBtn);
-      }
-      if (document.body.contains(customerServiceBtn)) {
-        document.body.removeChild(customerServiceBtn);
+      if (document.body.contains(buttonGroup)) {
+        document.body.removeChild(buttonGroup);
       }
       if (document.body.contains(customerServicePopup)) {
         document.body.removeChild(customerServicePopup);
