@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Play } from 'lucide-react';
 
@@ -25,7 +24,7 @@ export default function HeroSection() {
             </div>
 
             <div className="space-y-4">
-              <h1 className="text-6xl lg:text-8xl font-bold tracking-tight">
+              <h1 className="text-4xl lg:text-6xl font-bold tracking-tight">
                 <span className="block text-black">创梦</span>
                 <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-blue-600 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient">
                   计算机系统有限公司
@@ -63,36 +62,6 @@ export default function HeroSection() {
               <div>
                 <div className="text-4xl font-bold text-gray-900">500+</div>
                 <div className="text-sm text-gray-600 mt-1">合作伙伴</div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right Content - Logo Display */}
-          <div className="relative">
-            <div className="relative w-full aspect-square max-w-lg mx-auto">
-              {/* Logo with effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-100 via-purple-50 to-gray-100 rounded-3xl transform rotate-6"></div>
-              <div className="absolute inset-0 bg-white rounded-3xl shadow-2xl overflow-hidden backdrop-blur-xl">
-                <div className="relative w-full h-full flex items-center justify-center bg-gradient-to-br from-white via-gray-50 to-white p-16">
-                  <Image
-                    src="/logo-cm-final.png"
-                    alt="创梦 LOGO"
-                    width={500}
-                    height={500}
-                    className="object-contain w-full h-auto drop-shadow-2xl"
-                  />
-                </div>
-              </div>
-
-              {/* Floating elements */}
-              <div className="absolute -top-6 -right-6 bg-white rounded-2xl shadow-xl p-6 animate-bounce">
-                <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
-                  <span className="text-white font-bold text-2xl">CM</span>
-                </div>
-              </div>
-              <div className="absolute -bottom-6 -left-6 bg-white rounded-2xl shadow-xl p-6">
-                <div className="text-sm font-bold text-gray-900 mb-1">创梦科技</div>
-                <div className="text-xs text-gray-500">Computer System</div>
               </div>
             </div>
           </div>
