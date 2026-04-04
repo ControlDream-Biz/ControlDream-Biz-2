@@ -88,31 +88,76 @@ export default function Navbar() {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden"
+            className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-xl transition-all duration-400 hover:bg-gray-100/80"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            style={{
+              backdropFilter: 'blur(10px)',
+            }}
           >
-            {mobileMenuOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
+            <div className="relative w-6 h-6">
+              {/* Top line */}
+              <span
+                className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all duration-400 ease-out ${
+                  mobileMenuOpen ? 'top-3 rotate-45' : 'top-0'
+                }`}
+                style={{
+                  transitionTimingFunction: mobileMenuOpen
+                    ? 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+                    : 'cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+              />
+              {/* Middle line */}
+              <span
+                className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all duration-300 ease-out ${
+                  mobileMenuOpen ? 'opacity-0' : 'top-3'
+                }`}
+              />
+              {/* Bottom line */}
+              <span
+                className={`absolute left-0 w-6 h-0.5 bg-gray-700 rounded-full transition-all duration-400 ease-out ${
+                  mobileMenuOpen ? 'top-3 -rotate-45' : 'top-6'
+                }`}
+                style={{
+                  transitionTimingFunction: mobileMenuOpen
+                    ? 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+                    : 'cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+              />
+            </div>
           </button>
         </div>
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden mt-4 pb-4 space-y-4">
-            {navItems.map((item) => (
+          <div
+            className="md:hidden mt-4 pb-4 space-y-4 animate-fade-in"
+            style={{
+              backdropFilter: 'blur(20px) saturate(150%)',
+              background: 'rgba(255, 255, 255, 0.95)',
+              borderRadius: '16px',
+              padding: '20px',
+              boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(255, 255, 255, 0.5) inset',
+            }}
+          >
+            {navItems.map((item, index) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="block text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+                className="block text-base font-medium text-gray-700 hover:text-blue-600 transition-all duration-300 py-2 px-4 rounded-lg hover:bg-blue-50/50 animate-fade-in"
+                style={{
+                  animationDelay: `${index * 50}ms`,
+                  transitionTimingFunction: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+                }}
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {item.name}
               </Link>
             ))}
-            <Button className="w-full bg-black text-white hover:bg-gray-800">
+            <Button
+              className="w-full glass-button font-semibold mt-4"
+              style={{ borderRadius: '12px', height: '44px' }}
+              onClick={() => setMobileMenuOpen(false)}
+            >
               联系我们
             </Button>
           </div>

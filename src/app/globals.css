@@ -192,14 +192,24 @@ html {
   scroll-behavior: smooth;
 }
 
-/* 隐藏滚动条但保持功能 */
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
+/* 硬件加速 */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
 }
 
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* 优化动画性能 */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateZ(0);
+  }
+  50% {
+    transform: translateY(-10px) translateZ(0);
+  }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
 }
 
 .dark {
