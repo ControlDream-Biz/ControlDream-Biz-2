@@ -799,17 +799,120 @@ html {
   -webkit-overflow-scrolling: touch;
 }
 
-/* 优化移动端性能 */
+/* ========== 滚动动画效果 ========== */
+
+/* 初始状态 - 淡入 + 上移 */
+[data-scroll-animate].opacity-0 {
+  opacity: 0 !important;
+}
+
+[data-scroll-animate].translate-y-8 {
+  transform: translateY(2rem) !important;
+}
+
+[data-scroll-animate].-translate-y-8 {
+  transform: translateY(-2rem) !important;
+}
+
+/* 动画状态 - 显示 + 原位 */
+[data-scroll-animate].opacity-100 {
+  opacity: 1 !important;
+}
+
+[data-scroll-animate].translate-y-0 {
+  transform: translateY(0) !important;
+}
+
+/* 过渡效果 */
+[data-scroll-animate] {
+  transition:
+    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  will-change: opacity, transform;
+  contain: layout style paint;
+}
+
+/* 文本元素特殊优化 */
+h1[data-scroll-animate],
+h2[data-scroll-animate],
+h3[data-scroll-animate],
+h4[data-scroll-animate],
+h5[data-scroll-animate],
+h6[data-scroll-animate] {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: opacity, transform;
+}
+
+p[data-scroll-animate],
+span[data-scroll-animate],
+div[data-scroll-animate] {
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: opacity, transform;
+}
+
+/* 滚动动画进入视口时的效果 */
+[data-scroll-animate].animate-in {
+  animation: scrollFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes scrollFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(2rem) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+/* 优化移动端性能 - 强制120Hz */
 @media (max-width: 767px) {
+  /* 强制120Hz渲染 */
+  html,
+  body {
+    animation: force-120hz-mobile 0.0167s infinite linear;
+  }
+
+  @keyframes force-120hz-mobile {
+    0% { opacity: 0.9999; }
+    100% { opacity: 1; }
+  }
+
+  /* 动画加速 */
   *,
   *::before,
   *::after {
-    animation-duration: 1.5s !important;
-    transition-duration: 0.4s !important;
+    animation-duration: 1.2s !important;
+    transition-duration: 0.3s !important;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
+  /* 液态背景加速 */
   body::before,
   body::after {
-    animation-duration: 30s !important;
+    animation-duration: 20s !important;
+  }
+
+  /* GPU强制加速 */
+  * {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  *::before,
+  *::after {
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
 }

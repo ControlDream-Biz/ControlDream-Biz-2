@@ -22,18 +22,57 @@ export default function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           {/* Left Content */}
           <div className="text-left">
-            {/* Tag */}
+            {/* Tag - 高级感升级 */}
             <div
-              className="inline-flex items-center space-x-2 px-4 py-2 rounded-full border border-blue-100 bg-blue-50 mb-6"
+              className="inline-flex items-center space-x-3 px-5 py-2.5 rounded-full mb-6 relative overflow-hidden"
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out",
                 willChange: mounted ? "auto" : "transform, opacity",
+                background: "linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 50%, rgba(236, 72, 153, 0.1) 100%)",
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
+                border: "1px solid rgba(99, 102, 241, 0.2)",
+                boxShadow: "0 4px 20px rgba(99, 102, 241, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.3)",
               }}
             >
-              <div className="w-2 h-2 rounded-full bg-blue-600" />
-              <span className="text-xs font-medium text-blue-600 uppercase tracking-wide">
+              {/* 光晕效果 */}
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  background: "linear-gradient(135deg, rgba(99, 102, 241, 0.3) 0%, rgba(139, 92, 246, 0.3) 50%, rgba(236, 72, 153, 0.3) 100%)",
+                  opacity: mounted ? 0.6 : 0,
+                  transition: "opacity 0.6s ease-out 0.2s",
+                }}
+              />
+              {/* 脉冲动画 */}
+              <div
+                className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full"
+                style={{
+                  background: "radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%)",
+                  opacity: mounted ? 0.8 : 0,
+                  animation: mounted ? "pulse-tag 2s ease-in-out infinite" : "none",
+                  animationDelay: "0.3s",
+                }}
+              />
+              {/* 蓝色圆点 */}
+              <div
+                className="w-2.5 h-2.5 rounded-full relative z-10"
+                style={{
+                  background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)",
+                  boxShadow: "0 0 12px rgba(99, 102, 241, 0.6), 0 0 24px rgba(99, 102, 241, 0.3)",
+                }}
+              />
+              <span
+                className="text-xs font-bold uppercase tracking-wider relative z-10"
+                style={{
+                  background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
+              >
                 用心创造价值
               </span>
             </div>
@@ -258,6 +297,18 @@ export default function HeroSection() {
           }
           50% {
             transform: translateY(-20px);
+          }
+        }
+
+        @keyframes pulse-tag {
+          0%,
+          100% {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 0.6;
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(1.5);
+            opacity: 0.3;
           }
         }
 
