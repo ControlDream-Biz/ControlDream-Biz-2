@@ -1,6 +1,20 @@
 import type { Metadata } from 'next';
 import { Inspector } from 'react-dev-inspector';
+import { Inter, Noto_Sans_SC, ZCOOL_XiaoWei } from 'next/font/google';
 import './globals.css';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const notoSansSC = Noto_Sans_SC({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600', '700'],
+  variable: '--font-noto-sans-sc',
+  display: 'swap',
+});
+const zcoolXiaoWei = ZCOOL_XiaoWei({
+  weight: ['400'],
+  variable: '--font-zcool-xiaowei',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -45,8 +59,8 @@ export default function RootLayout({
   const isDev = process.env.COZE_PROJECT_ENV === 'DEV';
 
   return (
-    <html lang="zh-CN">
-      <body className={`antialiased`}>
+    <html lang="zh-CN" className={`${inter.variable} ${notoSansSC.variable} ${zcoolXiaoWei.variable}`}>
+      <body className={`antialiased font-sans`}>
         {isDev && <Inspector />}
         {children}
       </body>

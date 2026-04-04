@@ -21,14 +21,14 @@ export default function HeroSection() {
       <div className="container mx-auto px-6 py-20 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           {/* Tag */}
-          <div className="inline-flex items-center px-5 py-2.5 bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-700 rounded-full text-sm font-medium shadow-sm mb-8">
+          <div className="inline-flex items-center px-5 py-2.5 bg-white/80 backdrop-blur-sm border border-slate-200 text-slate-700 rounded-full text-sm font-medium shadow-sm mb-8 font-sans">
             <span className="w-2 h-2 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full mr-2.5 animate-pulse"></span>
             创新科技 · 智造未来
           </div>
 
           {/* Title */}
           <div className="space-y-3 mb-10">
-            <h1 className="text-3xl lg:text-5xl font-bold tracking-tight leading-tight">
+            <h1 className="text-3xl lg:text-5xl font-bold font-display tracking-tight leading-tight">
               <span className="block bg-gradient-to-r from-red-500 via-blue-500 to-purple-600 bg-clip-text text-transparent bg-[length:300%_auto] animate-gradient">
                 创梦计算机系统
               </span>
@@ -37,21 +37,21 @@ export default function HeroSection() {
               </span>
             </h1>
 
-            <p className="text-lg lg:text-xl text-slate-600 font-normal leading-relaxed max-w-3xl mx-auto">
+            <p className="text-lg lg:text-xl text-slate-600 font-normal leading-relaxed max-w-3xl mx-auto font-sans">
               专注于<span className="font-semibold text-slate-900">游戏开发</span>、<span className="font-semibold text-slate-900">软件开发</span>与<span className="font-semibold text-slate-900">硬件创新</span>
             </p>
-            <p className="text-base text-slate-500 leading-relaxed max-w-2xl mx-auto">
+            <p className="text-base text-slate-500 leading-relaxed max-w-2xl mx-auto font-sans">
               用技术驱动梦想，用创意点亮未来。我们致力于为全球用户创造卓越的数字体验。
             </p>
           </div>
 
           {/* Buttons */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
-            <Button size="lg" className="bg-gradient-to-r from-blue-700 to-indigo-700 text-white hover:from-blue-800 hover:to-indigo-800 px-8 h-12 text-base font-semibold shadow-lg shadow-blue-500/25">
+            <Button size="lg" className="bg-gradient-to-r from-blue-700 to-indigo-700 text-white hover:from-blue-800 hover:to-indigo-800 px-8 h-12 text-base font-semibold shadow-lg shadow-blue-500/25 font-sans">
               探索更多
               <ArrowRight className="ml-2 w-4 h-4" />
             </Button>
-            <Button size="lg" variant="outline" className="px-8 h-12 text-base font-semibold border-2 border-slate-200 hover:bg-slate-50 text-slate-700">
+            <Button size="lg" variant="outline" className="px-8 h-12 text-base font-semibold border-2 border-slate-200 hover:bg-slate-50 text-slate-700 font-sans">
               <Play className="mr-2 w-4 h-4" />
               观看视频
             </Button>
@@ -60,16 +60,16 @@ export default function HeroSection() {
           {/* Stats */}
           <div className="grid grid-cols-3 gap-8 pt-8 border-t border-slate-200">
             <div>
-              <div className="text-3xl font-bold text-slate-900">10+</div>
-              <div className="text-sm text-slate-600 mt-1">年行业经验</div>
+              <div className="text-3xl font-bold text-slate-900 font-sans">10+</div>
+              <div className="text-sm text-slate-600 mt-1 font-sans">年行业经验</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-slate-900">100+</div>
-              <div className="text-sm text-slate-600 mt-1">游戏产品</div>
+              <div className="text-3xl font-bold text-slate-900 font-sans">100+</div>
+              <div className="text-sm text-slate-600 mt-1 font-sans">游戏产品</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-slate-900">500+</div>
-              <div className="text-sm text-slate-600 mt-1">合作伙伴</div>
+              <div className="text-3xl font-bold text-slate-900 font-sans">500+</div>
+              <div className="text-sm text-slate-600 mt-1 font-sans">合作伙伴</div>
             </div>
           </div>
         </div>
