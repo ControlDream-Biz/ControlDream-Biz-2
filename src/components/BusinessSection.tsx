@@ -4,8 +4,69 @@ import Image from 'next/image';
 import { GamepadIcon, Code, Cpu } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { useEffect, useRef } from 'react';
 
 export default function BusinessSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const sectionRefValue = sectionRef.current;
+
+    // 为每个产品区块添加独立的滚动观察器
+    const observeSection = (section: Element) => {
+      const sectionObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // 触发该区块内的元素动画
+              const items = section.querySelectorAll('[data-scroll-item]');
+              items.forEach((item, index) => {
+                setTimeout(() => {
+                  item.classList.remove('opacity-0', 'translate-x-10', 'scale-95');
+                  item.style.transform = 'translateX(0) scale(1)';
+                  item.style.opacity = '1';
+                }, index * 200);
+              });
+            }
+          });
+        },
+        { threshold: 0.3 }
+      );
+
+      sectionObserver.observe(section);
+    };
+
+    const observerOptions = {
+      threshold: 0.2,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // 触发产品区块的动画
+          const sections = document.querySelectorAll('[data-scroll]');
+          sections.forEach((section, index) => {
+            setTimeout(() => {
+              section.classList.remove('opacity-0', 'translate-y-20');
+            }, index * 300);
+            // 为每个区块添加独立的观察器
+            observeSection(section);
+          });
+        }
+      });
+    }, observerOptions);
+
+    if (sectionRefValue) {
+      observer.observe(sectionRefValue);
+    }
+
+    return () => {
+      if (sectionRefValue) {
+        observer.unobserve(sectionRefValue);
+      }
+    };
+  }, []);
   const businesses = [
     {
       icon: GamepadIcon,
@@ -132,52 +193,226 @@ export default function BusinessSection() {
           })}
         </div>
 
-        {/* Featured Projects */}
-        <div className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-md rounded-2xl md:rounded-3xl p-8 md:p-12 text-white glass-dark">
-          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
-            <div>
-              <h3 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 font-sans">
-                代表产品
-              </h3>
-              <p className="text-sm md:text-base text-gray-300 leading-relaxed mb-5 md:mb-6 font-sans">
-                这些是我们用心打磨的产品，每一款都倾注了团队的心血。
-                虽然不一定完美，但我们一直在努力做得更好。
-              </p>
-              <ul className="space-y-2 md:space-y-3 mb-6 md:mb-8">
-                {[
-                  '《梦幻三国》- 一款我们用心打造的RPG手游',
-                  '《创梦云平台》- 实用的企业级SaaS产品',
-                  '智能家居系统 - 软硬件一体化的探索',
-                ].map((item, index) => (
-                  <li key={index} className="flex items-start space-x-3">
-                    <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5">
-                      <span className="text-xs font-bold font-sans">{index + 1}</span>
-                    </div>
-                    <span className="text-sm md:text-base text-gray-200 font-sans">{item}</span>
-                  </li>
-                ))}
-              </ul>
-              <Button
-                variant="outline"
-                className="border-white text-white hover:bg-white hover:text-gray-900 text-sm md:text-base font-sans"
-                style={{
-                  background: "rgba(255, 255, 255, 0.1)",
-                  backdropFilter: "blur(20px)",
-                  WebkitBackdropFilter: "blur(20px)",
-                }}
-              >
-                查看全部产品
-              </Button>
-            </div>
+        {/* Featured Projects - 苹果风格滚动交互 */}
+        <div
+          ref={sectionRef}
+          className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-md rounded-2xl md:rounded-3xl p-8 md:p-12 text-white glass-dark"
+        >
+          <div className="mb-8 md:mb-12">
+            <h3 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 font-sans text-center">
+              代表产品
+            </h3>
+            <p className="text-sm md:text-base text-gray-300 leading-relaxed text-center max-w-2xl mx-auto font-sans">
+              这些是我们用心打磨的产品，每一款都倾注了团队的心血。
+              虽然不一定完美，但我们一直在努力做得更好。
+            </p>
+          </div>
 
-            <div className="relative aspect-video bg-gray-700/80 rounded-xl md:rounded-2xl overflow-hidden glass-card">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-gray-400">
-                  <GamepadIcon className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4" />
-                  <p className="text-sm md:text-base font-medium font-sans">产品展示区域</p>
+          {/* 产品滚动动画展示 */}
+          <div className="space-y-16 md:space-y-24">
+            {/* 产品1 - 梦幻三国 */}
+            <div
+              className="product-section opacity-0 transform translate-y-20 transition-all duration-1000 ease-out"
+              style={{
+                transitionProperty: 'opacity, transform',
+                willChange: 'opacity, transform'
+              }}
+              data-scroll
+            >
+              <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div className="order-2 lg:order-1">
+                  <div className="space-y-4 md:space-y-6">
+                    <h4 className="text-xl md:text-2xl font-bold font-sans mb-2">
+                      《梦幻三国》
+                    </h4>
+                    <p className="text-sm md:text-base text-gray-300 leading-relaxed font-sans">
+                      一款我们用心打造的RPG手游，融合经典三国历史与现代游戏体验。
+                    </p>
+                    <div className="space-y-3">
+                      {[
+                        { label: '核心玩法', desc: '回合制战斗 + 策略养成' },
+                        { label: '画面表现', desc: '3D角色 + 精美场景' },
+                        { label: '社交系统', desc: '公会战 + 好友互动' },
+                      ].map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex items-start space-x-3 opacity-0 transition-all duration-700 ease-out"
+                          style={{
+                            transform: 'translateX(2.5rem)',
+                            transitionDelay: `${index * 200}ms`,
+                            willChange: 'opacity, transform'
+                          }}
+                          data-scroll-item
+                        >
+                          <div className="w-1 h-1 rounded-full bg-blue-400 mt-2 flex-shrink-0"></div>
+                          <div>
+                            <div className="text-sm font-medium text-blue-400 font-sans">{item.label}</div>
+                            <div className="text-xs text-gray-400 font-sans">{item.desc}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className="order-1 lg:order-2 relative aspect-video bg-gray-700/80 rounded-xl md:rounded-2xl overflow-hidden glass-card opacity-0 transition-all duration-1000 ease-out"
+                     style={{
+                       transform: 'scale(0.95)',
+                       willChange: 'opacity, transform'
+                     }}
+                     data-scroll-item>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center text-gray-400">
+                      <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center">
+                        <GamepadIcon className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                      </div>
+                      <p className="text-sm md:text-base font-medium font-sans">游戏画面展示</p>
+                      <p className="text-xs text-gray-500 mt-1 font-sans">滚动查看细节</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* 产品2 - 创梦云平台 */}
+            <div
+              className="product-section opacity-0 transform translate-y-20 transition-all duration-1000 ease-out"
+              style={{
+                transitionProperty: 'opacity, transform',
+                willChange: 'opacity, transform'
+              }}
+              data-scroll
+            >
+              <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div className="relative aspect-video bg-gray-700/80 rounded-xl md:rounded-2xl overflow-hidden glass-card opacity-0 transition-all duration-1000 ease-out"
+                     style={{
+                       transform: 'scale(0.95)',
+                       willChange: 'opacity, transform'
+                     }}
+                     data-scroll-item>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center text-gray-400">
+                      <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center">
+                        <Code className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                      </div>
+                      <p className="text-sm md:text-base font-medium font-sans">云平台界面</p>
+                      <p className="text-xs text-gray-500 mt-1 font-sans">SaaS解决方案</p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div className="space-y-4 md:space-y-6">
+                    <h4 className="text-xl md:text-2xl font-bold font-sans mb-2">
+                      《创梦云平台》
+                    </h4>
+                    <p className="text-sm md:text-base text-gray-300 leading-relaxed font-sans">
+                      实用的企业级SaaS产品，帮助企业高效管理业务流程。
+                    </p>
+                    <div className="space-y-3">
+                      {[
+                        { label: '核心功能', desc: '项目管理 + 数据分析' },
+                        { label: '技术架构', desc: '微服务 + 云原生' },
+                        { label: '安全保障', desc: '数据加密 + 权限控制' },
+                      ].map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex items-start space-x-3 opacity-0 transition-all duration-700 ease-out"
+                          style={{
+                            transform: 'translateX(2.5rem)',
+                            transitionDelay: `${index * 200}ms`,
+                            willChange: 'opacity, transform'
+                          }}
+                          data-scroll-item
+                        >
+                          <div className="w-1 h-1 rounded-full bg-cyan-400 mt-2 flex-shrink-0"></div>
+                          <div>
+                            <div className="text-sm font-medium text-cyan-400 font-sans">{item.label}</div>
+                            <div className="text-xs text-gray-400 font-sans">{item.desc}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 产品3 - 智能家居系统 */}
+            <div
+              className="product-section opacity-0 transform translate-y-20 transition-all duration-1000 ease-out"
+              style={{
+                transitionProperty: 'opacity, transform',
+                willChange: 'opacity, transform'
+              }}
+              data-scroll
+            >
+              <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
+                <div className="order-2 lg:order-1">
+                  <div className="space-y-4 md:space-y-6">
+                    <h4 className="text-xl md:text-2xl font-bold font-sans mb-2">
+                      智能家居系统
+                    </h4>
+                    <p className="text-sm md:text-base text-gray-300 leading-relaxed font-sans">
+                      软硬件一体化的探索，为用户提供智能化的家居体验。
+                    </p>
+                    <div className="space-y-3">
+                      {[
+                        { label: '硬件设备', desc: '智能网关 + 传感器' },
+                        { label: '软件应用', desc: 'APP控制 + 语音交互' },
+                        { label: '生态整合', desc: '多品牌兼容 + 场景联动' },
+                      ].map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex items-start space-x-3 opacity-0 transition-all duration-700 ease-out"
+                          style={{
+                            transform: 'translateX(2.5rem)',
+                            transitionDelay: `${index * 200}ms`,
+                            willChange: 'opacity, transform'
+                          }}
+                          data-scroll-item
+                        >
+                          <div className="w-1 h-1 rounded-full bg-emerald-400 mt-2 flex-shrink-0"></div>
+                          <div>
+                            <div className="text-sm font-medium text-emerald-400 font-sans">{item.label}</div>
+                            <div className="text-xs text-gray-400 font-sans">{item.desc}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                <div className="order-1 lg:order-2 relative aspect-video bg-gray-700/80 rounded-xl md:rounded-2xl overflow-hidden glass-card opacity-0 transition-all duration-1000 ease-out"
+                     style={{
+                       transform: 'scale(0.95)',
+                       willChange: 'opacity, transform'
+                     }}
+                     data-scroll-item>
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-center text-gray-400">
+                      <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center">
+                        <Cpu className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                      </div>
+                      <p className="text-sm md:text-base font-medium font-sans">系统架构</p>
+                      <p className="text-xs text-gray-500 mt-1 font-sans">IoT解决方案</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA Button */}
+          <div className="mt-12 md:mt-16 text-center">
+            <Button
+              variant="outline"
+              className="border-white text-white hover:bg-white hover:text-gray-900 text-sm md:text-base font-sans"
+              style={{
+                background: "rgba(255, 255, 255, 0.1)",
+                backdropFilter: "blur(20px)",
+                WebkitBackdropFilter: "blur(20px)",
+              }}
+            >
+              查看全部产品
+            </Button>
           </div>
         </div>
       </div>
