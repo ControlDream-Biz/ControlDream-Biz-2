@@ -6,7 +6,7 @@ import EnvironmentSection from '@/components/EnvironmentSection';
 import Footer from '@/components/Footer';
 import BackToTop from '@/components/BackToTop';
 import CustomerService from '@/components/CustomerService';
-import PerformanceOptimizer from '@/components/PerformanceOptimizer';
+// import PerformanceOptimizer from '@/components/PerformanceOptimizer';
 // import PerformanceMonitor from '@/components/PerformanceMonitor';
 
 export const metadata: Metadata = {
