@@ -52,7 +52,7 @@ export default function BuildingSection() {
           <div className="relative">
             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 shadow-2xl">
               <Image
-                src="/building-reallogo.jpg"
+                src="/building-replaced.jpg"
                 alt="创梦总部大厦"
                 fill
                 className="object-cover"
