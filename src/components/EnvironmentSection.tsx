@@ -49,46 +49,49 @@ export default function EnvironmentSection() {
   ];
 
   return (
-    <section id="environment" className="py-24 bg-white">
-      <div className="container mx-auto px-6">
+    <section id="environment" className="py-20 md:py-24 bg-gradient-to-b from-blue-50/80 via-white/90 to-slate-100/80 relative overflow-hidden">
+      {/* Glass Background */}
+      <div className="absolute inset-0 glass opacity-40"></div>
+
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 font-sans">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-4 font-sans">
             办公环境
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto font-sans">
+          <p className="text-base md:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto font-sans">
             现代化、智能化、人性化的办公空间，激发创造力，提升工作效率
           </p>
         </div>
 
         {/* Feature Highlight - Front Desk */}
-        <div className="mb-16 bg-gradient-to-br from-blue-50 to-gray-50 rounded-3xl p-8 lg:p-12">
-          <div className="grid lg:grid-cols-1 gap-8">
+        <div className="mb-12 md:mb-16 bg-gradient-to-br from-blue-50/90 to-gray-50/90 backdrop-blur-md rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12 glass-card">
+          <div className="grid lg:grid-cols-1 gap-6 md:gap-8">
             <div className="text-center">
               {/* Info Card */}
-              <div className="inline-flex bg-white rounded-xl shadow-xl p-6 mb-8">
-                <div className="flex items-center space-x-4">
-                  <div className="w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center">
-                    <Mail className="w-7 h-7 text-white" />
+              <div className="inline-flex bg-white/90 backdrop-blur-md rounded-xl shadow-xl p-4 md:p-6 mb-6 md:mb-8">
+                <div className="flex items-center space-x-3 md:space-x-4">
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-blue-600 rounded-full flex items-center justify-center">
+                    <Mail className="w-6 h-6 md:w-7 md:h-7 text-white" />
                   </div>
                   <div>
-                    <div className="font-bold text-gray-900 text-lg font-sans">前台接待</div>
-                    <div className="text-sm text-gray-600 font-sans">Welcome Area</div>
+                    <div className="font-bold text-gray-900 text-base md:text-lg font-sans">前台接待</div>
+                    <div className="text-xs md:text-sm text-gray-600 font-sans">Welcome Area</div>
                   </div>
                 </div>
               </div>
 
-              <h3 className="text-3xl font-bold text-gray-900 mb-6 font-sans">
+              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-6 font-sans">
                 专业形象 · 温馨接待
               </h3>
-              <p className="text-gray-600 leading-relaxed max-w-3xl mx-auto font-sans">
+              <p className="text-sm md:text-base text-gray-600 leading-relaxed max-w-3xl mx-auto font-sans">
                 前台接待区是公司的第一道门面，我们以简约大气的设计风格，
                 融入公司LOGO和品牌标识，营造出专业、现代的企业形象。
                 背景墙巧妙地展示公司名称，让每位来访者在第一时间感受到创梦的品牌魅力。
               </p>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mt-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-3xl mx-auto mt-4 md:mt-6">
                 {areas[0].features.map((feature, index) => (
-                  <div key={index} className="flex items-center justify-center space-x-2 text-sm">
+                  <div key={index} className="flex items-center justify-center space-x-2 text-xs md:text-sm">
                     <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                     <span className="text-gray-700 font-sans">{feature}</span>
                   </div>
@@ -99,14 +102,14 @@ export default function EnvironmentSection() {
         </div>
 
         {/* Office Areas Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {areas.slice(1).map((area, index) => {
             const Icon = area.icon;
             const areaIndex = index + 2; // Skip front desk
             return (
               <div
                 key={areaIndex}
-                className="group relative bg-white border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-blue-500 hover:shadow-2xl transition-all duration-300"
+                className="group relative bg-white/90 backdrop-blur-md border-2 border-gray-100 rounded-xl md:rounded-2xl overflow-hidden hover:border-blue-500 hover:shadow-2xl transition-all duration-300 glass-card"
               >
                 {/* Image */}
                 <div className="aspect-video relative overflow-hidden">
@@ -120,8 +123,8 @@ export default function EnvironmentSection() {
                   ) : (
                     <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
                       <div className="text-center">
-                        <Icon className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                        <p className="text-sm font-medium text-gray-600 font-sans">{area.title}</p>
+                        <Icon className="w-10 h-10 md:w-12 md:h-12 text-gray-400 mx-auto mb-2" />
+                        <p className="text-xs md:text-sm font-medium text-gray-600 font-sans">{area.title}</p>
                       </div>
                     </div>
                   )}
@@ -129,16 +132,16 @@ export default function EnvironmentSection() {
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
-                  <h4 className="text-xl font-bold text-gray-900 mb-2 font-sans">{area.title}</h4>
-                  <p className="text-gray-600 text-sm leading-relaxed mb-4 font-sans">
+                <div className="p-5 md:p-6">
+                  <h4 className="text-lg md:text-xl font-bold text-gray-900 mb-2 font-sans">{area.title}</h4>
+                  <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-3 md:mb-4 font-sans">
                     {area.description}
                   </p>
-                  <div className="space-y-2">
+                  <div className="space-y-1.5 md:space-y-2">
                     {area.features.map((feature, i) => (
                       <div
                         key={i}
-                        className="flex items-center space-x-2 text-xs text-gray-600 font-sans"
+                        className="flex items-center space-x-2 text-xs md:text-sm text-gray-600 font-sans"
                       >
                         <div className="w-1.5 h-1.5 rounded-full bg-blue-600"></div>
                         <span>{feature}</span>
@@ -152,14 +155,14 @@ export default function EnvironmentSection() {
         </div>
 
         {/* Call to Action */}
-        <div className="mt-16 text-center bg-gradient-to-r from-blue-600 to-blue-800 rounded-3xl p-12">
-          <h3 className="text-2xl font-bold text-white mb-4 font-sans">
+        <div className="mt-12 md:mt-16 text-center bg-gradient-to-r from-blue-600/95 to-blue-800/95 backdrop-blur-md rounded-2xl md:rounded-3xl p-8 md:p-12 glass-dark">
+          <h3 className="text-xl md:text-2xl font-bold text-white mb-3 md:mb-4 font-sans">
             欢迎参观我们的办公环境
           </h3>
-          <p className="text-blue-100 mb-6 max-w-2xl mx-auto font-sans">
+          <p className="text-sm md:text-base text-blue-100 mb-5 md:mb-6 max-w-2xl mx-auto font-sans">
             预约参观，亲身体验创梦的专业办公空间和现代化设施
           </p>
-          <button className="bg-white text-blue-600 px-8 py-3 rounded-full font-bold hover:bg-blue-50 transition-colors font-sans">
+          <button className="bg-white text-blue-600 px-6 md:px-8 py-2.5 md:py-3 rounded-full font-bold hover:bg-blue-50 transition-colors text-sm md:text-base font-sans">
             预约参观
           </button>
         </div>

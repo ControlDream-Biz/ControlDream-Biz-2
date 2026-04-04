@@ -40,26 +40,29 @@ export default function BusinessSection() {
   ];
 
   return (
-    <section id="business" className="py-24 bg-gradient-to-b from-gray-50 to-white">
-      <div className="container mx-auto px-6">
+    <section id="business" className="py-20 md:py-24 bg-gradient-to-b from-slate-100/80 via-white/90 to-blue-50/80 relative overflow-hidden">
+      {/* Glass Background */}
+      <div className="absolute inset-0 glass opacity-40"></div>
+
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4 font-sans">
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-4 font-sans">
             三大核心业务
           </h2>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto font-sans">
+          <p className="text-base md:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto font-sans">
             以技术创新为驱动，构建多元化的业务生态体系
           </p>
         </div>
 
         {/* Business Cards */}
-        <div className="grid md:grid-cols-3 gap-8 mb-16">
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8 mb-12 md:mb-16">
           {businesses.map((business, index) => {
             const Icon = business.icon;
             return (
               <Card
                 key={index}
-                className="group hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-transparent overflow-hidden"
+                className="group hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-transparent overflow-hidden glass-card"
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${business.color} opacity-0 group-hover:opacity-5 transition-opacity`} />
 
@@ -74,31 +77,31 @@ export default function BusinessSection() {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                 </div>
 
-                <CardContent className="p-8 relative">
+                <CardContent className="p-5 md:p-8 relative">
                   {/* Icon */}
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${business.color} flex items-center justify-center mb-5 shadow-lg -mt-12 relative z-10 border-4 border-white`}>
-                    <Icon className="w-7 h-7 text-white" />
+                  <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-gradient-to-br ${business.color} flex items-center justify-center mb-4 md:mb-5 shadow-lg -mt-10 md:-mt-12 relative z-10 border-4 border-white`}>
+                    <Icon className="w-6 h-6 md:w-7 md:h-7 text-white" />
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-2xl font-bold text-gray-900 mb-1 font-sans">
+                  <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-1 font-sans">
                     {business.title}
                   </h3>
-                  <p className="text-sm text-gray-500 mb-4 font-medium font-sans">
+                  <p className="text-xs md:text-sm text-gray-500 mb-3 md:mb-4 font-medium font-sans">
                     {business.subtitle}
                   </p>
 
                   {/* Description */}
-                  <p className="text-gray-600 leading-relaxed mb-6 font-sans">
+                  <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-4 md:mb-6 font-sans">
                     {business.description}
                   </p>
 
                   {/* Features */}
-                  <div className="space-y-2 mb-6">
+                  <div className="space-y-1.5 md:space-y-2 mb-5 md:mb-6">
                     {business.features.map((feature, i) => (
                       <div
                         key={i}
-                        className="flex items-center space-x-2 text-sm text-gray-700 font-sans"
+                        className="flex items-center space-x-2 text-xs md:text-sm text-gray-700 font-sans"
                       >
                         <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${business.color}`} />
                         <span>{feature}</span>
@@ -107,12 +110,12 @@ export default function BusinessSection() {
                   </div>
 
                   {/* Stats */}
-                  <div className="pt-4 border-t border-gray-200">
+                  <div className="pt-3 md:pt-4 border-t border-gray-200">
                     <div className="flex items-baseline space-x-2">
-                      <span className={`text-3xl font-bold bg-gradient-to-r ${business.color} bg-clip-text text-transparent font-sans`}>
+                      <span className={`text-2xl md:text-3xl font-bold bg-gradient-to-r ${business.color} bg-clip-text text-transparent font-sans`}>
                         {business.stats.value}
                       </span>
-                      <span className="text-sm text-gray-600 font-sans">{business.stats.label}</span>
+                      <span className="text-xs md:text-sm text-gray-600 font-sans">{business.stats.label}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -122,40 +125,40 @@ export default function BusinessSection() {
         </div>
 
         {/* Featured Projects */}
-        <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl p-12 text-white">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="bg-gradient-to-br from-gray-900/95 to-gray-800/95 backdrop-blur-md rounded-2xl md:rounded-3xl p-8 md:p-12 text-white glass-dark">
+          <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <div>
-              <h3 className="text-3xl font-bold mb-4 font-sans">
+              <h3 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 font-sans">
                 精选案例
               </h3>
-              <p className="text-gray-300 leading-relaxed mb-6 font-sans">
+              <p className="text-sm md:text-base text-gray-300 leading-relaxed mb-5 md:mb-6 font-sans">
                 我们的团队成功交付了众多标杆项目，涵盖多个领域和平台。
                 每一个项目都是我们技术实力和创新能力的最佳证明。
               </p>
-              <ul className="space-y-3 mb-8">
+              <ul className="space-y-2 md:space-y-3 mb-6 md:mb-8">
                 {[
                   '《梦幻三国》- 累计用户破千万的RPG手游',
                   '《创梦云平台》- 企业级云服务解决方案',
                   '智能家居控制系统 - 软硬件一体化创新',
                 ].map((item, index) => (
                   <li key={index} className="flex items-start space-x-3">
-                    <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5">
                       <span className="text-xs font-bold font-sans">{index + 1}</span>
                     </div>
-                    <span className="text-gray-200 font-sans">{item}</span>
+                    <span className="text-sm md:text-base text-gray-200 font-sans">{item}</span>
                   </li>
                 ))}
               </ul>
-              <Button variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900">
+              <Button variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900 text-sm md:text-base font-sans">
                 查看更多案例
               </Button>
             </div>
 
-            <div className="relative aspect-video bg-gray-700 rounded-2xl overflow-hidden">
+            <div className="relative aspect-video bg-gray-700/80 rounded-xl md:rounded-2xl overflow-hidden glass-card">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center text-gray-400">
-                  <GamepadIcon className="w-16 h-16 mx-auto mb-4" />
-                  <p className="font-medium font-sans">项目展示区域</p>
+                  <GamepadIcon className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4" />
+                  <p className="text-sm md:text-base font-medium font-sans">项目展示区域</p>
                 </div>
               </div>
             </div>
