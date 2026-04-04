@@ -71,9 +71,59 @@ export default function RootLayout({
 
   return (
     <html lang="zh-CN" className={`${inter.variable} ${notoSansSC.variable} ${notoSerifSC.variable}`}>
-      <body className={`antialiased font-sans`}>
+      <body className={`antialiased font-sans`} style={{ position: 'relative' }}>
         {isDev && <Inspector />}
         {children}
+
+        {/* 直接在 layout.tsx 添加按钮，确保在最外层 */}
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '100px',
+            right: '30px',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            backgroundColor: '#2563eb',
+            color: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            zIndex: 2147483647,
+            transition: 'all 0.3s ease',
+          }}
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          title="返回顶部"
+        >
+          ↑
+        </div>
+
+        <div
+          style={{
+            position: 'fixed',
+            bottom: '30px',
+            right: '30px',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            backgroundColor: '#16a34a',
+            color: 'white',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            cursor: 'pointer',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+            zIndex: 2147483647,
+            transition: 'all 0.3s ease',
+            fontSize: '24px',
+          }}
+          onClick={() => alert('客服功能')}
+          title="客服"
+        >
+          💬
+        </div>
       </body>
     </html>
   );
