@@ -1,21 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import { ArrowUp } from 'lucide-react';
 
 export default function BackToTop() {
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // 当滚动超过300px时显示按钮
-      setVisible(window.scrollY > 300);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -26,14 +13,10 @@ export default function BackToTop() {
   return (
     <button
       onClick={scrollToTop}
-      className={`fixed bottom-6 right-6 z-50 w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center group ${
-        visible
-          ? 'opacity-100 translate-y-0 scale-100'
-          : 'opacity-0 translate-y-10 scale-90 pointer-events-none'
-      }`}
+      className="fixed bottom-24 right-6 z-50 w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 text-white rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 flex items-center justify-center group opacity-90 hover:opacity-100"
       style={{
         transform: 'translateZ(0)',
-        willChange: 'opacity, transform',
+        willChange: 'transform',
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)',
       }}

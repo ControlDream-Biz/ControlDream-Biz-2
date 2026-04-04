@@ -4,49 +4,34 @@ import Image from 'next/image';
 import { GamepadIcon, Code, Cpu } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function BusinessSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const sectionRefValue = sectionRef.current;
 
-    // 监听整个区域
+    // 监听代表产品区域
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             const section = entry.target;
 
-            // 1. 标题动画
-            const header = section.querySelector('[data-scroll-animate="header"]');
-            if (header) {
-              const headerEl = header as HTMLElement;
-              setTimeout(() => {
-                headerEl.style.opacity = '1';
-                headerEl.style.transform = 'translateY(0)';
-              }, 200);
-            }
-
-            // 2. 三大产品卡片动画
-            const cards = section.querySelectorAll('.business-card');
-            cards.forEach((card, index) => {
-              const cardEl = card as HTMLElement;
-              setTimeout(() => {
-                cardEl.style.opacity = '1';
-                cardEl.style.transform = 'translateY(0)';
-              }, 400 + index * 150);
-            });
-
-            // 3. 代表产品区域动画
+            // 代表产品区域动画
             const productSections = section.querySelectorAll('[data-product-section]');
             productSections.forEach((prodSection, index) => {
               const prodEl = prodSection as HTMLElement;
               setTimeout(() => {
                 prodEl.style.opacity = '1';
                 prodEl.style.transform = 'translateY(0)';
-              }, 700 + index * 300);
+              }, 200 + index * 300);
 
               // 触发内部元素动画
               setTimeout(() => {
@@ -59,7 +44,7 @@ export default function BusinessSection() {
                     itemEl.style.opacity = '1';
                   }, itemIndex * 200);
                 });
-              }, 900 + index * 300);
+              }, 400 + index * 300);
             });
 
             observer.unobserve(section);
@@ -114,14 +99,14 @@ export default function BusinessSection() {
     <section id="business" className="py-20 md:py-24 relative overflow-hidden">
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
-        {/* Section Header - 苹果风格动画 */}
+        {/* Section Header */}
         <div
           className="text-center mb-12 md:mb-16 opacity-0 transition-all duration-1000 ease-out"
           style={{
-            transform: 'translateY(30px)',
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             willChange: 'opacity, transform'
           }}
-          data-scroll-animate="header"
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-4 font-sans">
             三大产品领域
@@ -138,12 +123,15 @@ export default function BusinessSection() {
             return (
               <Card
                 key={index}
-                className="group hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-transparent overflow-hidden glass-card cursor-pointer business-card opacity-0"
+                className="group hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-transparent overflow-hidden glass-card cursor-pointer"
                 style={{
                   borderRadius: '20px',
                   boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)',
-                  transform: 'translateY(40px)',
-                  willChange: 'opacity, transform'
+                  opacity: mounted ? 1 : 0,
+                  transform: mounted ? 'translateY(0)' : 'translateY(40px)',
+                  transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+                  willChange: 'opacity, transform',
+                  transitionDelay: `${index * 0.15}s`
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';

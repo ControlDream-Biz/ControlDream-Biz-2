@@ -5,6 +5,7 @@ import BusinessSection from '@/components/BusinessSection';
 import EnvironmentSection from '@/components/EnvironmentSection';
 import Footer from '@/components/Footer';
 import BackToTop from '@/components/BackToTop';
+import CustomerService from '@/components/CustomerService';
 import PerformanceOptimizer from '@/components/PerformanceOptimizer';
 // import PerformanceMonitor from '@/components/PerformanceMonitor';
 
@@ -24,6 +25,7 @@ export default function Home() {
       <EnvironmentSection />
       <Footer />
       <BackToTop />
+      <CustomerService />
     </main>
   );
 }

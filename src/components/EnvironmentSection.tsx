@@ -3,59 +3,22 @@
 import Image from 'next/image';
 import { Building2, Users, Coffee, Monitor, Armchair, Mail } from 'lucide-react';
 import { useFadeInAnimation } from '@/hooks/useFadeIn';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function EnvironmentSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
 
   // 使用淡入动画
   useFadeInAnimation();
 
   useEffect(() => {
-    const sectionRefValue = sectionRef.current;
-
-    // 为环境区域添加自定义滚动动画
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const section = entry.target;
-
-            // 标题动画
-            const header = section.querySelector('[data-env-header]');
-            if (header) {
-              const headerEl = header as HTMLElement;
-              headerEl.style.opacity = '1';
-              headerEl.style.transform = 'translateY(0)';
-            }
-
-            // 功能区块动画
-            const featureCards = section.querySelectorAll('[data-env-card]');
-            featureCards.forEach((card, index) => {
-              const cardEl = card as HTMLElement;
-              setTimeout(() => {
-                cardEl.style.opacity = '1';
-                cardEl.style.transform = 'translateY(0)';
-              }, 200 + index * 150);
-            });
-
-            observer.unobserve(section);
-          }
-        });
-      },
-      { threshold: 0.2, rootMargin: '0px 0px -100px 0px' }
-    );
-
-    if (sectionRefValue) {
-      observer.observe(sectionRefValue);
-    }
-
-    return () => {
-      if (sectionRefValue) {
-        observer.unobserve(sectionRefValue);
-      }
-    };
+    setMounted(true);
   }, []);
+
+  useEffect(() => {
+    // 已经用mounted state控制动画，不需要额外的IntersectionObserver
+  }, [mounted]);
   const areas = [
     {
       title: '前台接待区',
@@ -106,12 +69,12 @@ export default function EnvironmentSection() {
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section Header */}
         <div
-          className="text-center mb-12 md:mb-16 opacity-0 transition-all duration-1000 ease-out"
+          className="text-center mb-12 md:mb-16 transition-all duration-1000 ease-out"
           style={{
-            transform: 'translateY(30px)',
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             willChange: 'opacity, transform'
           }}
-          data-env-header
         >
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-4 font-sans">
             办公环境
@@ -123,12 +86,13 @@ export default function EnvironmentSection() {
 
         {/* Feature Highlight - Front Desk */}
         <div
-          className="mb-12 md:mb-16 bg-gradient-to-br from-blue-50/90 to-gray-50/90 backdrop-blur-md rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12 glass-card opacity-0 transition-all duration-1000 ease-out"
+          className="mb-12 md:mb-16 bg-gradient-to-br from-blue-50/90 to-gray-50/90 backdrop-blur-md rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12 glass-card transition-all duration-1000 ease-out"
           style={{
-            transform: 'translateY(40px)',
-            willChange: 'opacity, transform'
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(40px)',
+            willChange: 'opacity, transform',
+            transitionDelay: '0.2s'
           }}
-          data-env-card
         >
           <div className="grid lg:grid-cols-1 gap-6 md:gap-8">
             <div className="text-center">
@@ -172,14 +136,16 @@ export default function EnvironmentSection() {
             return (
               <div
                 key={areaIndex}
-                className="group relative bg-white/90 backdrop-blur-md border-2 border-gray-100 rounded-xl md:rounded-2xl overflow-hidden hover:border-blue-500 hover:shadow-2xl transition-all duration-500 glass-card cursor-pointer opacity-0 transition-all duration-1000 ease-out"
+                className="group relative bg-white/90 backdrop-blur-md border-2 border-gray-100 rounded-xl md:rounded-2xl overflow-hidden hover:border-blue-500 hover:shadow-2xl transition-all duration-500 glass-card cursor-pointer"
                 style={{
                   boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)',
                   borderRadius: '20px',
-                  transform: 'translateY(40px)',
-                  willChange: 'opacity, transform'
+                  opacity: mounted ? 1 : 0,
+                  transform: mounted ? 'translateY(0)' : 'translateY(40px)',
+                  willChange: 'opacity, transform',
+                  transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
+                  transitionDelay: `${0.3 + index * 0.15}s`
                 }}
-                data-env-card
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-6px) scale(1.015)';
                   e.currentTarget.style.boxShadow = '0 20px 60px rgba(59, 130, 246, 0.15), 0 8px 20px rgba(0, 0, 0, 0.08)';
