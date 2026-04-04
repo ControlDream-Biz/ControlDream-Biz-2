@@ -8,23 +8,18 @@ export default function CustomerService() {
 
   return (
     <>
-      {/* 客服按钮容器 */}
-      <div className="fixed bottom-16 right-6 z-[100000] pointer-events-none">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
-          className="pointer-events-auto w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center justify-center group animate-float-button"
-          style={{
-            transform: 'translateZ(0)',
-            willChange: 'transform',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            position: 'fixed',
-            bottom: '64px',
-            right: '24px',
-            zIndex: 100000,
-          }}
-          aria-label="客服"
-        >
+      {/* 客服按钮 */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="fixed bottom-16 right-6 z-[10000] w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 text-white rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 flex items-center justify-center group animate-float-button"
+        style={{
+          transform: 'translateZ(0)',
+          willChange: 'transform',
+          backdropFilter: 'blur(10px)',
+          WebkitBackdropFilter: 'blur(10px)',
+        }}
+        aria-label="客服"
+      >
         {/* 发光效果 */}
         <div
           className="absolute inset-0 rounded-full bg-gradient-to-br from-green-400 to-emerald-500 opacity-0 group-hover:opacity-30 transition-opacity duration-300"
@@ -49,22 +44,16 @@ export default function CustomerService() {
           <MessageCircle className="w-6 h-6 relative z-10 group-hover:scale-110 transition-transform duration-300" />
         )}
       </button>
-      </div>
 
-      {/* 客服弹窗容器 */}
-      <div className="fixed bottom-32 right-6 z-[100000] pointer-events-none">
-        {isOpen && (
-          <div
-            className="pointer-events-auto w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden animate-menu-slide-down"
-            style={{
-              transform: 'translateZ(0)',
-              willChange: 'transform, opacity',
-              position: 'fixed',
-              bottom: '128px',
-              right: '24px',
-              zIndex: 100000,
-            }}
-          >
+      {/* 客服弹窗 */}
+      {isOpen && (
+        <div
+          className="fixed bottom-32 right-6 z-[10000] w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden animate-menu-slide-down"
+          style={{
+            transform: 'translateZ(0)',
+            willChange: 'transform, opacity',
+          }}
+        >
           {/* 头部 */}
           <div className="bg-gradient-to-r from-green-500 to-emerald-600 p-4 text-white">
             <h3 className="text-lg font-bold">在线客服</h3>
@@ -112,8 +101,7 @@ export default function CustomerService() {
             </div>
           </div>
         </div>
-        )}
-      </div>
+      )}
     </>
   );
 }
