@@ -16,16 +16,18 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <PerformanceOptimizer />
-      {/* <PerformanceMonitor /> */}
-      <Navbar />
-      <HeroSection />
-      <BusinessSection />
-      <EnvironmentSection />
-      <Footer />
+    <>
+      <main className="min-h-screen">
+        <PerformanceOptimizer />
+        {/* <PerformanceMonitor /> */}
+        <Navbar />
+        <HeroSection />
+        <BusinessSection />
+        <EnvironmentSection />
+        <Footer />
+      </main>
       <BackToTop />
       <CustomerService />
-    </main>
+    </>
   );
 }
