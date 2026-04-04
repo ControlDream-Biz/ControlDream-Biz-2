@@ -17,6 +17,25 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
+      {/* 直接在 page.tsx 添加测试元素 */}
+      <div
+        style={{
+          position: 'fixed',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          backgroundColor: 'yellow',
+          color: 'black',
+          padding: '30px 60px',
+          borderRadius: '20px',
+          fontSize: '32px',
+          fontWeight: 'bold',
+          zIndex: 999999999,
+        }}
+      >
+        测试元素 - 在 page.tsx 中
+      </div>
+
       <main className="min-h-screen">
         {/* 暂时禁用 PerformanceOptimizer 以测试按钮定位 */}
         {/* <PerformanceOptimizer /> */}
