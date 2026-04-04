@@ -44,6 +44,7 @@ export const metadata: Metadata = {
     initialScale: 1,
     maximumScale: 5,
     userScalable: true,
+    viewportFit: 'cover', // 支持 safe-area-inset
   },
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#ffffff' },

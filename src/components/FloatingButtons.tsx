@@ -29,11 +29,13 @@ export default function FloatingButtons() {
     container.style.pointerEvents = 'none';
     container.style.zIndex = '2147483647';
     container.style.overflow = 'hidden';
+    container.style.paddingBottom = 'env(safe-area-inset-bottom)'; // 适配底部安全区域
 
     // 创建按钮组容器（竖排，固定在右下角）
     const buttonGroup = document.createElement('div');
     buttonGroup.style.position = 'absolute';
-    buttonGroup.style.bottom = '20px';
+    // 使用 calc 确保按钮不会被浏览器菜单栏挡住
+    buttonGroup.style.bottom = 'calc(20px + env(safe-area-inset-bottom))';
     buttonGroup.style.right = '20px';
     buttonGroup.style.display = 'flex';
     buttonGroup.style.flexDirection = 'column';
