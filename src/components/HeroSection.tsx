@@ -36,7 +36,7 @@ export default function HeroSection() {
               <span
                 className="animate-gradient-text"
                 style={{
-                  background: "linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%)",
+                  background: "linear-gradient(135deg, #EF4444 0%, #3B82F6 50%, #8B5CF6 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
@@ -50,7 +50,7 @@ export default function HeroSection() {
               <span
                 className="animate-gradient-text"
                 style={{
-                  background: "linear-gradient(135deg, #EC4899 0%, #6366F1 50%, #8B5CF6 100%)",
+                  background: "linear-gradient(135deg, #8B5CF6 0%, #EF4444 50%, #3B82F6 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
