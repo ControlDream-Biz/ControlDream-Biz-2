@@ -47,9 +47,13 @@ export default function Navbar() {
               />
             </div>
             <span
-              className={`text-lg font-bold transition-colors tracking-tight ${
-                scrolled ? 'text-black' : 'text-black'
-              }`}
+              className="text-lg font-bold transition-colors tracking-tight font-serif"
+              style={{
+                background: 'linear-gradient(135deg, #ef4444 0%, #3b82f6 50%, #9333ea 100%)',
+                WebkitBackgroundClip: 'text',
+                backgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
             >
               创梦计算机系统有限公司
             </span>
