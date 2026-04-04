@@ -11,8 +11,8 @@ export default function Footer() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Company Info */}
           <div className="space-y-6">
-            <div className="flex items-center space-x-2.5">
-              <div className="relative w-12 h-12">
+            <div className="flex items-center space-x-2">
+              <div className="relative w-11 h-11">
                 <Image
                   src="/logo-cm-final.png"
                   alt="创梦计算机系统有限公司"
