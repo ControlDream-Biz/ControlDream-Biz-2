@@ -60,7 +60,7 @@ export default function FloatingButtons() {
     backToTopBtn.style.backgroundColor = 'rgba(37, 99, 235, 0.1)';
     backToTopBtn.style.backdropFilter = 'blur(12px)';
     backToTopBtn.style.webkitBackdropFilter = 'blur(12px)';
-    backToTopBtn.style.border = '2px solid rgba(37, 99, 235, 0.6)';
+    backToTopBtn.style.border = '1px solid rgba(37, 99, 235, 0.4)';
     backToTopBtn.style.color = 'white';
     backToTopBtn.style.display = 'flex';
     backToTopBtn.style.alignItems = 'center';
@@ -81,14 +81,14 @@ export default function FloatingButtons() {
       backToTopBtn.style.transform = 'scale(1.1)';
       backToTopBtn.style.boxShadow = '0 6px 20px rgba(37, 99, 235, 0.3)';
       backToTopBtn.style.backgroundColor = 'rgba(37, 99, 235, 0.25)';
-      backToTopBtn.style.border = '2px solid rgba(37, 99, 235, 0.8)';
+      backToTopBtn.style.border = '1px solid rgba(37, 99, 235, 0.6)';
     });
 
     backToTopBtn.addEventListener('mouseleave', () => {
       backToTopBtn.style.transform = 'scale(1)';
       backToTopBtn.style.boxShadow = '0 4px 16px rgba(37, 99, 235, 0.2)';
       backToTopBtn.style.backgroundColor = 'rgba(37, 99, 235, 0.1)';
-      backToTopBtn.style.border = '2px solid rgba(37, 99, 235, 0.6)';
+      backToTopBtn.style.border = '1px solid rgba(37, 99, 235, 0.4)';
     });
 
     // 创建客服按钮 - 毛玻璃效果
@@ -100,7 +100,7 @@ export default function FloatingButtons() {
     customerServiceBtn.style.backgroundColor = 'rgba(22, 163, 74, 0.1)';
     customerServiceBtn.style.backdropFilter = 'blur(12px)';
     customerServiceBtn.style.webkitBackdropFilter = 'blur(12px)';
-    customerServiceBtn.style.border = '2px solid rgba(22, 163, 74, 0.6)';
+    customerServiceBtn.style.border = '1px solid rgba(22, 163, 74, 0.4)';
     customerServiceBtn.style.color = 'white';
     customerServiceBtn.style.display = 'flex';
     customerServiceBtn.style.alignItems = 'center';
@@ -123,14 +123,14 @@ export default function FloatingButtons() {
       customerServiceBtn.style.transform = 'scale(1.1)';
       customerServiceBtn.style.boxShadow = '0 6px 20px rgba(22, 163, 74, 0.3)';
       customerServiceBtn.style.backgroundColor = 'rgba(22, 163, 74, 0.25)';
-      customerServiceBtn.style.border = '2px solid rgba(22, 163, 74, 0.8)';
+      customerServiceBtn.style.border = '1px solid rgba(22, 163, 74, 0.6)';
     });
 
     customerServiceBtn.addEventListener('mouseleave', () => {
       customerServiceBtn.style.transform = 'scale(1)';
       customerServiceBtn.style.boxShadow = '0 4px 16px rgba(22, 163, 74, 0.2)';
       customerServiceBtn.style.backgroundColor = 'rgba(22, 163, 74, 0.1)';
-      customerServiceBtn.style.border = '2px solid rgba(22, 163, 74, 0.6)';
+      customerServiceBtn.style.border = '1px solid rgba(22, 163, 74, 0.4)';
     });
 
     // 创建客服弹窗
