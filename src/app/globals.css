@@ -289,25 +289,29 @@ body::before {
   -webkit-backdrop-filter: blur(50px) saturate(200%);
   z-index: -1;
   pointer-events: none;
-  animation: liquidFlow 20s ease-in-out infinite;
+  animation: liquidFlow 18s ease-in-out infinite;
 }
 
 @keyframes liquidFlow {
   0%, 100% {
-    transform: translate(0, 0) scale(1);
+    transform: translate(0, 0) scale(1) skew(0deg, 0deg);
     filter: hue-rotate(0deg) saturate(1);
   }
-  25% {
-    transform: translate(2%, 1%) scale(1.02);
-    filter: hue-rotate(5deg) saturate(1.1);
+  20% {
+    transform: translate(3%, 2%) scale(1.04) skew(1deg, -0.5deg);
+    filter: hue-rotate(8deg) saturate(1.15);
   }
-  50% {
-    transform: translate(-1%, 2%) scale(0.98);
-    filter: hue-rotate(-5deg) saturate(0.95);
+  40% {
+    transform: translate(-2%, 3%) scale(0.96) skew(-1deg, 1deg);
+    filter: hue-rotate(-6deg) saturate(0.9);
   }
-  75% {
-    transform: translate(-2%, -1%) scale(1.01);
-    filter: hue-rotate(3deg) saturate(1.05);
+  60% {
+    transform: translate(-3%, -2%) scale(1.02) skew(0.5deg, -1deg);
+    filter: hue-rotate(4deg) saturate(1.1);
+  }
+  80% {
+    transform: translate(2%, -3%) scale(0.98) skew(-0.5deg, 0.5deg);
+    filter: hue-rotate(-4deg) saturate(0.95);
   }
 }
 
@@ -325,21 +329,25 @@ body::after {
   -webkit-backdrop-filter: blur(60px) saturate(180%);
   z-index: -1;
   pointer-events: none;
-  animation: liquidFlow2 25s ease-in-out infinite reverse;
+  animation: liquidFlow2 22s ease-in-out infinite reverse;
 }
 
 @keyframes liquidFlow2 {
   0%, 100% {
-    transform: translate(0, 0) scale(1) rotate(0deg);
+    transform: translate(0, 0) scale(1) rotate(0deg) skew(0deg, 0deg);
     filter: hue-rotate(0deg) brightness(1);
   }
-  33% {
-    transform: translate(-2%, 1%) scale(1.03) rotate(1deg);
-    filter: hue-rotate(3deg) brightness(1.05);
+  25% {
+    transform: translate(-3%, 2%) scale(1.06) rotate(2deg) skew(-1deg, 1deg);
+    filter: hue-rotate(5deg) brightness(1.08);
   }
-  66% {
-    transform: translate(1%, -2%) scale(0.97) rotate(-1deg);
-    filter: hue-rotate(-3deg) brightness(0.95);
+  50% {
+    transform: translate(2%, -3%) scale(0.94) rotate(-2deg) skew(1deg, -1deg);
+    filter: hue-rotate(-5deg) brightness(0.92);
+  }
+  75% {
+    transform: translate(-2%, -2%) scale(1.03) rotate(1deg) skew(-0.5deg, 0.5deg);
+    filter: hue-rotate(3deg) brightness(1.04);
   }
 }
 
