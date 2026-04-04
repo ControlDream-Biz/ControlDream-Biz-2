@@ -91,8 +91,14 @@ export function addScrollAnimation(
 
 /**
  * 为所有文本元素自动添加滚动动画
+ * 注意：此函数暂时禁用，因为会隐藏所有文本元素
+ * 如需使用，请确保只为视口外的元素添加动画
  */
 export function autoScrollAnimate() {
+  // 暂时禁用自动滚动动画
+  return;
+
+  // 以下是原始代码，如果需要启用，请确保逻辑正确
   // 选择所有可能的文本元素
   const selectors = [
     'h1', 'h2', 'h3', 'h4', 'h5', 'h6',

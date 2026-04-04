@@ -1,7 +1,7 @@
 'use client';
 
 import { use120Hz, useSmoothScroll } from '@/hooks/use120Hz';
-import { useAutoScrollAnimate } from '@/hooks/useScrollAnimation';
+// import { useAutoScrollAnimate } from '@/hooks/useScrollAnimation';
 import { useEffect } from 'react';
 
 export default function PerformanceOptimizer() {
@@ -11,8 +11,8 @@ export default function PerformanceOptimizer() {
   // 优化滚动性能
   useSmoothScroll();
 
-  // 自动添加滚动动画
-  useAutoScrollAnimate();
+  // 自动添加滚动动画（暂时禁用，避免影响显示）
+  // useAutoScrollAnimate();
 
   useEffect(() => {
     // 强制120Hz渲染
