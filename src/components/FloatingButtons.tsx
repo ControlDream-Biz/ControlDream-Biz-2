@@ -51,21 +51,24 @@ export default function FloatingButtons() {
     buttonGroup.style.zIndex = '2147483647';
     buttonGroup.style.pointerEvents = 'auto';
 
-    // 创建返回顶部按钮
+    // 创建返回顶部按钮 - 毛玻璃效果
     const backToTopBtn = document.createElement('div');
     backToTopBtn.id = 'back-to-top-btn';
     backToTopBtn.style.width = '40px';
     backToTopBtn.style.height = '40px';
     backToTopBtn.style.borderRadius = '50%';
-    backToTopBtn.style.backgroundColor = 'rgba(37, 99, 235, 0.9)';
+    backToTopBtn.style.backgroundColor = 'rgba(37, 99, 235, 0.7)';
+    backToTopBtn.style.backdropFilter = 'blur(12px)';
+    backToTopBtn.style.webkitBackdropFilter = 'blur(12px)';
+    backToTopBtn.style.border = '1px solid rgba(255, 255, 255, 0.3)';
     backToTopBtn.style.color = 'white';
     backToTopBtn.style.display = 'flex';
     backToTopBtn.style.alignItems = 'center';
     backToTopBtn.style.justifyContent = 'center';
     backToTopBtn.style.fontSize = '18px';
     backToTopBtn.style.cursor = 'pointer';
-    backToTopBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
-    backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
+    backToTopBtn.style.boxShadow = '0 4px 16px rgba(37, 99, 235, 0.3)';
+    backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out';
     backToTopBtn.style.willChange = 'transform';
     backToTopBtn.style.pointerEvents = 'auto';
     backToTopBtn.textContent = '↑';
@@ -74,29 +77,34 @@ export default function FloatingButtons() {
 
     backToTopBtn.addEventListener('mouseenter', () => {
       backToTopBtn.style.transform = 'scale(1.1)';
-      backToTopBtn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.25)';
+      backToTopBtn.style.boxShadow = '0 6px 20px rgba(37, 99, 235, 0.4)';
+      backToTopBtn.style.backgroundColor = 'rgba(37, 99, 235, 0.9)';
     });
 
     backToTopBtn.addEventListener('mouseleave', () => {
       backToTopBtn.style.transform = 'scale(1)';
-      backToTopBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
+      backToTopBtn.style.boxShadow = '0 4px 16px rgba(37, 99, 235, 0.3)';
+      backToTopBtn.style.backgroundColor = 'rgba(37, 99, 235, 0.7)';
     });
 
-    // 创建客服按钮
+    // 创建客服按钮 - 毛玻璃效果
     const customerServiceBtn = document.createElement('div');
     customerServiceBtn.id = 'customer-service-btn';
     customerServiceBtn.style.width = '40px';
     customerServiceBtn.style.height = '40px';
     customerServiceBtn.style.borderRadius = '50%';
-    customerServiceBtn.style.backgroundColor = 'rgba(22, 163, 74, 0.9)';
+    customerServiceBtn.style.backgroundColor = 'rgba(22, 163, 74, 0.7)';
+    customerServiceBtn.style.backdropFilter = 'blur(12px)';
+    customerServiceBtn.style.webkitBackdropFilter = 'blur(12px)';
+    customerServiceBtn.style.border = '1px solid rgba(255, 255, 255, 0.3)';
     customerServiceBtn.style.color = 'white';
     customerServiceBtn.style.display = 'flex';
     customerServiceBtn.style.alignItems = 'center';
     customerServiceBtn.style.justifyContent = 'center';
     customerServiceBtn.style.fontSize = '18px';
     customerServiceBtn.style.cursor = 'pointer';
-    customerServiceBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
-    customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
+    customerServiceBtn.style.boxShadow = '0 4px 16px rgba(22, 163, 74, 0.3)';
+    customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out';
     customerServiceBtn.style.willChange = 'transform';
     customerServiceBtn.style.pointerEvents = 'auto';
     customerServiceBtn.textContent = '💬';
@@ -107,41 +115,14 @@ export default function FloatingButtons() {
 
     customerServiceBtn.addEventListener('mouseenter', () => {
       customerServiceBtn.style.transform = 'scale(1.1)';
-      customerServiceBtn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.25)';
+      customerServiceBtn.style.boxShadow = '0 6px 20px rgba(22, 163, 74, 0.4)';
+      customerServiceBtn.style.backgroundColor = 'rgba(22, 163, 74, 0.9)';
     });
 
     customerServiceBtn.addEventListener('mouseleave', () => {
       customerServiceBtn.style.transform = 'scale(1)';
-      customerServiceBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
-    });
-
-    // 创建第三个按钮（新增）- 可以是其他功能，比如分享或收藏
-    const thirdBtn = document.createElement('div');
-    thirdBtn.id = 'third-btn';
-    thirdBtn.style.width = '40px';
-    thirdBtn.style.height = '40px';
-    thirdBtn.style.borderRadius = '50%';
-    thirdBtn.style.backgroundColor = 'rgba(244, 63, 94, 0.9)';
-    thirdBtn.style.color = 'white';
-    thirdBtn.style.display = 'flex';
-    thirdBtn.style.alignItems = 'center';
-    thirdBtn.style.justifyContent = 'center';
-    thirdBtn.style.fontSize = '18px';
-    thirdBtn.style.cursor = 'pointer';
-    thirdBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
-    thirdBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
-    thirdBtn.style.willChange = 'transform';
-    thirdBtn.style.pointerEvents = 'auto';
-    thirdBtn.textContent = '⭐';
-
-    thirdBtn.addEventListener('mouseenter', () => {
-      thirdBtn.style.transform = 'scale(1.1)';
-      thirdBtn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.25)';
-    });
-
-    thirdBtn.addEventListener('mouseleave', () => {
-      thirdBtn.style.transform = 'scale(1)';
-      thirdBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
+      customerServiceBtn.style.boxShadow = '0 4px 16px rgba(22, 163, 74, 0.3)';
+      customerServiceBtn.style.backgroundColor = 'rgba(22, 163, 74, 0.7)';
     });
 
     // 创建客服弹窗
@@ -202,7 +183,6 @@ export default function FloatingButtons() {
     buttonGroup.appendChild(customerServicePopup);
     buttonGroup.appendChild(backToTopBtn);
     buttonGroup.appendChild(customerServiceBtn);
-    buttonGroup.appendChild(thirdBtn);
 
     // 直接添加到 body
     document.body.appendChild(buttonGroup);
