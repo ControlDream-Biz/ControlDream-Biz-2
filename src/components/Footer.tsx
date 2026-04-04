@@ -28,7 +28,7 @@ export default function Footer() {
               </div>
             </div>
             <p className="text-gray-400 leading-relaxed text-sm">
-              专注于自主游戏开发、基础软件开发与硬件创新，致力于为用户创造卓越的数字体验。
+              专注自主研发，打造具有核心竞争力的独立产品。在游戏、软件、硬件领域持续创新，用产品改变世界。
             </p>
           </div>
 
@@ -66,9 +66,9 @@ export default function Footer() {
             <ul className="space-y-3">
               {[
                 { name: '游戏开发', desc: '自研精品游戏' },
-                { name: '软件开发', desc: '企业级解决方案' },
-                { name: '硬件创新', desc: '智能硬件产品' },
-                { name: '技术服务', desc: '全方位技术支持' },
+                { name: '软件开发', desc: '独立软件产品' },
+                { name: '硬件创新', desc: '自研智能硬件' },
+                { name: '技术研发', desc: '核心技术积累' },
               ].map((item, index) => (
                 <li key={index}>
                   <a href="#business" className="block group">

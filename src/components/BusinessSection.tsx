@@ -12,7 +12,7 @@ export default function BusinessSection() {
       title: '游戏开发',
       subtitle: 'Game Development',
       image: '/game-dev-final.jpg',
-      description: '专注于自主研发手机游戏类产品，打造精品游戏IP，为全球玩家带来沉浸式游戏体验。涵盖休闲益智、角色扮演、策略竞技等多个品类。',
+      description: '专注于自主研发手机游戏产品，打造精品游戏IP，为全球玩家带来沉浸式游戏体验。涵盖休闲益智、角色扮演、策略竞技等多个品类。',
       features: ['自研游戏引擎', '跨平台开发', '精品IP运营', '全球发行'],
       color: 'from-purple-500 to-indigo-600',
       stats: { label: '爆款游戏', value: '50+' },
@@ -22,18 +22,18 @@ export default function BusinessSection() {
       title: '软件开发',
       subtitle: 'Software Development',
       image: '/software-dev-final.jpg',
-      description: '提供全方位的基础软件开发服务，包括企业级应用、云平台解决方案、移动应用开发等，助力企业数字化转型。',
-      features: ['企业级应用', '云服务架构', '移动开发', '定制解决方案'],
+      description: '自主研发企业级软件产品，包括云平台、移动应用、工具软件等，用创新产品提升用户效率和体验。',
+      features: ['SaaS云平台', '生产力工具', '移动应用', '数据智能'],
       color: 'from-blue-500 to-cyan-600',
-      stats: { label: '服务客户', value: '200+' },
+      stats: { label: '独立产品', value: '30+' },
     },
     {
       icon: Cpu,
       title: '硬件创新',
       subtitle: 'Hardware Innovation',
       image: '/hardware-lab-final.jpg',
-      description: '致力于智能硬件产品的研发与创新，聚焦物联网、人工智能等领域，打造软硬件一体化的智能解决方案。',
-      features: ['物联网设备', 'AI硬件', '智能终端', '定制开发'],
+      description: '自主研发智能硬件产品，聚焦物联网、人工智能等领域，打造软硬件一体化的创新产品。',
+      features: ['物联网设备', 'AI智能硬件', '智能终端', '核心技术'],
       color: 'from-emerald-500 to-teal-600',
       stats: { label: '专利技术', value: '100+' },
     },
@@ -48,10 +48,10 @@ export default function BusinessSection() {
         {/* Section Header */}
         <div className="text-center mb-12 md:mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-4 font-sans">
-            三大核心业务
+            三大产品领域
           </h2>
           <p className="text-base md:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto font-sans">
-            以技术创新为驱动，构建多元化的业务生态体系
+            专注自主研发，打造具有核心竞争力的独立产品
           </p>
         </div>
 
@@ -141,17 +141,17 @@ export default function BusinessSection() {
           <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
             <div>
               <h3 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 font-sans">
-                精选案例
+                精选产品
               </h3>
               <p className="text-sm md:text-base text-gray-300 leading-relaxed mb-5 md:mb-6 font-sans">
-                我们的团队成功交付了众多标杆项目，涵盖多个领域和平台。
-                每一个项目都是我们技术实力和创新能力的最佳证明。
+                我们成功打造了多款具有核心竞争力的独立产品，涵盖多个领域和平台。
+                每一款产品都凝聚了我们的创新思维和技术实力。
               </p>
               <ul className="space-y-2 md:space-y-3 mb-6 md:mb-8">
                 {[
                   '《梦幻三国》- 累计用户破千万的RPG手游',
-                  '《创梦云平台》- 企业级云服务解决方案',
-                  '智能家居控制系统 - 软硬件一体化创新',
+                  '《创梦云平台》- 企业级SaaS云产品',
+                  '智能家居系统 - 软硬件一体化产品',
                 ].map((item, index) => (
                   <li key={index} className="flex items-start space-x-3">
                     <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -162,7 +162,7 @@ export default function BusinessSection() {
                 ))}
               </ul>
               <Button variant="outline" className="border-white text-white hover:bg-white hover:text-gray-900 text-sm md:text-base font-sans">
-                查看更多案例
+                查看更多产品
               </Button>
             </div>
 
@@ -170,7 +170,7 @@ export default function BusinessSection() {
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center text-gray-400">
                   <GamepadIcon className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-3 md:mb-4" />
-                  <p className="text-sm md:text-base font-medium font-sans">项目展示区域</p>
+                  <p className="text-sm md:text-base font-medium font-sans">产品展示区域</p>
                 </div>
               </div>
             </div>

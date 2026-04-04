@@ -6,8 +6,8 @@ import EnvironmentSection from '@/components/EnvironmentSection';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: '创梦计算机系统有限公司 - 游戏开发 · 软件开发 · 硬件创新',
-  description: '创梦计算机系统有限公司，专注于自主游戏开发、基础软件开发与硬件创新，致力于为用户创造卓越的数字体验。',
+  title: '创梦计算机系统有限公司 - 自主游戏 · 独立软件 · 智能硬件',
+  description: '创梦计算机系统有限公司，专注自主研发，打造具有核心竞争力的独立产品。在游戏、软件、硬件领域持续创新，用产品改变世界。',
 };
 
 export default function Home() {
