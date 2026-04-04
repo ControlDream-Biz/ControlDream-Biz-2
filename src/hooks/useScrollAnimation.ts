@@ -93,7 +93,10 @@ export function addScrollAnimation(
  * 为所有文本元素自动添加滚动动画
  */
 export function autoScrollAnimate() {
-  const textElements = document.querySelectorAll('h1, h2, h3, h4, p, span, div');
+  // 只选择特定的文本元素，避免选择所有div
+  const textElements = document.querySelectorAll(
+    'h1, h2, h3, h4, h5, h6, p.text, span.text, .text-content, [data-animate-text]'
+  );
 
   textElements.forEach((element, index) => {
     // 跳过已经添加动画的元素
@@ -128,6 +131,11 @@ export function autoScrollAnimate() {
  */
 export function useAutoScrollAnimate() {
   useEffect(() => {
-    autoScrollAnimate();
+    // 延迟执行，确保DOM已完全渲染
+    const timer = setTimeout(() => {
+      autoScrollAnimate();
+    }, 500);
+
+    return () => clearTimeout(timer);
   }, []);
 }
