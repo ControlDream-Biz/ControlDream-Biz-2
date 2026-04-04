@@ -18,16 +18,21 @@ export default function FloatingButtons() {
     // 创建容器
     const container = document.createElement('div');
     container.id = 'floating-buttons-container';
-    container.style.position = 'absolute';
+    container.style.position = 'fixed';
     container.style.left = '0';
+    container.style.top = '0';
     container.style.width = '100%';
+    container.style.height = '100%';
     container.style.pointerEvents = 'none';
     container.style.zIndex = '2147483647';
-    container.style.top = '0';
+    container.style.willChange = 'transform';
 
     // 创建返回顶部按钮
     const backToTopBtn = document.createElement('div');
     backToTopBtn.id = 'back-to-top-btn';
+    backToTopBtn.style.position = 'absolute';
+    backToTopBtn.style.bottom = '80px';
+    backToTopBtn.style.right = '20px';
     backToTopBtn.style.width = '60px';
     backToTopBtn.style.height = '60px';
     backToTopBtn.style.backgroundColor = '#2563eb';
@@ -41,6 +46,7 @@ export default function FloatingButtons() {
     backToTopBtn.style.borderRadius = '50%';
     backToTopBtn.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
     backToTopBtn.style.transition = 'transform 0.2s';
+    backToTopBtn.style.willChange = 'transform';
     backToTopBtn.textContent = '↑';
     backToTopBtn.onclick = scrollToTop;
 
@@ -55,6 +61,9 @@ export default function FloatingButtons() {
     // 创建客服按钮
     const customerServiceBtn = document.createElement('div');
     customerServiceBtn.id = 'customer-service-btn';
+    customerServiceBtn.style.position = 'absolute';
+    customerServiceBtn.style.bottom = '20px';
+    customerServiceBtn.style.right = '20px';
     customerServiceBtn.style.width = '60px';
     customerServiceBtn.style.height = '60px';
     customerServiceBtn.style.backgroundColor = '#16a34a';
@@ -68,6 +77,7 @@ export default function FloatingButtons() {
     customerServiceBtn.style.borderRadius = '50%';
     customerServiceBtn.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
     customerServiceBtn.style.transition = 'transform 0.2s';
+    customerServiceBtn.style.willChange = 'transform';
     customerServiceBtn.textContent = '💬';
 
     customerServiceBtn.onclick = () => {
@@ -85,6 +95,9 @@ export default function FloatingButtons() {
     // 创建客服弹窗
     const customerServicePopup = document.createElement('div');
     customerServicePopup.id = 'customer-service-popup';
+    customerServicePopup.style.position = 'absolute';
+    customerServicePopup.style.bottom = '80px';
+    customerServicePopup.style.right = '100px';
     customerServicePopup.style.width = '320px';
     customerServicePopup.style.backgroundColor = 'white';
     customerServicePopup.style.borderRadius = '16px';
@@ -93,6 +106,7 @@ export default function FloatingButtons() {
     customerServicePopup.style.pointerEvents = 'auto';
     customerServicePopup.style.display = 'none';
     customerServicePopup.style.animation = 'fadeIn 0.2s ease';
+    customerServicePopup.style.willChange = 'transform';
 
     customerServicePopup.innerHTML = `
       <div style="background-color: #16a34a; padding: 16px; color: white;">
@@ -138,28 +152,12 @@ export default function FloatingButtons() {
     document.body.appendChild(container);
     containerRef.current = container;
 
-    // 关键：使用持续的 requestAnimationFrame 循环，每一帧都更新位置
+    // 使用 transform 来更新位置，性能最好（不会触发重排）
     const updateButtonPosition = () => {
       const scrollY = window.scrollY;
-      const viewportHeight = window.innerHeight;
-      const viewportWidth = window.innerWidth;
 
-      // 更新容器位置
-      container.style.top = `${scrollY}px`;
-      container.style.height = `${viewportHeight}px`;
-
-      // 更新按钮位置
-      backToTopBtn.style.position = 'absolute';
-      backToTopBtn.style.bottom = '80px';
-      backToTopBtn.style.right = '20px';
-
-      customerServiceBtn.style.position = 'absolute';
-      customerServiceBtn.style.bottom = '20px';
-      customerServiceBtn.style.right = '20px';
-
-      customerServicePopup.style.position = 'absolute';
-      customerServicePopup.style.bottom = '80px';
-      customerServicePopup.style.right = '100px';
+      // 使用 transform 代替 top，不会触发重排，性能最高
+      container.style.transform = `translateY(${scrollY}px)`;
       customerServicePopup.style.display = isCustomerServiceOpen ? 'block' : 'none';
       customerServiceBtn.textContent = isCustomerServiceOpen ? '✕' : '💬';
 
