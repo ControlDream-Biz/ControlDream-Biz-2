@@ -5,7 +5,14 @@ import { Mail, Phone, MapPin, Send } from 'lucide-react';
 
 export default function Footer() {
   return (
-    <footer id="contact" className="bg-gray-900 text-white">
+    <footer
+      id="contact"
+      style={{
+        background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 25%, rgba(236, 72, 153, 0.1) 50%, rgba(244, 63, 94, 0.1) 75%, rgba(249, 115, 22, 0.1) 100%)',
+        backgroundColor: '#0f0f0f'
+      }}
+      className="text-white"
+    >
       {/* Main Footer */}
       <div className="container mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
@@ -18,6 +25,9 @@ export default function Footer() {
                   alt="创梦计算机系统有限公司"
                   fill
                   className="object-contain"
+                  style={{
+                    filter: 'brightness(0) invert(1)'
+                  }}
                 />
               </div>
               <div>
@@ -131,7 +141,12 @@ export default function Footer() {
       </div>
 
       {/* Bottom Footer */}
-      <div className="border-t border-gray-800">
+      <div
+        className="border-t"
+        style={{
+          borderColor: 'rgba(255, 255, 255, 0.1)'
+        }}
+      >
         <div className="container mx-auto px-6 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-sm text-gray-500">
