@@ -40,7 +40,7 @@ export default function FloatingButtons() {
       }
     }
 
-    // 创建容器 - 直接使用 fixed 定位
+    // 创建容器 - 使用 fixed 定位
     const container = document.createElement('div');
     container.id = 'floating-buttons-container';
     container.style.position = 'fixed';
@@ -50,6 +50,7 @@ export default function FloatingButtons() {
     container.style.height = '100vh';
     container.style.pointerEvents = 'none';
     container.style.zIndex = '2147483647';
+    container.style.overflow = 'hidden';
 
     // 创建返回顶部按钮
     const backToTopBtn = document.createElement('div');
@@ -64,6 +65,10 @@ export default function FloatingButtons() {
     backToTopBtn.style.fontSize = '18px';
     backToTopBtn.style.pointerEvents = 'auto';
     backToTopBtn.style.cursor = 'move';
+    backToTopBtn.style.webkitUserSelect = 'none';
+    backToTopBtn.style.userSelect = 'none';
+    backToTopBtn.style.webkitTouchCallout = 'none';
+    backToTopBtn.style.touchAction = 'none';
     backToTopBtn.style.borderRadius = '50%';
     backToTopBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
     backToTopBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
@@ -90,6 +95,7 @@ export default function FloatingButtons() {
       offsetY = clientY - rect.top;
 
       backToTopBtn.style.transition = 'none';
+      backToTopBtn.style.transform = 'scale(1)';
     };
 
     const handleMove = (clientX: number, clientY: number) => {
@@ -126,46 +132,51 @@ export default function FloatingButtons() {
         const viewportHeight = window.innerHeight;
 
         const newPosition = {
-          x: viewportWidth - rect.right,
-          y: viewportHeight - rect.bottom
+          x: Math.round(viewportWidth - rect.right),
+          y: Math.round(viewportHeight - rect.bottom)
         };
         localStorage.setItem('backToTopPosition', JSON.stringify(newPosition));
       }
     };
 
-    backToTopBtn.onmousedown = (e) => {
+    // 鼠标事件
+    backToTopBtn.addEventListener('mousedown', (e) => {
       e.preventDefault();
       handleBackToTopStart(e.clientX, e.clientY);
-    };
+    });
 
-    backToTopBtn.ontouchstart = (e) => {
+    // 触摸事件
+    backToTopBtn.addEventListener('touchstart', (e) => {
       e.preventDefault();
       const touch = e.touches[0];
       handleBackToTopStart(touch.clientX, touch.clientY);
-    };
+    }, { passive: false });
 
     document.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
     document.addEventListener('touchmove', (e) => {
       const touch = e.touches[0];
       handleMove(touch.clientX, touch.clientY);
+      if (isDragging) {
+        e.preventDefault();
+      }
     }, { passive: false });
 
     document.addEventListener('mouseup', handleEnd);
     document.addEventListener('touchend', handleEnd);
 
-    backToTopBtn.onmouseenter = () => {
+    backToTopBtn.addEventListener('mouseenter', () => {
       if (!isDragging) {
         backToTopBtn.style.transform = 'scale(1.1)';
         backToTopBtn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.25)';
       }
-    };
+    });
 
-    backToTopBtn.onmouseleave = () => {
+    backToTopBtn.addEventListener('mouseleave', () => {
       if (!isDragging) {
         backToTopBtn.style.transform = 'scale(1)';
         backToTopBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
       }
-    };
+    });
 
     // 创建客服按钮
     const customerServiceBtn = document.createElement('div');
@@ -180,6 +191,10 @@ export default function FloatingButtons() {
     customerServiceBtn.style.fontSize = '18px';
     customerServiceBtn.style.pointerEvents = 'auto';
     customerServiceBtn.style.cursor = 'move';
+    customerServiceBtn.style.webkitUserSelect = 'none';
+    customerServiceBtn.style.userSelect = 'none';
+    customerServiceBtn.style.webkitTouchCallout = 'none';
+    customerServiceBtn.style.touchAction = 'none';
     customerServiceBtn.style.borderRadius = '50%';
     customerServiceBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
     customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
@@ -205,6 +220,7 @@ export default function FloatingButtons() {
       csOffsetY = clientY - rect.top;
 
       customerServiceBtn.style.transition = 'none';
+      customerServiceBtn.style.transform = 'scale(1)';
     };
 
     const handleCustomerServiceMove = (clientX: number, clientY: number) => {
@@ -241,42 +257,43 @@ export default function FloatingButtons() {
         const viewportHeight = window.innerHeight;
 
         const newPosition = {
-          x: viewportWidth - rect.right,
-          y: viewportHeight - rect.bottom
+          x: Math.round(viewportWidth - rect.right),
+          y: Math.round(viewportHeight - rect.bottom)
         };
         localStorage.setItem('customerServicePosition', JSON.stringify(newPosition));
       }
     };
 
-    customerServiceBtn.onmousedown = (e) => {
+    customerServiceBtn.addEventListener('mousedown', (e) => {
       e.preventDefault();
       handleCustomerServiceStart(e.clientX, e.clientY);
-    };
+    });
 
-    customerServiceBtn.ontouchstart = (e) => {
+    customerServiceBtn.addEventListener('touchstart', (e) => {
       e.preventDefault();
       const touch = e.touches[0];
       handleCustomerServiceStart(touch.clientX, touch.clientY);
-    };
+    }, { passive: false });
 
-    customerServiceBtn.onmouseenter = () => {
+    customerServiceBtn.addEventListener('mouseenter', () => {
       if (!csIsDragging) {
         customerServiceBtn.style.transform = 'scale(1.1)';
         customerServiceBtn.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.25)';
       }
-    };
+    });
 
-    customerServiceBtn.onmouseleave = () => {
+    customerServiceBtn.addEventListener('mouseleave', () => {
       if (!csIsDragging) {
         customerServiceBtn.style.transform = 'scale(1)';
         customerServiceBtn.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.15)';
       }
-    };
+    });
 
     // 创建客服弹窗
     const customerServicePopup = document.createElement('div');
     customerServicePopup.id = 'customer-service-popup';
     customerServicePopup.style.width = '280px';
+    customerServicePopup.style.maxWidth = 'calc(100vw - 80px)';
     customerServicePopup.style.backgroundColor = 'white';
     customerServicePopup.style.borderRadius = '12px';
     customerServicePopup.style.boxShadow = '0 8px 24px rgba(0, 0, 0, 0.12)';
@@ -330,7 +347,7 @@ export default function FloatingButtons() {
     container.appendChild(backToTopBtn);
     container.appendChild(customerServiceBtn);
 
-    // 添加到 body 的最外层（避开所有 transform）
+    // 添加到 body
     document.body.appendChild(container);
 
     // 清理函数
@@ -364,7 +381,9 @@ export default function FloatingButtons() {
       const btnRight = viewportWidth - btnRect.right;
       const btnBottom = viewportHeight - btnRect.bottom;
 
-      popup.style.right = `${btnRight + 50}px`;
+      // 确保弹窗不会超出屏幕
+      const popupRight = Math.min(btnRight + 50, viewportWidth - 300);
+      popup.style.right = `${popupRight}px`;
       popup.style.bottom = `${btnBottom}px`;
       btn.textContent = isCustomerServiceOpen ? '✕' : '💬';
     }
