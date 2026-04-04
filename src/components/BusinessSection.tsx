@@ -119,9 +119,8 @@ export default function BusinessSection() {
                 items.forEach((item, itemIndex) => {
                   const itemEl = item as HTMLElement;
                   setTimeout(() => {
-                    itemEl.classList.remove('opacity-0', 'translate-x-10', 'scale-95');
-                    itemEl.style.transform = 'translateX(0) scale(1)';
                     itemEl.style.opacity = '1';
+                    itemEl.style.transform = 'translateX(0) scale(1)';
                   }, itemIndex * 200);
                 });
               }, 400 + index * 300);
@@ -337,8 +336,7 @@ export default function BusinessSection() {
                           key={index}
                           className="flex items-start space-x-3 opacity-0 transition-all duration-700 ease-out"
                           style={{
-                            transform: 'translateX(2.5rem)',
-                            transitionDelay: `${index * 200}ms`
+                            transform: 'translateX(2.5rem)'
                           }}
                           data-scroll-item
                         >
@@ -412,8 +410,7 @@ export default function BusinessSection() {
                           key={index}
                           className="flex items-start space-x-3 opacity-0 transition-all duration-700 ease-out"
                           style={{
-                            transform: 'translateX(2.5rem)',
-                            transitionDelay: `${index * 200}ms`
+                            transform: 'translateX(2.5rem)'
                           }}
                           data-scroll-item
                         >
@@ -457,8 +454,7 @@ export default function BusinessSection() {
                           key={index}
                           className="flex items-start space-x-3 opacity-0 transition-all duration-700 ease-out"
                           style={{
-                            transform: 'translateX(2.5rem)',
-                            transitionDelay: `${index * 200}ms`
+                            transform: 'translateX(2.5rem)'
                           }}
                           data-scroll-item
                         >

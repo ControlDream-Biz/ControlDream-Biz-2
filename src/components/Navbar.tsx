@@ -67,7 +67,7 @@ export default function Navbar() {
       >
         {/* Logo */}
         <Link href="#home" className="flex items-center space-x-1">
-          <div className="relative w-10 h-10 flex-shrink-0 -mt-2">
+          <div className="relative w-10 h-10 flex-shrink-0 -mt-0.5">
             <Image
               src="/logo-cm-final.png"
               alt="创梦计算机系统有限公司"
@@ -76,7 +76,7 @@ export default function Navbar() {
             />
           </div>
           <div className="flex flex-col flex-shrink-0">
-            <span className="text-xs font-bold tracking-tight text-gray-900 leading-none">
+            <span className="text-xs font-bold tracking-tight text-gray-900 leading-tight">
               创梦计算机系统有限公司
             </span>
             <span className="text-[9px] font-medium text-gray-500 mt-0">

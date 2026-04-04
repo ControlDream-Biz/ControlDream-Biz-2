@@ -186,8 +186,7 @@ export default function EnvironmentSection() {
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 max-w-3xl mx-auto mt-4 md:mt-6">
                 {areas[0].features.map((feature, index) => (
                   <div key={index} className="flex items-center justify-center space-x-2 text-xs md:text-sm opacity-0 transition-all duration-600 ease-out" style={{
-                    transform: 'translateY(10px)',
-                    transitionDelay: `${600 + index * 150}ms`
+                    transform: 'translateY(10px)'
                   }}>
                     <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
                     <span className="text-gray-700 font-sans">{feature}</span>
@@ -248,12 +247,10 @@ export default function EnvironmentSection() {
                 {/* Content */}
                 <div className="p-5 md:p-6">
                   <h4 className="text-lg md:text-xl font-bold text-gray-900 mb-2 font-sans opacity-0 transition-all duration-600 ease-out" style={{
-                    transform: 'translateY(10px)',
-                    transitionDelay: `${450 + index * 150}ms`
+                    transform: 'translateY(10px)'
                   }}>{area.title}</h4>
                   <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-3 md:mb-4 font-sans opacity-0 transition-all duration-600 ease-out" style={{
-                    transform: 'translateY(10px)',
-                    transitionDelay: `${500 + index * 150}ms`
+                    transform: 'translateY(10px)'
                   }}>
                     {area.description}
                   </p>
