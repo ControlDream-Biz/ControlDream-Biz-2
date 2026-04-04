@@ -60,7 +60,7 @@ export default function FloatingButtons() {
     backToTopBtn.style.backgroundColor = 'rgba(37, 99, 235, 0.1)';
     backToTopBtn.style.backdropFilter = 'blur(12px)';
     backToTopBtn.style.webkitBackdropFilter = 'blur(12px)';
-    backToTopBtn.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+    backToTopBtn.style.border = '1px solid rgba(37, 99, 235, 0.3)';
     backToTopBtn.style.color = 'white';
     backToTopBtn.style.display = 'flex';
     backToTopBtn.style.alignItems = 'center';
@@ -79,12 +79,14 @@ export default function FloatingButtons() {
       backToTopBtn.style.transform = 'scale(1.1)';
       backToTopBtn.style.boxShadow = '0 6px 20px rgba(37, 99, 235, 0.4)';
       backToTopBtn.style.backgroundColor = 'rgba(37, 99, 235, 0.25)';
+      backToTopBtn.style.border = '1px solid rgba(37, 99, 235, 0.5)';
     });
 
     backToTopBtn.addEventListener('mouseleave', () => {
       backToTopBtn.style.transform = 'scale(1)';
       backToTopBtn.style.boxShadow = '0 4px 16px rgba(37, 99, 235, 0.3)';
       backToTopBtn.style.backgroundColor = 'rgba(37, 99, 235, 0.1)';
+      backToTopBtn.style.border = '1px solid rgba(37, 99, 235, 0.3)';
     });
 
     // 创建客服按钮 - 毛玻璃效果
@@ -96,7 +98,7 @@ export default function FloatingButtons() {
     customerServiceBtn.style.backgroundColor = 'rgba(22, 163, 74, 0.1)';
     customerServiceBtn.style.backdropFilter = 'blur(12px)';
     customerServiceBtn.style.webkitBackdropFilter = 'blur(12px)';
-    customerServiceBtn.style.border = '1px solid rgba(255, 255, 255, 0.3)';
+    customerServiceBtn.style.border = '1px solid rgba(22, 163, 74, 0.3)';
     customerServiceBtn.style.color = 'white';
     customerServiceBtn.style.display = 'flex';
     customerServiceBtn.style.alignItems = 'center';
@@ -117,12 +119,14 @@ export default function FloatingButtons() {
       customerServiceBtn.style.transform = 'scale(1.1)';
       customerServiceBtn.style.boxShadow = '0 6px 20px rgba(22, 163, 74, 0.4)';
       customerServiceBtn.style.backgroundColor = 'rgba(22, 163, 74, 0.25)';
+      customerServiceBtn.style.border = '1px solid rgba(22, 163, 74, 0.5)';
     });
 
     customerServiceBtn.addEventListener('mouseleave', () => {
       customerServiceBtn.style.transform = 'scale(1)';
       customerServiceBtn.style.boxShadow = '0 4px 16px rgba(22, 163, 74, 0.3)';
       customerServiceBtn.style.backgroundColor = 'rgba(22, 163, 74, 0.1)';
+      customerServiceBtn.style.border = '1px solid rgba(22, 163, 74, 0.3)';
     });
 
     // 创建客服弹窗 - 玻璃效果
@@ -222,20 +226,20 @@ export default function FloatingButtons() {
     };
   }, []);
 
-  // 更新弹窗显示 - 极致丝滑动画（两倍快）
+  // 更新弹窗显示 - 极速动画（再快3倍）
   useEffect(() => {
     const popup = document.getElementById('customer-service-popup');
     const btn = document.getElementById('customer-service-btn');
     if (!popup || !btn) return;
 
     if (isCustomerServiceOpen) {
-      // 显示弹窗 - 丝滑进入
+      // 显示弹窗 - 极速进入
       popup.style.display = 'block';
 
       // 使用 requestAnimationFrame 确保样式已应用
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          popup.style.transition = 'opacity 0.09s cubic-bezier(0.4, 0, 0.2, 1), transform 0.09s cubic-bezier(0.4, 0, 0.2, 1)';
+          popup.style.transition = 'opacity 0.03s cubic-bezier(0.4, 0, 0.2, 1), transform 0.03s cubic-bezier(0.4, 0, 0.2, 1)';
           popup.style.opacity = '1';
           popup.style.transform = 'scale(1) translateY(0)';
         });
@@ -243,8 +247,8 @@ export default function FloatingButtons() {
 
       btn.textContent = '✕';
     } else {
-      // 隐藏弹窗 - 丝滑退出
-      popup.style.transition = 'opacity 0.08s cubic-bezier(0.4, 0, 0.2, 1), transform 0.08s cubic-bezier(0.4, 0, 0.2, 1)';
+      // 隐藏弹窗 - 极速退出
+      popup.style.transition = 'opacity 0.03s cubic-bezier(0.4, 0, 0.2, 1), transform 0.03s cubic-bezier(0.4, 0, 0.2, 1)';
       popup.style.opacity = '0';
       popup.style.transform = 'scale(0.9) translateY(10px)';
 
@@ -258,12 +262,12 @@ export default function FloatingButtons() {
 
       popup.addEventListener('transitionend', animationEndHandler);
 
-      // 兜底：80ms 后强制隐藏
+      // 兜底：30ms 后强制隐藏
       setTimeout(() => {
         if (!isCustomerServiceOpen && popup.style.display !== 'none') {
           popup.style.display = 'none';
         }
-      }, 80);
+      }, 30);
 
       btn.textContent = '💬';
     }
