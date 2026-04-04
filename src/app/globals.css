@@ -141,6 +141,21 @@ body {
   background-size: 200% auto;
 }
 
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient-text {
+  background-size: 300% 100%;
+  animation: gradientMove 3s linear infinite;
+  -webkit-animation: gradientMove 3s linear infinite;
+}
+
 /* iOS应用打开风格动画 - 从按钮位置线性放大弹出 */
 @keyframes menuSlideDown {
   0% {

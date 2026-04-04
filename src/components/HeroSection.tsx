@@ -40,8 +40,7 @@ export default function HeroSection() {
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  backgroundSize: "300% 100%",
-                  animation: "gradientMove 2s linear infinite",
+                  display: "inline-block",
                 }}
               >
                 创新科技
@@ -54,9 +53,7 @@ export default function HeroSection() {
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  backgroundSize: "300% 100%",
-                  animation: "gradientMove 2s linear infinite",
-                  animationDelay: "0s",
+                  display: "inline-block",
                 }}
               >
                 驱动未来
@@ -247,15 +244,6 @@ export default function HeroSection() {
           }
           50% {
             transform: translateY(-20px);
-          }
-        }
-
-        @keyframes gradientMove {
-          0% {
-            backgroundPosition: 0% 50%;
-          }
-          100% {
-            backgroundPosition: 100% 50%;
           }
         }
 

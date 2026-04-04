@@ -95,17 +95,17 @@ export default function FloatingButtons() {
     customerServiceBtn.style.width = '40px';
     customerServiceBtn.style.height = '40px';
     customerServiceBtn.style.borderRadius = '50%';
-    customerServiceBtn.style.backgroundColor = 'rgba(236, 72, 153, 0.1)';
+    customerServiceBtn.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
     customerServiceBtn.style.backdropFilter = 'blur(12px)';
     customerServiceBtn.style.webkitBackdropFilter = 'blur(12px)';
-    customerServiceBtn.style.border = '1px solid rgba(236, 72, 153, 0.2)';
+    customerServiceBtn.style.border = '1px solid rgba(239, 68, 68, 0.2)';
     customerServiceBtn.style.color = 'white';
     customerServiceBtn.style.display = 'flex';
     customerServiceBtn.style.alignItems = 'center';
     customerServiceBtn.style.justifyContent = 'center';
     customerServiceBtn.style.fontSize = '18px';
     customerServiceBtn.style.cursor = 'pointer';
-    customerServiceBtn.style.boxShadow = '0 4px 16px rgba(236, 72, 153, 0.3)';
+    customerServiceBtn.style.boxShadow = '0 4px 16px rgba(239, 68, 68, 0.3)';
     customerServiceBtn.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out, background-color 0.15s ease-out';
     customerServiceBtn.style.willChange = 'transform';
     customerServiceBtn.style.pointerEvents = 'auto';
@@ -117,16 +117,16 @@ export default function FloatingButtons() {
 
     customerServiceBtn.addEventListener('mouseenter', () => {
       customerServiceBtn.style.transform = 'scale(1.1)';
-      customerServiceBtn.style.boxShadow = '0 6px 20px rgba(236, 72, 153, 0.4)';
-      customerServiceBtn.style.backgroundColor = 'rgba(236, 72, 153, 0.25)';
-      customerServiceBtn.style.border = '1px solid rgba(236, 72, 153, 0.4)';
+      customerServiceBtn.style.boxShadow = '0 6px 20px rgba(239, 68, 68, 0.4)';
+      customerServiceBtn.style.backgroundColor = 'rgba(239, 68, 68, 0.25)';
+      customerServiceBtn.style.border = '1px solid rgba(239, 68, 68, 0.4)';
     });
 
     customerServiceBtn.addEventListener('mouseleave', () => {
       customerServiceBtn.style.transform = 'scale(1)';
-      customerServiceBtn.style.boxShadow = '0 4px 16px rgba(236, 72, 153, 0.3)';
-      customerServiceBtn.style.backgroundColor = 'rgba(236, 72, 153, 0.1)';
-      customerServiceBtn.style.border = '1px solid rgba(236, 72, 153, 0.2)';
+      customerServiceBtn.style.boxShadow = '0 4px 16px rgba(239, 68, 68, 0.3)';
+      customerServiceBtn.style.backgroundColor = 'rgba(239, 68, 68, 0.1)';
+      customerServiceBtn.style.border = '1px solid rgba(239, 68, 68, 0.2)';
     });
 
     // 创建客服弹窗 - 玻璃效果
@@ -156,7 +156,7 @@ export default function FloatingButtons() {
     customerServicePopup.style.zIndex = '2147483647';
 
     customerServicePopup.innerHTML = `
-      <div style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.9) 0%, rgba(219, 39, 119, 0.9) 100%); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 14px; color: white; position: relative; overflow: hidden;">
+      <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.9) 0%, rgba(220, 38, 38, 0.9) 100%); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 14px; color: white; position: relative; overflow: hidden;">
         <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%); pointer-events: none;"></div>
         <h3 style="font-size: 16px; font-weight: 600; margin: 0; position: relative;">在线客服</h3>
         <p style="font-size: 13px; opacity: 0.9; margin: 3px 0 0 0; position: relative;">我们随时为您服务</p>
