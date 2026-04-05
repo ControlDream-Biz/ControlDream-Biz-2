@@ -44,10 +44,10 @@ export function ContactShowcase() {
         }}
       />
 
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto">
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-12 sm:py-16 md:py-20">
         {/* 标题 - 完全照搬苹果官网移动端字体大小 */}
         <div
-          className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20 transition-all duration-1000 ease-out"
+          className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 transition-all duration-1000 ease-out"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(40px)',
@@ -75,7 +75,7 @@ export function ContactShowcase() {
           >
             {/* 邮箱 - 完全照搬苹果官网移动端字体大小 */}
             <div className="flex items-start space-x-3 sm:space-x-4 md:space-x-5">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-blue-500/20 flex items-center justify-center flex-shrink-0">
                 <Mail className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-blue-400" />
               </div>
               <div>
@@ -90,7 +90,7 @@ export function ContactShowcase() {
 
             {/* 电话 - 完全照搬苹果官网移动端字体大小 */}
             <div className="flex items-start space-x-3 sm:space-x-4 md:space-x-5">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl bg-purple-500/20 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-purple-500/20 flex items-center justify-center flex-shrink-0">
                 <Phone className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-purple-400" />
               </div>
               <div>
@@ -105,7 +105,7 @@ export function ContactShowcase() {
 
             {/* 地址 - 完全照搬苹果官网移动端字体大小 */}
             <div className="flex items-start space-x-3 sm:space-x-4 md:space-x-5">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 rounded-lg sm:rounded-xl bg-red-500/20 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-red-500/20 flex items-center justify-center flex-shrink-0">
                 <MapPin className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-red-400" />
               </div>
               <div>
@@ -122,7 +122,7 @@ export function ContactShowcase() {
           {/* 留言表单 - 完全照搬苹果官网移动端布局 */}
           <form
             onSubmit={handleSubmit}
-            className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 lg:p-12 transition-all duration-1000 ease-out"
+            className="bg-transparent border border-white/10 p-5 sm:p-6 md:p-8 lg:p-12 transition-all duration-1000 ease-out"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(40px)',
@@ -150,7 +150,7 @@ export function ContactShowcase() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   placeholder="your@email.com"
-                  className="w-full bg-white/5 border border-white/10 rounded-lg sm:rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all duration-300 text-sm sm:text-base md:text-lg"
+                  className="w-full bg-transparent border border-white/10 px-4 sm:px-5 py-3 sm:py-4 text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:bg-white/5 transition-all duration-300 text-sm sm:text-base md:text-lg"
                   style={textStyle}
                 />
               </div>
@@ -170,7 +170,7 @@ export function ContactShowcase() {
                   required
                   rows={5}
                   placeholder="请输入您的消息..."
-                  className="w-full bg-white/5 border border-white/10 rounded-lg sm:rounded-xl px-4 sm:px-5 py-3 sm:py-4 text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all duration-300 resize-none text-sm sm:text-base md:text-lg"
+                  className="w-full bg-transparent border border-white/10 px-4 sm:px-5 py-3 sm:py-4 text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:bg-white/5 transition-all duration-300 resize-none text-sm sm:text-base md:text-lg"
                   style={textStyle}
                 />
               </div>
@@ -179,7 +179,7 @@ export function ContactShowcase() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-white text-black rounded-lg sm:rounded-xl px-5 sm:px-6 py-3 sm:py-4 font-black text-base sm:text-lg md:text-xl hover:bg-white/90 transition-all duration-300 flex items-center justify-center space-x-2 sm:space-x-3 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-white text-black px-5 sm:px-6 py-3 sm:py-4 font-black text-base sm:text-lg md:text-xl hover:bg-white/90 transition-all duration-300 flex items-center justify-center space-x-2 sm:space-x-3 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={textStyle}
               >
                 {isSubmitting ? (

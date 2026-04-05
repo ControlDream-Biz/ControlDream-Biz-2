@@ -61,10 +61,10 @@ export function BusinessShowcase() {
         }}
       />
 
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto">
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-12 sm:py-16 md:py-20">
         {/* 标题 - 完全照搬苹果官网移动端字体大小 */}
         <div
-          className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20 transition-all duration-1000 ease-out"
+          className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 transition-all duration-1000 ease-out"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(40px)',
@@ -86,7 +86,7 @@ export function BusinessShowcase() {
             return (
               <div
                 key={index}
-                className="group relative bg-white/5 backdrop-blur-xl border border-white/10 p-5 sm:p-6 md:p-8 lg:p-12 transition-all duration-500 hover:bg-white/10 hover:border-white/20"
+                className="group relative bg-transparent border border-white/10 p-5 sm:p-6 md:p-8 lg:p-12 transition-all duration-500 hover:bg-white/5 hover:border-white/20"
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(60px)',

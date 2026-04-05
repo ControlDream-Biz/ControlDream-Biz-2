@@ -67,10 +67,10 @@ export function EnvironmentShowcase() {
         }}
       />
 
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto">
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-12 sm:py-16 md:py-20">
         {/* 标题 - 完全照搬苹果官网移动端字体大小 */}
         <div
-          className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20 transition-all duration-1000 ease-out"
+          className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 transition-all duration-1000 ease-out"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(40px)',
@@ -92,7 +92,7 @@ export function EnvironmentShowcase() {
             return (
               <div
                 key={index}
-                className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 lg:p-8 transition-all duration-500 hover:bg-white/10 hover:border-white/20 hover:scale-105"
+                className="group relative bg-transparent border border-white/10 p-4 sm:p-5 md:p-6 lg:p-8 transition-all duration-500 hover:bg-white/5 hover:border-white/20 hover:scale-105"
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(40px)',
@@ -102,7 +102,7 @@ export function EnvironmentShowcase() {
               >
                 {/* 图标 - 完全照搬苹果官网移动端尺寸 */}
                 <div
-                  className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-br ${area.color} flex items-center justify-center mb-3 sm:mb-4 md:mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:w-16 md:h-16 bg-gradient-to-br ${area.color} flex items-center justify-center mb-3 sm:mb-4 md:mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
                 >
                   <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:w-8 md:h-8 text-white" />
                 </div>

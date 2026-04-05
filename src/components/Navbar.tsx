@@ -40,12 +40,12 @@ export function Navbar() {
 
   return (
     <>
-      {/* 左上角 Logo + 公司名称 - 苹果官网式布局，移动端尺寸优化 */}
+      {/* 左上角 Logo + 公司名称 - 优化布局 */}
       <div
         onClick={() => scrollToSection('#home', 0)}
-        className="fixed top-4 left-4 z-50 flex items-center gap-1 sm:gap-2 hover:opacity-90 transition-opacity cursor-pointer group select-none"
+        className="fixed top-3 left-4 z-50 flex items-center gap-1 sm:gap-2 hover:opacity-90 transition-opacity cursor-pointer group select-none"
       >
-        {/* LOGO - 透明背景，白色线条，响应式尺寸 - 移动端增大 */}
+        {/* LOGO - 透明背景，白色线条，响应式尺寸 */}
         <div className="relative w-8 h-8 flex-shrink-0 sm:w-10 sm:h-10 lg:w-12 lg:h-12">
           <Image
             src="/logo-cm-transparent.png"
@@ -57,19 +57,19 @@ export function Navbar() {
           />
         </div>
 
-        {/* 公司名称 - 移动端和桌面端都显示 */}
+        {/* 公司名称 - 优化尺寸和宽度 */}
         <div className="flex flex-col justify-center">
-          {/* 中文公司名 - 移动端增大 */}
-          <div className="text-[11px] font-bold text-white tracking-tight leading-tight mb-0.5 sm:text-sm lg:text-base select-none" style={fontStyles}>
+          {/* 中文公司名 - 缩小字体 */}
+          <div className="text-[10px] font-bold text-white tracking-tight leading-tight mb-0.5 sm:text-sm lg:text-base select-none" style={fontStyles}>
             创梦计算机系统有限公司
           </div>
 
-          {/* 英文副标题 - 移动端缩小，宽度与中文对齐 */}
+          {/* 英文副标题 - 确保宽度与中文对齐 */}
           <div
             className="text-[5px] sm:text-[8px] lg:text-[10px] text-white/70 font-medium uppercase select-none"
             style={{
               ...fontStyles,
-              letterSpacing: '0.2em'
+              letterSpacing: '0.18em'
             }}
           >
             <span className="hidden sm:inline" style={{ letterSpacing: '0.15em' }}>
