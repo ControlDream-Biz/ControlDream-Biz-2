@@ -104,8 +104,8 @@ export function ParticleBackground() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none"
-      style={{ 
-        zIndex: 5, // 提高到 5，确保在背景光晕之上
+      style={{
+        zIndex: 15, // 提高到 15，确保在 ScrollPage 之上
         opacity: 1
       }}
     />

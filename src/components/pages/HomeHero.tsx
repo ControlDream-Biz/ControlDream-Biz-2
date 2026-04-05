@@ -16,7 +16,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
   }, []);
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center bg-black overflow-hidden pt-12 pb-8">
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-12 pb-8">
       {/* 动态背景光晕 - 固定定位，不随内容滚动，z-index 确保在文字后面 */}
       <div
         className="fixed inset-0 transition-opacity duration-1000 ease-out pointer-events-none"

@@ -75,7 +75,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
 
   return (
     <div
-      className="fixed inset-0 bg-black overflow-y-auto scrollbar-hide"
+      className="fixed inset-0 overflow-y-auto scrollbar-hide"
       style={{
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
