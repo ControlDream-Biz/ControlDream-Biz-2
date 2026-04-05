@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 const pages = [
   { label: '首页', id: 'home' },
@@ -13,33 +13,17 @@ const pages = [
 
 export function ScrollProgress() {
   const [currentPage, setCurrentPage] = useState(0);
-  const [showLabels, setShowLabels] = useState(true);
   const totalPages = pages.length;
-  const stayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScrollToSection = (e: CustomEvent<{ sectionIndex: number }>) => {
       const newPage = e.detail.sectionIndex;
       setCurrentPage(newPage);
-      setShowLabels(true); // 切换页面时显示标签
-
-      // 清除之前的定时器
-      if (stayTimerRef.current) {
-        clearTimeout(stayTimerRef.current);
-      }
-
-      // 2秒后隐藏标签
-      stayTimerRef.current = setTimeout(() => {
-        setShowLabels(false);
-      }, 2000);
     };
 
     window.addEventListener('scrollToSection', handleScrollToSection as EventListener);
     return () => {
       window.removeEventListener('scrollToSection', handleScrollToSection as EventListener);
-      if (stayTimerRef.current) {
-        clearTimeout(stayTimerRef.current);
-      }
     };
   }, []);
 
@@ -48,41 +32,14 @@ export function ScrollProgress() {
     window.dispatchEvent(event);
   };
 
-  // 鼠标移动时显示标签
-  const handleMouseMove = () => {
-    setShowLabels(true);
-    if (stayTimerRef.current) {
-      clearTimeout(stayTimerRef.current);
-    }
-    stayTimerRef.current = setTimeout(() => {
-      setShowLabels(false);
-    }, 2000);
-  };
-
   return (
     <div
       className="fixed right-0 top-0 bottom-0 z-50 flex items-center pr-4"
-      onMouseMove={handleMouseMove}
     >
-      {/* 滚动条 */}
-      <div className="absolute right-2 top-0 bottom-0 w-0.5 bg-white/20">
-        <div
-          className="absolute left-0 top-0 w-full bg-white transition-all duration-300"
-          style={{
-            height: `${((currentPage + 1) / totalPages) * 100}%`,
-          }}
-        />
-      </div>
-
       {/* 导航内容 */}
       <div className="flex items-center gap-4">
-        {/* 页面名称列表（左侧，根据showLabels控制显示） */}
-        <div
-          className={`
-            flex flex-col items-end gap-4 transition-all duration-500
-            ${showLabels ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4 pointer-events-none'}
-          `}
-        >
+        {/* 页面名称列表（左侧，一直显示） */}
+        <div className="flex flex-col items-end gap-4">
           {pages.map((page, index) => {
             const isCurrent = index === currentPage;
             return (
@@ -114,7 +71,7 @@ export function ScrollProgress() {
                 key={index}
                 onClick={() => scrollToSection(index)}
                 className={`
-                  w-1.5 h-1.5 rounded-full transition-all duration-300
+                  w-1 h-1 rounded-full transition-all duration-300
                   ${isCurrent ? 'bg-white' : 'bg-white/30'}
                 `}
                 aria-label={`跳转到第${index + 1}页`}
