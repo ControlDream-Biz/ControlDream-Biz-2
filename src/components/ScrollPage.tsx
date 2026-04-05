@@ -183,9 +183,22 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
-        isScrollable = scrollHeight > clientHeight + 5;
-        isAtTop = scrollTop <= 5;
-        isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
+        isScrollable = scrollHeight > clientHeight + 10;
+        isAtTop = scrollTop <= 20; // 增加容差
+        isAtBottom = scrollTop + clientHeight >= scrollHeight - 20; // 增加容差
+      }
+
+      // 备用检测：如果滚动量很大，直接翻页（防止检测失败）
+      if (deltaAbs > 100) {
+        if (now - state.lastWheelTime < 150) return;
+        state.lastWheelTime = now;
+
+        if (delta > 0 && currentPage < totalPages - 1) {
+          handlePageChange(currentPage + 1);
+        } else if (delta < 0 && currentPage > 0) {
+          handlePageChange(currentPage - 1);
+        }
+        return;
       }
 
       // 如果内容可滚动且不在边界，让内容正常滚动，不触发翻页
@@ -206,10 +219,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 累积滚动量
       state.accumulatedDelta += delta;
 
-      // 核心参数 - 降低阈值，更容易翻页
+      // 核心参数
       const throttleTime = 150; // 节流时间
-      const fastScrollThreshold = 50; // 单次快速滚动阈值
-      const cumulativeThreshold = 60; // 累积滚动阈值
+      const fastScrollThreshold = 40; // 单次快速滚动阈值
+      const cumulativeThreshold = 50; // 累积滚动阈值
       const consistencyThreshold = 1; // 只需1次同方向
 
       // 快速翻页条件（单次大幅滚动）
@@ -285,8 +298,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
         const isScrollable = scrollHeight > clientHeight + 10;
-        const isAtTop = scrollTop <= 10;
-        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
+        const isAtTop = scrollTop <= 20; // 增加容差
+        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20; // 增加容差
 
         // 如果内容可滚动且不在边界，允许内容滚动
         if (isScrollable && !isAtTop && !isAtBottom) {
@@ -341,8 +354,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           const scrollHeight = scrollContainer.scrollHeight;
           const clientHeight = scrollContainer.clientHeight;
           const isScrollable = scrollHeight > clientHeight + 10;
-          const isAtTop = scrollTop <= 10;
-          const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
+          const isAtTop = scrollTop <= 20; // 增加容差
+          const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20; // 增加容差
 
           // 只有在以下情况才触发翻页
           if (isScrollable) {
