@@ -20,8 +20,21 @@ export function BackgroundMusic() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.3);
   const [showVolume, setShowVolume] = useState(false);
+  const [currentPage, setCurrentPage] = useState<number | null>(null);
   const volumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const hasAttemptedAutoPlay = useRef(false);
+
+  // 只在合作应聘页面（index 6）显示播放按钮和播放音乐
+  const isMusicPage = currentPage === 6;
+
+  const startVolumeHideTimer = () => {
+    if (volumeTimeoutRef.current) {
+      clearTimeout(volumeTimeoutRef.current);
+    }
+    volumeTimeoutRef.current = setTimeout(() => {
+      setShowVolume(false);
+    }, 3000); // 3秒后自动隐藏
+  };
 
   useEffect(() => {
     // 从 localStorage 读取之前的音量设置
@@ -34,9 +47,31 @@ export function BackgroundMusic() {
       }
     }
 
-    // 页面加载后尝试自动播放（先静音播放，然后取消静音）
+    // 监听页面变化
+    const handlePageChange = (e: CustomEvent<{ pageIndex: number }>) => {
+      setCurrentPage(e.detail.pageIndex);
+
+      // 如果离开合作应聘页面，停止播放
+      const audio = audioRef.current;
+      if (audio && e.detail.pageIndex !== 6) {
+        audio.pause();
+        audio.currentTime = 0;
+        setIsPlaying(false);
+        setShowVolume(false);
+      }
+    };
+
+    window.addEventListener('page-changed', handlePageChange as EventListener);
+
+    return () => {
+      window.removeEventListener('page-changed', handlePageChange as EventListener);
+    };
+  }, []);
+
+  useEffect(() => {
+    // 只在合作应聘页面且未尝试过自动播放时才尝试播放
     const audio = audioRef.current;
-    if (audio && !hasAttemptedAutoPlay.current) {
+    if (audio && isMusicPage && !hasAttemptedAutoPlay.current) {
       hasAttemptedAutoPlay.current = true;
 
       // 先设置为静音
@@ -58,7 +93,6 @@ export function BackgroundMusic() {
         } catch (error) {
           console.log('自动播放被阻止，显示提示', error);
           // 如果静音播放也失败，提示用户点击
-          // 创建一个提示覆盖层
           const prompt = document.createElement('div');
           prompt.id = 'music-prompt';
           prompt.style.cssText = `
@@ -127,16 +161,7 @@ export function BackgroundMusic() {
         }
       };
     }
-  }, []);
-
-  const startVolumeHideTimer = () => {
-    if (volumeTimeoutRef.current) {
-      clearTimeout(volumeTimeoutRef.current);
-    }
-    volumeTimeoutRef.current = setTimeout(() => {
-      setShowVolume(false);
-    }, 3000); // 3秒后自动隐藏
-  };
+  }, [isMusicPage]);
 
   const togglePlay = () => {
     const audio = audioRef.current;
@@ -185,18 +210,19 @@ export function BackgroundMusic() {
         <source src="/music/forever-friends.mp3" type="audio/mpeg" />
       </audio>
 
-      {/* 音乐控制按钮 */}
-      <button
-        onClick={togglePlay}
-        onMouseEnter={() => {
-          if (isPlaying) setShowVolume(true);
-          if (volumeTimeoutRef.current) clearTimeout(volumeTimeoutRef.current);
-        }}
-        className="fixed top-24 right-4 z-50 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-all duration-300"
-        style={{
-          pointerEvents: 'auto',
-        }}
-      >
+      {/* 音乐控制按钮 - 只在合作应聘页面显示 */}
+      {isMusicPage && (
+        <button
+          onClick={togglePlay}
+          onMouseEnter={() => {
+            if (isPlaying) setShowVolume(true);
+            if (volumeTimeoutRef.current) clearTimeout(volumeTimeoutRef.current);
+          }}
+          className="fixed top-24 right-4 z-50 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-all duration-300"
+          style={{
+            pointerEvents: 'auto',
+          }}
+        >
         {isPlaying ? (
           <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <rect x="6" y="4" width="4" height="16" rx="1" />
@@ -207,19 +233,21 @@ export function BackgroundMusic() {
             <path d="M8 5v14l11-7z" />
           </svg>
         )}
-      </button>
+        </button>
+      )}
 
-      {/* 音量控制（自动隐藏） */}
-      <div
-        className="fixed top-36 right-4 z-50 flex flex-col items-center gap-2"
-        style={{
-          opacity: showVolume && isPlaying ? 1 : 0,
-          pointerEvents: showVolume && isPlaying ? 'auto' : 'none',
-          transition: 'opacity 0.3s ease-out',
-        }}
-        onMouseEnter={handleVolumeMouseEnter}
-        onMouseLeave={handleVolumeMouseLeave}
-      >
+      {/* 音量控制（自动隐藏） - 只在合作应聘页面显示 */}
+      {isMusicPage && (
+        <div
+          className="fixed top-36 right-4 z-50 flex flex-col items-center gap-2"
+          style={{
+            opacity: showVolume && isPlaying ? 1 : 0,
+            pointerEvents: showVolume && isPlaying ? 'auto' : 'none',
+            transition: 'opacity 0.3s ease-out',
+          }}
+          onMouseEnter={handleVolumeMouseEnter}
+          onMouseLeave={handleVolumeMouseLeave}
+        >
         <div className="flex flex-col items-center gap-1.5">
           {/* 音量图标 */}
           <svg
@@ -282,7 +310,8 @@ export function BackgroundMusic() {
             {Math.round(volume * 100)}%
           </div>
         </div>
-      </div>
+        </div>
+      )}
     </>
   );
 }

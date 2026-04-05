@@ -155,7 +155,7 @@ interface ScrollContainerProps {
 export function ScrollContainer({ children, onPageChange }: ScrollContainerProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const dragOffsetRef = useRef(0);
+  const [dragOffset, setDragOffset] = useState(0);
   const totalPages = children.length;
 
   const scrollStateRef = useRef({
@@ -248,7 +248,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const touch = e.touches[0];
       state.touchStartY = touch.clientY;
       state.touchStartTime = performance.now();
-      dragOffsetRef.current = 0;
+      setDragOffset(0);
       setIsDragging(false);
     };
 
@@ -288,7 +288,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       if (shouldPreventDefault && Math.abs(deltaY) > 10) {
         e.preventDefault();
-        dragOffsetRef.current = deltaY;
+        setDragOffset(deltaY);
         setIsDragging(true);
       }
     };
@@ -296,9 +296,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     const handleTouchEnd = (e: TouchEvent) => {
       setIsDragging(false);
 
-      const deltaY = Math.abs(dragOffsetRef.current);
-      const direction = dragOffsetRef.current > 0 ? 1 : -1;
-      dragOffsetRef.current = 0;
+      const deltaY = Math.abs(dragOffset);
+      const direction = dragOffset > 0 ? 1 : -1;
+      setDragOffset(0);
 
       const threshold = window.innerHeight * 0.15; // 15%屏幕高度
 
@@ -407,7 +407,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           key={index}
           index={index}
           currentPage={currentPage}
-          dragOffset={dragOffsetRef.current}
+          dragOffset={dragOffset}
           isDragging={isDragging}
         >
           {child}
