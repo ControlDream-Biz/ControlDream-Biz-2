@@ -17,52 +17,55 @@ export default function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
-  // 为每个字符计算爆炸散开的位置
-  const getCharAnimation = (char: string, index: number, total: number, delay: number) => {
-    // 计算散开位置：从四面八方散开
-    // 使用极坐标将字符分布到圆周上
-    const angle = (index / total) * Math.PI * 2; // 0 到 2π
-    const radius = 150; // 散开半径
-
-    const offsetX = Math.cos(angle) * radius;
-    const offsetY = Math.sin(angle) * radius;
-
-    // 随机缩放和旋转，增加爆炸效果
-    const scale = 0.3 + Math.random() * 0.3; // 0.3-0.6
-    const rotation = angle * (180 / Math.PI) + (Math.random() - 0.5) * 60;
-
-    return {
-      style: {
-        transitionDelay: `${delay + index * 0.05}s`,
-      }
-    };
-  };
-
+  // 为每个字符计算从屏幕四面八方散开的位置
   const renderAnimatedText = (text: string, delay: number) => {
     const chars = text.split('');
     const total = chars.length;
 
     return chars.map((char, index) => {
-      // 计算散开位置
-      const angle = (index / total) * Math.PI * 2;
-      const radius = 150;
-      const offsetX = Math.cos(angle) * radius;
-      const offsetY = Math.sin(angle) * radius;
+      // 将字符均匀分布在屏幕四周
+      // 0-25%: 顶部，25-50%: 右侧，50-75%: 底部，75-100%: 左侧
+      const segment = index / total;
+      const positionInSegment = (index % (total / 4)) / (total / 4);
 
-      // 随机缩放和旋转
-      const scale = 0.3 + Math.random() * 0.4;
-      const rotation = angle * (180 / Math.PI) + (Math.random() - 0.5) * 60;
+      let offsetX, offsetY, scale, rotation;
+
+      if (segment < 0.25) {
+        // 顶部边缘
+        offsetX = -50 + positionInSegment * 100; // -50vw 到 50vw
+        offsetY = -80; // 向上移动80vh
+        scale = 0.5 + Math.random() * 0.5;
+        rotation = Math.random() * 30 - 15;
+      } else if (segment < 0.5) {
+        // 右侧边缘
+        offsetX = 80; // 向右移动80vw
+        offsetY = -50 + positionInSegment * 100; // -50vh 到 50vh
+        scale = 0.5 + Math.random() * 0.5;
+        rotation = Math.random() * 30 - 15;
+      } else if (segment < 0.75) {
+        // 底部边缘
+        offsetX = -50 + positionInSegment * 100; // -50vw 到 50vw
+        offsetY = 80; // 向下移动80vh
+        scale = 0.5 + Math.random() * 0.5;
+        rotation = Math.random() * 30 - 15;
+      } else {
+        // 左侧边缘
+        offsetX = -80; // 向左移动80vw
+        offsetY = -50 + positionInSegment * 100; // -50vh 到 50vh
+        scale = 0.5 + Math.random() * 0.5;
+        rotation = Math.random() * 30 - 15;
+      }
 
       return (
         <span
           key={`${char}-${index}`}
           className="char-explode inline-block"
           style={{
-            '--offset-x': `${offsetX}px`,
-            '--offset-y': `${offsetY}px`,
+            '--offset-x': `${offsetX}vw`,
+            '--offset-y': `${offsetY}vh`,
             '--scale': scale,
             '--rotation': `${rotation}deg`,
-            transitionDelay: `${delay + index * 0.06}s`,
+            transitionDelay: `${delay + index * 0.05}s`,
           } as any}
         >
           {char === ' ' ? '\u00A0' : char}
@@ -74,12 +77,12 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center"
+      className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center overflow-hidden"
       style={{ minHeight: 'calc(100vh - 60px)' }}
     >
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="text-left">
+          <div className="text-left relative z-10">
             <h1
               className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
               style={{
@@ -118,7 +121,7 @@ export default function HeroSection() {
                 ></div>
               </div>
               <br />
-              <div className={`relative inline-block mt-2 ${textVisible ? 'text-visible' : 'text-hidden'}`} style={{ transitionDelay: '0.48s' }}>
+              <div className={`relative inline-block mt-2 ${textVisible ? 'text-visible' : 'text-hidden'}`} style={{ transitionDelay: '0.4s' }}>
                 <span
                   className="glow-text text-3d-effect inline-block"
                   style={{

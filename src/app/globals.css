@@ -746,13 +746,13 @@ div[data-scroll-animate] {
   filter: blur(0);
 }
 
-/* 爆炸文字动画 - 从四面八方集合 */
+/* 爆炸文字动画 - 从屏幕四面八方集合 */
 .char-explode {
   display: inline-block;
   opacity: 0;
   transform: translate(var(--offset-x), var(--offset-y)) rotate(var(--rotation)) scale(var(--scale));
-  filter: blur(6px);
-  transition: all 0.9s cubic-bezier(0.23, 1, 0.32, 1);
+  filter: blur(8px);
+  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
   will-change: transform, opacity, filter;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
