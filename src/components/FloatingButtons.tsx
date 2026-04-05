@@ -17,30 +17,24 @@ export default function FloatingButtons() {
     // 清除之前的定时器
     if (backToTopTimer.current) {
       clearTimeout(backToTopTimer.current);
-    }
-
-    // 立即执行单击逻辑（往上翻一页）
-    const targetPage = Math.max(0, currentPage - 1);
-    const event = new CustomEvent('jump-to-page', { detail: { pageIndex: targetPage } });
-    window.dispatchEvent(event);
-
-    // 设置定时器重置计数
-    backToTopTimer.current = setTimeout(() => {
-      // 300ms后重置计数
-      backToTopClickCount.current = 0;
       backToTopTimer.current = null;
-    }, 300);
+    }
 
     // 检查是否是双击（第2次点击）
     if (backToTopClickCount.current === 2) {
-      // 双击：回到首页
+      // 双击：立即回到首页
       const homeEvent = new CustomEvent('jump-to-page', { detail: { pageIndex: 0 } });
       window.dispatchEvent(homeEvent);
       backToTopClickCount.current = 0;
-      if (backToTopTimer.current) {
-        clearTimeout(backToTopTimer.current);
+    } else {
+      // 设置定时器，300ms后执行单击逻辑（往上翻一页）
+      backToTopTimer.current = setTimeout(() => {
+        const targetPage = Math.max(0, currentPage - 1);
+        const event = new CustomEvent('jump-to-page', { detail: { pageIndex: targetPage } });
+        window.dispatchEvent(event);
+        backToTopClickCount.current = 0;
         backToTopTimer.current = null;
-      }
+      }, 300);
     }
   };
 

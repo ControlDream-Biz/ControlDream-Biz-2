@@ -96,7 +96,7 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Mobile Menu Button - 线性快速变成X */}
+        {/* Mobile Menu Button - 变成两条垂直并排线条 */}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -116,47 +116,47 @@ export function Navbar() {
             className="text-white"
             style={{ width: '20px', height: '20px' }}
           >
-            {/* 上横杠 */}
+            {/* 上横杠 - 变成左边竖线 */}
             <line
               x1="4"
               y1="6"
               x2="20"
               y2="6"
               style={{
-                transformOrigin: '12px 12px',
+                transformOrigin: 'center',
                 transition: 'all 0.2s linear',
                 transform: mobileMenuOpen
-                  ? 'rotate(45deg)'
-                  : 'rotate(0deg)',
+                  ? 'translate(-6px, 0) rotate(90deg)'
+                  : 'translate(0, 0) rotate(0deg)',
               }}
             />
 
-            {/* 中横杠 */}
+            {/* 中横杠 - 变成右边竖线 */}
             <line
               x1="4"
               y1="12"
               x2="20"
               y2="12"
               style={{
-                transformOrigin: '12px 12px',
-                transition: 'all 0.15s linear',
-                opacity: mobileMenuOpen ? 0 : 1,
-                transform: mobileMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
+                transformOrigin: 'center',
+                transition: 'all 0.2s linear',
+                transform: mobileMenuOpen
+                  ? 'translate(6px, 0) rotate(90deg)'
+                  : 'translate(0, 0) rotate(0deg)',
               }}
             />
 
-            {/* 下横杠 */}
+            {/* 下横杠 - 消失 */}
             <line
               x1="4"
               y1="18"
               x2="20"
               y2="18"
               style={{
-                transformOrigin: '12px 12px',
-                transition: 'all 0.2s linear',
-                transform: mobileMenuOpen
-                  ? 'rotate(-45deg)'
-                  : 'rotate(0deg)',
+                transformOrigin: 'center',
+                transition: 'all 0.15s linear',
+                opacity: mobileMenuOpen ? 0 : 1,
+                transform: mobileMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
               }}
             />
           </svg>
