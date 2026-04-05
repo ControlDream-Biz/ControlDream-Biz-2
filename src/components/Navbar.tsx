@@ -43,16 +43,16 @@ export function Navbar() {
       {/* 左上角 Logo + 公司名称 - 苹果官网式布局 */}
       <div
         onClick={() => scrollToSection('#home', 0)}
-        className="fixed top-6 left-6 z-50 flex items-center gap-2 sm:gap-3 hover:opacity-90 transition-opacity cursor-pointer group select-none"
+        className="fixed top-6 left-6 z-50 flex items-center gap-1.5 sm:gap-2 hover:opacity-90 transition-opacity cursor-pointer group select-none"
       >
         {/* LOGO - 透明背景，白色线条，响应式尺寸 */}
-        <div className="relative w-8 h-8 flex-shrink-0 sm:w-14 sm:h-14">
+        <div className="relative w-7 h-7 flex-shrink-0 sm:w-12 sm:h-12">
           <Image
             src="/logo-cm-transparent.png"
             alt="创梦计算机系统有限公司"
             fill
             className="object-contain"
-            sizes="(max-width: 640px) 32px, 56px"
+            sizes="(max-width: 640px) 28px, 48px"
             priority
           />
         </div>
@@ -60,13 +60,13 @@ export function Navbar() {
         {/* 公司名称 - 移动端和桌面端都显示，响应式字体大小 */}
         <div className="flex flex-col justify-center">
           {/* 中文公司名 - 响应式字体大小 */}
-          <div className="text-sm font-bold text-white tracking-tight leading-tight mb-1 sm:text-lg select-none" style={fontStyles}>
+          <div className="text-xs font-bold text-white tracking-tight leading-tight mb-0.5 sm:text-base select-none" style={fontStyles}>
             创梦计算机系统有限公司
           </div>
 
           {/* 英文副标题 - 宽度与中文对齐，响应式字体大小 */}
           <div
-            className="text-[9px] sm:text-[11px] text-white/70 font-medium uppercase select-none"
+            className="text-[8px] sm:text-[10px] text-white/70 font-medium uppercase select-none"
             style={{
               ...fontStyles,
               letterSpacing: '0.15em'
