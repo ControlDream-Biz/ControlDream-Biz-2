@@ -142,15 +142,6 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
 
   return (
     <div className="relative w-full bg-black overflow-hidden" style={{ zIndex: 5 }}>
-      {/* 背景光晕 */}
-      <div
-        className="absolute inset-0 transition-opacity duration-1000 ease-out"
-        style={{
-          opacity: mounted ? 0.2 : 0.2, // 始终显示，避免初始黑屏
-          background: 'radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 60%)',
-        }}
-      />
-
       <div className="relative z-10 w-full flex flex-col items-start justify-start px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
         {/* 标题 */}
         <div
