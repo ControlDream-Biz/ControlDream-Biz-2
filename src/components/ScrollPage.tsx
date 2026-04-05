@@ -8,20 +8,94 @@ interface ScrollPageProps {
   currentPage: number;
   dragOffset?: number;
   isDragging?: boolean;
+  springValue?: number;
 }
 
-type ChildWithProps = React.ReactElement<{ isActive?: boolean; dragOffset?: number; isDragging?: boolean; pageIndex?: number; currentPage?: number }>;
+type ChildWithProps = React.ReactElement<{ isActive?: boolean; dragOffset?: number; isDragging?: boolean; pageIndex?: number; currentPage?: number; springValue?: number }>;
 
-// Apple级别缓动曲线
-const EASE_APPLE = 'cubic-bezier(0.16, 1, 0.3, 1)';
-const EASE_QUARTIC = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-
-// 平滑缓动函数
-function easeOutCubic(t: number): number {
-  return 1 - Math.pow(1 - t, 3);
+interface IOSpringConfig {
+  stiffness: number;
+  damping: number;
+  mass: number;
 }
 
-export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDragging = false }: ScrollPageProps) {
+class IOSpringAnimation {
+  private config: IOSpringConfig;
+  private currentValue: number = 0;
+  private targetValue: number = 0;
+  private currentVelocity: number = 0;
+  private animationFrame: number | null = null;
+  private resolveCallback: (() => void) | null = null;
+
+  constructor(config: IOSpringConfig) {
+    this.config = config;
+  }
+
+  setValue(value: number) {
+    this.currentValue = value;
+    this.currentVelocity = 0;
+  }
+
+  setTarget(target: number, callback?: () => void) {
+    this.targetValue = target;
+    this.resolveCallback = callback || null;
+    this.startAnimation();
+  }
+
+  private startAnimation() {
+    if (this.animationFrame) {
+      cancelAnimationFrame(this.animationFrame);
+    }
+
+    const animate = () => {
+      const displacement = this.targetValue - this.currentValue;
+      const springForce = this.config.stiffness * displacement;
+      const dampingForce = this.config.damping * this.currentVelocity;
+      const totalForce = springForce - dampingForce;
+      const acceleration = totalForce / this.config.mass;
+      
+      this.currentVelocity += acceleration * 0.016;
+      this.currentValue += this.currentVelocity * 0.016;
+      
+      const isSettled = 
+        Math.abs(displacement) < 0.1 && 
+        Math.abs(this.currentVelocity) < 0.1;
+      
+      if (isSettled) {
+        this.currentValue = this.targetValue;
+        this.currentVelocity = 0;
+        if (this.resolveCallback) {
+          this.resolveCallback();
+          this.resolveCallback = null;
+        }
+      } else {
+        this.animationFrame = requestAnimationFrame(animate);
+      }
+    };
+    
+    animate();
+  }
+
+  getValue(): number {
+    return this.currentValue;
+  }
+
+  stop() {
+    if (this.animationFrame) {
+      cancelAnimationFrame(this.animationFrame);
+      this.animationFrame = null;
+    }
+  }
+}
+
+const EASE_IOS_SPRING = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+const EASE_IOS_EASE = 'cubic-bezier(0.25, 1, 0.5, 1)';
+
+function smooth(t: number): number {
+  return t * t * (3 - 2 * t);
+}
+
+export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDragging = false, springValue = 0 }: ScrollPageProps) {
   const isActive = index === currentPage;
   const isPrev = index < currentPage;
   const isNext = index > currentPage;
@@ -30,42 +104,34 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
   let opacity = 1;
   const scale = 1;
   let blur = 0;
-  let brightness = 100;
 
-  if (isDragging && dragOffset !== 0) {
+  const effectiveOffset = isDragging ? dragOffset : springValue;
+  
+  if (Math.abs(effectiveOffset) > 0.1) {
     const viewportHeight = window.innerHeight;
-    const rawProgress = Math.min(Math.abs(dragOffset) / viewportHeight, 1);
-    const smoothProgress = easeOutCubic(rawProgress);
+    const rawProgress = Math.min(Math.abs(effectiveOffset) / viewportHeight, 1);
+    const smoothProgress = smooth(rawProgress);
 
     if (isActive) {
-      const scaleEffect = 1 - smoothProgress * 0.01;
-      const dragFeedback = dragOffset * 0.25;
-      blur = smoothProgress * 1.5;
-      brightness = 100 - smoothProgress * 5;
+      const scaleEffect = 1 - smoothProgress * 0.008;
+      const dragFeedback = effectiveOffset * 0.22;
+      blur = smoothProgress * 1.2;
       transform = `translate3d(0, ${dragFeedback}px, 0) scale(${scaleEffect})`;
-      opacity = 1 - smoothProgress * 0.04;
-    } else if (isNext && dragOffset < 0) {
-      const startOffset = 12;
-      const entryOffset = startOffset + dragOffset * 0.25;
-      const scaleEffect = 1 - (1 - smoothProgress) * 0.012;
-      blur = (1 - smoothProgress) * 2;
-      brightness = 100 - (1 - smoothProgress) * 8;
+      opacity = 1 - smoothProgress * 0.03;
+    } else if (isNext && effectiveOffset < 0) {
+      const startOffset = 10;
+      const entryOffset = startOffset + effectiveOffset * 0.22;
+      const scaleEffect = 1 - (1 - smoothProgress) * 0.01;
+      blur = (1 - smoothProgress) * 1.5;
       transform = `translate3d(0, ${entryOffset}px, 0) scale(${scaleEffect})`;
-      opacity = Math.max(0.65, smoothProgress * 0.97);
-    } else if (isPrev && dragOffset > 0) {
-      const startOffset = -12;
-      const entryOffset = startOffset + dragOffset * 0.25;
-      const scaleEffect = 1 - (1 - smoothProgress) * 0.012;
-      blur = (1 - smoothProgress) * 2;
-      brightness = 100 - (1 - smoothProgress) * 8;
+      opacity = Math.max(0.7, smoothProgress * 0.98);
+    } else if (isPrev && effectiveOffset > 0) {
+      const startOffset = -10;
+      const entryOffset = startOffset + effectiveOffset * 0.22;
+      const scaleEffect = 1 - (1 - smoothProgress) * 0.01;
+      blur = (1 - smoothProgress) * 1.5;
       transform = `translate3d(0, ${entryOffset}px, 0) scale(${scaleEffect})`;
-      opacity = Math.max(0.65, smoothProgress * 0.97);
-    } else if (isPrev) {
-      transform = `translate3d(0, -50vh, 0) scale(${scale})`;
-      opacity = 0;
-    } else if (isNext) {
-      transform = `translate3d(0, 50vh, 0) scale(${scale})`;
-      opacity = 0;
+      opacity = Math.max(0.7, smoothProgress * 0.98);
     }
   } else {
     if (isActive) {
@@ -87,15 +153,14 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
         transform,
-        filter: `blur(${blur}px) brightness(${brightness}%)`,
+        filter: blur > 0 ? `blur(${blur}px)` : 'none',
         transition: isDragging
           ? 'none'
-          : `transform 0.65s ${EASE_APPLE}, opacity 0.55s ${EASE_APPLE}, filter 0.55s ${EASE_APPLE}`,
+          : `transform 0.55s ${EASE_IOS_SPRING}, opacity 0.45s ${EASE_IOS_EASE}, filter 0.45s ${EASE_IOS_EASE}`,
         zIndex: isActive ? 10 : 1,
         willChange: isDragging ? 'transform, opacity, filter' : 'auto',
         backfaceVisibility: 'hidden' as const,
         transformStyle: 'preserve-3d' as const,
-        contain: 'layout style paint' as const,
       }}
     >
       <div className="w-full h-full overflow-y-auto scrollbar-hide">
@@ -107,7 +172,8 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
                   dragOffset,
                   isDragging,
                   pageIndex: index,
-                  currentPage
+                  currentPage,
+                  springValue
                 })
               : children
             : children}
@@ -126,7 +192,19 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   const [currentPage, setCurrentPage] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [springOffset, setSpringOffset] = useState(0);
   const totalPages = children.length;
+
+  const springRef = useRef<IOSpringAnimation | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const springOffsetRef = useRef(0);
+  const dragOffsetRef = useRef(0);
+  const currentPageRef = useRef(0);
+  const isDraggingRef = useRef(false);
+  
+  currentPageRef.current = currentPage;
+  dragOffsetRef.current = dragOffset;
+  isDraggingRef.current = isDragging;
 
   const scrollStateRef = useRef({
     accumulatedDelta: 0,
@@ -146,16 +224,49 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     stableDeltaHistory: [] as number[],
     directionLocked: false,
     lockTimeout: null as number | null,
+    consecutiveScrolls: 0,
+    lastScrollTime: 0,
   });
 
-  const rafRef = useRef<number | null>(null);
-
   const handlePageChange = useCallback((newPage: number) => {
-    if (newPage >= 0 && newPage < totalPages && newPage !== currentPage) {
+    if (newPage >= 0 && newPage < totalPages) {
       setCurrentPage(newPage);
       onPageChange?.(newPage);
     }
-  }, [currentPage, totalPages, onPageChange]);
+  }, [totalPages, onPageChange]);
+
+  const triggerSpringBounce = useCallback(() => {
+    const spring = springRef.current;
+    if (!spring) return;
+
+    spring.setValue(dragOffsetRef.current);
+    spring.setTarget(0, () => {
+      setIsDragging(false);
+    });
+
+    const animate = () => {
+      const value = spring.getValue();
+      springOffsetRef.current = value;
+      setSpringOffset(value);
+
+      if (Math.abs(value) > 0.1) {
+        requestAnimationFrame(animate);
+      } else {
+        springOffsetRef.current = 0;
+        setSpringOffset(0);
+      }
+    };
+
+    animate();
+  }, []);
+
+  useEffect(() => {
+    springRef.current = new IOSpringAnimation({
+      stiffness: 400,
+      damping: 20,
+      mass: 1,
+    });
+  }, []);
 
   useEffect(() => {
     const state = scrollStateRef.current;
@@ -172,6 +283,13 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const now = performance.now();
       const delta = e.deltaY;
 
+      if (now - state.lastScrollTime < 100) {
+        state.consecutiveScrolls++;
+      } else {
+        state.consecutiveScrolls = 0;
+      }
+      state.lastScrollTime = now;
+
       if (state.directionLocked) {
         const currentDirection = delta > 0 ? 1 : -1;
         if (currentDirection !== state.lastWheelDirection) {
@@ -180,11 +298,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
 
       state.stableDeltaHistory.push(delta);
-      if (state.stableDeltaHistory.length > 6) {
+      if (state.stableDeltaHistory.length > 8) {
         state.stableDeltaHistory.shift();
       }
 
-      const recentDeltas = state.stableDeltaHistory.slice(-6);
+      const recentDeltas = state.stableDeltaHistory.slice(-8);
       const allPositive = recentDeltas.every(d => d > 0);
       const allNegative = recentDeltas.every(d => d < 0);
       const isDirectionStable = allPositive || allNegative;
@@ -199,15 +317,16 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.lastWheelDirection = currentDirection;
 
       const isTouchpad = state.isTouchpad;
-      const scrollThreshold = isTouchpad ? 95 : 75;
-      const consistencyThreshold = isTouchpad ? 3 : 3;
-      const throttleTime = isTouchpad ? 850 : 650;
+      const scrollThreshold = isTouchpad ? 110 : 90;
+      const consistencyThreshold = isTouchpad ? 5 : 4;
+      const throttleTime = isTouchpad ? 900 : 700;
 
       const absAccumulatedDelta = Math.abs(state.accumulatedDelta);
 
       if (absAccumulatedDelta >= scrollThreshold &&
           state.wheelConsistency >= consistencyThreshold &&
-          isDirectionStable) {
+          isDirectionStable &&
+          state.consecutiveScrolls >= 2) {
 
         if (now - state.lastWheelTime < throttleTime) return;
         state.lastWheelTime = now;
@@ -216,17 +335,18 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.lockTimeout = window.setTimeout(() => {
           state.directionLocked = false;
           state.lockTimeout = null;
-        }, 400);
+        }, 600);
 
         if (state.accumulatedDelta > 0) {
-          handlePageChange(currentPage + 1);
+          handlePageChange(currentPageRef.current + 1);
         } else {
-          handlePageChange(currentPage - 1);
+          handlePageChange(currentPageRef.current - 1);
         }
 
         state.accumulatedDelta = 0;
         state.wheelConsistency = 0;
         state.stableDeltaHistory = [];
+        state.consecutiveScrolls = 0;
       }
     };
 
@@ -260,19 +380,20 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.velocity = velocity;
       }
 
-      const isVerticalSwipe = absDeltaY > absDeltaX * 2 && absDeltaY > 60;
+      const isVerticalSwipe = absDeltaY > absDeltaX * 2.2 && absDeltaY > 70;
 
       if (isVerticalSwipe) {
         state.hasMovedVertically = true;
 
-        if (absDeltaY > 60 && e.cancelable) {
+        if (absDeltaY > 70 && e.cancelable) {
           e.preventDefault();
           e.stopPropagation();
         }
 
+        dragOffsetRef.current = deltaY;
         if (rafRef.current === null) {
           rafRef.current = requestAnimationFrame(() => {
-            setDragOffset(deltaY);
+            setDragOffset(dragOffsetRef.current);
             setIsDragging(true);
             rafRef.current = null;
           });
@@ -291,10 +412,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
       const effectiveVelocity = Math.max(velocity, state.velocity);
 
-      const minSwipeTime = 150;
+      const minSwipeTime = 180;
       const maxSwipeTime = 700;
-      const swipeThreshold = 65;
-      const velocityThreshold = 0.55;
+      const swipeThreshold = 75;
+      const velocityThreshold = 0.6;
 
       const shouldSwitchPage =
         state.hasMovedVertically &&
@@ -306,7 +427,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         effectiveVelocity >= velocityThreshold;
 
       if (shouldSwitchPage) {
-        if (touchEndTime - state.lastWheelTime < 800) return;
+        if (touchEndTime - state.lastWheelTime < 900) return;
         state.lastWheelTime = touchEndTime;
         state.hasSwitchedInThisTouch = true;
 
@@ -314,15 +435,15 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.lockTimeout = window.setTimeout(() => {
           state.directionLocked = false;
           state.lockTimeout = null;
-        }, 500);
+        }, 650);
 
         if (deltaY > 0) {
-          if (currentPage < totalPages - 1) {
-            handlePageChange(currentPage + 1);
+          if (currentPageRef.current < totalPages - 1) {
+            handlePageChange(currentPageRef.current + 1);
           }
         } else {
-          if (currentPage > 0) {
-            handlePageChange(currentPage - 1);
+          if (currentPageRef.current > 0) {
+            handlePageChange(currentPageRef.current - 1);
           }
         }
       }
@@ -332,18 +453,17 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.horizontalMovement = 0;
       state.verticalMovement = 0;
 
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
+      if (!shouldSwitchPage && absDeltaY > 30) {
+        triggerSpringBounce();
+      } else {
+        setIsDragging(false);
+        setDragOffset(0);
       }
-
-      setIsDragging(false);
-      setDragOffset(0);
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
       const now = performance.now();
-      if (now - state.lastWheelTime < 1000) return;
+      if (now - state.lastWheelTime < 900) return;
 
       const keyMap: Record<string, number> = {
         'ArrowDown': 1,
@@ -351,14 +471,14 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         'PageDown': 1,
         'PageUp': -1,
         ' ': 1,
-        'Home': -currentPage,
-        'End': totalPages - 1 - currentPage,
+        'Home': -currentPageRef.current,
+        'End': totalPages - 1 - currentPageRef.current,
       };
 
       if (keyMap[e.key] !== undefined) {
         e.preventDefault();
         state.lastWheelTime = now;
-        handlePageChange(currentPage + keyMap[e.key]);
+        handlePageChange(currentPageRef.current + keyMap[e.key]);
       }
     };
 
@@ -376,12 +496,16 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       window.removeEventListener('keydown', handleKeyDown);
       if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
       }
       if (state.lockTimeout !== null) {
         clearTimeout(state.lockTimeout);
       }
+      if (springRef.current) {
+        springRef.current.stop();
+      }
     };
-  }, [currentPage, handlePageChange, totalPages]);
+  }, [totalPages, handlePageChange, triggerSpringBounce]);
 
   useEffect(() => {
     const handleNavigation = (e: Event) => {
@@ -414,11 +538,12 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           currentPage={currentPage}
           dragOffset={dragOffset}
           isDragging={isDragging}
+          springValue={springOffset}
         >
           {child}
         </ScrollPage>
       ))}
-
+      
       {currentPage < totalPages - 1 && (
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-white/50 pointer-events-none">
           <span className="text-xs font-medium tracking-wider">
@@ -431,7 +556,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
             viewBox="0 0 24 24"
             style={{
               animation: 'scrollBounce 2s infinite',
-              animationTimingFunction: EASE_APPLE,
+              animationTimingFunction: EASE_IOS_SPRING,
             }}
           >
             <path
