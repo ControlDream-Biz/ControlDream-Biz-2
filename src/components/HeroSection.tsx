@@ -7,146 +7,57 @@ import { useState, useEffect } from "react";
 
 export default function HeroSection() {
   const [mounted, setMounted] = useState(false);
-  const [textVisible, setTextVisible] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    const timer = setTimeout(() => {
-      setTextVisible(true);
-    }, 100);
-    return () => clearTimeout(timer);
   }, []);
-
-  // 为每个字符计算从屏幕四个角落散开的位置
-  const renderAnimatedText = (text: string, delay: number) => {
-    const chars = text.split('');
-    const total = chars.length;
-
-    return chars.map((char, index) => {
-      // 将字符分配到四个角落
-      // 0-25%: 左下，25-50%: 右下，50-75%: 左上，75-100%: 右上
-      const segment = index / total;
-      const positionInSegment = (index % (total / 4)) / (total / 4);
-
-      let offsetX, offsetY, scale, rotation;
-
-      if (segment < 0.25) {
-        // 左下角
-        offsetX = -60 - Math.random() * 20; // -60vw 到 -80vw
-        offsetY = 50 + Math.random() * 30; // 50vh 到 80vh
-        scale = 0.3 + Math.random() * 0.4;
-        rotation = Math.random() * 45 - 22.5;
-      } else if (segment < 0.5) {
-        // 右下角
-        offsetX = 60 + Math.random() * 20; // 60vw 到 80vw
-        offsetY = 50 + Math.random() * 30; // 50vh 到 80vh
-        scale = 0.3 + Math.random() * 0.4;
-        rotation = Math.random() * 45 - 22.5;
-      } else if (segment < 0.75) {
-        // 左上角
-        offsetX = -60 - Math.random() * 20; // -60vw 到 -80vw
-        offsetY = -50 - Math.random() * 30; // -50vh 到 -80vh
-        scale = 0.3 + Math.random() * 0.4;
-        rotation = Math.random() * 45 - 22.5;
-      } else {
-        // 右上角
-        offsetX = 60 + Math.random() * 20; // 60vw 到 80vw
-        offsetY = -50 - Math.random() * 30; // -50vh 到 -80vh
-        scale = 0.3 + Math.random() * 0.4;
-        rotation = Math.random() * 45 - 22.5;
-      }
-
-      return (
-        <span
-          key={`${char}-${index}`}
-          className="char-explode inline-block"
-          style={{
-            '--offset-x': `${offsetX}vw`,
-            '--offset-y': `${offsetY}vh`,
-            '--scale': scale,
-            '--rotation': `${rotation}deg`,
-            transitionDelay: `${delay + index * 0.06}s`,
-          } as any}
-        >
-          {char === ' ' ? '\u00A0' : char}
-        </span>
-      );
-    });
-  };
 
   return (
     <section
       id="home"
-      className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center overflow-hidden"
+      className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center"
       style={{ minHeight: 'calc(100vh - 60px)' }}
     >
       <div className="container mx-auto px-4 max-w-7xl">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="text-left relative z-10">
+          <div className="text-left">
             <h1
               className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
-                transition: "all 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s",
+                transition: "all 0.8s ease-out 0.1s",
                 minHeight: "120px",
-                position: "relative",
               }}
             >
-              <div className={`relative inline-block ${textVisible ? 'text-visible' : 'text-hidden'}`}>
-                <span
-                  className="glow-text text-3d-effect inline-block"
-                  style={{
-                    background: "linear-gradient(90deg, #EF4444 0%, #F97316 14%, #3B82F6 28%, #6366F1 42%, #8B5CF6 56%, #EC4899 70%, #EF4444 85%, #F97316 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    backgroundSize: "200% 100%",
-                    animation: textVisible ? "gradientMove 15s ease-in-out infinite alternate, glowPulse 3s ease-in-out infinite 0.8s" : "none",
-                    WebkitAnimation: textVisible ? "gradientMove 15s ease-in-out infinite alternate, glowPulse 3s ease-in-out infinite 0.8s" : "none",
-                    display: "inline-block",
-                    fontSize: "inherit",
-                    fontWeight: "inherit",
-                  }}
-                >
-                  {renderAnimatedText("创新科技", 0)}
-                </span>
-                <div
-                  className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl blur-2xl opacity-0 transition-all duration-700"
-                  style={{
-                    animation: textVisible ? "particleFloat 2s ease-in-out infinite" : "none",
-                    animationDelay: "0.8s",
-                    opacity: textVisible ? 1 : 0,
-                  }}
-                ></div>
+              <div
+                className="inline-block"
+                style={{
+                  background: "linear-gradient(90deg, #EF4444 0%, #F97316 14%, #3B82F6 28%, #6366F1 42%, #8B5CF6 56%, #EC4899 70%, #EF4444 85%, #F97316 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  backgroundSize: "200% 100%",
+                  animation: mounted ? "gradientMove 15s ease-in-out infinite alternate" : "none",
+                  WebkitAnimation: mounted ? "gradientMove 15s ease-in-out infinite alternate" : "none",
+                }}
+              >
+                创新科技
               </div>
               <br />
-              <div className={`relative inline-block mt-2 ${textVisible ? 'text-visible' : 'text-hidden'}`} style={{ transitionDelay: '0.48s' }}>
-                <span
-                  className="glow-text text-3d-effect inline-block"
-                  style={{
-                    background: "linear-gradient(90deg, #8B5CF6 0%, #A855F7 16%, #EC4899 32%, #EF4444 48%, #F97316 64%, #3B82F6 80%, #8B5CF6 100%)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    backgroundClip: "text",
-                    backgroundSize: "200% 100%",
-                    animation: textVisible ? "gradientMove 18s ease-in-out infinite alternate-reverse, glowPulse 3s ease-in-out infinite 1.2s" : "none",
-                    WebkitAnimation: textVisible ? "gradientMove 18s ease-in-out infinite alternate-reverse, glowPulse 3s ease-in-out infinite 1.2s" : "none",
-                    display: "inline-block",
-                    fontSize: "inherit",
-                    fontWeight: "inherit",
-                  }}
-                >
-                  {renderAnimatedText("驱动未来", 0)}
-                </span>
-                <div
-                  className="absolute -inset-4 bg-gradient-to-r from-purple-500/20 via-pink-500/20 to-orange-500/20 rounded-2xl blur-2xl opacity-0 transition-all duration-700"
-                  style={{
-                    animation: textVisible ? "particleFloat 2s ease-in-out infinite reverse" : "none",
-                    animationDelay: "1.2s",
-                    opacity: textVisible ? 1 : 0,
-                  }}
-                ></div>
+              <div
+                className="inline-block mt-2"
+                style={{
+                  background: "linear-gradient(90deg, #8B5CF6 0%, #A855F7 16%, #EC4899 32%, #EF4444 48%, #F97316 64%, #3B82F6 80%, #8B5CF6 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  backgroundSize: "200% 100%",
+                  animation: mounted ? "gradientMove 18s ease-in-out infinite alternate-reverse" : "none",
+                  WebkitAnimation: mounted ? "gradientMove 18s ease-in-out infinite alternate-reverse" : "none",
+                }}
+              >
+                驱动未来
               </div>
             </h1>
 
