@@ -164,7 +164,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   useEffect(() => {
     const state = scrollStateRef.current;
 
-    // 智能翻页逻辑 - 内容可以滚动，滚动到边界时才翻页
+    // 智能翻页逻辑 - 简化逻辑，优先保证内容可以滚动
     const handleWheel = (e: WheelEvent) => {
       const now = performance.now();
       const delta = e.deltaY;
@@ -183,13 +183,18 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
-        isScrollable = scrollHeight > clientHeight + 10;
-        isAtTop = scrollTop <= 20; // 增加容差
-        isAtBottom = scrollTop + clientHeight >= scrollHeight - 20; // 增加容差
+        isScrollable = scrollHeight > clientHeight + 20; // 宽松的判断
+        isAtTop = scrollTop <= 10;
+        isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 10;
       }
 
-      // 备用检测：如果滚动量很大，直接翻页（防止检测失败）
-      if (deltaAbs > 100) {
+      // 如果内容可滚动且不在边界，让内容正常滚动
+      if (isScrollable && !isAtTop && !isAtBottom) {
+        return; // 让内容滚动，不触发翻页
+      }
+
+      // 备用检测：如果滚动量很大，直接翻页
+      if (deltaAbs > 80) {
         if (now - state.lastWheelTime < 150) return;
         state.lastWheelTime = now;
 
@@ -201,12 +206,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         return;
       }
 
-      // 如果内容可滚动且不在边界，让内容正常滚动，不触发翻页
-      if (isScrollable && !isAtTop && !isAtBottom) {
-        return; // 让内容滚动
-      }
-
-      // 只有在边界或内容不可滚动时才检测翻页
       // 检查滚轮方向一致性
       const currentDirection = delta > 0 ? 1 : -1;
       if (currentDirection === state.lastWheelDirection) {
@@ -220,17 +219,16 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.accumulatedDelta += delta;
 
       // 核心参数
-      const throttleTime = 150; // 节流时间
-      const fastScrollThreshold = 40; // 单次快速滚动阈值
-      const cumulativeThreshold = 50; // 累积滚动阈值
-      const consistencyThreshold = 1; // 只需1次同方向
+      const throttleTime = 150;
+      const fastScrollThreshold = 30;
+      const cumulativeThreshold = 40;
+      const consistencyThreshold = 1;
 
-      // 快速翻页条件（单次大幅滚动）
+      // 快速翻页条件
       if (deltaAbs >= fastScrollThreshold && state.wheelConsistency >= consistencyThreshold) {
         if (now - state.lastWheelTime < throttleTime) return;
         state.lastWheelTime = now;
 
-        // 重置状态
         state.accumulatedDelta = 0;
         state.wheelConsistency = 0;
 
@@ -242,13 +240,12 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         return;
       }
 
-      // 慢速翻页条件（累积滚动）
+      // 慢速翻页条件
       if (Math.abs(state.accumulatedDelta) >= cumulativeThreshold &&
           state.wheelConsistency >= consistencyThreshold) {
         if (now - state.lastWheelTime < throttleTime) return;
         state.lastWheelTime = now;
 
-        // 重置状态
         state.accumulatedDelta = 0;
         state.wheelConsistency = 0;
 
@@ -297,9 +294,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
-        const isScrollable = scrollHeight > clientHeight + 10;
-        const isAtTop = scrollTop <= 20; // 增加容差
-        const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20; // 增加容差
+        const isScrollable = scrollHeight > clientHeight + 20; // 宽松判断
+        const isAtTop = scrollTop <= 10;
+        const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 10;
 
         // 如果内容可滚动且不在边界，允许内容滚动
         if (isScrollable && !isAtTop && !isAtBottom) {
@@ -309,11 +306,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
         // 只有在边界或内容不可滚动时才阻止默认行为
         if (deltaY < 0 && isAtTop) {
-          shouldPreventDefault = true; // 在顶部向上滑动，阻止反弹
+          shouldPreventDefault = true;
         } else if (deltaY > 0 && isAtBottom) {
-          shouldPreventDefault = true; // 在底部向下滑动，阻止反弹
+          shouldPreventDefault = true;
         } else if (!isScrollable) {
-          shouldPreventDefault = true; // 内容不可滚动，阻止默认行为
+          shouldPreventDefault = true;
         }
       } else {
         // 没有滚动容器，阻止默认行为
@@ -323,9 +320,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 检测是否有明确的垂直滑动意图
       if (Math.abs(deltaY) > 10 && shouldPreventDefault) {
         e.preventDefault();
-        // 更新拖拽偏移量
         dragOffsetRef.current = deltaY;
-        // 强制重新渲染
         forceUpdateRef.current++;
         setIsDragging(true);
       }
@@ -353,11 +348,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           const scrollTop = scrollContainer.scrollTop;
           const scrollHeight = scrollContainer.scrollHeight;
           const clientHeight = scrollContainer.clientHeight;
-          const isScrollable = scrollHeight > clientHeight + 10;
-          const isAtTop = scrollTop <= 20; // 增加容差
-          const isAtBottom = scrollTop + clientHeight >= scrollHeight - 20; // 增加容差
+          const isScrollable = scrollHeight > clientHeight + 20; // 宽松判断
+          const isAtTop = scrollTop <= 10;
+          const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 10;
 
-          // 只有在以下情况才触发翻页
           if (isScrollable) {
             // 内容可滚动，需要在边界
             if ((isAtTop && dragOffsetRef.current > 0) ||
