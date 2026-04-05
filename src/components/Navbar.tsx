@@ -288,19 +288,6 @@ export function Navbar() {
               </>
             )}
 
-            {/* 中心发光星形 */}
-            {mobileMenuOpen && (
-              <polygon
-                points="12,9 13,11 15,11 13.5,12.5 14,15 12,13.5 10,15 10.5,12.5 9,11 11,11"
-                fill="url(#grad2)"
-                className="menu-pulse-dot"
-                style={{
-                  opacity: 0.95,
-                  filter: 'url(#intenseGlow)',
-                }}
-              />
-            )}
-
             {/* 旋转装饰粒子 */}
             {mobileMenuOpen && (
               <>
