@@ -193,6 +193,19 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         return; // 让内容滚动，不触发翻页
       }
 
+      // 强力备用检测：在边界附近，快速滚动直接翻页
+      if (isScrollable && (isAtTop || isAtBottom) && deltaAbs > 50) {
+        if (now - state.lastWheelTime < 150) return;
+        state.lastWheelTime = now;
+
+        if (delta > 0 && currentPage < totalPages - 1) {
+          handlePageChange(currentPage + 1);
+        } else if (delta < 0 && currentPage > 0) {
+          handlePageChange(currentPage - 1);
+        }
+        return;
+      }
+
       // 备用检测：如果滚动量很大，直接翻页
       if (deltaAbs > 80) {
         if (now - state.lastWheelTime < 150) return;
