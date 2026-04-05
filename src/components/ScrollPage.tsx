@@ -43,7 +43,7 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
         willChange: 'transform, opacity',
       }}
     >
-      <div className="w-full min-h-full px-4 py-8 flex items-center justify-center">
+      <div className="w-full px-4 py-8">
         {React.isValidElement(children)
           ? (children as React.ReactElement<Record<string, unknown>>).props.isActive !== undefined
             ? React.cloneElement(children as ChildWithProps, { isActive })

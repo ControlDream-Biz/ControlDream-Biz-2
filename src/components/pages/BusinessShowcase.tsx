@@ -78,7 +78,7 @@ export function BusinessShowcase({ isActive }: BusinessShowcaseProps) {
   }, [isActive]);
 
   return (
-    <div className="relative w-full h-full flex items-start justify-center bg-black overflow-hidden">
+    <div className="relative w-full bg-black overflow-hidden">
       {/* 背景光晕 */}
       <div
         className="absolute inset-0 transition-opacity duration-1000 ease-out"
@@ -88,7 +88,7 @@ export function BusinessShowcase({ isActive }: BusinessShowcaseProps) {
         }}
       />
 
-      <div className="relative z-10 w-full h-full flex flex-col items-start justify-start px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-12 sm:py-16 md:py-20">
+      <div className="relative z-10 w-full flex flex-col items-start justify-start px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
         {/* 标题 */}
         <div
           className="text-center mb-12 sm:mb-16 md:mb-20 lg:mb-24"
