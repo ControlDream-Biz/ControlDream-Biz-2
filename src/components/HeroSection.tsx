@@ -37,13 +37,63 @@ export default function HeroSection() {
       className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center overflow-hidden"
       style={{ minHeight: 'calc(100vh - 60px)' }}
     >
-      {/* 背景图 - 添加动画效果 */}
-      <div className="absolute inset-0 -z-10">
+      {/* 电竞风格背景图案层 */}
+      <div className="absolute inset-0 -z-30 overflow-hidden">
+        <div
+          className="absolute inset-0 transition-transform duration-1000 ease-out"
+          style={{
+            transform: `translate(${mousePosition.x * 30}px, ${mousePosition.y * 30}px)`,
+            backgroundSize: "60px 60px",
+            backgroundImage: `
+              linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px)
+            `,
+          }}
+        />
+        <div
+          className="absolute inset-0 transition-transform duration-1200 ease-out"
+          style={{
+            transform: `translate(${mousePosition.x * -20}px, ${mousePosition.y * -20}px)`,
+            backgroundSize: "120px 120px",
+            backgroundImage: `
+              linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px)
+            `,
+          }}
+        />
+        <div
+          className="absolute inset-0 transition-transform duration-1500 ease-out"
+          style={{
+            transform: `translate(${mousePosition.x * 15}px, ${mousePosition.y * 15}px)`,
+            backgroundSize: "180px 180px",
+            backgroundImage: `
+              linear-gradient(rgba(220, 38, 38, 0.02) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(220, 38, 38, 0.02) 1px, transparent 1px)
+            `,
+          }}
+        />
+      </div>
+
+      {/* 背景图片层 */}
+      <div className="absolute inset-0 -z-20">
         <div
           className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out"
           style={{
             backgroundImage: "url('/hero-bg.jpg')",
-            transform: `scale(1.1) translate(${mousePosition.x * -10}px, ${mousePosition.y * -10}px)`,
+            transform: `scale(1.05) translate(${mousePosition.x * -5}px, ${mousePosition.y * -5}px)`,
+            opacity: 0.5,
+          }}
+        />
+      </div>
+
+      {/* 玻璃效果层 */}
+      <div className="absolute inset-0 -z-10">
+        <div
+          className="absolute inset-0"
+          style={{
+            backdropFilter: "blur(2px)",
+            WebkitBackdropFilter: "blur(2px)",
+            background: "linear-gradient(135deg, rgba(15, 15, 25, 0.6) 0%, rgba(25, 25, 40, 0.5) 50%, rgba(15, 15, 25, 0.6) 100%)",
           }}
         />
         {/* 动态光效层 */}
@@ -51,13 +101,13 @@ export default function HeroSection() {
           className="absolute inset-0 pointer-events-none"
           style={{
             background: `radial-gradient(
-              circle at ${50 + mousePosition.x * 20}% ${50 + mousePosition.y * 20}%,
-              rgba(220, 38, 38, 0.12) 0%,
-              rgba(99, 102, 241, 0.1) 30%,
-              rgba(139, 92, 246, 0.08) 45%,
-              transparent 60%
+              circle at ${50 + mousePosition.x * 15}% ${50 + mousePosition.y * 15}%,
+              rgba(139, 92, 246, 0.08) 0%,
+              rgba(59, 130, 246, 0.06) 25%,
+              rgba(220, 38, 38, 0.04) 40%,
+              transparent 55%
             )`,
-            transition: 'background 0.3s ease-out',
+            transition: 'background 0.5s ease-out',
           }}
         />
       </div>
@@ -72,7 +122,7 @@ export default function HeroSection() {
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.8s ease-out 0.1s",
                 minHeight: "120px",
-                filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.4))",
+                filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.3))",
                 letterSpacing: "-0.02em",
               }}
             >
@@ -96,7 +146,7 @@ export default function HeroSection() {
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.2s",
                 minHeight: "60px",
-                textShadow: "0 2px 8px rgba(0,0,0,0.6)",
+                textShadow: "0 1px 4px rgba(0,0,0,0.4)",
               }}
             >
               我们专注于自主研发，在游戏、软件、硬件领域持续投入，
@@ -151,16 +201,16 @@ export default function HeroSection() {
               }}
             >
               <div>
-                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}>8+</div>
-                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>年持续投入</div>
+                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}>8+</div>
+                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.3)" }}>年持续投入</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}>30+</div>
-                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>自研产品</div>
+                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}>30+</div>
+                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.3)" }}>自研产品</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}>20+</div>
-                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>核心团队</div>
+                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.4)" }}>20+</div>
+                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 1px 3px rgba(0,0,0,0.3)" }}>核心团队</div>
               </div>
             </div>
           </div>
@@ -246,7 +296,7 @@ export default function HeroSection() {
           background-clip: text;
           -webkit-text-fill-color: transparent;
           animation: gradientPulse 8s ease-in-out infinite;
-          filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.7));
+          filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
         }
 
         .gradient-text-2 {
@@ -262,7 +312,7 @@ export default function HeroSection() {
           background-clip: text;
           -webkit-text-fill-color: transparent;
           animation: gradientPulse 10s ease-in-out infinite reverse;
-          filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.7));
+          filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
         }
 
         @keyframes gradientPulse {
