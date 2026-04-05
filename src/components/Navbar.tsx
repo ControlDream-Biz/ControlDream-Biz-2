@@ -77,7 +77,7 @@ export function Navbar() {
       </div>
 
       {/* 导航菜单 - 右上角 - 液态玻璃设计系统 */}
-      <nav className="fixed top-4 right-4 z-50 select-none sm:top-4 sm:right-4 lg:top-6 lg:right-6">
+      <nav className="fixed right-4 z-50 select-none sm:right-4 lg:right-6" style={{ bottom: '80px' }}>
         {/* Desktop Navigation - 液态玻璃导航栏 */}
         <div className="hidden lg:flex items-center gap-1 liquid-glass-nav px-2 py-2">
           {navItems.map((item) => (
@@ -96,13 +96,13 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Mobile Menu Button - 苹果风格汉堡菜单动画 */}
+        {/* Mobile Menu Button - 线性快速变成X */}
         <button
           onClick={(e) => {
             e.stopPropagation();
             setMobileMenuOpen(!mobileMenuOpen);
           }}
-          className="lg:hidden liquid-glass-menu-btn w-11 h-11 sm:w-12 sm:h-12"
+          className="lg:hidden liquid-glass-menu-btn w-12 h-12 sm:w-12 sm:h-12"
         >
           <svg
             width="24"
@@ -114,9 +114,9 @@ export function Navbar() {
             strokeLinecap="round"
             strokeLinejoin="round"
             className="text-white"
-            style={{ width: '22px', height: '22px' }}
+            style={{ width: '20px', height: '20px' }}
           >
-            {/* 上横杠 - 旋转成X的上半部分 */}
+            {/* 上横杠 */}
             <line
               x1="4"
               y1="6"
@@ -124,14 +124,14 @@ export function Navbar() {
               y2="6"
               style={{
                 transformOrigin: '12px 12px',
-                transition: 'all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                transition: 'all 0.2s linear',
                 transform: mobileMenuOpen
                   ? 'rotate(45deg)'
                   : 'rotate(0deg)',
               }}
             />
 
-            {/* 中横杠 - 缩小消失 */}
+            {/* 中横杠 */}
             <line
               x1="4"
               y1="12"
@@ -139,13 +139,13 @@ export function Navbar() {
               y2="12"
               style={{
                 transformOrigin: '12px 12px',
-                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0.05s',
+                transition: 'all 0.15s linear',
                 opacity: mobileMenuOpen ? 0 : 1,
-                transform: mobileMenuOpen ? 'scale(0)' : 'scale(1)',
+                transform: mobileMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
               }}
             />
 
-            {/* 下横杠 - 旋转成X的下半部分 */}
+            {/* 下横杠 */}
             <line
               x1="4"
               y1="18"
@@ -153,7 +153,7 @@ export function Navbar() {
               y2="18"
               style={{
                 transformOrigin: '12px 12px',
-                transition: 'all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                transition: 'all 0.2s linear',
                 transform: mobileMenuOpen
                   ? 'rotate(-45deg)'
                   : 'rotate(0deg)',
