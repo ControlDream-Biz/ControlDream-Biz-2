@@ -116,7 +116,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    // 苹果官网式的触摸处理逻辑 - 极致跟手优化
+    // 苹果官网式的触摸处理逻辑 - 优化阈值，避免误触
     const handleTouchStart = (e: TouchEvent) => {
       state.touchStartY = e.touches[0].clientY;
       state.touchStartTime = performance.now();
@@ -127,9 +127,14 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const deltaY = e.touches[0].clientY - state.touchStartY;
       const absDeltaY = Math.abs(deltaY);
 
-      // 极致跟手：滑动超过10px就立即响应
-      // 彻底阻止默认行为，防止下拉刷新
-      if (absDeltaY > 10 && e.cancelable) {
+      // 计算实时速度
+      const currentTime = performance.now();
+      const deltaTime = currentTime - state.touchStartTime;
+      const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
+
+      // 只在快速滑动时阻止默认行为（velocity >= 0.5），慢速滑动允许滚动内容
+      // 同时需要滑动超过30px，避免轻微抖动触发
+      if (absDeltaY > 30 && velocity >= 0.5 && e.cancelable) {
         e.preventDefault();
         e.stopPropagation();
       }
@@ -140,14 +145,25 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const touchEndTime = performance.now();
 
       const deltaY = state.touchStartY - touchEndY;
+      const deltaTime = touchEndTime - state.touchStartTime;
 
-      // 极致跟手：滑动距离超过20px就切换页面
-      const swipeThreshold = 20;
+      // 计算滑动速度 (px/ms)
+      const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
+
+      // 判断翻页条件：
+      // 1. 滑动距离超过60px 且 速度快于0.6px/ms（快速滑动）
+      // 2. 或者 滑动距离超过100px（大幅度滑动）
+      const swipeThreshold = 60;
+      const largeSwipeThreshold = 100;
+      const velocityThreshold = 0.6;
       const absDeltaY = Math.abs(deltaY);
 
-      if (absDeltaY >= swipeThreshold) {
-        // 极致跟手：降低节流时间到200ms
-        if (touchEndTime - state.lastWheelTime < 200) return;
+      const shouldSwitchPage = (absDeltaY >= swipeThreshold && velocity >= velocityThreshold) ||
+                               absDeltaY >= largeSwipeThreshold;
+
+      if (shouldSwitchPage) {
+        // 增加节流时间，避免频繁翻页
+        if (touchEndTime - state.lastWheelTime < 400) return;
         state.lastWheelTime = touchEndTime;
 
         if (deltaY > 0) {
