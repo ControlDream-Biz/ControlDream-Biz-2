@@ -15,7 +15,7 @@ export const AboutShowcase = memo(function AboutShowcase({ isActive = true }: Ab
   }, []);
 
   return (
-    <div className="relative w-full flex flex-col bg-black overflow-hidden" style={{ zIndex: 5 }}>
+    <div className="relative w-full flex flex-col overflow-hidden" style={{ zIndex: 5 }}>
       {/* 背景光晕 */}
       <div
         className="absolute inset-0 transition-opacity duration-1000 ease-out"

@@ -18,7 +18,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
 
   return (
     <>
-      <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-12 pb-8 bg-black">
+      <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-12 pb-8">
 
         {/* 动态背景光晕 - 相对定位，只在首页范围内显示 */}
         <div

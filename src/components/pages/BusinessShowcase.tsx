@@ -124,7 +124,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
 
   return (
-    <div className="relative w-full bg-black overflow-hidden" style={{ zIndex: 5 }}>
+    <div className="relative w-full overflow-hidden" style={{ zIndex: 5 }}>
       <div className="relative z-10 w-full flex flex-col items-start justify-start px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
         {/* 标题 */}
         <div

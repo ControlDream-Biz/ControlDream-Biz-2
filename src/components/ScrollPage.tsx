@@ -64,9 +64,8 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
         zIndex: isActive ? 10 : 1,
       }}
     >
-      {/* 背景层 - 第二页开始固定不动，不参与滑动 */}
-      {isHome ? (
-        // 首页：背景层参与滑动
+      {/* 背景层 - 只有首页有彩色背景，参与滑动 */}
+      {isHome && (
         <div
           style={{
             opacity,
@@ -76,16 +75,6 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
               : 'transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)',
             position: 'absolute',
             inset: 0,
-            zIndex: 1,
-          }}
-        />
-      ) : (
-        // 第二页开始：背景层固定不动
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundColor: 'black',
             zIndex: 1,
           }}
         />
@@ -417,6 +406,15 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         contain: 'strict',
       }}
     >
+      {/* 全局黑色背景 - 固定不动，所有页面共享 */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundColor: 'black',
+          zIndex: 0,
+        }}
+      />
+
       {children.map((child, index) => (
         <ScrollPage
           key={index}
