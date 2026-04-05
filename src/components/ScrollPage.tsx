@@ -97,13 +97,13 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 苹果官网的动量滚动处理
       state.accumulatedDelta += delta;
 
-      // 苹果官网的滚动阈值：约40-50px
-      const scrollThreshold = 45;
+      // 苹果官网的滚动阈值：约35px（降低阈值更跟手）
+      const scrollThreshold = 35;
       const absAccumulatedDelta = Math.abs(state.accumulatedDelta);
 
       if (absAccumulatedDelta >= scrollThreshold) {
-        // 苹果官网的节流时间：约750ms
-        if (now - state.lastWheelTime < 750) return;
+        // 苹果官网的节流时间：约600ms（优化后跟手性更好）
+        if (now - state.lastWheelTime < 600) return;
         state.lastWheelTime = now;
 
         // 判断滚动方向
@@ -142,9 +142,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.velocity = velocity;
       }
 
-      // 更严格的阻止默认行为条件 - 让用户更自由地滚动内容
-      // 距离 > 60px 且 速度 > 0.5 才阻止默认行为
-      if (absDeltaY > 60 && velocity > 0.5 && e.cancelable) {
+      // 更智能的阻止默认行为条件 - 更跟手
+      // 距离 > 50px 且 速度 > 0.4 就阻止默认行为
+      if (absDeltaY > 50 && velocity > 0.4 && e.cancelable) {
         e.preventDefault();
         e.stopPropagation();
         state.isScrolling = true;
@@ -165,11 +165,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 使用最大速度和最终速度的较大值
       const effectiveVelocity = Math.max(velocity, state.velocity);
 
-      // 翻页条件 - 极严格的条件，彻底解决误触问题
+      // 翻页条件 - 优化后的平衡参数，既跟手又防误触
       const minSwipeTime = 100;
       const maxSwipeTime = 1200;
-      const swipeThreshold = 100;  // 从85提高到100
-      const velocityThreshold = 0.75;  // 从0.65提高到0.75
+      const swipeThreshold = 70;  // 从100降低到70，更容易触发翻页
+      const velocityThreshold = 0.6;  // 从0.75降低到0.6，对速度要求降低
 
       // 只在条件满足且本次触摸未翻页时才翻页
       const shouldSwitchPage =
@@ -180,8 +180,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         effectiveVelocity >= velocityThreshold;
 
       if (shouldSwitchPage) {
-        // 节流检查：距离上次翻页至少1200ms（进一步提高冷却时间）
-        if (touchEndTime - state.lastWheelTime < 1200) return;
+        // 节流检查：距离上次翻页至少800ms（优化后跟手性更好）
+        if (touchEndTime - state.lastWheelTime < 800) return;
         state.lastWheelTime = touchEndTime;
         state.hasSwitchedInThisTouch = true;  // 标记已翻页
 
