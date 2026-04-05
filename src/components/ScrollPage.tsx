@@ -136,17 +136,19 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
   const scrollStateRef = useRef({
     lastWheelTime: 0,
-    wheelDelta: 0,
-    isTouchActive: false,
-    hasSwitchedInThisTouch: false,
-    touchStartY: 0,
-    touchStartX: 0,
+    lastWheelDelta: 0,
+    lastScrollPosition: 0,
+    wheelAccumulator: 0,
+    isProcessingScroll: false,
   });
 
   const handlePageChange = useCallback((newPage: number) => {
     if (newPage >= 0 && newPage < totalPages && newPage !== currentPage) {
+      console.log(`翻页: ${currentPage} -> ${newPage}`);
       setCurrentPage(newPage);
       onPageChange?.(newPage);
+      scrollStateRef.current.isProcessingScroll = false;
+      scrollStateRef.current.wheelAccumulator = 0;
     }
   }, [currentPage, totalPages, onPageChange]);
 
@@ -154,133 +156,84 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     const state = scrollStateRef.current;
 
     const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+
       const now = performance.now();
       const delta = e.deltaY;
 
-      // 累积滚动
-      state.wheelDelta += delta;
+      console.log(`滚轮: delta=${delta}, currentPage=${currentPage}`);
+
+      // 节流：150ms内只处理一次
+      if (now - state.lastWheelTime < 150) {
+        return;
+      }
 
       // 获取当前页面的滚动容器
       const activePage = document.querySelector(`[data-page-index="${currentPage}"]`);
       const scrollContainer = activePage?.querySelector('.scroll-content') as HTMLDivElement;
 
-      let shouldAllowPageChange = true;
+      let shouldChangePage = false;
 
       if (scrollContainer) {
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
 
-        // 检查是否还有可滚动的内容
+        console.log(`滚动容器: scrollTop=${scrollTop}, scrollHeight=${scrollHeight}, clientHeight=${clientHeight}`);
+
         const remainingScroll = scrollHeight - (scrollTop + clientHeight);
 
-        // 如果还有超过50px可以滚动，不允许翻页
-        if (remainingScroll > 50 && delta > 0) {
-          shouldAllowPageChange = false;
+        // 向下滚动
+        if (delta > 0) {
+          if (remainingScroll <= 1) {
+            // 已经到底部
+            shouldChangePage = true;
+          }
         }
-
-        // 如果还没到顶部，不允许向上翻页
-        if (scrollTop > 50 && delta < 0) {
-          shouldAllowPageChange = false;
+        // 向上滚动
+        else if (delta < 0) {
+          if (scrollTop <= 1) {
+            // 已经到顶部
+            shouldChangePage = true;
+          }
         }
+      } else {
+        // 没有滚动容器，直接翻页
+        shouldChangePage = true;
       }
 
-      // 如果累积滚动超过100px，强制允许翻页
-      if (Math.abs(state.wheelDelta) > 100) {
-        shouldAllowPageChange = true;
-      }
+      console.log(`shouldChangePage: ${shouldChangePage}`);
 
-      if (!shouldAllowPageChange) {
-        return;
-      }
+      if (shouldChangePage && !state.isProcessingScroll) {
+        state.isProcessingScroll = true;
+        state.lastWheelTime = now;
 
-      // 节流
-      if (now - state.lastWheelTime < 150) return;
-      state.lastWheelTime = now;
-
-      // 重置累积
-      state.wheelDelta = 0;
-
-      // 翻页
-      if (delta > 0 && currentPage < totalPages - 1) {
-        handlePageChange(currentPage + 1);
-      } else if (delta < 0 && currentPage > 0) {
-        handlePageChange(currentPage - 1);
+        if (delta > 0 && currentPage < totalPages - 1) {
+          handlePageChange(currentPage + 1);
+        } else if (delta < 0 && currentPage > 0) {
+          handlePageChange(currentPage - 1);
+        } else {
+          state.isProcessingScroll = false;
+        }
       }
     };
 
     const handleTouchStart = (e: TouchEvent) => {
       const touch = e.touches[0];
-      state.isTouchActive = true;
-      state.hasSwitchedInThisTouch = false;
-      state.touchStartY = touch.clientY;
-      state.touchStartX = touch.clientX;
       dragOffsetRef.current = 0;
       setIsDragging(true);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (!state.isTouchActive || state.hasSwitchedInThisTouch) return;
-
       const touch = e.touches[0];
-      const deltaY = touch.clientY - state.touchStartY;
-      const deltaX = touch.clientX - state.touchStartX;
-
-      const activePage = document.querySelector(`[data-page-index="${currentPage}"]`);
-      const scrollContainer = activePage?.querySelector('.scroll-content') as HTMLDivElement;
-
-      let shouldPreventDefault = false;
-      if (scrollContainer) {
-        const scrollTop = scrollContainer.scrollTop;
-        const scrollHeight = scrollContainer.scrollHeight;
-        const clientHeight = scrollContainer.clientHeight;
-
-        const remainingScroll = scrollHeight - (scrollTop + clientHeight);
-
-        const shouldPageDown = deltaY > 0 && remainingScroll <= 50;
-        const shouldPageUp = deltaY < 0 && scrollTop <= 50;
-
-        if (!shouldPageDown && !shouldPageUp) {
-          return;
-        }
-
-        if (shouldPageDown || shouldPageUp) {
-          shouldPreventDefault = true;
-        }
-      } else {
-        shouldPreventDefault = true;
-      }
-
-      if (Math.abs(deltaY) > 10 && shouldPreventDefault) {
-        e.preventDefault();
-        dragOffsetRef.current = deltaY;
-        setIsDragging(true);
-      }
+      const deltaY = touch.clientY - dragOffsetRef.current;
+      dragOffsetRef.current = touch.clientY;
+      setIsDragging(true);
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
-      if (!state.isTouchActive) return;
-
-      const deltaY = Math.abs(dragOffsetRef.current);
-      const deltaX = Math.abs(state.touchStartX - (e.changedTouches?.[0]?.clientX || state.touchStartX));
-
-      const isVerticalSwipe = deltaY > deltaX * 1.5;
-
-      if (isVerticalSwipe && !state.hasSwitchedInThisTouch) {
-        if (deltaY > window.innerHeight * 0.15) {
-          state.hasSwitchedInThisTouch = true;
-
-          if (dragOffsetRef.current > 0 && currentPage > 0) {
-            handlePageChange(currentPage - 1);
-          } else if (dragOffsetRef.current < 0 && currentPage < totalPages - 1) {
-            handlePageChange(currentPage + 1);
-          }
-        }
-      }
-
-      state.isTouchActive = false;
-      dragOffsetRef.current = 0;
       setIsDragging(false);
+      dragOffsetRef.current = 0;
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -304,16 +257,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    const preventImageDrag = (e: DragEvent) => {
-      e.preventDefault();
-    };
-
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('touchend', handleTouchEnd, { passive: false });
     window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('dragstart', preventImageDrag);
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
@@ -321,7 +269,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('dragstart', preventImageDrag);
     };
   }, [currentPage, totalPages, handlePageChange]);
 
