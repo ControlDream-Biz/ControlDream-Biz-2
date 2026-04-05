@@ -139,33 +139,51 @@ export function ParticleBackground() {
     const height = window.innerHeight;
 
     const isMobile = width < 768;
-    const totalParticles = isMobile ? 56 : 106; // 总粒子数（包含边缘填补）
+    const particleCount = isMobile ? 50 : 100; // 原有粒子数量
+    const fillBlankCount = 6; // 填补空白区域的粒子数
 
     const newParticles: Particle[] = [];
 
-    // 黄金螺旋分布（基于黄金比例）
-    // 黄金角 ≈ 137.507764°（360° × (1 - 1/φ)）
-    const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // 黄金角 ≈ 2.39996 弧度 ≈ 137.5°
+    // 优先在四个角落分配粒子，确保上下左右角始终有粒子
+    // 移动端56个粒子：左上、右上、左下、右下各8个，中间18个
+    // 电脑端106个粒子：左上、右上、左下、右下各16个，中间36个
+    const particlesPerCorner = isMobile ? 8 : 16;
+    const cornerParticles = particlesPerCorner * 4; // 4个角落
+    const middleParticles = particleCount - cornerParticles;
 
-    // 粒子分布总数
-    const mainParticles = isMobile ? 50 : 100; // 主要粒子
-    const edgeParticles = 6; // 边缘填补粒子
+    // 四个角落区域
+    const corners = [
+      { xMin: 0, xMax: width * 0.25, yMin: 0, yMax: height * 0.25 },           // 左上
+      { xMin: width * 0.75, xMax: width, yMin: 0, yMax: height * 0.25 },       // 右上
+      { xMin: 0, xMax: width * 0.25, yMin: height * 0.75, yMax: height },       // 左下
+      { xMin: width * 0.75, xMax: width, yMin: height * 0.75, yMax: height },   // 右下
+    ];
 
-    // 1. 主要粒子使用黄金螺旋分布
-    for (let i = 0; i < mainParticles; i++) {
-      // 黄金螺旋公式
-      // 角度 = i × 黄金角
-      // 半径 = sqrt(i) / sqrt(mainParticles) × maxRadius
-      const theta = i * goldenAngle;
-      const maxRadius = Math.min(width, height) * 0.45; // 最大半径为屏幕最小边的45%
-      const radius = Math.sqrt(i) / Math.sqrt(mainParticles) * maxRadius;
+    // 中间区域
+    const middleArea = {
+      xMin: width * 0.25,
+      xMax: width * 0.75,
+      yMin: height * 0.25,
+      yMax: height * 0.75,
+    };
 
-      // 转换为笛卡尔坐标（中心为原点）
-      const cx = width * 0.5 + radius * Math.cos(theta);
-      const cy = height * 0.5 + radius * Math.sin(theta);
+    for (let i = 0; i < particleCount; i++) {
+      let x, y;
 
-      const vx = (Math.random() - 0.5) * 0.6; // 初始速度（速度1.0倍）
-      const vy = (Math.random() - 0.5) * 0.6;
+      // 前cornerParticles个粒子分配到角落，其余分配到中间
+      if (i < cornerParticles) {
+        // 分配到角落
+        const cornerIndex = Math.floor(i / particlesPerCorner);
+        const corner = corners[cornerIndex];
+        x = corner.xMin + Math.random() * (corner.xMax - corner.xMin);
+        y = corner.yMin + Math.random() * (corner.yMax - corner.yMin);
+      } else {
+        // 分配到中间区域
+        x = middleArea.xMin + Math.random() * (middleArea.xMax - middleArea.xMin);
+        y = middleArea.yMin + Math.random() * (middleArea.yMax - middleArea.yMin);
+      }
+      const vx = (Math.random() - 0.5) * 0.3; // 初始速度很慢
+      const vy = (Math.random() - 0.5) * 0.3;
       const r = isMobile ? Math.random() * 1 + 1 : Math.random() * 1.5 + 1.5; // 粒子更小
       const opacity = isMobile ? Math.random() * 0.4 + 0.4 : Math.random() * 0.5 + 0.5;
       const phase = Math.random() * Math.PI * 2; // 随机相位
@@ -176,8 +194,8 @@ export function ParticleBackground() {
 
       newParticles.push({
         id: i,
-        cx,
-        cy,
+        cx: x,
+        cy: y,
         vx,
         vy,
         ax: 0,
@@ -192,24 +210,22 @@ export function ParticleBackground() {
       });
     }
 
-    // 2. 边缘填补粒子使用黄金比例定位
-    // 黄金分割点：0.618, 0.382, 0.236, 0.764, 0.146, 0.854
-    const edgeGoldenPoints = [
-      { rx: 0.618, ry: 0.146 }, // 中上
-      { rx: 0.618, ry: 0.854 }, // 中下
-      { rx: 0.146, ry: 0.618 }, // 中左
-      { rx: 0.854, ry: 0.618 }, // 中右
-      { rx: 0.236, ry: 0.236 }, // 左上边缘
-      { rx: 0.764, ry: 0.764 }, // 右下边缘
+    // 额外生成6个粒子填补空白区域（屏幕四边中点及边缘）
+    const edgeAreas = [
+      { xMin: width * 0.4, xMax: width * 0.6, yMin: 0, yMax: height * 0.15 }, // 上边中点
+      { xMin: width * 0.4, xMax: width * 0.6, yMin: height * 0.85, yMax: height }, // 下边中点
+      { xMin: 0, xMax: width * 0.15, yMin: height * 0.4, yMax: height * 0.6 }, // 左边中点
+      { xMin: width * 0.85, xMax: width, yMin: height * 0.4, yMax: height * 0.6 }, // 右边中点
+      { xMin: width * 0.25, xMax: width * 0.4, yMin: height * 0.25, yMax: height * 0.4 }, // 左上边缘
+      { xMin: width * 0.6, xMax: width * 0.75, yMin: height * 0.6, yMax: height * 0.75 }, // 右下边缘
     ];
 
-    for (let i = 0; i < edgeParticles; i++) {
-      const point = edgeGoldenPoints[i];
-      const x = point.rx * width;
-      const y = point.ry * height;
-
-      const vx = (Math.random() - 0.5) * 0.6; // 初始速度（速度1.0倍）
-      const vy = (Math.random() - 0.5) * 0.6;
+    for (let i = 0; i < fillBlankCount; i++) {
+      const edgeArea = edgeAreas[i % edgeAreas.length];
+      const x = edgeArea.xMin + Math.random() * (edgeArea.xMax - edgeArea.xMin);
+      const y = edgeArea.yMin + Math.random() * (edgeArea.yMax - edgeArea.yMin);
+      const vx = (Math.random() - 0.5) * 0.3; // 初始速度很慢
+      const vy = (Math.random() - 0.5) * 0.3;
       const r = isMobile ? Math.random() * 1 + 1 : Math.random() * 1.5 + 1.5; // 粒子更小
       const opacity = isMobile ? Math.random() * 0.4 + 0.4 : Math.random() * 0.5 + 0.5;
       const phase = Math.random() * Math.PI * 2; // 随机相位
@@ -219,7 +235,7 @@ export function ParticleBackground() {
       const driftY = (Math.random() - 0.5) * 2; // 随机漂移方向Y
 
       newParticles.push({
-        id: mainParticles + i,
+        id: particleCount + i,
         cx: x,
         cy: y,
         vx,
@@ -255,20 +271,20 @@ export function ParticleBackground() {
           particle
         );
 
-        // 应用加速度（速度1.0倍）
-        particle.ax = fx * 0.5; // 翻倍加速度，速度1.0倍
-        particle.ay = fy * 0.5;
+        // 应用加速度（速度0.5倍）
+        particle.ax = fx * 0.25; // 减小加速度，速度0.5倍
+        particle.ay = fy * 0.25;
 
         // 更新速度
         particle.vx += particle.ax;
         particle.vy += particle.ay;
 
         // 速度阻尼（保持持续变换）
-        particle.vx *= 0.98; // 减小阻尼，保持动态变换
-        particle.vy *= 0.98;
+        particle.vx *= 0.99; // 减小阻尼，保持动态变换
+        particle.vy *= 0.99;
 
-        // 速度限制（速度1.0倍）
-        const maxSpeed = isMobile ? 0.5 : 1.0; // 翻倍最大速度，速度1.0倍
+        // 速度限制（速度0.5倍）
+        const maxSpeed = isMobile ? 0.25 : 0.5; // 降低最大速度，速度0.5倍
         const speed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
         if (speed > maxSpeed) {
           particle.vx = (particle.vx / speed) * maxSpeed;
