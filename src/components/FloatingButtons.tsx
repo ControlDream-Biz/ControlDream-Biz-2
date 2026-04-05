@@ -194,7 +194,7 @@ export default function FloatingButtons() {
       customerServiceBtn.style.borderColor = 'rgba(239, 68, 68, 0.3)';
     });
 
-    // 创建客服弹窗 - 极透明玻璃效果
+    // 创建客服弹窗 - 液态玻璃效果，极度透明
     const customerServicePopup = document.createElement('div');
     customerServicePopup.id = 'customer-service-popup';
     customerServicePopup.style.position = 'fixed';
@@ -202,15 +202,15 @@ export default function FloatingButtons() {
     customerServicePopup.style.right = '20px';
     customerServicePopup.style.width = '320px';
     customerServicePopup.style.maxWidth = 'calc(100vw - 50px)';
-    customerServicePopup.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
-    customerServicePopup.style.backdropFilter = 'blur(40px)';
+    customerServicePopup.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
+    customerServicePopup.style.backdropFilter = 'blur(50px)';
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    customerServicePopup.style['webkitBackdropFilter' as any] = 'blur(40px)';
+    customerServicePopup.style['webkitBackdropFilter' as any] = 'blur(50px)';
     customerServicePopup.style.borderRadius = '20px';
-    customerServicePopup.style.border = '1.5px solid rgba(255, 255, 255, 0.35)';
+    customerServicePopup.style.border = '1.5px solid rgba(255, 255, 255, 0.25)';
     customerServicePopup.style.boxShadow = `
-      0 12px 48px rgba(0, 0, 0, 0.15),
-      inset 0 1px 2px rgba(255, 255, 255, 0.4)
+      0 12px 48px rgba(0, 0, 0, 0.1),
+      inset 0 1px 2px rgba(255, 255, 255, 0.3)
     `;
     customerServicePopup.style.overflow = 'hidden';
     customerServicePopup.style.pointerEvents = 'auto';
@@ -222,22 +222,23 @@ export default function FloatingButtons() {
     customerServicePopup.style.willChange = 'opacity, transform';
 
     customerServicePopup.innerHTML = `
-      <!-- 顶部红色标题栏 - 极透明玻璃效果 -->
+      <!-- 顶部红色标题栏 - 液态玻璃效果，极度透明 -->
       <div style="
-        background: rgba(239, 68, 68, 0.08);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1.5px solid rgba(239, 68, 68, 0.18);
+        background: rgba(239, 68, 68, 0.05);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1.5px solid rgba(239, 68, 68, 0.15);
         border-radius: 20px 20px 0 0;
         padding: 16px 20px;
         color: white;
         position: relative;
-        box-shadow: 0 8px 32px rgba(239, 68, 68, 0.06), inset 0 1px 2px rgba(255, 255, 255, 0.08);
+        box-shadow: 0 8px 32px rgba(239, 68, 68, 0.05), inset 0 1px 2px rgba(255, 255, 255, 0.06);
+        text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
       ">
         <div style="display: flex; align-items: center; justify-content: space-between;">
           <div>
-            <h3 style="font-size: 18px; font-weight: 600; margin: 0; letter-spacing: 0.3px;">在线客服</h3>
-            <p style="font-size: 13px; opacity: 0.95; margin: 3px 0 0 0; font-weight: 400;">我们随时为您服务</p>
+            <h3 style="font-size: 18px; font-weight: 600; margin: 0; letter-spacing: 0.3px; text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);">在线客服</h3>
+            <p style="font-size: 13px; opacity: 0.98; margin: 3px 0 0 0; font-weight: 400; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);">我们随时为您服务</p>
           </div>
           <button id="close-popup-btn" type="button" style="
             width: 32px;
@@ -267,12 +268,12 @@ export default function FloatingButtons() {
         </div>
       </div>
 
-      <!-- 主体选项区域 - 极透明玻璃效果 -->
+      <!-- 主体选项区域 - 液态玻璃效果，极度透明，文字清晰 -->
       <div style="
-        background: rgba(255, 255, 255, 0.25);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border: 1.5px solid rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border: 1.5px solid rgba(255, 255, 255, 0.2);
         border-radius: 0 0 20px 20px;
         border-top: none;
       ">
@@ -281,7 +282,7 @@ export default function FloatingButtons() {
           <div style="
             width: 36px;
             height: 36px;
-            background: rgba(243, 244, 246, 0.95);
+            background: rgba(243, 244, 246, 0.6);
             backdrop-filter: blur(8px);
             border-radius: 8px;
             display: flex;
@@ -289,10 +290,11 @@ export default function FloatingButtons() {
             justify-content: center;
             font-size: 18px;
             flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
           ">💬</div>
           <div style="flex: 1; min-width: 0;">
-            <div style="font-weight: 600; color: #111827; font-size: 15px;">在线咨询</div>
-            <div style="font-size: 12px; color: #9ca3af; margin-top: 1px;">即时回复</div>
+            <div style="font-weight: 600; color: #1f2937; font-size: 15px; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);">在线咨询</div>
+            <div style="font-size: 12px; color: #4b5563; margin-top: 1px; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);">即时回复</div>
           </div>
         </div>
 
@@ -301,7 +303,7 @@ export default function FloatingButtons() {
           <div style="
             width: 36px;
             height: 36px;
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(239, 68, 68, 0.15);
             backdrop-filter: blur(8px);
             border-radius: 8px;
             display: flex;
@@ -310,10 +312,11 @@ export default function FloatingButtons() {
             font-size: 18px;
             flex-shrink: 0;
             color: #ef4444;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.2);
           ">📞</div>
           <div style="flex: 1; min-width: 0;">
-            <div style="font-weight: 600; color: #111827; font-size: 15px;">电话咨询</div>
-            <div style="font-size: 12px; color: #9ca3af; margin-top: 1px;">400-123-4567</div>
+            <div style="font-weight: 600; color: #1f2937; font-size: 15px; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);">电话咨询</div>
+            <div style="font-size: 12px; color: #4b5563; margin-top: 1px; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);">400-123-4567</div>
           </div>
         </div>
 
@@ -322,7 +325,7 @@ export default function FloatingButtons() {
           <div style="
             width: 36px;
             height: 36px;
-            background: rgba(139, 92, 246, 0.1);
+            background: rgba(139, 92, 246, 0.15);
             backdrop-filter: blur(8px);
             border-radius: 8px;
             display: flex;
@@ -331,26 +334,28 @@ export default function FloatingButtons() {
             font-size: 18px;
             flex-shrink: 0;
             color: #8b5cf6;
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
           ">📧</div>
           <div style="flex: 1; min-width: 0;">
-            <div style="font-weight: 600; color: #111827; font-size: 15px;">邮件咨询</div>
-            <div style="font-size: 12px; color: #9ca3af; margin-top: 1px;">contact@chuangmeng.com</div>
+            <div style="font-weight: 600; color: #1f2937; font-size: 15px; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);">邮件咨询</div>
+            <div style="font-size: 12px; color: #4b5563; margin-top: 1px; text-shadow: 0 1px 2px rgba(255, 255, 255, 0.6);">contact@chuangmeng.com</div>
           </div>
         </div>
       </div>
 
-      <!-- 底部工作时间栏 - 极透明玻璃效果 -->
+      <!-- 底部工作时间栏 - 液态玻璃效果，极度透明，文字清晰 -->
       <div style="
-        background: rgba(249, 250, 251, 0.2);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        border-top: 1px solid rgba(0, 0, 0, 0.015);
+        background: rgba(249, 250, 251, 0.1);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border-top: 1px solid rgba(0, 0, 0, 0.01);
         border-radius: 0 0 20px 20px;
         padding: 12px 20px;
         text-align: center;
         font-size: 12px;
-        color: #9ca3af;
+        color: #6b7280;
         font-weight: 500;
+        text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
       ">
         工作时间：周一至周五 9:00-18:00
       </div>
