@@ -37,10 +37,10 @@ export function Navbar() {
         onClick={() => scrollToSection('#home', 0)}
         className="fixed top-6 left-6 z-50 flex items-center gap-4 hover:opacity-90 transition-opacity cursor-pointer group select-none"
       >
-        {/* 使用原始LOGO图片 */}
+        {/* 使用原始LOGO图片 - 黑底白LOGO */}
         <div className="relative w-16 h-16 flex-shrink-0">
           <Image
-            src="/logo-cm-final-clean.png"
+            src="/logo-cm-white.jpg"
             alt="创梦计算机系统有限公司"
             fill
             className="object-contain"
