@@ -11,7 +11,9 @@ export function Navbar() {
     { label: '首页', href: '#home', index: 0 },
     { label: '业务领域', href: '#business', index: 1 },
     { label: '办公环境', href: '#environment', index: 2 },
-    { label: '联系我们', href: '#contact', index: 3 },
+    { label: '关于我们', href: '#about', index: 3 },
+    { label: '企业文化', href: '#culture', index: 4 },
+    { label: '联系我们', href: '#contact', index: 5 },
   ];
 
   useEffect(() => {

@@ -414,30 +414,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         </ScrollPage>
       ))}
 
-      {/* 页面指示器 */}
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3 pointer-events-none">
-        {children.map((_, index) => (
-          <button
-            key={index}
-            onClick={(e) => {
-              e.stopPropagation();
-              handlePageChange(index);
-            }}
-            className={`pointer-events-auto h-1 rounded-full ${
-              index === currentPage
-                ? 'bg-white w-8'
-                : 'bg-white/30 hover:bg-white/50 w-1.5'
-            }`}
-            style={{
-              boxShadow: index === currentPage ? '0 0 20px rgba(255, 255, 255, 0.5)' : 'none',
-              transition: 'width 0.6s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.3s ease',
-              willChange: 'width, background-color',
-            }}
-            aria-label={`Page ${index + 1}`}
-          />
-        ))}
-      </div>
-
       {/* 滚动提示 */}
       {currentPage < totalPages - 1 && (
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-white/50 pointer-events-none">
