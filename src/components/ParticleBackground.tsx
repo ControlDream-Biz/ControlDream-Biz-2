@@ -139,7 +139,7 @@ export function ParticleBackground() {
     const height = window.innerHeight;
 
     const isMobile = width < 768;
-    const particleCount = isMobile ? 20 : 40; // 粒子数量减半，线条更少
+    const particleCount = isMobile ? 15 : 30; // 极少粒子，线条精简
 
     const newParticles: Particle[] = [];
 
@@ -249,8 +249,8 @@ export function ParticleBackground() {
         particle.opacity = Math.max(isMobile ? 0.3 : 0.4, Math.min(isMobile ? 0.8 : 0.9, particle.opacity));
       });
 
-      // 连线距离极大增加，粒子极度分散
-      const connectionDistance = isMobile ? 500 : 600;
+      // 最大限度分散，线条精简
+      const connectionDistance = isMobile ? 600 : 700;
 
       const connectionElements: JSX.Element[] = [];
       // 移除移动端粒子数量限制，所有设备都显示线条
