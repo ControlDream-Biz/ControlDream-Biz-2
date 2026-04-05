@@ -15,46 +15,32 @@ export function ScrollProgress() {
   const [currentPage, setCurrentPage] = useState(0);
   const [showLabel, setShowLabel] = useState(false);
   const stayTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const animationFrameRef = useRef<number>(0);
-  const [particleOffsets, setParticleOffsets] = useState<{ [key: number]: { x: number; y: number; scale: number } }>({});
-  const [timeRef, setTimeRef] = useState(0);
 
-  // 增加实时计算复杂度
   useEffect(() => {
-    const updateParticles = (time: number) => {
-      const newTime = time * 0.001;
-      setTimeRef(newTime);
-      const newOffsets: { [key: number]: { x: number; y: number; scale: number } } = {};
+    const handleScrollToSection = (e: CustomEvent<{ sectionIndex: number }>) => {
+      const newPage = e.detail.sectionIndex;
+      setCurrentPage(newPage);
+      setShowLabel(true); // 显示当前页面标签
 
-      // 增加计算复杂度
-      for (let i = 0; i < pages.length; i++) {
-        const t = newTime;
-        const isCurrent = i === currentPage;
-
-        // 多重波形叠加，增加计算量
-        newOffsets[i] = {
-          x: Math.sin(t * 3 + i * 0.8) * (isCurrent ? 2 : 1.2) +
-              Math.sin(t * 5 + i * 1.3) * 0.5 +
-              Math.sin(t * 7 + i * 2.1) * 0.3,
-          y: Math.cos(t * 2.3 + i * 0.6) * (isCurrent ? 2 : 1.2) +
-              Math.cos(t * 4.7 + i * 1.1) * 0.5 +
-              Math.cos(t * 6.1 + i * 1.9) * 0.3,
-          scale: 1 + Math.sin(t * 2 + i * 0.5) * 0.15,
-        };
+      // 清除之前的定时器
+      if (stayTimerRef.current) {
+        clearTimeout(stayTimerRef.current);
       }
 
-      setParticleOffsets(newOffsets);
-      animationFrameRef.current = requestAnimationFrame(updateParticles);
+      // 3秒后隐藏标签（行业标准）
+      stayTimerRef.current = setTimeout(() => {
+        setShowLabel(false);
+      }, 3000);
     };
 
-    animationFrameRef.current = requestAnimationFrame(updateParticles);
-
+    window.addEventListener('scrollToSection', handleScrollToSection as EventListener);
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
+      window.removeEventListener('scrollToSection', handleScrollToSection as EventListener);
+      if (stayTimerRef.current) {
+        clearTimeout(stayTimerRef.current);
       }
     };
-  }, [currentPage]);
+  }, []);
 
   useEffect(() => {
     const handleScrollToSection = (e: CustomEvent<{ sectionIndex: number }>) => {
@@ -103,20 +89,17 @@ export function ScrollProgress() {
                 className={`
                   absolute right-4 whitespace-nowrap px-3 py-1.5 rounded
                   ${showLabel && isCurrent
-                    ? 'opacity-100 translate-x-0 scale-100 blur-0'
-                    : 'opacity-0 translate-x-2 scale-95 blur-sm pointer-events-none'
+                    ? 'opacity-100 translate-x-0 scale-100'
+                    : 'opacity-0 translate-x-2 scale-95 pointer-events-none'
                   }
                 `}
                 style={{
                   top: '50%',
-                  transform: `translateY(-50%) translate3d(0, 0, 0)`,
-                  transition: 'all 500ms cubic-bezier(0.4, 0, 0.2, 1)',
-                  filter: showLabel && isCurrent
-                    ? `drop-shadow(0 0 8px rgba(255,255,255,0.6)) drop-shadow(0 2px 8px rgba(0,0,0,0.5)) brightness(1.1)`
-                    : 'blur(3px)',
+                  transform: `translateY(-50%)`,
+                  transition: 'all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
                 }}
               >
-                <span className="text-lg text-white font-extrabold drop-shadow-xl">
+                <span className="text-lg text-white font-extrabold">
                   {page.label}
                 </span>
               </div>
@@ -127,14 +110,10 @@ export function ScrollProgress() {
                 style={{
                   width: '2px',
                   height: '2px',
-                  transform: `translate3d(${particleOffsets[index]?.x || 0}px, ${particleOffsets[index]?.y || 0}px, 0) scale(${particleOffsets[index]?.scale || 1})`,
-                  filter: isCurrent
-                    ? `drop-shadow(0 0 6px rgba(255,255,255,0.8)) drop-shadow(0 0 12px rgba(255,255,255,0.4))`
-                    : 'none',
                 }}
                 className={`
                   rounded-full transition-all duration-300
-                  ${isCurrent ? 'bg-white' : 'bg-white/40 hover:bg-white/60'}
+                  ${isCurrent ? 'bg-white scale-150' : 'bg-white/40 hover:bg-white/60'}
                 `}
                 aria-label={`跳转到${page.label}`}
               />

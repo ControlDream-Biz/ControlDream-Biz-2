@@ -391,9 +391,6 @@ export function ParticleBackground() {
           cy={particle.cy}
           r={particle.r}
           fill={`rgba(255, 255, 255, ${particle.opacity})`}
-          style={{
-            shapeRendering: 'geometricPrecision',
-          }}
         />
       ))}
     </svg>

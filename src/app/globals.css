@@ -286,46 +286,38 @@ body {
 /* 顶级 iOS 26 液态玻璃效果 */
 .glass {
   background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(32px) saturate(160%) brightness(1.02);
-  -webkit-backdrop-filter: blur(32px) saturate(160%) brightness(1.02);
+  backdrop-filter: blur(32px) saturate(160%);
+  -webkit-backdrop-filter: blur(32px) saturate(160%);
   border: 1px solid rgba(255, 255, 255, 0.72);
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.06),
-    0 2px 8px rgba(0, 0, 0, 0.03),
-    0 0 0 1px rgba(255, 255, 255, 0.5) inset,
-    0 1px 0 rgba(255, 255, 255, 0.8) inset;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .glass:hover {
   background: rgba(255, 255, 255, 0.85);
   box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.08),
-    0 3px 12px rgba(0, 0, 0, 0.04),
-    0 0 0 1px rgba(255, 255, 255, 0.6) inset,
-    0 2px 0 rgba(255, 255, 255, 0.9) inset;
+    0 3px 12px rgba(0, 0, 0, 0.04);
 }
 
 .glass-dark {
   background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(32px) saturate(140%) brightness(1.1);
-  -webkit-backdrop-filter: blur(32px) saturate(140%) brightness(1.1);
+  backdrop-filter: blur(32px) saturate(140%);
+  -webkit-backdrop-filter: blur(32px) saturate(140%);
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.4),
-    0 2px 8px rgba(0, 0, 0, 0.2),
-    0 0 0 1px rgba(255, 255, 255, 0.05) inset,
-    0 1px 0 rgba(255, 255, 255, 0.15) inset;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .glass-dark:hover {
   background: rgba(15, 23, 42, 0.75);
   box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.5),
-    0 3px 12px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-    0 2px 0 rgba(255, 255, 255, 0.18) inset;
+    0 3px 12px rgba(0, 0, 0, 0.25);
 }
 
 .glass-card {
@@ -335,24 +327,20 @@ body {
     rgba(255, 255, 255, 0.72) 50%,
     rgba(255, 255, 255, 0.65) 100%
   );
-  backdrop-filter: blur(24px) saturate(150%) brightness(1.01);
-  -webkit-backdrop-filter: blur(24px) saturate(150%) brightness(1.01);
+  backdrop-filter: blur(24px) saturate(150%);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
   border: 1px solid rgba(255, 255, 255, 0.75);
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.06),
-    0 3px 12px rgba(0, 0, 0, 0.03),
-    0 0 0 1px rgba(255, 255, 255, 0.55) inset,
-    0 1px 0 rgba(255, 255, 255, 0.92) inset;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    0 3px 12px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .glass-card:hover {
-  transform: translateY(-4px) scale(1.01);
+  transform: translateY(-2px);
   box-shadow:
     0 16px 48px rgba(0, 0, 0, 0.1),
-    0 6px 20px rgba(0, 0, 0, 0.05),
-    0 0 0 1px rgba(255, 255, 255, 0.65) inset,
-    0 2px 0 rgba(255, 255, 255, 0.96) inset;
+    0 6px 20px rgba(0, 0, 0, 0.05);
   background: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.93) 0%,
@@ -363,7 +351,6 @@ body {
 
 .glass-button {
   background: linear-gradient(
-    45deg,
     135deg,
     rgba(59, 130, 246, 0.92) 0%,
     rgba(99, 102, 241, 0.92) 100%
@@ -373,10 +360,8 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.35);
   box-shadow:
     0 8px 24px rgba(59, 130, 246, 0.35),
-    0 3px 8px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
-    0 1px 0 rgba(255, 255, 255, 0.45) inset;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    0 3px 8px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
   position: relative;
   overflow: hidden;
 }
@@ -394,7 +379,7 @@ body {
     rgba(255, 255, 255, 0.3),
     transparent
   );
-  transition: left 0.6s ease;
+  transition: left 0.5s ease;
 }
 
 .glass-button:hover::before {
@@ -402,7 +387,7 @@ body {
 }
 
 .glass-button:hover {
-  transform: translateY(-2px) scale(1.03);
+  transform: translateY(-1px);
   background: linear-gradient(
     135deg,
     rgba(59, 130, 246, 1) 0%,
@@ -410,40 +395,32 @@ body {
   );
   box-shadow:
     0 12px 32px rgba(59, 130, 246, 0.45),
-    0 5px 12px rgba(0, 0, 0, 0.15),
-    0 0 0 1px rgba(255, 255, 255, 0.3) inset,
-    0 2px 0 rgba(255, 255, 255, 0.55) inset;
+    0 5px 12px rgba(0, 0, 0, 0.15);
 }
 
 .glass-button:active {
-  transform: translateY(0) scale(0.97);
+  transform: translateY(0);
   box-shadow:
     0 4px 16px rgba(59, 130, 246, 0.3),
-    0 2px 6px rgba(0, 0, 0, 0.1),
-    0 0 0 1px rgba(255, 255, 255, 0.2) inset,
-    0 1px 0 rgba(255, 255, 255, 0.35) inset;
+    0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .glass-nav {
   background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(24px) saturate(160%) brightness(1.01);
-  -webkit-backdrop-filter: blur(24px) saturate(160%) brightness(1.01);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
   border-bottom: 1px solid rgba(0, 0, 0, 0.04);
   box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.05),
-    0 1px 4px rgba(0, 0, 0, 0.02),
-    0 0 0 1px rgba(255, 255, 255, 0.6) inset,
-    0 1px 0 rgba(255, 255, 255, 1) inset;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    0 1px 4px rgba(0, 0, 0, 0.02);
+  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .glass-nav:hover {
   background: rgba(255, 255, 255, 0.92);
   box-shadow:
     0 6px 28px rgba(0, 0, 0, 0.06),
-    0 2px 6px rgba(0, 0, 0, 0.03),
-    0 0 0 1px rgba(255, 255, 255, 0.7) inset,
-    0 2px 0 rgba(255, 255, 255, 1) inset;
+    0 2px 6px rgba(0, 0, 0, 0.03);
 }
 
 /* 浮动效果 */
@@ -491,17 +468,10 @@ body {
 /* 性能优化 - 移除强制120HZ动画，避免掉帧 */
 /* 浏览器会自动根据显示器刷新率渲染，无需强制动画 */
 
-/* 平滑动画优化 - 高刷新率支持 */
+/* 平滑动画优化 - 苹果线性风格 */
 .smooth-animation {
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
   animation-fill-mode: both;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  perspective: 1000px;
-  -webkit-perspective: 1000px;
-  /* 启用硬件加速 */
-  transform: translateZ(0);
-  will-change: transform, opacity;
 }
 
 /* 高刷新率优化 */
@@ -553,10 +523,8 @@ body {
 /* 过渡效果 */
 [data-scroll-animate] {
   transition:
-    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+    opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) !important;
 }
 
 /* 文本元素特殊优化 */
@@ -579,7 +547,7 @@ div[data-scroll-animate] {
 
 /* 滚动动画进入视口时的效果 */
 [data-scroll-animate].animate-in {
-  animation: scrollFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation: scrollFadeIn 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 @keyframes scrollFadeIn {
@@ -618,26 +586,26 @@ div[data-scroll-animate] {
 @keyframes coolTextReveal {
   0% {
     opacity: 0;
-    transform: translateY(30px) scale(0.8) rotateX(90deg);
+    transform: translateY(30px) scale(0.95);
   }
   50% {
     opacity: 0.8;
-    transform: translateY(10px) scale(0.95) rotateX(15deg);
+    transform: translateY(10px) scale(0.98);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1) rotateX(0deg);
+    transform: translateY(0) scale(1);
   }
 }
 
 .cool-text-reveal {
   opacity: 0;
-  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .cool-text-reveal.visible {
   opacity: 1;
-  animation: coolTextReveal 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: coolTextReveal 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 /* 发光脉冲效果 */
@@ -677,7 +645,7 @@ div[data-scroll-animate] {
 }
 
 .animate-fade-in {
-  animation: fadeInSimple 1s ease-out forwards;
+  animation: fadeInSimple 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 /* 苹果官网风格缩放淡入 */
@@ -693,7 +661,7 @@ div[data-scroll-animate] {
 }
 
 .animate-fade-in-scale {
-  animation: fadeInScale 1.2s cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  animation: fadeInScale 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
 }
 
 /* 滚动提示动画 - GPU加速 */
@@ -743,31 +711,19 @@ div[data-scroll-animate] {
 
 /* 三行波浪动画 - 第一行：延迟 0s，周期 10s */
 .animate-wave-1 {
-  animation: waveBounce 10s ease-in-out infinite;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform: translateZ(0);
-  will-change: transform;
+  animation: waveBounce 10s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
 }
 
 /* 三行波浪动画 - 第二行：延迟 1.2s，周期 10s */
 .animate-wave-2 {
-  animation: waveBounce 10s ease-in-out infinite;
+  animation: waveBounce 10s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
   animation-delay: 1.2s;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform: translateZ(0);
-  will-change: transform;
 }
 
 /* 三行波浪动画 - 第三行：延迟 2.4s，周期 10s */
 .animate-wave-3 {
-  animation: waveBounce 10s ease-in-out infinite;
+  animation: waveBounce 10s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
   animation-delay: 2.4s;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform: translateZ(0);
-  will-change: transform;
 }
 
 /* 渐变文字优化 */
@@ -776,33 +732,14 @@ div[data-scroll-animate] {
   -webkit-background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  transform: translateZ(0);
-  will-change: background-position;
-}
-
-/* 高刷新率优化 */
-@media (hover: none) and (pointer: coarse) {
-  .text-gradient {
-    animation-duration: 8.333ms;
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .text-gradient {
-    animation-duration: 4.167ms;
-  }
 }
 
 /* 分字符动画 */
 .char-animate {
   display: inline-block;
   opacity: 0;
-  transform: translateY(30px) rotateX(90deg) scale(0.5);
-  transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  transform: translateY(20px);
+  transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 /* 爆炸文字动画 - 从屏幕四面八方集合 */
@@ -810,10 +747,7 @@ div[data-scroll-animate] {
   display: inline-block;
   opacity: 0;
   transform: translate(var(--offset-x), var(--offset-y)) rotate(var(--rotation)) scale(var(--scale));
-  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+  transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .text-visible .char-explode {

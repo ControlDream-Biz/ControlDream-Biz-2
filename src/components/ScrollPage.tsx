@@ -19,38 +19,37 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
 
   let transform = '';
   let opacity = 1;
-  const scale = 1;
 
   if (isDragging && dragOffset !== 0) {
     const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
 
     if (isActive) {
-      transform = `translate3d(0, ${dragOffset * 0.4}px, 0) scale(${1 - progress * 0.01})`;
-      opacity = 1 - progress * 0.15;
+      transform = `translateY(${dragOffset * 0.4}px)`;
+      opacity = 1 - progress * 0.1;
     } else if (isNext && dragOffset < 0) {
       const startOffset = 30;
-      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.4}px, 0) scale(${1 - progress * 0.01})`;
+      transform = `translateY(${startOffset * window.innerHeight * 0.01 + dragOffset * 0.4}px)`;
       opacity = progress * 0.7;
     } else if (isPrev && dragOffset > 0) {
       const startOffset = -30;
-      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.4}px, 0) scale(${1 - progress * 0.01})`;
+      transform = `translateY(${startOffset * window.innerHeight * 0.01 + dragOffset * 0.4}px)`;
       opacity = progress * 0.7;
     } else if (isPrev) {
-      transform = `translate3d(0, -50vh, 0) scale(${scale})`;
+      transform = `translateY(-50vh)`;
       opacity = 0;
     } else if (isNext) {
-      transform = `translate3d(0, 50vh, 0) scale(${scale})`;
+      transform = `translateY(50vh)`;
       opacity = 0;
     }
   } else {
     if (isActive) {
-      transform = `translate3d(0, 0, 0) scale(${scale})`;
+      transform = `translateY(0)`;
       opacity = 1;
     } else if (isPrev) {
-      transform = `translate3d(0, -50vh, 0) scale(${scale})`;
+      transform = `translateY(-50vh)`;
       opacity = 0;
     } else if (isNext) {
-      transform = `translate3d(0, 50vh, 0) scale(${scale})`;
+      transform = `translateY(50vh)`;
       opacity = 0;
     }
   }
@@ -64,10 +63,8 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
         transform,
         transition: isDragging
           ? 'none'
-          : 'transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.35s cubic-bezier(0.33, 1, 0.68, 1)',
+          : 'transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)',
         zIndex: isActive ? 10 : 1,
-        willChange: isDragging ? 'transform' : 'auto',
-        backfaceVisibility: 'hidden' as const,
       }}
     >
       <div className="w-full h-full overflow-y-auto scrollbar-hide">
