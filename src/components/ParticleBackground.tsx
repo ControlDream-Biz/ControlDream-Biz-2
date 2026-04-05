@@ -25,45 +25,42 @@ function noise(x: number, y: number, t: number): number {
   return noiseX + noiseY;
 }
 
-// 复杂的力场函数
+// 复杂的力场函数（调整后，减少旋转力场，增强随机性）
 function forceField(x: number, y: number, width: number, height: number, time: number): [number, number] {
   const centerX = width / 2;
   const centerY = height / 2;
 
-  // 1. 旋转力场
+  // 1. 极弱的旋转力场（大幅减弱）
   const dx = x - centerX;
   const dy = y - centerY;
-  const distance = Math.sqrt(dx * dx + dy * dy);
-  const normalizedAngle = Math.atan2(dy, dx);
-
-  // 旋转向量
-  const rotationForce = 0.0002;
+  const rotationForce = 0.00002; // 原来是 0.0002，减弱 10 倍
   const fx1 = -dy * rotationForce;
   const fy1 = dx * rotationForce;
 
-  // 2. 引力场（向中心微弱吸引）
-  const gravityForce = 0.00003;
+  // 2. 极弱的引力场（减弱）
+  const gravityForce = 0.00001; // 原来是 0.00003，减弱 3 倍
   const fx2 = -dx * gravityForce;
   const fy2 = -dy * gravityForce;
 
-  // 3. 斥力场（防止粒子聚集在中心）
+  // 3. 斥力场（保持）
+  const distance = Math.sqrt(dx * dx + dy * dy);
   const repulsionForce = distance < 200 ? 0.0002 * (200 - distance) / 200 : 0;
   const fx3 = dx * repulsionForce;
   const fy3 = dy * repulsionForce;
 
-  // 4. 随机扰动场（噪声）
-  const noiseForce = 0.0003;
+  // 4. 增强的随机扰动场（增强 3 倍）
+  const noiseForce = 0.0009; // 原来是 0.0003，增强 3 倍
   const n = noise(x, y, time);
   const fx4 = Math.cos(n * Math.PI * 2) * noiseForce;
   const fy4 = Math.sin(n * Math.PI * 2) * noiseForce;
 
-  // 5. 波动场（正弦波）
-  const waveForce = 0.00015;
+  // 5. 波动场（增强 2 倍）
+  const waveForce = 0.0003; // 原来是 0.00015，增强 2 倍
   const fx5 = Math.sin(y * 0.02 + time * 2) * waveForce;
   const fy5 = Math.cos(x * 0.02 + time * 2) * waveForce;
 
-  // 6. 漩涡场（多个漩涡）
-  const vortexForce = 0.0004;
+  // 6. 漩涡场（减弱，使其更局部化）
+  const vortexForce = 0.00015; // 原来是 0.0004，减弱约 2.7 倍
   const vortex1X = width * 0.25;
   const vortex1Y = height * 0.35;
   const vortex2X = width * 0.75;
@@ -149,20 +146,20 @@ export function ParticleBackground() {
           timeRef.current
         );
 
-        // 应用加速度
-        particle.ax = fx * 0.5 + (Math.random() - 0.5) * 0.0001;
-        particle.ay = fy * 0.5 + (Math.random() - 0.5) * 0.0001;
+        // 应用加速度（增强随机扰动）
+        particle.ax = fx * 0.5 + (Math.random() - 0.5) * 0.0003; // 增加随机扰动
+        particle.ay = fy * 0.5 + (Math.random() - 0.5) * 0.0003;
 
         // 更新速度
         particle.vx += particle.ax;
         particle.vy += particle.ay;
 
-        // 速度阻尼
-        particle.vx *= 0.995;
-        particle.vy *= 0.995;
+        // 速度阻尼（减弱，让粒子运动更自由）
+        particle.vx *= 0.998; // 原来是 0.995
+        particle.vy *= 0.998;
 
-        // 速度限制
-        const maxSpeed = isMobile ? 1.2 : 2;
+        // 速度限制（提高最大速度）
+        const maxSpeed = isMobile ? 1.8 : 3; // 提高速度限制
         const speed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
         if (speed > maxSpeed) {
           particle.vx = (particle.vx / speed) * maxSpeed;
@@ -175,13 +172,12 @@ export function ParticleBackground() {
 
         // 更新角度
         particle.angle += particle.angularVelocity;
-        particle.angularVelocity += (Math.random() - 0.5) * 0.001;
-        particle.angularVelocity *= 0.98; // 角速度阻尼
+        particle.angularVelocity += (Math.random() - 0.5) * 0.002; // 增加角速度随机性
+        particle.angularVelocity *= 0.98;
 
         // 生命周期更新
         particle.life -= 1;
         if (particle.life <= 0) {
-          // 重生
           particle.life = particle.maxLife;
           particle.cx = Math.random() * width;
           particle.cy = Math.random() * height;
@@ -191,18 +187,18 @@ export function ParticleBackground() {
 
         // 复杂边界反弹
         if (particle.cx < 0 || particle.cx > width) {
-          particle.vx *= -0.9; // 能量损失
+          particle.vx *= -0.85; // 增加能量损失
           particle.cx = Math.max(0, Math.min(width, particle.cx));
-          particle.angularVelocity += (Math.random() - 0.5) * 0.05; // 碰撞时改变角速度
+          particle.angularVelocity += (Math.random() - 0.5) * 0.08;
         }
         if (particle.cy < 0 || particle.cy > height) {
-          particle.vy *= -0.9;
+          particle.vy *= -0.85;
           particle.cy = Math.max(0, Math.min(height, particle.cy));
-          particle.angularVelocity += (Math.random() - 0.5) * 0.05;
+          particle.angularVelocity += (Math.random() - 0.5) * 0.08;
         }
 
-        // 闪烁效果
-        particle.opacity += (Math.random() - 0.5) * 0.02;
+        // 闪烁效果（增强）
+        particle.opacity += (Math.random() - 0.5) * 0.03; // 增强闪烁
         particle.opacity = Math.max(isMobile ? 0.1 : 0.2, Math.min(isMobile ? 0.5 : 0.8, particle.opacity));
       });
 
@@ -219,7 +215,6 @@ export function ParticleBackground() {
             const distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance < connectionDistance) {
-              // 线条不透明度提高，让线条更明显
               const lineOpacity = (isMobile ? 0.12 : 0.25) * (1 - distance / connectionDistance);
               connectionElements.push(
                 <line
@@ -261,15 +256,11 @@ export function ParticleBackground() {
         zIndex: 15,
         width: '100%',
         height: '100%',
-        // 确保 SVG 清晰度
         shapeRendering: 'geometricPrecision',
       }}
       xmlns="http://www.w3.org/2000/svg"
     >
-      {/* 连线 */}
       {connections}
-
-      {/* 粒子 */}
       {particles.map((particle) => (
         <circle
           key={particle.id}
@@ -278,7 +269,6 @@ export function ParticleBackground() {
           r={particle.r}
           fill={`rgba(255, 255, 255, ${particle.opacity})`}
           style={{
-            // 确保圆形清晰度
             shapeRendering: 'geometricPrecision',
           }}
         />
