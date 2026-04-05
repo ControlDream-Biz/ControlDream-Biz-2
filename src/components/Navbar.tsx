@@ -141,7 +141,7 @@ export function Navbar() {
               x2={mobileMenuOpen ? 6 : 20}
               y2={mobileMenuOpen ? 18 : 6}
               style={{
-                transition: 'all 0.3s ease-out',
+                transition: 'all 0.25s linear',
               }}
             />
 
@@ -152,18 +152,18 @@ export function Navbar() {
               x2={mobileMenuOpen ? 18 : 20}
               y2={mobileMenuOpen ? 18 : 12}
               style={{
-                transition: 'all 0.3s ease-out',
+                transition: 'all 0.25s linear 0.05s',
               }}
             />
 
-            {/* 下横杠 - 消失 */}
+            {/* 下横杠 - 快速消失 */}
             <line
               x1="4"
               y1="18"
               x2="20"
               y2="18"
               style={{
-                transition: 'all 0.3s ease-out',
+                transition: 'opacity 0.15s linear 0s, transform 0.15s linear 0s',
                 opacity: mobileMenuOpen ? 0 : 1,
                 transform: mobileMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
               }}
