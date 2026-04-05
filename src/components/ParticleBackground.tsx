@@ -139,113 +139,31 @@ export function ParticleBackground() {
     const height = window.innerHeight;
 
     const isMobile = width < 768;
-    const particleCount = isMobile ? 50 : 100;
-    const fillBlankCount = 6; // 填补空白区域的粒子数
+    const totalParticles = isMobile ? 56 : 106; // 总粒子数（包含边缘填补）
 
     const newParticles: Particle[] = [];
 
-    // 黄金比例（φ ≈ 1.618）
-    // 黄金分割点：0.618, 0.382
-    // 黄金三次分割：0.236, 0.764
-    const goldenRatio = {
-      phi: 0.618,
-      phi2: 0.382,
-      phi3: 0.236,
-      phi4: 0.764,
-      phi5: 0.146, // 0.618 * 0.236
-      phi6: 0.854, // 1 - 0.146
-    };
+    // 黄金螺旋分布（基于黄金比例）
+    // 黄金角 ≈ 137.507764°（360° × (1 - 1/φ)）
+    const goldenAngle = Math.PI * (3 - Math.sqrt(5)); // 黄金角 ≈ 2.39996 弧度 ≈ 137.5°
 
-    // 优先在四个角落分配粒子，确保上下左右角始终有粒子
-    // 移动端56个粒子：左上、右上、左下、右下各8个，中间24个，边缘6个
-    // 电脑端106个粒子：左上、右上、左下、右下各16个，中间40个，边缘6个
-    const particlesPerCorner = isMobile ? 8 : 16;
-    const cornerParticles = particlesPerCorner * 4; // 4个角落
-    const middleParticles = particleCount - cornerParticles;
+    // 粒子分布总数
+    const mainParticles = isMobile ? 50 : 100; // 主要粒子
+    const edgeParticles = 6; // 边缘填补粒子
 
-    // 四个角落区域
-    const corners = [
-      { xMin: 0, xMax: width * 0.25, yMin: 0, yMax: height * 0.25 },           // 左上
-      { xMin: width * 0.75, xMax: width, yMin: 0, yMax: height * 0.25 },       // 右上
-      { xMin: 0, xMax: width * 0.25, yMin: height * 0.75, yMax: height },       // 左下
-      { xMin: width * 0.75, xMax: width, yMin: height * 0.75, yMax: height },   // 右下
-    ];
+    // 1. 主要粒子使用黄金螺旋分布
+    for (let i = 0; i < mainParticles; i++) {
+      // 黄金螺旋公式
+      // 角度 = i × 黄金角
+      // 半径 = sqrt(i) / sqrt(mainParticles) × maxRadius
+      const theta = i * goldenAngle;
+      const maxRadius = Math.min(width, height) * 0.45; // 最大半径为屏幕最小边的45%
+      const radius = Math.sqrt(i) / Math.sqrt(mainParticles) * maxRadius;
 
-    // 中间区域
-    const middleArea = {
-      xMin: width * 0.25,
-      xMax: width * 0.75,
-      yMin: height * 0.25,
-      yMax: height * 0.75,
-    };
+      // 转换为笛卡尔坐标（中心为原点）
+      const cx = width * 0.5 + radius * Math.cos(theta);
+      const cy = height * 0.5 + radius * Math.sin(theta);
 
-    for (let i = 0; i < particleCount; i++) {
-      let x, y;
-
-      // 前cornerParticles个粒子分配到角落，其余分配到中间
-      if (i < cornerParticles) {
-        // 分配到角落（基于黄金比例确定位置）
-        const cornerIndex = Math.floor(i / particlesPerCorner);
-        const particleInCorner = i % particlesPerCorner;
-
-        // 在每个角落内，基于黄金比例的多个点
-        const goldenPoints = [
-          { rx: 0.236, ry: 0.236 }, // 左上：黄金三次分割点
-          { rx: 0.382, ry: 0.382 }, // 左上：黄金二次分割点
-          { rx: 0.146, ry: 0.146 }, // 左上：黄金五次分割点
-          { rx: 0.5, ry: 0.5 },     // 左上：中心点
-          { rx: 0.854, ry: 0.854 }, // 左上：镜像黄金点
-        ];
-
-        const corner = corners[cornerIndex];
-        const point = goldenPoints[particleInCorner % goldenPoints.length];
-
-        // 在黄金比例点附近添加微小偏移，保持自然分布
-        const offsetX = (Math.random() - 0.5) * (corner.xMax - corner.xMin) * 0.1;
-        const offsetY = (Math.random() - 0.5) * (corner.yMax - corner.yMin) * 0.1;
-
-        if (corner.xMin === 0) {
-          // 左侧角落（左上、左下）
-          x = corner.xMin + (corner.xMax - corner.xMin) * point.rx + offsetX;
-        } else {
-          // 右侧角落（右上、右下）
-          x = corner.xMax - (corner.xMax - corner.xMin) * point.rx - offsetX;
-        }
-
-        if (corner.yMin === 0) {
-          // 上方角落（左上、右上）
-          y = corner.yMin + (corner.yMax - corner.yMin) * point.ry + offsetY;
-        } else {
-          // 下方角落（左下、右下）
-          y = corner.yMax - (corner.yMax - corner.yMin) * point.ry - offsetY;
-        }
-      } else {
-        // 分配到中间区域（基于黄金比例确定位置）
-        // 在中间区域内使用黄金比例网格分布
-        const particleInMiddle = i - cornerParticles;
-        const goldenGridPoints = [
-          { rx: 0.236, ry: 0.236 }, // 左上黄金点
-          { rx: 0.618, ry: 0.236 }, // 右上黄金点
-          { rx: 0.236, ry: 0.618 }, // 左下黄金点
-          { rx: 0.618, ry: 0.618 }, // 右下黄金点（黄金分割点）
-          { rx: 0.382, ry: 0.382 }, // 中心偏左上
-          { rx: 0.764, ry: 0.382 }, // 中心偏右上
-          { rx: 0.382, ry: 0.764 }, // 中心偏左下
-          { rx: 0.764, ry: 0.764 }, // 中心偏右下
-          { rx: 0.5, ry: 0.5 },     // 正中心
-          { rx: 0.146, ry: 0.5 },   // 左中黄金点
-          { rx: 0.854, ry: 0.5 },   // 右中黄金点
-          { rx: 0.5, ry: 0.146 },   // 上中黄金点
-          { rx: 0.5, ry: 0.854 },   // 下中黄金点
-        ];
-
-        const point = goldenGridPoints[particleInMiddle % goldenGridPoints.length];
-        const offsetX = (Math.random() - 0.5) * (middleArea.xMax - middleArea.xMin) * 0.15;
-        const offsetY = (Math.random() - 0.5) * (middleArea.yMax - middleArea.yMin) * 0.15;
-
-        x = middleArea.xMin + (middleArea.xMax - middleArea.xMin) * point.rx + offsetX;
-        y = middleArea.yMin + (middleArea.yMax - middleArea.yMin) * point.ry + offsetY;
-      }
       const vx = (Math.random() - 0.5) * 0.6; // 初始速度（速度1.0倍）
       const vy = (Math.random() - 0.5) * 0.6;
       const r = isMobile ? Math.random() * 1 + 1 : Math.random() * 1.5 + 1.5; // 粒子更小
@@ -258,8 +176,8 @@ export function ParticleBackground() {
 
       newParticles.push({
         id: i,
-        cx: x,
-        cy: y,
+        cx,
+        cy,
         vx,
         vy,
         ax: 0,
@@ -274,21 +192,22 @@ export function ParticleBackground() {
       });
     }
 
-    // 额外生成6个粒子填补空白区域（屏幕四边中点及边缘，基于黄金比例）
-    const edgeAreas = [
-      { xMin: width * 0.382, xMax: width * 0.618, yMin: 0, yMax: height * 0.146 }, // 中上（黄金比例）
-      { xMin: width * 0.382, xMax: width * 0.618, yMin: height * 0.854, yMax: height }, // 中下（黄金比例）
-      { xMin: 0, xMax: width * 0.146, yMin: height * 0.382, yMax: height * 0.618 }, // 中左（黄金比例）
-      { xMin: width * 0.854, xMax: width, yMin: height * 0.382, yMax: height * 0.618 }, // 中右（黄金比例）
-      { xMin: width * 0.236, xMax: width * 0.382, yMin: height * 0.236, yMax: height * 0.382 }, // 左上边缘（黄金比例）
-      { xMin: width * 0.618, xMax: width * 0.764, yMin: height * 0.618, yMax: height * 0.764 }, // 右下边缘（黄金比例）
+    // 2. 边缘填补粒子使用黄金比例定位
+    // 黄金分割点：0.618, 0.382, 0.236, 0.764, 0.146, 0.854
+    const edgeGoldenPoints = [
+      { rx: 0.618, ry: 0.146 }, // 中上
+      { rx: 0.618, ry: 0.854 }, // 中下
+      { rx: 0.146, ry: 0.618 }, // 中左
+      { rx: 0.854, ry: 0.618 }, // 中右
+      { rx: 0.236, ry: 0.236 }, // 左上边缘
+      { rx: 0.764, ry: 0.764 }, // 右下边缘
     ];
 
-    for (let i = 0; i < fillBlankCount; i++) {
-      const edgeArea = edgeAreas[i];
-      // 在边缘区域的黄金比例位置（中心点）
-      const x = (edgeArea.xMin + edgeArea.xMax) * 0.5;
-      const y = (edgeArea.yMin + edgeArea.yMax) * 0.5;
+    for (let i = 0; i < edgeParticles; i++) {
+      const point = edgeGoldenPoints[i];
+      const x = point.rx * width;
+      const y = point.ry * height;
+
       const vx = (Math.random() - 0.5) * 0.6; // 初始速度（速度1.0倍）
       const vy = (Math.random() - 0.5) * 0.6;
       const r = isMobile ? Math.random() * 1 + 1 : Math.random() * 1.5 + 1.5; // 粒子更小
@@ -300,7 +219,7 @@ export function ParticleBackground() {
       const driftY = (Math.random() - 0.5) * 2; // 随机漂移方向Y
 
       newParticles.push({
-        id: particleCount + i,
+        id: mainParticles + i,
         cx: x,
         cy: y,
         vx,
