@@ -1,29 +1,20 @@
-import type { Metadata } from 'next';
-import Navbar from '@/components/Navbar';
-import HeroSection from '@/components/HeroSection';
-import BusinessSection from '@/components/BusinessSection';
-import EnvironmentSection from '@/components/EnvironmentSection';
-import Footer from '@/components/Footer';
-import ScrollToTop from '@/components/ScrollToTop';
-import GlobalBackground from '@/components/GlobalBackground';
+'use client';
 
-export const metadata: Metadata = {
-  title: '创梦计算机系统有限公司 - 自主游戏 · 独立软件 · 智能硬件',
-  description: '创梦计算机系统有限公司，在游戏、软件、硬件领域持续投入，用心做好每一款产品。',
-};
+import { ScrollContainer } from '@/components/ScrollPage';
+import { HomeHero } from '@/components/pages/HomeHero';
+import { BusinessShowcase } from '@/components/pages/BusinessShowcase';
+import { EnvironmentShowcase } from '@/components/pages/EnvironmentShowcase';
+import { ContactShowcase } from '@/components/pages/ContactShowcase';
 
-export default function Home() {
+export default function Page() {
+  const pages = [
+    <HomeHero key="home" />,
+    <BusinessShowcase key="business" />,
+    <EnvironmentShowcase key="environment" />,
+    <ContactShowcase key="contact" />,
+  ];
+
   return (
-    <>
-      <GlobalBackground />
-      <ScrollToTop />
-      <main className="min-h-screen">
-        <Navbar />
-        <HeroSection />
-        <BusinessSection />
-        <EnvironmentSection />
-        <Footer />
-      </main>
-    </>
+    <ScrollContainer>{pages}</ScrollContainer>
   );
 }
