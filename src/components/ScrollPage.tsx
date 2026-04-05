@@ -352,8 +352,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           shouldTriggerPageChange = true;
         }
 
-        // 降低滑动阈值
-        if (shouldTriggerPageChange && lastOffset > window.innerHeight * 0.12) {
+        // 苹果官网标准：滑动超过屏幕高度的15%才触发翻页
+        if (shouldTriggerPageChange && lastOffset > window.innerHeight * 0.15) {
           state.hasSwitchedInThisTouch = true;
 
           if (dragOffsetRef.current > 0 && currentPage > 0) {
