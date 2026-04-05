@@ -71,7 +71,7 @@ export default function HeroSection() {
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.8s ease-out 0.1s",
                 minHeight: "120px",
-                textShadow: "0 2px 12px rgba(0,0,0,0.9)",
+                filter: "drop-shadow(2px 4px 8px rgba(0,0,0,0.85))",
               }}
             >
               <span
@@ -88,13 +88,13 @@ export default function HeroSection() {
             </h1>
 
             <p
-              className="text-base md:text-lg text-white leading-relaxed mb-8 max-w-2xl"
+              className="text-base md:text-lg text-white leading-relaxed mb-8 max-w-2xl font-medium"
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.2s",
                 minHeight: "60px",
-                textShadow: "0 2px 12px rgba(0,0,0,0.9)",
+                textShadow: "2px 2px 8px rgba(0,0,0,0.9)",
               }}
             >
               我们专注于自主研发，在游戏、软件、硬件领域持续投入，
@@ -153,16 +153,16 @@ export default function HeroSection() {
               }}
             >
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}>8+</div>
-                <div className="text-xs text-white uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>年持续投入</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "2px 2px 8px rgba(0,0,0,0.9)" }}>8+</div>
+                <div className="text-xs text-white uppercase tracking-wide font-semibold" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.9)" }}>年持续投入</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}>30+</div>
-                <div className="text-xs text-white uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>自研产品</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "2px 2px 8px rgba(0,0,0,0.9)" }}>30+</div>
+                <div className="text-xs text-white uppercase tracking-wide font-semibold" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.9)" }}>自研产品</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}>20+</div>
-                <div className="text-xs text-white uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>核心团队</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "2px 2px 8px rgba(0,0,0,0.9)" }}>20+</div>
+                <div className="text-xs text-white uppercase tracking-wide font-semibold" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.9)" }}>核心团队</div>
               </div>
             </div>
           </div>
@@ -235,26 +235,54 @@ export default function HeroSection() {
 
       <style jsx global>{`
         .gradient-text-1 {
-          background-image: linear-gradient(90deg, #EF4444 0%, #F97316 10%, #F59E0B 20%, #84CC16 30%, #10B981 40%, #06B6D4 50%, #0EA5E9 60%, #3B82F6 70%, #6366F1 80%, #8B5CF6 90%, #A855F7 95%, #EF4444 100%);
-          background-size: 200% auto;
+          background-image: linear-gradient(90deg, 
+            #FF0000 0%, 
+            #FF1F00 8%, 
+            #FF3F00 16%, 
+            #FF5F00 24%, 
+            #FF7F00 32%, 
+            #FF9F00 40%, 
+            #FFBF00 48%, 
+            #00FF00 56%, 
+            #00FFFF 64%, 
+            #0000FF 72%, 
+            #FF00FF 80%, 
+            #FF0080 88%, 
+            #FF0000 100%
+          );
+          background-size: 300% auto;
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
-          animation: gradientFlow 20s linear infinite;
+          animation: gradientFlow 30s linear infinite;
+          filter: saturate(1.5) contrast(1.2);
         }
 
         .gradient-text-2 {
-          background-image: linear-gradient(90deg, #8B5CF6 0%, #A855F7 10%, #D946EF 20%, #EC4899 30%, #F43F5E 40%, #EF4444 50%, #F97316 60%, #FB923C 70%, #FACC15 80%, #84CC16 90%, #8B5CF6 100%);
-          background-size: 200% auto;
+          background-image: linear-gradient(90deg, 
+            #8B00FF 0%, 
+            #9B00FF 10%, 
+            #AB00FF 20%, 
+            #BB00FF 30%, 
+            #CB00FF 40%, 
+            #DB00FF 50%, 
+            #EB00FF 60%, 
+            #FB00FF 70%, 
+            #FF00FB 80%, 
+            #FF00EB 90%, 
+            #8B00FF 100%
+          );
+          background-size: 300% auto;
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
-          animation: gradientFlow 25s linear infinite reverse;
+          animation: gradientFlow 35s linear infinite reverse;
+          filter: saturate(1.5) contrast(1.2);
         }
 
         @keyframes gradientFlow {
           0% { background-position: 0% 50%; }
-          100% { background-position: 200% 50%; }
+          100% { background-position: 300% 50%; }
         }
       `}</style>
     </section>
