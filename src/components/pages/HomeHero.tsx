@@ -183,7 +183,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
 
         {/* 往下滑动指示器 */}
         <div
-          className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
           style={{
             opacity: mounted ? 1 : 0,
             transition: 'all 1000ms ease-out 0.8s',
