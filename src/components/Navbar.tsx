@@ -3,6 +3,18 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
+// 手机震动工具函数
+function triggerVibration() {
+  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    try {
+      // 震动模式：短震动（50ms）
+      navigator.vibrate(50);
+    } catch (error) {
+      // 某些设备可能不支持或被禁用，忽略错误
+    }
+  }
+}
+
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
@@ -26,6 +38,8 @@ export function Navbar() {
   }, []);
 
   const scrollToSection = (sectionId: string, index: number) => {
+    // 触发手机震动
+    triggerVibration();
     // 0延迟响应：立即触发翻页
     const event = new CustomEvent('jump-to-page', { detail: { pageIndex: index } });
     window.dispatchEvent(event);
@@ -36,7 +50,10 @@ export function Navbar() {
     <>
       {/* 左上角 Logo + 公司名称 */}
       <div
-        onClick={() => scrollToSection('#home', 0)}
+        onClick={() => {
+          triggerVibration();
+          scrollToSection('#home', 0);
+        }}
         className="fixed top-4 left-4 z-50 flex items-center gap-1.5 sm:gap-2 cursor-pointer select-none group linear-transition"
         style={{ opacity: 0.95 }}
       >
@@ -100,6 +117,7 @@ export function Navbar() {
         <button
           onClick={(e) => {
             e.stopPropagation();
+            triggerVibration();
             setMobileMenuOpen(!mobileMenuOpen);
           }}
           className="lg:hidden liquid-glass-menu-btn w-12 h-12 sm:w-12 sm:h-12 overflow-visible relative"

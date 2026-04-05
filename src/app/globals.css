@@ -439,12 +439,6 @@ button {
   border: none;
   background: none;
   -webkit-tap-highlight-color: transparent;
-  position: relative;
-}
-
-/* 按钮点击震动效果 */
-button:active {
-  animation: button-shake 0.3s ease-in-out;
 }
 
 /* 输入框优化 */
@@ -511,9 +505,8 @@ input, textarea {
 }
 
 .apple-button:active {
-  transform: scale(0.97) translateX(-2px);
+  transform: scale(0.97);
   opacity: 0.8;
-  animation: button-shake 0.3s ease-in-out;
 }
 
 /* 悬停提升效果 */
@@ -730,22 +723,5 @@ input, textarea {
   100% {
     transform: rotate(360deg);
   }
-}
-
-/* 按钮震动动画 */
-@keyframes button-shake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  10%, 30%, 50%, 70%, 90% {
-    transform: translateX(-2px);
-  }
-  20%, 40%, 60%, 80% {
-    transform: translateX(2px);
-  }
-}
-
-.button-shake {
-  animation: button-shake 0.3s ease-in-out;
 }
 

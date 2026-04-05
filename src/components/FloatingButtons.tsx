@@ -2,6 +2,18 @@
 
 import { useState, useEffect, useRef } from 'react';
 
+// 手机震动工具函数
+function triggerVibration() {
+  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    try {
+      // 震动模式：短震动（50ms）
+      navigator.vibrate(50);
+    } catch (error) {
+      // 某些设备可能不支持或被禁用，忽略错误
+    }
+  }
+}
+
 export default function FloatingButtons() {
   const [isCustomerServiceOpen, setIsCustomerServiceOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
@@ -11,6 +23,8 @@ export default function FloatingButtons() {
   const backToTopTimer = useRef<NodeJS.Timeout | null>(null);
 
   const scrollToTop = () => {
+    // 触发手机震动
+    triggerVibration();
     // 增加点击计数
     backToTopClickCount.current += 1;
 
@@ -39,6 +53,8 @@ export default function FloatingButtons() {
   };
 
   const toggleCustomerService = (e?: MouseEvent) => {
+    // 触发手机震动
+    triggerVibration();
     // 如果传入event，说明是点击事件，需要阻止冒泡
     if (e) {
       e.stopPropagation();
@@ -528,6 +544,7 @@ export default function FloatingButtons() {
         closeBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           e.preventDefault();
+          triggerVibration();
           setIsCustomerServiceOpen(false);
         });
         closeBtn.addEventListener('mouseenter', () => {
@@ -552,6 +569,9 @@ export default function FloatingButtons() {
         element.addEventListener('mouseleave', () => {
           element.style.backgroundColor = 'transparent';
           element.style.transform = 'translateX(0) translateZ(0)';
+        });
+        element.addEventListener('click', () => {
+          triggerVibration();
         });
       });
     };
