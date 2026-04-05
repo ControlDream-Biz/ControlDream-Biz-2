@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, memo, useRef } from 'react';
+import { useEffect, useState, memo } from 'react';
 
 interface HomeHeroProps {
   isActive?: boolean;
@@ -20,97 +20,11 @@ function triggerVibration() {
 // 使用React.memo优化性能，避免不必要的重渲染
 export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProps) {
   const [mounted, setMounted] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioRef = useRef<HTMLAudioElement>(null);
 
   // 首次加载时触发动画
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // 监听页面变化，离开首页时不停止音乐（保留给联系我们页面控制）
-  useEffect(() => {
-    const handlePageChange = (e: CustomEvent<{ pageIndex: number }>) => {
-      const audio = audioRef.current;
-      // 如果离开首页且不是去联系我们页面，才停止音乐
-      if (audio && e.detail.pageIndex !== 0 && e.detail.pageIndex !== 5) {
-        audio.pause();
-        audio.currentTime = 0;
-        setIsPlaying(false);
-        const event = new CustomEvent('music-state-changed', { detail: { isPlaying: false } });
-        window.dispatchEvent(event);
-      }
-    };
-
-    window.addEventListener('page-changed', handlePageChange as EventListener);
-    return () => window.removeEventListener('page-changed', handlePageChange as EventListener);
-  }, []);
-
-  // 首页加载时自动播放
-  useEffect(() => {
-    if (isActive && audioRef.current && !isPlaying) {
-      const audio = audioRef.current;
-      audio.muted = true;
-      audio.volume = 0.3;
-
-      const attemptPlay = async () => {
-        try {
-          await audio.play();
-          setIsPlaying(true);
-          // 通知其他组件音乐状态
-          const event = new CustomEvent('music-state-changed', { detail: { isPlaying: true } });
-          window.dispatchEvent(event);
-          setTimeout(() => {
-            audio.muted = false;
-          }, 100);
-        } catch (error) {
-          console.log('自动播放被阻止');
-        }
-      };
-
-      setTimeout(attemptPlay, 500);
-    }
-  }, [isActive, isPlaying]);
-
-  // 监听音乐切换事件
-  useEffect(() => {
-    const handleToggleMusic = () => {
-      const audio = audioRef.current;
-      if (audio) {
-        if (isPlaying) {
-          audio.pause();
-          setIsPlaying(false);
-          const event = new CustomEvent('music-state-changed', { detail: { isPlaying: false } });
-          window.dispatchEvent(event);
-        } else {
-          audio.muted = false;
-          audio.play();
-          setIsPlaying(true);
-          const event = new CustomEvent('music-state-changed', { detail: { isPlaying: true } });
-          window.dispatchEvent(event);
-        }
-      }
-    };
-
-    window.addEventListener('toggle-music', handleToggleMusic);
-    return () => window.removeEventListener('toggle-music', handleToggleMusic);
-  }, [isPlaying]);
-
-  // 合作应聘按钮点击：跳转并播放音乐
-  const handleCareersClick = () => {
-    triggerVibration();
-    const audio = audioRef.current;
-    if (audio && !isPlaying) {
-      audio.muted = false;
-      audio.play();
-      setIsPlaying(true);
-      const event = new CustomEvent('music-state-changed', { detail: { isPlaying: true } });
-      window.dispatchEvent(event);
-    }
-    // 跳转到联系我们页面
-    const jumpEvent = new CustomEvent('jump-to-page', { detail: { pageIndex: 5 } });
-    window.dispatchEvent(jumpEvent);
-  };
 
   return (
     <>
@@ -272,31 +186,6 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
           ))}
         </div>
 
-        {/* 合作应聘按钮 - 跳转并播放音乐 */}
-        <div
-          className="mt-6 sm:mt-8 md:mt-10 lg:mt-12"
-          style={{
-            opacity: mounted ? 1 : 0,
-            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'all 1000ms ease-out 0.6s',
-          }}
-        >
-          <button
-            onClick={handleCareersClick}
-            className="relative cursor-pointer transition-all duration-300 hover:scale-110"
-          >
-            <span
-              className="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-white/80 hover:text-white transition-colors"
-              style={{
-                letterSpacing: '0.2em',
-                textShadow: '0 0 20px rgba(255, 255, 255, 0.3)',
-              }}
-            >
-              合作应聘
-            </span>
-          </button>
-        </div>
-
         {/* 往下滑动指示器 */}
         <div
           className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
@@ -346,15 +235,6 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
         </div>
       </div>
       </div>
-
-      {/* 音频元素 */}
-      <audio
-        ref={audioRef}
-        loop
-        style={{ display: 'none' }}
-      >
-        <source src="/music/forever-friends.mp3" type="audio/mpeg" />
-      </audio>
     </>
   );
 });
