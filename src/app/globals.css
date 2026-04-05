@@ -687,3 +687,19 @@ input, textarea {
   animation: pulse-ring 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
+/* 脉冲发光点动画 */
+@keyframes pulse-dot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.6;
+  }
+}
+
+.menu-pulse-dot {
+  animation: pulse-dot 1s ease-in-out infinite;
+}
+
