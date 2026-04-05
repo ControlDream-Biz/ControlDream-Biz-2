@@ -371,11 +371,20 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
+    // 处理外部页面跳转事件（用于置顶按钮等）
+    const handleJumpToPage = (e: CustomEvent) => {
+      const targetPage = e.detail.pageIndex;
+      if (targetPage !== undefined) {
+        handlePageChange(targetPage);
+      }
+    };
+
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('touchend', handleTouchEnd, { passive: false });
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('jump-to-page', handleJumpToPage as EventListener);
 
     return () => {
       window.removeEventListener('wheel', handleWheel);
@@ -383,6 +392,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('jump-to-page', handleJumpToPage as EventListener);
     };
   }, [currentPage, totalPages, handlePageChange]);
 

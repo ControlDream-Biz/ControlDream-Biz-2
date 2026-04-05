@@ -4,6 +4,28 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========== 苹果字体系统 ========== */
+
+/* 苹果苹方体 - PingFang SC */
+:root {
+  /* 字体栈：苹方体优先，回退到系统字体 */
+  --font-family-base: 'PingFang SC', 'PingFang TC', 'PingFang HK', -apple-system, BlinkMacSystemFont, 'SF Pro SC', 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+
+  /* 英文字体栈 */
+  --font-family-display: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+  --font-family-text: 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 全局应用苹方体 */
+* {
+  font-family: var(--font-family-base);
+}
+
+/* 英文内容使用SF Pro */
+*[lang="en"] {
+  font-family: var(--font-family-display);
+}
+
 /* ========== 苹果风格性能优化 - CPU/GPU调度 ========== */
 
 /* 浏览器会自动根据显示器刷新率渲染，无需强制动画
