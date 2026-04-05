@@ -76,7 +76,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
             transform,
             transition: isDragging
               ? 'none'
-              : 'transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)',
+              : 'transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)',
             position: 'absolute',
             inset: 0,
             zIndex: 1,
@@ -103,7 +103,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
           transform,
           transition: isDragging
             ? 'none'
-            : 'transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)',
+            : 'transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)',
           position: 'absolute',
           inset: 0,
           zIndex: 10,
@@ -163,7 +163,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   useEffect(() => {
     const state = scrollStateRef.current;
 
-    // 优化的滚轮处理逻辑 - 降低灵敏度
+    // 优化的滚轮处理逻辑 - 平衡灵敏度和防误触
     const handleWheel = (e: WheelEvent) => {
       const now = performance.now();
       const delta = e.deltaY;
@@ -177,10 +177,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.lastWheelDirection = currentDirection;
       }
 
-      // 增加阈值和节流时间，降低灵敏度
-      const throttleTime = 800; // 增加节流时间
-      const scrollThreshold = 100; // 增加阈值
-      const consistencyThreshold = 3; // 需要连续3次同方向滚动
+      // 平衡的阈值和节流时间
+      const throttleTime = 300; // 降低节流时间，更快响应
+      const scrollThreshold = 60; // 降低阈值，更容易触发
+      const consistencyThreshold = 2; // 降低连续滚动要求
 
       // 累积滚动量
       state.accumulatedDelta += delta;
@@ -252,12 +252,12 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       // 当垂直移动量显著大于水平移动量时，才触发翻页
       const isVerticalSwipe = deltaY > deltaX * 1.5;
-      const isSignificantMove = deltaY > 50; // 增加最小移动距离
+      const isSignificantMove = deltaY > 30; // 降低最小移动距离
 
       if (isVerticalSwipe && isSignificantMove && !state.hasSwitchedInThisTouch) {
         const lastOffset = Math.abs(dragOffsetRef.current);
 
-        if (lastOffset > window.innerHeight * 0.25) { // 增加阈值到 25%
+        if (lastOffset > window.innerHeight * 0.2) { // 降低阈值到 20%
           state.hasSwitchedInThisTouch = true;
 
           if (dragOffsetRef.current > 0 && currentPage > 0) {
@@ -281,7 +281,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     // 键盘导航
     const handleKeyDown = (e: KeyboardEvent) => {
       const now = performance.now();
-      if (now - state.lastWheelTime < 1000) return;
+      if (now - state.lastWheelTime < 500) return; // 降低节流时间
 
       const keyMap: Record<string, number> = {
         'ArrowDown': 1,
