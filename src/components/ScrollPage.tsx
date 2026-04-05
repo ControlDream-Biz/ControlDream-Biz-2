@@ -144,7 +144,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
   const handlePageChange = useCallback((newPage: number) => {
     if (newPage >= 0 && newPage < totalPages && newPage !== currentPage) {
-      console.log(`翻页: ${currentPage} -> ${newPage}`);
       setCurrentPage(newPage);
       onPageChange?.(newPage);
       scrollStateRef.current.isProcessingScroll = false;
@@ -160,8 +159,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       const now = performance.now();
       const delta = e.deltaY;
-
-      console.log(`滚轮: delta=${delta}, currentPage=${currentPage}`);
 
       // 节流：150ms内只处理一次
       if (now - state.lastWheelTime < 150) {
@@ -179,14 +176,15 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
 
-        console.log(`滚动容器: scrollTop=${scrollTop}, scrollHeight=${scrollHeight}, clientHeight=${clientHeight}`);
-
         const remainingScroll = scrollHeight - (scrollTop + clientHeight);
 
         // 向下滚动
         if (delta > 0) {
-          if (remainingScroll <= 1) {
-            // 已经到底部
+          // 首页直接允许翻页
+          if (currentPage === 0) {
+            shouldChangePage = true;
+          } else if (remainingScroll <= 1) {
+            // 其他页面：已经到底部
             shouldChangePage = true;
           }
         }
@@ -201,8 +199,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         // 没有滚动容器，直接翻页
         shouldChangePage = true;
       }
-
-      console.log(`shouldChangePage: ${shouldChangePage}`);
 
       if (shouldChangePage && !state.isProcessingScroll) {
         state.isProcessingScroll = true;
