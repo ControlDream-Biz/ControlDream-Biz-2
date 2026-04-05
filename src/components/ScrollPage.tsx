@@ -179,7 +179,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       // 如果没有滚动容器，默认可以翻页
       if (!scrollContainer) {
-        if (now - state.lastWheelTime < 200) return;
+        if (now - state.lastWheelTime < 100) return;
         state.lastWheelTime = now;
 
         if (delta > 0 && currentPage < totalPages - 1) {
@@ -194,13 +194,26 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const scrollTop = scrollContainer.scrollTop;
       const scrollHeight = scrollContainer.scrollHeight;
       const clientHeight = scrollContainer.clientHeight;
-      const isScrollable = scrollHeight > clientHeight;
-      const isAtTop = scrollTop <= 5; // 容差5px
-      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5; // 容差5px
+      const isScrollable = scrollHeight > clientHeight + 10; // 增加容差到10px
+      const isAtTop = scrollTop <= 10;
+      const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
 
       // 如果内容可滚动，且不在边界，则让内容正常滚动，不触发翻页
       if (isScrollable && !isAtTop && !isAtBottom) {
         return; // 让内容滚动
+      }
+
+      // 备用逻辑：如果滚动量很大，直接触发翻页（防检测失败）
+      if (deltaAbs > 80) {
+        if (now - state.lastWheelTime < 100) return;
+        state.lastWheelTime = now;
+
+        if (delta > 0 && currentPage < totalPages - 1) {
+          handlePageChange(currentPage + 1);
+        } else if (delta < 0 && currentPage > 0) {
+          handlePageChange(currentPage - 1);
+        }
+        return;
       }
 
       // 只有在以下情况才触发翻页：
@@ -214,8 +227,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         return; // 让内容滚动
       }
 
-      // 节流控制
-      if (now - state.lastWheelTime < 200) return;
+      // 节流控制 - 减少延迟
+      if (now - state.lastWheelTime < 100) return;
       state.lastWheelTime = now;
 
       // 触发翻页
@@ -319,9 +332,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           const scrollTop = scrollContainer.scrollTop;
           const scrollHeight = scrollContainer.scrollHeight;
           const clientHeight = scrollContainer.clientHeight;
-          const isScrollable = scrollHeight > clientHeight;
-          const isAtTop = scrollTop <= 5;
-          const isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
+          const isScrollable = scrollHeight > clientHeight + 10; // 增加容差
+          const isAtTop = scrollTop <= 10;
+          const isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
 
           // 只有在以下情况才触发翻页
           if (isScrollable) {
@@ -339,7 +352,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           shouldTriggerPageChange = true;
         }
 
-        if (shouldTriggerPageChange && lastOffset > window.innerHeight * 0.15) {
+        // 降低滑动阈值
+        if (shouldTriggerPageChange && lastOffset > window.innerHeight * 0.12) {
           state.hasSwitchedInThisTouch = true;
 
           if (dragOffsetRef.current > 0 && currentPage > 0) {
