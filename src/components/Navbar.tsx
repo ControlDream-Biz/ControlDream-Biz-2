@@ -43,33 +43,33 @@ export function Navbar() {
       {/* 左上角 Logo + 公司名称 - 苹果官网式布局 */}
       <div
         onClick={() => scrollToSection('#home', 0)}
-        className="fixed top-6 left-6 z-50 flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer group select-none"
+        className="fixed top-6 left-6 z-50 flex items-center gap-4 hover:opacity-90 transition-opacity cursor-pointer group select-none"
       >
-        {/* LOGO - 透明背景，白色线条，调小尺寸 */}
-        <div className="relative w-8 h-8 flex-shrink-0">
+        {/* LOGO - 透明背景，白色线条，增大尺寸 */}
+        <div className="relative w-16 h-16 flex-shrink-0">
           <Image
             src="/logo-cm-transparent.png"
             alt="创梦计算机系统有限公司"
             fill
             className="object-contain"
-            sizes="(max-width: 768px) 32px, 32px"
+            sizes="(max-width: 768px) 64px, 64px"
             priority
           />
         </div>
 
-        {/* 公司名称 - 紧贴LOGO，调小字体 */}
+        {/* 公司名称 - 紧贴LOGO，确保中文清晰可见 */}
         <div className="hidden md:flex flex-col justify-center">
-          {/* 中文公司名 - 调小 */}
-          <div className="text-sm font-bold text-white tracking-tight leading-none mb-0.5 select-none" style={fontStyles}>
+          {/* 中文公司名 - 确保清晰可见 */}
+          <div className="text-xl font-bold text-white tracking-tight leading-tight mb-1 select-none" style={fontStyles}>
             创梦计算机系统有限公司
           </div>
 
           {/* 英文副标题 - 宽度与中文对齐 */}
           <div
-            className="text-[9px] text-white/60 font-medium uppercase select-none"
+            className="text-xs text-white/70 font-medium uppercase select-none"
             style={{
               ...fontStyles,
-              letterSpacing: '0.18em' // 增加字间距，使英文宽度与中文保持一致
+              letterSpacing: '0.18em'
             }}
           >
             CHUANGMENG COMPUTER SYSTEM
