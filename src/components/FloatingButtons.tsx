@@ -182,12 +182,12 @@ export default function FloatingButtons() {
     customerServicePopup.style.willChange = 'opacity, transform';
 
     customerServicePopup.innerHTML = `
-      <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.95) 100%); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 18px 20px; color: white; position: relative; overflow: hidden;">
-        <div style="position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15) 0%, transparent 50%); pointer-events: none;"></div>
-        <div style="position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between;">
+      <!-- 顶部红色标题栏 -->
+      <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.95) 100%); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 16px 20px; color: white; position: relative;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
           <div>
             <h3 style="font-size: 18px; font-weight: 600; margin: 0; letter-spacing: 0.3px;">在线客服</h3>
-            <p style="font-size: 13px; opacity: 0.95; margin: 4px 0 0 0; font-weight: 400;">我们随时为您服务</p>
+            <p style="font-size: 13px; opacity: 0.95; margin: 3px 0 0 0; font-weight: 400;">我们随时为您服务</p>
           </div>
           <button id="close-popup-btn" type="button" style="
             width: 28px;
@@ -208,69 +208,75 @@ export default function FloatingButtons() {
           ">✕</button>
         </div>
       </div>
-      <div style="padding: 16px 20px; backdrop-filter: blur(10px);">
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-          <div class="service-item" style="display: flex; align-items: center; gap: 14px; padding: 12px 14px; background: rgba(249, 250, 251, 0.95); backdrop-filter: blur(8px); border-radius: 12px; cursor: pointer; transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(229, 231, 235, 0.5); transform: translateZ(0);">
-            <div style="
-              width: 40px;
-              height: 40px;
-              background: linear-gradient(135deg, rgba(219, 234, 254, 0.95) 0%, rgba(191, 219, 254, 0.95) 100%);
-              backdrop-filter: blur(8px);
-              border-radius: 12px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 18px;
-              border: 1px solid rgba(219, 234, 254, 0.8);
-              flex-shrink: 0;
-            ">💬</div>
-            <div style="flex: 1; min-width: 0;">
-              <div style="font-weight: 600; color: #111827; font-size: 15px; margin-bottom: 2px;">在线咨询</div>
-              <div style="font-size: 12px; color: #6b7280;">即时回复</div>
-            </div>
-          </div>
-          <div class="service-item" style="display: flex; align-items: center; gap: 14px; padding: 12px 14px; background: rgba(249, 250, 251, 0.95); backdrop-filter: blur(8px); border-radius: 12px; cursor: pointer; transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(229, 231, 235, 0.5); transform: translateZ(0);">
-            <div style="
-              width: 40px;
-              height: 40px;
-              background: linear-gradient(135deg, rgba(220, 252, 231, 0.95) 0%, rgba(187, 247, 208, 0.95) 100%);
-              backdrop-filter: blur(8px);
-              border-radius: 12px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 18px;
-              border: 1px solid rgba(220, 252, 231, 0.8);
-              flex-shrink: 0;
-            ">📞</div>
-            <div style="flex: 1; min-width: 0;">
-              <div style="font-weight: 600; color: #111827; font-size: 15px; margin-bottom: 2px;">电话咨询</div>
-              <div style="font-size: 12px; color: #6b7280;">400-123-4567</div>
-            </div>
-          </div>
-          <div class="service-item" style="display: flex; align-items: center; gap: 14px; padding: 12px 14px; background: rgba(249, 250, 251, 0.95); backdrop-filter: blur(8px); border-radius: 12px; cursor: pointer; transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1); border: 1px solid rgba(229, 231, 235, 0.5); transform: translateZ(0);">
-            <div style="
-              width: 40px;
-              height: 40px;
-              background: linear-gradient(135deg, rgba(243, 232, 255, 0.95) 0%, rgba(233, 213, 255, 0.95) 100%);
-              backdrop-filter: blur(8px);
-              border-radius: 12px;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              font-size: 18px;
-              border: 1px solid rgba(243, 232, 255, 0.8);
-              flex-shrink: 0;
-            ">📧</div>
-            <div style="flex: 1; min-width: 0;">
-              <div style="font-weight: 600; color: #111827; font-size: 15px; margin-bottom: 2px;">邮件咨询</div>
-              <div style="font-size: 12px; color: #6b7280;">contact@chuangmeng.com</div>
-            </div>
+
+      <!-- 主体选项区域 - 白色卡片样式 -->
+      <div style="background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);">
+        <!-- 在线咨询 -->
+        <div class="service-item" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1); border-bottom: 1px solid rgba(0, 0, 0, 0.08); transform: translateZ(0);">
+          <div style="
+            width: 36px;
+            height: 36px;
+            background: rgba(243, 244, 246, 0.95);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+          ">💬</div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 600; color: #111827; font-size: 15px;">在线咨询</div>
+            <div style="font-size: 12px; color: #9ca3af; margin-top: 1px;">即时回复</div>
           </div>
         </div>
-        <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(229, 231, 235, 0.6); text-align: center; font-size: 12px; color: #6b7280; backdrop-filter: blur(5px); font-weight: 500;">
-          工作时间：周一至周五 9:00-18:00
+
+        <!-- 电话咨询 -->
+        <div class="service-item" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1); border-bottom: 1px solid rgba(0, 0, 0, 0.08); transform: translateZ(0);">
+          <div style="
+            width: 36px;
+            height: 36px;
+            background: rgba(239, 68, 68, 0.1);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            color: #ef4444;
+          ">📞</div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 600; color: #111827; font-size: 15px;">电话咨询</div>
+            <div style="font-size: 12px; color: #9ca3af; margin-top: 1px;">400-123-4567</div>
+          </div>
         </div>
+
+        <!-- 邮件咨询 -->
+        <div class="service-item" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1); transform: translateZ(0);">
+          <div style="
+            width: 36px;
+            height: 36px;
+            background: rgba(139, 92, 246, 0.1);
+            backdrop-filter: blur(8px);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+            color: #8b5cf6;
+          ">📧</div>
+          <div style="flex: 1; min-width: 0;">
+            <div style="font-weight: 600; color: #111827; font-size: 15px;">邮件咨询</div>
+            <div style="font-size: 12px; color: #9ca3af; margin-top: 1px;">contact@chuangmeng.com</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 底部工作时间栏 -->
+      <div style="background: rgba(243, 244, 246, 0.9); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 12px 20px; text-align: center; font-size: 12px; color: #9ca3af; font-weight: 500;">
+        工作时间：周一至周五 9:00-18:00
       </div>
     `;
 
@@ -304,16 +310,12 @@ export default function FloatingButtons() {
       items.forEach((item) => {
         const element = item as HTMLElement;
         element.addEventListener('mouseenter', () => {
-          element.style.backgroundColor = 'rgba(249, 250, 251, 1)';
-          element.style.transform = 'scale(1.02) translateZ(0)';
-          element.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.08)';
-          element.style.borderColor = 'rgba(229, 231, 235, 0.8)';
+          element.style.backgroundColor = 'rgba(249, 250, 251, 0.98)';
+          element.style.transform = 'scale(1.01) translateZ(0)';
         });
         element.addEventListener('mouseleave', () => {
-          element.style.backgroundColor = 'rgba(249, 250, 251, 0.95)';
+          element.style.backgroundColor = 'transparent';
           element.style.transform = 'scale(1) translateZ(0)';
-          element.style.boxShadow = 'none';
-          element.style.borderColor = 'rgba(229, 231, 235, 0.5)';
         });
       });
     };

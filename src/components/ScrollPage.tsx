@@ -116,7 +116,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    // 苹果官网式的触摸处理逻辑 - 极度严格阈值，杜绝误触
+    // 苹果官网式的触摸处理逻辑 - 灵敏度优化
     const handleTouchStart = (e: TouchEvent) => {
       state.touchStartY = e.touches[0].clientY;
       state.touchStartTime = performance.now();
@@ -138,9 +138,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.velocity = velocity;
       }
 
-      // 只在明显快速滑动时才阻止默认行为（速度 > 0.8 且 距离 > 60px）
-      // 慢速滑动和轻微抖动都允许正常滚动内容
-      if (absDeltaY > 60 && velocity > 0.8 && e.cancelable) {
+      // 优化：在明显的快速滑动时阻止默认行为（速度 > 0.5 且 距离 > 40px）
+      // 让快速滑动更容易被识别
+      if (absDeltaY > 40 && velocity > 0.5 && e.cancelable) {
         e.preventDefault();
         e.stopPropagation();
         state.isScrolling = true;
@@ -161,24 +161,24 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 使用最大速度和最终速度的较大值
       const effectiveVelocity = Math.max(velocity, state.velocity);
 
-      // 极度严格的翻页条件：
-      // 1. 滑动时间必须在150ms-1000ms之间（太快或太慢都不翻页）
-      // 2. 滑动距离必须超过100px
-      // 3. 速度必须超过0.8px/ms
-      const minSwipeTime = 150;
-      const maxSwipeTime = 1000;
-      const swipeThreshold = 100;
-      const velocityThreshold = 0.8;
+      // 优化翻页条件，降低阈值让翻页更灵敏：
+      // 1. 滑动时间：100ms-1200ms（扩大范围）
+      // 2. 滑动距离：>= 60px（降低）
+      // 3. 速度：>= 0.5px/ms（降低）
+      const minSwipeTime = 100;
+      const maxSwipeTime = 1200;
+      const swipeThreshold = 60;
+      const velocityThreshold = 0.5;
 
-      // 只在所有条件都满足时才翻页
-      const shouldSwitchPage = 
-        deltaTime >= minSwipeTime && 
+      // 只在条件满足时才翻页
+      const shouldSwitchPage =
+        deltaTime >= minSwipeTime &&
         deltaTime <= maxSwipeTime &&
-        absDeltaY >= swipeThreshold && 
+        absDeltaY >= swipeThreshold &&
         effectiveVelocity >= velocityThreshold;
 
       if (shouldSwitchPage) {
-        // 增加节流时间，避免频繁翻页
+        // 节流时间保持600ms，防止连续翻页
         if (touchEndTime - state.lastWheelTime < 600) return;
         state.lastWheelTime = touchEndTime;
 
