@@ -154,7 +154,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
             const Icon = business.icon;
             return (
               <div
-                key={index}
+                key={`${index}-${isActive}`}
                 className="group relative grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center"
                 style={{
                   opacity: mounted ? 1 : 0,
@@ -217,7 +217,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
                   </div>
 
                   {/* 小字列表 - 腾讯式从右向左滚动淡入 + 滑动淡入 */}
-                  <div className="space-y-2 sm:space-y-3 mt-4 sm:mt-6">
+                  <div key={`items-${isActive}`} className="space-y-2 sm:space-y-3 mt-4 sm:mt-6">
                     {business.items.map((item, i) => {
                       const slideFadeOpacity = getSlideFadeOpacity(i);
                       return (

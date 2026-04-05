@@ -175,7 +175,7 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
             const Icon = area.icon;
             return (
               <div
-                key={index}
+                key={`${index}-${isActive}`}
                 className="group relative flex flex-col"
                 style={{
                   opacity: mounted ? 1 : 0,
@@ -217,7 +217,7 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                 </p>
 
                 {/* 小字列表 - 腾讯式从右向左滚动淡入 + 滑动淡入 */}
-                <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
+                <div key={`items-${isActive}`} className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
                   {area.items.map((item, i) => {
                     const slideFadeOpacity = getSlideFadeOpacity(i);
                     return (
