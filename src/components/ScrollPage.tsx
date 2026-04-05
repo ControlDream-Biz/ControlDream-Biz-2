@@ -21,28 +21,20 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
   let opacity = 1;
   const scale = 1;
 
-  // 动态偏移（基于拖动状态）
-  const dynamicOffset = isDragging ? dragOffset * (0.3 + Math.abs(dragOffset) / 10000) : 0;
-
   if (isDragging && dragOffset !== 0) {
     const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
-    const progressCubic = progress * progress * (3 - 2 * progress);
-
-    // 增加计算复杂度
-    const progressQuartic = progress * progress * progress * progress;
-    const combinedProgress = progressCubic * 0.7 + progressQuartic * 0.3;
 
     if (isActive) {
-      transform = `translate3d(0, ${dynamicOffset}px, 0) scale(${1 - combinedProgress * 0.02}) rotateX(${combinedProgress * 2}deg)`;
-      opacity = 1 - combinedProgress * 0.3;
+      transform = `translate3d(0, ${dragOffset * 0.4}px, 0) scale(${1 - progress * 0.01})`;
+      opacity = 1 - progress * 0.15;
     } else if (isNext && dragOffset < 0) {
-      const startOffset = 50;
-      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.6}px, 0) scale(${1 - combinedProgress * 0.02}) rotateX(-${combinedProgress * 1}deg)`;
-      opacity = combinedProgress * 0.8;
+      const startOffset = 30;
+      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.4}px, 0) scale(${1 - progress * 0.01})`;
+      opacity = progress * 0.7;
     } else if (isPrev && dragOffset > 0) {
-      const startOffset = -50;
-      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.6}px, 0) scale(${1 - combinedProgress * 0.02}) rotateX(${combinedProgress * 1}deg)`;
-      opacity = combinedProgress * 0.8;
+      const startOffset = -30;
+      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.4}px, 0) scale(${1 - progress * 0.01})`;
+      opacity = progress * 0.7;
     } else if (isPrev) {
       transform = `translate3d(0, -50vh, 0) scale(${scale})`;
       opacity = 0;
@@ -72,23 +64,14 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
         transform,
         transition: isDragging
           ? 'none'
-          : 'transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
+          : 'transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.35s cubic-bezier(0.33, 1, 0.68, 1)',
         zIndex: isActive ? 10 : 1,
-        willChange: 'transform, opacity',
-        backfaceVisibility: 'visible' as const,
-        perspective: 2000,
-        contentVisibility: 'visible' as const,
-        transformStyle: 'preserve-3d' as const,
-        filter: isDragging ? 'brightness(1.05) contrast(1.02)' : 'none',
+        willChange: isDragging ? 'transform' : 'auto',
+        backfaceVisibility: 'hidden' as const,
       }}
     >
-      <div className="w-full h-full overflow-y-auto scrollbar-hide" style={{
-        filter: isActive ? 'drop-shadow(0 0 20px rgba(255,255,255,0.1))' : 'none',
-      }}>
-        <div className="w-full min-h-full px-4 py-8" style={{
-          transform: isActive ? 'scale(1.001)' : 'scale(1)',
-          transition: 'transform 0.3s ease-out',
-        }}>
+      <div className="w-full h-full overflow-y-auto scrollbar-hide">
+        <div className="w-full min-h-full px-4 py-8">
           {React.isValidElement(children)
             ? (children as React.ReactElement<Record<string, unknown>>).props.isActive !== undefined
               ? React.cloneElement(children as ChildWithProps, {
@@ -137,8 +120,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     isTouchpad: false, // 检测是否为触控板
   });
 
-  const rafRef = useRef<number | null>(null);
-
   const handlePageChange = useCallback((newPage: number) => {
     if (newPage >= 0 && newPage < totalPages && newPage !== currentPage) {
       setCurrentPage(newPage);
@@ -175,9 +156,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       // 触控板需要更严格的条件
       const isTouchpad = state.isTouchpad;
-      const scrollThreshold = isTouchpad ? 100 : 80; // 降低阈值，让翻页更灵敏
-      const consistencyThreshold = isTouchpad ? 5 : 2; // 降低一致性要求
-      const throttleTime = isTouchpad ? 1000 : 900; // 降低节流时间，提高响应速度
+      const scrollThreshold = isTouchpad ? 80 : 60; // 降低阈值，让翻页更灵敏
+      const consistencyThreshold = isTouchpad ? 3 : 1; // 降低一致性要求
+      const throttleTime = isTouchpad ? 800 : 600; // 降低节流时间，提高响应速度
 
       // 累积滚动量
       state.accumulatedDelta += delta;
@@ -232,8 +213,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.verticalMovement = absDeltaY;
 
       // 检测滑动意图：必须是明确的垂直滑动
-      // 垂直移动量必须大于水平移动量的1.5倍，且垂直移动至少80px
-      const isVerticalSwipe = absDeltaY > absDeltaX * 1.5 && absDeltaY > 80;
+      // 垂直移动量必须大于水平移动量的1.5倍，且垂直移动至少50px
+      const isVerticalSwipe = absDeltaY > absDeltaX * 1.5 && absDeltaY > 50;
 
       if (isVerticalSwipe) {
         state.hasMovedVertically = true;
@@ -247,20 +228,15 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         }
 
         // 阻止默认行为：只有明确的垂直滑动才阻止
-        if (absDeltaY > 80 && e.cancelable) {
+        if (absDeltaY > 50 && e.cancelable) {
           e.preventDefault();
           e.stopPropagation();
           state.isScrolling = true;
         }
 
-        // 使用RAF节流
-        if (rafRef.current === null) {
-          rafRef.current = requestAnimationFrame(() => {
-            setDragOffset(deltaY);
-            setIsDragging(true);
-            rafRef.current = null;
-          });
-        }
+        // 直接设置拖动偏移，保证跟手
+        setDragOffset(deltaY);
+        setIsDragging(true);
       } else {
         // 水平滑动或滑动距离不够，不阻止默认行为
         // 允许页面内的水平滚动
@@ -279,11 +255,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
       const effectiveVelocity = Math.max(velocity, state.velocity);
 
-      // 改进的翻页条件：更严格
-      const minSwipeTime = 150;    // 增加到150ms
-      const maxSwipeTime = 1000;   // 增加到1000ms
-      const swipeThreshold = 100;  // 增加到100px
-      const velocityThreshold = 0.8; // 增加到0.8 px/ms
+      // 改进的翻页条件：更流畅
+      const minSwipeTime = 100;    // 降低到100ms
+      const maxSwipeTime = 800;   // 降低到800ms
+      const swipeThreshold = 60;  // 降低到60px
+      const velocityThreshold = 0.5; // 降低到0.5 px/ms
 
       // 只有满足所有条件才翻页：
       // 1. 有明确的垂直滑动意图
@@ -329,12 +305,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.horizontalMovement = 0;
       state.verticalMovement = 0;
 
-      // 清理RAF
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
-
       // 回弹动画
       setIsDragging(false);
       setDragOffset(0);
@@ -376,10 +346,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('keydown', handleKeyDown);
-      if (rafRef.current !== null) {
-        cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
-      }
     };
   }, [currentPage, handlePageChange, totalPages]);
 
