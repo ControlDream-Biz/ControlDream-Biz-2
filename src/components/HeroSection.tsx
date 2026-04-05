@@ -74,35 +74,17 @@ export default function HeroSection() {
                 textShadow: "0 2px 12px rgba(0,0,0,0.9)",
               }}
             >
-              <div
-                className="inline-block"
-                style={{
-                  background: "linear-gradient(90deg, #EF4444 0%, #F97316 14%, #3B82F6 28%, #6366F1 42%, #8B5CF6 56%, #EC4899 70%, #EF4444 85%, #F97316 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  backgroundSize: "200% 100%",
-                  animation: mounted ? "gradientMove 15s ease-in-out infinite alternate" : "none",
-                  WebkitAnimation: mounted ? "gradientMove 15s ease-in-out infinite alternate" : "none",
-                }}
+              <span
+                className={`inline-block ${mounted ? 'gradient-text-1' : ''}`}
               >
                 创新科技
-              </div>
+              </span>
               <br />
-              <div
-                className="inline-block mt-2"
-                style={{
-                  background: "linear-gradient(90deg, #8B5CF6 0%, #A855F7 16%, #EC4899 32%, #EF4444 48%, #F97316 64%, #3B82F6 80%, #8B5CF6 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  backgroundSize: "200% 100%",
-                  animation: mounted ? "gradientMove 18s ease-in-out infinite alternate-reverse" : "none",
-                  WebkitAnimation: mounted ? "gradientMove 18s ease-in-out infinite alternate-reverse" : "none",
-                }}
+              <span
+                className={`inline-block mt-2 ${mounted ? 'gradient-text-2' : ''}`}
               >
                 驱动未来
-              </div>
+              </span>
             </h1>
 
             <p
@@ -251,10 +233,28 @@ export default function HeroSection() {
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes gradientMove {
+      <style jsx global>{`
+        .gradient-text-1 {
+          background-image: linear-gradient(90deg, #EF4444 0%, #F97316 10%, #F59E0B 20%, #84CC16 30%, #10B981 40%, #06B6D4 50%, #0EA5E9 60%, #3B82F6 70%, #6366F1 80%, #8B5CF6 90%, #A855F7 95%, #EF4444 100%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: gradientFlow 20s linear infinite;
+        }
+
+        .gradient-text-2 {
+          background-image: linear-gradient(90deg, #8B5CF6 0%, #A855F7 10%, #D946EF 20%, #EC4899 30%, #F43F5E 40%, #EF4444 50%, #F97316 60%, #FB923C 70%, #FACC15 80%, #84CC16 90%, #8B5CF6 100%);
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: gradientFlow 25s linear infinite reverse;
+        }
+
+        @keyframes gradientFlow {
           0% { background-position: 0% 50%; }
-          100% { background-position: 100% 50%; }
+          100% { background-position: 200% 50%; }
         }
       `}</style>
     </section>
