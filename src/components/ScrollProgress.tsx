@@ -51,34 +51,39 @@ export function ScrollProgress() {
     <div
       className="fixed right-0 top-0 bottom-0 z-50 pr-4"
     >
-      {/* 圆点列表（垂直分布） */}
-      <div className="absolute right-0 top-0 bottom-0 w-6 flex flex-col items-center justify-between pt-16 pb-6">
+      {/* 圆点列表（集中显示在屏幕中央） */}
+      <div className="absolute right-0 top-0 bottom-0 w-6 flex flex-col items-center gap-5 py-6">
         {pages.map((page, index) => {
           const isCurrent = index === currentPage;
 
           return (
             <div key={page.id} className="relative w-full h-4 flex items-center justify-center">
               {/* 当前页面的中文标签（从圆点弹出） */}
-              {showLabel && isCurrent && (
-                <div
-                  className="absolute right-6 transition-all duration-500 ease-out"
-                  style={{
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                  }}
-                >
-                  <span className="text-base text-white font-bold whitespace-nowrap">
-                    {page.label}
-                  </span>
-                </div>
-              )}
+              <div
+                className={`
+                  absolute right-6 whitespace-nowrap px-3 py-1.5 rounded
+                  transition-all duration-700 ease-out
+                  ${showLabel && isCurrent
+                    ? 'opacity-100 translate-x-0'
+                    : 'opacity-0 translate-x-2 pointer-events-none'
+                  }
+                `}
+                style={{
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                }}
+              >
+                <span className="text-lg text-white font-extrabold drop-shadow-lg">
+                  {page.label}
+                </span>
+              </div>
 
               {/* 圆点 */}
               <button
                 onClick={() => scrollToSection(index)}
                 className={`
-                  w-1 h-1 rounded-full transition-all duration-300
-                  ${isCurrent ? 'bg-white scale-150' : 'bg-white/30 hover:bg-white/50'}
+                  w-1.5 h-1.5 rounded-full transition-all duration-300
+                  ${isCurrent ? 'bg-white scale-150' : 'bg-white/40 hover:bg-white/60'}
                 `}
                 aria-label={`跳转到${page.label}`}
               />
