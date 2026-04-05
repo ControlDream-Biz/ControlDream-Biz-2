@@ -72,30 +72,35 @@ export const BusinessShowcase = memo(function BusinessShowcase({
   currentPage = 0
 }: BusinessShowcaseProps) {
   const [mounted, setMounted] = useState(false);
-  const [shouldAnimate, setShouldAnimate] = useState(false); // 控制是否应该播放滚入动画
+  const [shouldAnimate, setShouldAnimate] = useState(false); // 控制小字滚入动画
   const initializedRef = useRef(false);
+  const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // 首次加载和页面切换时触发动画
   useEffect(() => {
-    // 只在首次加载时执行淡入动画
-    if (!initializedRef.current) {
-      initializedRef.current = true;
-      setMounted(true);
-      // 首次加载也触发小字滚入动画
+    // 清除之前的动画定时器
+    if (animationTimerRef.current) {
+      clearTimeout(animationTimerRef.current);
+    }
+
+    // 步骤1: 确保mounted为true
+    setMounted(true);
+
+    // 步骤2: 重置小字动画状态
+    setShouldAnimate(false);
+
+    // 步骤3: 延迟后触发小字动画（确保两次渲染之间有时间差）
+    animationTimerRef.current = setTimeout(() => {
       setShouldAnimate(true);
-    }
-  }, []);
+      animationTimerRef.current = null;
+    }, 100);
 
-  // 监听页面切换，重新触发小字滚入动画
-  useEffect(() => {
-    if (isActive) {
-      // 页面进入时，先停止动画，然后触发动画
-      setShouldAnimate(false);
-      const timer = setTimeout(() => {
-        setShouldAnimate(true);
-      }, 100); // 增加延迟确保状态重置生效
-      return () => clearTimeout(timer);
-    }
-  }, [isActive]);
+    return () => {
+      if (animationTimerRef.current) {
+        clearTimeout(animationTimerRef.current);
+      }
+    };
+  }, [isActive]); // 监听isActive变化，页面切换时重新触发
 
   // 计算滚入动画的opacity（基于shouldAnimate状态）
   const getScrollInOpacity = () => {
