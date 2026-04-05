@@ -59,7 +59,7 @@ export function ContactShowcase() {
             联系我们
           </h2>
           <p className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/60 font-light" style={textStyle}>
-            期待与您的合作
+            探索合作机会，共创产品生态
           </p>
         </div>
 
@@ -212,7 +212,7 @@ export function ContactShowcase() {
           }}
         >
           <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white/40 font-light" style={textStyle}>
-            感谢您的关注与支持
+            感谢关注，期待与您共同打造行业领先的自主产品
           </p>
         </div>
       </div>
