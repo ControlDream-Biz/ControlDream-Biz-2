@@ -22,7 +22,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
         className="fixed inset-0 transition-opacity duration-1000 ease-out pointer-events-none"
         style={{
           zIndex: -10, // 在粒子背景下方
-          opacity: mounted ? 1 : 1, // 始终显示，避免初始黑屏
+          opacity: mounted ? 0.6 : 0.6, // 降低整体不透明度到 0.6，让粒子更明显
           background: `
             radial-gradient(circle at 25% 35%, rgba(139, 92, 246, 0.45) 0%, rgba(124, 58, 237, 0.35) 15%, rgba(109, 40, 217, 0.25) 30%, rgba(99, 102, 241, 0.15) 45%, rgba(99, 102, 241, 0.08) 60%, rgba(99, 102, 241, 0.04) 75%, transparent 90%),
             radial-gradient(circle at 75% 45%, rgba(59, 130, 246, 0.45) 0%, rgba(37, 99, 235, 0.35) 15%, rgba(29, 78, 216, 0.25) 30%, rgba(99, 102, 241, 0.15) 45%, rgba(99, 102, 241, 0.08) 60%, rgba(99, 102, 241, 0.04) 75%, transparent 90%),

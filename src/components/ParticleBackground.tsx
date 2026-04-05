@@ -31,17 +31,17 @@ export function ParticleBackground() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // 创建粒子
-    const particleCount = 50;
+    // 创建粒子 - 增加粒子数量和不透明度
+    const particleCount = 70;
     const particles: Particle[] = [];
 
     for (let i = 0; i < particleCount; i++) {
       const x = Math.random() * canvas.width;
       const y = Math.random() * canvas.height;
-      const vx = (Math.random() - 0.5) * 0.5;
-      const vy = (Math.random() - 0.5) * 0.5;
-      const size = Math.random() * 2 + 1;
-      const opacity = Math.random() * 0.5 + 0.1;
+      const vx = (Math.random() - 0.5) * 0.6; // 增加速度
+      const vy = (Math.random() - 0.5) * 0.6;
+      const size = Math.random() * 3 + 1.5; // 增加大小
+      const opacity = Math.random() * 0.5 + 0.3; // 增加不透明度：0.3-0.8
 
       particles.push({ x, y, vx, vy, size, opacity });
     }
@@ -68,18 +68,20 @@ export function ParticleBackground() {
         ctx.fillStyle = `rgba(255, 255, 255, ${particle.opacity})`;
         ctx.fill();
 
-        // 绘制连线
+        // 绘制连线 - 增加连线不透明度
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[j].x - particle.x;
           const dy = particles[j].y - particle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 150) {
+          if (distance < 160) {
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 * (1 - distance / 150)})`;
-            ctx.lineWidth = 0.5;
+            // 增加连线不透明度：0.15
+            const lineOpacity = 0.15 * (1 - distance / 160);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${lineOpacity})`;
+            ctx.lineWidth = 0.6;
             ctx.stroke();
           }
         }
@@ -102,7 +104,10 @@ export function ParticleBackground() {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 pointer-events-none"
-      style={{ zIndex: 0 }}
+      style={{ 
+        zIndex: 5, // 提高到 5，确保在背景光晕之上
+        opacity: 1
+      }}
     />
   );
 }
