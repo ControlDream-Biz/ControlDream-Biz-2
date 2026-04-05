@@ -18,19 +18,13 @@ export default function HeroSection() {
       className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center"
       style={{ minHeight: 'calc(100vh - 60px)' }}
     >
-      {/* 游戏展示背景 - 直接显示，不做任何处理 */}
+      {/* 背景图 - 完全移除遮罩 */}
       <div className="absolute inset-0 -z-10">
-        {/* 主背景图 */}
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: "url('/hero-bg.jpg')",
           }}
-        />
-
-        {/* 仅在文字区域添加轻微遮罩 */}
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"
         />
       </div>
 
@@ -44,6 +38,7 @@ export default function HeroSection() {
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.8s ease-out 0.1s",
                 minHeight: "120px",
+                textShadow: "0 2px 12px rgba(0,0,0,0.9)",
               }}
             >
               <div
@@ -78,13 +73,13 @@ export default function HeroSection() {
             </h1>
 
             <p
-              className="text-base md:text-lg text-gray-200 leading-relaxed mb-8 max-w-2xl"
+              className="text-base md:text-lg text-white leading-relaxed mb-8 max-w-2xl"
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.2s",
                 minHeight: "60px",
-                textShadow: "0 2px 8px rgba(0,0,0,0.8)",
+                textShadow: "0 2px 12px rgba(0,0,0,0.9)",
               }}
             >
               我们专注于自主研发，在游戏、软件、硬件领域持续投入，
@@ -134,7 +129,7 @@ export default function HeroSection() {
             </div>
 
             <div
-              className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/30"
+              className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/50"
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
@@ -143,16 +138,16 @@ export default function HeroSection() {
               }}
             >
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}>8+</div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>年持续投入</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}>8+</div>
+                <div className="text-xs text-white uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>年持续投入</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}>30+</div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>自研产品</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}>30+</div>
+                <div className="text-xs text-white uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>自研产品</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}>20+</div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>核心团队</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}>20+</div>
+                <div className="text-xs text-white uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>核心团队</div>
               </div>
             </div>
           </div>
