@@ -433,10 +433,10 @@ export default function FloatingButtons() {
         btn.style.backgroundColor = 'rgba(239, 68, 68, 0.25)';
       });
 
-      // 延迟更改图标，避免与背景色变化同时触发
+      // 延迟更改图标，避免与背景色变化同时触发 - 极快速度
       setTimeout(() => {
         btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>';
-      }, 150);
+      }, 50); // 从 150ms 改为 50ms，极快速度
       shouldHidePopup.current = false;
     } else {
       // 先恢复图标，然后隐藏弹窗

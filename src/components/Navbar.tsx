@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
 import Image from 'next/image';
 
 export function Navbar() {
@@ -95,27 +94,111 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Mobile Menu Button - 完全照搬苹果官网移动端设计 */}
+        {/* Mobile Menu Button - 极快弹性动画，三个横杠变成两个竖杠（X） */}
         <button
           onClick={(e) => {
             e.stopPropagation();
             setMobileMenuOpen(!mobileMenuOpen);
           }}
-          className="lg:hidden w-10 h-10 sm:w-11 sm:h-11 bg-black/30 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all duration-300 select-none active:scale-95"
+          className="lg:hidden w-10 h-10 sm:w-11 sm:h-11 bg-black/30 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all duration-150 select-none active:scale-95"
         >
-          {mobileMenuOpen ? (
-            <X className="w-5 h-5 text-white" strokeWidth={1.5} />
-          ) : (
-            <Menu className="w-5 h-5 text-white" strokeWidth={1.5} />
-          )}
+          {/* 自定义SVG动画：三个横杠 ↔ 两个竖杠（X） */}
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-white"
+            style={{
+              transition: 'transform 0.12s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+          >
+            {mobileMenuOpen ? (
+              <>
+                {/* 上横杠：旋转45度并向下移动 */}
+                <line
+                  x1="4"
+                  y1="6"
+                  x2="20"
+                  y2="6"
+                  style={{
+                    transformOrigin: 'center',
+                    transform: 'rotate(45deg) translate(0, 6px)',
+                    transition: 'all 0.12s cubic-bezier(0.4, 0, 0.2, 1)',
+                  }}
+                />
+                {/* 中横杠：消失（透明度为0） */}
+                <line
+                  x1="4"
+                  y1="12"
+                  x2="20"
+                  y2="12"
+                  style={{
+                    opacity: 0,
+                    transition: 'opacity 0.08s cubic-bezier(0.4, 0, 0.2, 1)',
+                  }}
+                />
+                {/* 下横杠：旋转-45度并向上移动 */}
+                <line
+                  x1="4"
+                  y1="18"
+                  x2="20"
+                  y2="18"
+                  style={{
+                    transformOrigin: 'center',
+                    transform: 'rotate(-45deg) translate(0, -6px)',
+                    transition: 'all 0.12s cubic-bezier(0.4, 0, 0.2, 1)',
+                  }}
+                />
+              </>
+            ) : (
+              <>
+                {/* 三个横杠 */}
+                <line
+                  x1="4"
+                  y1="6"
+                  x2="20"
+                  y2="6"
+                  style={{
+                    transformOrigin: 'center',
+                    transition: 'all 0.12s cubic-bezier(0.4, 0, 0.2, 1)',
+                  }}
+                />
+                <line
+                  x1="4"
+                  y1="12"
+                  x2="20"
+                  y2="12"
+                  style={{
+                    opacity: 1,
+                    transition: 'opacity 0.12s cubic-bezier(0.4, 0, 0.2, 1)',
+                  }}
+                />
+                <line
+                  x1="4"
+                  y1="18"
+                  x2="20"
+                  y2="18"
+                  style={{
+                    transformOrigin: 'center',
+                    transition: 'all 0.12s cubic-bezier(0.4, 0, 0.2, 1)',
+                  }}
+                />
+              </>
+            )}
+          </svg>
         </button>
       </nav>
 
-      {/* Mobile Menu - 完全照搬苹果官网移动端全屏菜单设计 */}
+      {/* Mobile Menu - 透明玻璃效果 */}
       {mobileMenuOpen && (
         <div
           onClick={() => setMobileMenuOpen(false)}
-          className="lg:hidden fixed top-0 left-0 right-0 bottom-0 z-40 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center gap-8 transition-opacity duration-300"
+          className="lg:hidden fixed top-0 left-0 right-0 bottom-0 z-40 bg-black/80 backdrop-blur-2xl flex flex-col items-center justify-center gap-8 transition-opacity duration-300"
         >
           {navItems.map((item) => (
             <button
