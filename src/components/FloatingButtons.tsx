@@ -227,7 +227,7 @@ export default function FloatingButtons() {
       <!-- iOS 16风格标题栏 -->
       <div style="
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%);
-        padding: 9px 10px 7px 10px;
+        padding: 6px 8px 5px 8px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.08);
         position: relative;
       ">
@@ -235,7 +235,7 @@ export default function FloatingButtons() {
           <div>
             <h3 style="
               font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
-              font-size: 13px;
+              font-size: 10px;
               font-weight: 600;
               margin: 0;
               letter-spacing: -0.3px;
@@ -244,7 +244,7 @@ export default function FloatingButtons() {
             ">在线客服</h3>
             <p style="
               font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif;
-              font-size: 10px;
+              font-size: 8px;
               margin: 1px 0 0 0;
               font-weight: 400;
               color: rgba(255, 255, 255, 0.85);
@@ -252,13 +252,13 @@ export default function FloatingButtons() {
             ">我们随时为您服务</p>
           </div>
           <button id="close-popup-btn" type="button" style="
-            width: 15px;
-            height: 15px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.12);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: rgba(255, 255, 255, 0.9);
-            font-size: 9px;
+            font-size: 7px;
             cursor: pointer;
             padding: 0;
             margin: 0;
@@ -276,7 +276,7 @@ export default function FloatingButtons() {
               width: 100%;
               height: 100%;
               font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
-              font-size: 8px;
+              font-size: 7px;
               font-weight: 300;
             ">✕</span>
           </button>
@@ -291,23 +291,23 @@ export default function FloatingButtons() {
         <div class="service-item" style="
           display: flex;
           align-items: center;
-          gap: 7px;
-          padding: 8px 10px;
+          gap: 5px;
+          padding: 5px 8px;
           cursor: pointer;
           transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
           border-bottom: 1px solid rgba(0, 0, 0, 0.06);
           transform: translateZ(0);
         ">
           <div style="
-            width: 19px;
-            height: 19px;
+            width: 16px;
+            height: 16px;
             background: linear-gradient(135deg, rgba(59, 130, 246, 0.2) 0%, rgba(99, 102, 241, 0.15) 100%);
             backdrop-filter: blur(12px);
-            border-radius: 6px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 9px;
             flex-shrink: 0;
             box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -317,15 +317,15 @@ export default function FloatingButtons() {
               font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
               font-weight: 600;
               color: #ffffff;
-              font-size: 11px;
+              font-size: 10px;
               text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
               letter-spacing: -0.2px;
             ">在线咨询</div>
             <div style="
               font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
-              font-size: 9px;
+              font-size: 8px;
               color: rgba(255, 255, 255, 0.75);
-              margin-top: 1px;
+              margin-top: 0px;
               text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
             ">即时回复</div>
           </div>
@@ -335,23 +335,23 @@ export default function FloatingButtons() {
         <div class="service-item" style="
           display: flex;
           align-items: center;
-          gap: 7px;
-          padding: 8px 10px;
+          gap: 5px;
+          padding: 5px 8px;
           cursor: pointer;
           transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
           border-bottom: 1px solid rgba(0, 0, 0, 0.06);
           transform: translateZ(0);
         ">
           <div style="
-            width: 19px;
-            height: 19px;
+            width: 16px;
+            height: 16px;
             background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(220, 38, 38, 0.15) 100%);
             backdrop-filter: blur(12px);
-            border-radius: 6px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 9px;
             flex-shrink: 0;
             color: #fca5a5;
             box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
@@ -362,15 +362,15 @@ export default function FloatingButtons() {
               font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
               font-weight: 600;
               color: #ffffff;
-              font-size: 11px;
+              font-size: 10px;
               text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
               letter-spacing: -0.2px;
             ">电话咨询</div>
             <div style="
               font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
-              font-size: 9px;
+              font-size: 8px;
               color: rgba(255, 255, 255, 0.75);
-              margin-top: 1px;
+              margin-top: 0px;
               text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
             ">400-123-4567</div>
           </div>
@@ -380,22 +380,22 @@ export default function FloatingButtons() {
         <div class="service-item" style="
           display: flex;
           align-items: center;
-          gap: 7px;
-          padding: 8px 10px;
+          gap: 5px;
+          padding: 5px 8px;
           cursor: pointer;
           transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
           transform: translateZ(0);
         ">
           <div style="
-            width: 19px;
-            height: 19px;
+            width: 16px;
+            height: 16px;
             background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(124, 58, 237, 0.15) 100%);
             backdrop-filter: blur(12px);
-            border-radius: 6px;
+            border-radius: 5px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 10px;
+            font-size: 9px;
             flex-shrink: 0;
             color: #c4b5fd;
             box-shadow: 0 4px 12px rgba(139, 92, 246, 0.15);
@@ -406,15 +406,15 @@ export default function FloatingButtons() {
               font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
               font-weight: 600;
               color: #ffffff;
-              font-size: 11px;
+              font-size: 10px;
               text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
               letter-spacing: -0.2px;
             ">邮件咨询</div>
             <div style="
               font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
-              font-size: 9px;
+              font-size: 8px;
               color: rgba(255, 255, 255, 0.75);
-              margin-top: 1px;
+              margin-top: 0px;
               text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
             ">contact@chuangmeng.com</div>
           </div>
@@ -425,12 +425,12 @@ export default function FloatingButtons() {
       <div style="
         background: rgba(255, 255, 255, 0.03);
         border-top: 1px solid rgba(0, 0, 0, 0.06);
-        padding: 7px 10px;
+        padding: 5px 8px;
         text-align: center;
       ">
         <p style="
           font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', sans-serif;
-          font-size: 8px;
+          font-size: 7px;
           color: rgba(255, 255, 255, 0.65);
           font-weight: 400;
           margin: 0;
@@ -444,6 +444,23 @@ export default function FloatingButtons() {
     buttonGroup.appendChild(customerServicePopup);
     buttonGroup.appendChild(backToTopBtn);
     buttonGroup.appendChild(customerServiceBtn);
+
+    // 添加点击空白处关闭弹窗
+    const handleOutsideClick = (e: MouseEvent) => {
+      const popup = document.getElementById('customer-service-popup') as HTMLElement;
+      const btn = document.getElementById('customer-service-btn') as HTMLButtonElement;
+
+      if (!popup || !btn) return;
+
+      // 如果点击的不是弹窗内部或客服按钮，则关闭弹窗
+      if (popup.style.display === 'block' &&
+          !popup.contains(e.target as Node) &&
+          !btn.contains(e.target as Node)) {
+        setIsCustomerServiceOpen(false);
+      }
+    };
+
+    document.addEventListener('click', handleOutsideClick);
 
     // 添加弹窗内部元素的悬停效果
     const addHoverEffects = () => {
@@ -487,6 +504,7 @@ export default function FloatingButtons() {
 
     // 清理函数
     return () => {
+      document.removeEventListener('click', handleOutsideClick);
       if (document.body.contains(buttonGroup)) {
         document.body.removeChild(buttonGroup);
       }
