@@ -40,36 +40,36 @@ export function Navbar() {
 
   return (
     <>
-      {/* 左上角 Logo + 公司名称 - 苹果官网式布局，完全照搬移动端设计 */}
+      {/* 左上角 Logo + 公司名称 - 苹果官网式布局，移动端尺寸优化 */}
       <div
         onClick={() => scrollToSection('#home', 0)}
         className="fixed top-4 left-4 z-50 flex items-center gap-1 sm:gap-2 hover:opacity-90 transition-opacity cursor-pointer group select-none"
       >
-        {/* LOGO - 透明背景，白色线条，响应式尺寸 - 苹果官网移动端尺寸 */}
-        <div className="relative w-6 h-6 flex-shrink-0 sm:w-10 sm:h-10 lg:w-12 lg:h-12">
+        {/* LOGO - 透明背景，白色线条，响应式尺寸 - 移动端增大 */}
+        <div className="relative w-8 h-8 flex-shrink-0 sm:w-10 sm:h-10 lg:w-12 lg:h-12">
           <Image
             src="/logo-cm-transparent.png"
             alt="创梦计算机系统有限公司"
             fill
             className="object-contain"
-            sizes="(max-width: 640px) 24px, (max-width: 1024px) 40px, 48px"
+            sizes="(max-width: 640px) 32px, (max-width: 1024px) 40px, 48px"
             priority
           />
         </div>
 
-        {/* 公司名称 - 移动端和桌面端都显示，完全照搬苹果官网响应式字体大小 */}
+        {/* 公司名称 - 移动端和桌面端都显示 */}
         <div className="flex flex-col justify-center">
-          {/* 中文公司名 - 完全照搬苹果官网移动端字体大小 */}
-          <div className="text-[9px] font-bold text-white tracking-tight leading-tight mb-0.5 sm:text-sm lg:text-base select-none" style={fontStyles}>
+          {/* 中文公司名 - 移动端增大 */}
+          <div className="text-[11px] font-bold text-white tracking-tight leading-tight mb-0.5 sm:text-sm lg:text-base select-none" style={fontStyles}>
             创梦计算机系统有限公司
           </div>
 
-          {/* 英文副标题 - 宽度与中文对齐，完全照搬苹果官网移动端字体大小 */}
+          {/* 英文副标题 - 移动端缩小，宽度与中文对齐 */}
           <div
-            className="text-[6px] sm:text-[8px] lg:text-[10px] text-white/70 font-medium uppercase select-none"
+            className="text-[5px] sm:text-[8px] lg:text-[10px] text-white/70 font-medium uppercase select-none"
             style={{
               ...fontStyles,
-              letterSpacing: '0.12em'
+              letterSpacing: '0.2em'
             }}
           >
             <span className="hidden sm:inline" style={{ letterSpacing: '0.15em' }}>

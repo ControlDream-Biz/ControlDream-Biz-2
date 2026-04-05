@@ -729,6 +729,20 @@ div[data-scroll-animate] {
   animation: glowPulse 3s ease-in-out infinite;
 }
 
+/* 上下缓慢抖动的呼吸效果 */
+@keyframes breathing {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.animate-breathing {
+  animation: breathing 4s ease-in-out infinite;
+}
+
 /* 分字符动画 */
 .char-animate {
   display: inline-block;
