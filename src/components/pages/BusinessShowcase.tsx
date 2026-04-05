@@ -72,7 +72,28 @@ export const BusinessShowcase = memo(function BusinessShowcase({
   currentPage = 0
 }: BusinessShowcaseProps) {
   const [mounted, setMounted] = useState(false);
+  const [pageMounted, setPageMounted] = useState(false);
   const initializedRef = useRef(false);
+
+  useEffect(() => {
+    // 只在首次加载时执行淡入动画
+    if (!initializedRef.current) {
+      initializedRef.current = true;
+      setMounted(true);
+    }
+  }, []);
+
+  // 监听页面切换，重新触发小字滚入动画
+  useEffect(() => {
+    if (isActive) {
+      // 页面进入时，先重置动画状态，然后触发动画
+      setPageMounted(false);
+      const timer = setTimeout(() => {
+        setPageMounted(true);
+      }, 50); // 小延迟确保重置生效
+      return () => clearTimeout(timer);
+    }
+  }, [isActive]);
 
   // 计算滑动淡入效果 - 小字随滑动产生淡入动画
   const getSlideFadeOpacity = (itemIndex: number) => {
@@ -217,7 +238,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
                   </div>
 
                   {/* 小字列表 - 腾讯式从右向左滚动淡入 + 滑动淡入 */}
-                  <div key={`items-${isActive}`} className="space-y-2 sm:space-y-3 mt-4 sm:mt-6">
+                  <div key={`items-${pageMounted}`} className="space-y-2 sm:space-y-3 mt-4 sm:mt-6">
                     {business.items.map((item, i) => {
                       const slideFadeOpacity = getSlideFadeOpacity(i);
                       return (
@@ -225,9 +246,9 @@ export const BusinessShowcase = memo(function BusinessShowcase({
                           key={i}
                           className="flex items-start space-x-2 sm:space-x-3 transition-all duration-800 ease-out"
                           style={{
-                            transform: mounted ? 'translateX(0)' : 'translateX(4rem)',
-                            opacity: mounted ? slideFadeOpacity : 0,
-                            transitionDelay: `${mounted ? (0.6 + i * 0.12) : 0}s`,
+                            transform: pageMounted ? 'translateX(0)' : 'translateX(4rem)',
+                            opacity: pageMounted ? slideFadeOpacity : 0,
+                            transitionDelay: `${pageMounted ? (0.6 + i * 0.12) : 0}s`,
                             transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                           }}
                         >

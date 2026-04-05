@@ -90,6 +90,7 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
   currentPage = 0
 }: EnvironmentShowcaseProps) {
   const [mounted, setMounted] = useState(false);
+  const [pageMounted, setPageMounted] = useState(false);
   const initializedRef = useRef(false);
 
   // 计算滑动淡入效果 - 小字随滑动产生淡入动画
@@ -136,6 +137,18 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
       setMounted(true);
     }
   }, []);
+
+  // 监听页面切换，重新触发小字滚入动画
+  useEffect(() => {
+    if (isActive) {
+      // 页面进入时，先重置动画状态，然后触发动画
+      setPageMounted(false);
+      const timer = setTimeout(() => {
+        setPageMounted(true);
+      }, 50); // 小延迟确保重置生效
+      return () => clearTimeout(timer);
+    }
+  }, [isActive]);
 
   // 不在页面切换时重置mounted，避免页面闪烁
   // 小字动画使用slideFadeOpacity计算，不依赖mounted重置
@@ -217,7 +230,7 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                 </p>
 
                 {/* 小字列表 - 腾讯式从右向左滚动淡入 + 滑动淡入 */}
-                <div key={`items-${isActive}`} className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
+                <div key={`items-${pageMounted}`} className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
                   {area.items.map((item, i) => {
                     const slideFadeOpacity = getSlideFadeOpacity(i);
                     return (
@@ -225,8 +238,8 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                         key={i}
                         className="flex items-start space-x-2 sm:space-x-3 transition-all duration-800 ease-out"
                         style={{
-                          transform: mounted ? 'translateX(0)' : 'translateX(4rem)',
-                          opacity: mounted ? slideFadeOpacity : 0,
+                          transform: pageMounted ? 'translateX(0)' : 'translateX(4rem)',
+                          opacity: pageMounted ? slideFadeOpacity : 0,
                           transitionDelay: `${mounted ? (0.6 + i * 0.12) : 0}s`,
                           transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                         }}
