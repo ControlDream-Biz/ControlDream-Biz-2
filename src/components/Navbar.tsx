@@ -59,14 +59,14 @@ export function Navbar() {
 
         {/* 公司名称 - 移动端和桌面端都显示，响应式字体大小 */}
         <div className="flex flex-col justify-center">
-          {/* 中文公司名 - 响应式字体大小 */}
-          <div className="text-xs font-bold text-white tracking-tight leading-tight mb-0.5 sm:text-base select-none" style={fontStyles}>
+          {/* 中文公司名 - 响应式字体大小，苹果官网移动端风格 */}
+          <div className="text-[10px] font-bold text-white tracking-tight leading-tight mb-0.5 sm:text-base select-none" style={fontStyles}>
             创梦计算机系统有限公司
           </div>
 
-          {/* 英文副标题 - 宽度与中文对齐，响应式字体大小 */}
+          {/* 英文副标题 - 宽度与中文对齐，响应式字体大小，苹果官网移动端风格 */}
           <div
-            className="text-[8px] sm:text-[10px] text-white/70 font-medium uppercase select-none"
+            className="text-[7px] sm:text-[10px] text-white/70 font-medium uppercase select-none"
             style={{
               ...fontStyles,
               letterSpacing: '0.15em'
