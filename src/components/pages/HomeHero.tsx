@@ -60,7 +60,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
               filter: 'drop-shadow(0 0 20px rgba(239, 68, 68, 0.3))',
             }}
           >
-            自主游戏产品
+            游戏创新
           </h2>
           <h2
             className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-2 inline-block"
@@ -73,7 +73,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
               filter: 'drop-shadow(0 0 20px rgba(99, 102, 241, 0.3))',
             }}
           >
-            自主软件产品
+            软件赋能
           </h2>
           <h2
             className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-3 inline-block"
@@ -86,7 +86,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
               filter: 'drop-shadow(0 0 20px rgba(6, 182, 212, 0.3))',
             }}
           >
-            自主硬件产品
+            硬件智造
           </h2>
         </div>
 
@@ -100,7 +100,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
             transition: 'all 1000ms ease-out',
           }}
         >
-          专注自主产品研发与运营，打造完整的自主产品生态体系
+          三驾马车驱动自主创新
         </p>
 
         {/* 核心理念 */}
