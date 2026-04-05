@@ -284,8 +284,8 @@ export function ParticleBackground() {
         particle.opacity = Math.max(isMobile ? 0.3 : 0.4, Math.min(isMobile ? 0.8 : 0.9, particle.opacity));
       });
 
-      // 增大连线距离，减少线条数量
-      const connectionDistance = isMobile ? 300 : 400;
+      // 最初连线距离
+      const connectionDistance = isMobile ? 150 : 200;
 
       const connectionElements: JSX.Element[] = [];
       // 移除移动端粒子数量限制，所有设备都显示线条
