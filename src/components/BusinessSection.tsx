@@ -238,7 +238,7 @@ export default function BusinessSection() {
   ];
 
   return (
-    <section id="business" className="py-20 md:py-24 relative overflow-hidden">
+    <section id="business" className="py-20 md:py-24 relative overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(15, 15, 25, 0.7) 0%, rgba(25, 25, 40, 0.5) 50%, rgba(15, 15, 25, 0.7) 100%)", backdropFilter: "blur(10px)" }}>
       <div className="container mx-auto px-4 md:px-6 relative z-10" ref={businessSectionRef}>
         {/* Section Header */}
         <div
@@ -248,10 +248,10 @@ export default function BusinessSection() {
             transform: mounted ? 'translateY(0)' : 'translateY(30px)'
           }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-4 font-sans">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-3 md:mb-4 font-sans" style={{ filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.8))", letterSpacing: "-0.02em" }}>
             三大产品领域
           </h2>
-          <p className="text-base md:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto font-sans">
+          <p className="text-base md:text-lg lg:text-xl text-white/90 max-w-2xl mx-auto font-sans font-semibold" style={{ filter: "drop-shadow(0 1px 4px rgba(0,0,0,0.8))" }}>
             在自己擅长的领域深耕，做好每一款产品
           </p>
         </div>
@@ -263,11 +263,14 @@ export default function BusinessSection() {
             return (
               <Card
                 key={index}
-                className="group hover:shadow-2xl transition-all duration-500 border-2 border-gray-100 hover:border-transparent overflow-hidden glass-card cursor-pointer hover-lift mouse-glow card-3d"
+                className="group hover:shadow-2xl transition-all duration-500 border-2 border-white/10 hover:border-transparent overflow-hidden glass-card cursor-pointer hover-lift mouse-glow card-3d"
                 data-business-card
                 style={{
                   borderRadius: '20px',
-                  boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)',
+                  background: "linear-gradient(135deg, rgba(20, 20, 30, 0.8) 0%, rgba(30, 30, 45, 0.6) 100%)",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2)',
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(40px)',
                   transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
@@ -275,11 +278,11 @@ export default function BusinessSection() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-8px) scale(1.02) rotateX(2deg)';
-                  e.currentTarget.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.12), 0 8px 20px rgba(0, 0, 0, 0.06)';
+                  e.currentTarget.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.3)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0) scale(1) rotateX(0deg)';
-                  e.currentTarget.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)';
+                  e.currentTarget.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2)';
                 }}
               >
                 <div className={`absolute inset-0 bg-gradient-to-br ${business.color} opacity-0 group-hover:opacity-5 transition-opacity`} />
@@ -299,25 +302,28 @@ export default function BusinessSection() {
 
                 <CardContent className="p-5 md:p-8 relative">
                   {/* Icon */}
-                  <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-gradient-to-br ${business.color} flex items-center justify-center mb-4 md:mb-5 shadow-xl -mt-10 md:-mt-12 relative z-10 border-4 border-white transition-all duration-400 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-2xl`}>
+                  <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-gradient-to-br ${business.color} flex items-center justify-center mb-4 md:mb-5 shadow-xl -mt-10 md:-mt-12 relative z-10 border-4 border-gray-800 transition-all duration-400 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-2xl`}>
                     <Icon className="w-6 h-6 md:w-7 md:h-7 text-white" />
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-1 font-sans opacity-0 transition-all duration-600 ease-out" style={{
-                    transform: 'translateY(10px)'
+                  <h3 className="text-xl md:text-2xl font-black text-white mb-1 font-sans opacity-0 transition-all duration-600 ease-out" style={{
+                    transform: 'translateY(10px)',
+                    filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.8))"
                   }} data-business-title>
                     {business.title}
                   </h3>
-                  <p className="text-xs md:text-sm text-gray-500 mb-3 md:mb-4 font-medium font-sans opacity-0 transition-all duration-600 ease-out" style={{
-                    transform: 'translateY(10px)'
+                  <p className="text-xs md:text-sm text-white/80 mb-3 md:mb-4 font-bold font-sans opacity-0 transition-all duration-600 ease-out" style={{
+                    transform: 'translateY(10px)',
+                    filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.8))"
                   }} data-business-subtitle>
                     {business.subtitle}
                   </p>
 
                   {/* Description */}
-                  <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-4 md:mb-6 font-sans opacity-0 transition-all duration-600 ease-out" style={{
-                    transform: 'translateY(10px)'
+                  <p className="text-sm md:text-base text-white/90 leading-relaxed mb-4 md:mb-6 font-sans opacity-0 transition-all duration-600 ease-out font-medium" style={{
+                    transform: 'translateY(10px)',
+                    filter: "drop-shadow(0 1px 4px rgba(0,0,0,0.8))"
                   }} data-business-desc>
                     {business.description}
                   </p>
@@ -327,9 +333,10 @@ export default function BusinessSection() {
                     {business.features.map((feature, i) => (
                       <div
                         key={i}
-                        className="flex items-center space-x-2 text-xs md:text-sm text-gray-700 font-sans opacity-0 transition-all duration-600 ease-out"
+                        className="flex items-center space-x-2 text-xs md:text-sm text-white/90 font-sans font-semibold opacity-0 transition-all duration-600 ease-out"
                         style={{
-                          transform: 'translateX(1rem)'
+                          transform: 'translateX(1rem)',
+                          filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.8))"
                         }}
                         data-business-feature
                       >
@@ -340,14 +347,14 @@ export default function BusinessSection() {
                   </div>
 
                   {/* Stats */}
-                  <div className="pt-3 md:pt-4 border-t border-gray-200 opacity-0 transition-all duration-600 ease-out" style={{
+                  <div className="pt-3 md:pt-4 border-t border-white/20 opacity-0 transition-all duration-600 ease-out" style={{
                     transform: 'translateY(10px)'
                   }} data-business-stats>
                     <div className="flex items-baseline space-x-2">
-                      <span className={`text-2xl md:text-3xl font-bold bg-gradient-to-r ${business.color} bg-clip-text text-transparent font-sans`}>
+                      <span className={`text-2xl md:text-3xl font-black bg-gradient-to-r ${business.color} bg-clip-text text-transparent font-sans`} style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.8))" }}>
                         {business.stats.value}
                       </span>
-                      <span className="text-xs md:text-sm text-gray-600 font-sans">{business.stats.label}</span>
+                      <span className="text-xs md:text-sm text-white/90 font-sans font-bold" style={{ filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.8))" }}>{business.stats.label}</span>
                     </div>
                   </div>
                 </CardContent>

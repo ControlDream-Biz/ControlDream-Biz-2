@@ -144,7 +144,7 @@ export default function EnvironmentSection() {
   ];
 
   return (
-    <section id="environment" className="py-20 md:py-24 relative overflow-hidden" ref={sectionRef}>
+    <section id="environment" className="py-20 md:py-24 relative overflow-hidden" style={{ background: "linear-gradient(135deg, rgba(15, 15, 25, 0.7) 0%, rgba(25, 25, 40, 0.5) 50%, rgba(15, 15, 25, 0.7) 100%)", backdropFilter: "blur(10px)" }} ref={sectionRef}>
 
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         {/* Section Header */}
@@ -155,17 +155,17 @@ export default function EnvironmentSection() {
             transform: mounted ? 'translateY(0)' : 'translateY(30px)'
           }}
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 md:mb-4 font-sans">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white mb-3 md:mb-4 font-sans" style={{ filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.8))", letterSpacing: "-0.02em" }}>
             办公环境
           </h2>
-          <p className="text-base md:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto font-sans">
+          <p className="text-base md:text-lg lg:text-xl text-white/90 max-w-2xl mx-auto font-sans font-semibold" style={{ filter: "drop-shadow(0 1px 4px rgba(0,0,0,0.8))" }}>
             为团队创造一个舒适的工作环境
           </p>
         </div>
 
         {/* Feature Highlight - Front Desk */}
         <div
-          className="mb-12 md:mb-16 bg-gradient-to-br from-blue-50/90 to-gray-50/90 backdrop-blur-md rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12 glass-card transition-all duration-1000 ease-out"
+          className="mb-12 md:mb-16 bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-md rounded-2xl md:rounded-3xl p-6 md:p-8 lg:p-12 glass-card transition-all duration-1000 ease-out border border-white/10"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(40px)',
@@ -175,22 +175,22 @@ export default function EnvironmentSection() {
           <div className="grid lg:grid-cols-1 gap-6 md:gap-8">
             <div className="text-center">
               {/* Info Card */}
-              <div className="inline-flex bg-white/90 backdrop-blur-md rounded-xl shadow-xl p-4 md:p-6 mb-6 md:mb-8">
+              <div className="inline-flex bg-gray-700/90 backdrop-blur-md rounded-xl shadow-xl p-4 md:p-6 mb-6 md:mb-8 border border-white/10">
                 <div className="flex items-center space-x-3 md:space-x-4">
                   <div className="w-12 h-12 md:w-14 md:h-14 bg-blue-600 rounded-full flex items-center justify-center">
                     <Mail className="w-6 h-6 md:w-7 md:h-7 text-white" />
                   </div>
                   <div>
-                    <div className="font-bold text-gray-900 text-base md:text-lg font-sans">前台接待</div>
-                    <div className="text-xs md:text-sm text-gray-600 font-sans">Welcome Area</div>
+                    <div className="font-black text-white text-base md:text-lg font-sans" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.8))" }}>前台接待</div>
+                    <div className="text-xs md:text-sm text-white/80 font-sans font-semibold" style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.8))" }}>Welcome Area</div>
                   </div>
                 </div>
               </div>
 
-              <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 md:mb-6 font-sans">
+              <h3 className="text-2xl md:text-3xl font-black text-white mb-4 md:mb-6 font-sans" style={{ filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.8))" }}>
                 简约大方的前台
               </h3>
-              <p className="text-sm md:text-base text-gray-600 leading-relaxed max-w-3xl mx-auto font-sans">
+              <p className="text-sm md:text-base text-white/90 leading-relaxed max-w-3xl mx-auto font-sans font-medium" style={{ filter: "drop-shadow(0 1px 4px rgba(0,0,0,0.8))" }}>
                 前台是我们公司的第一印象，我们采用简约大方的设计风格，
                 融入公司LOGO，营造出专业、整洁的接待氛围。
               </p>
@@ -200,7 +200,7 @@ export default function EnvironmentSection() {
                     transform: 'translateY(10px)'
                   }}>
                     <div className="w-2 h-2 bg-blue-600 rounded-full"></div>
-                    <span className="text-gray-700 font-sans">{feature}</span>
+                    <span className="text-white/90 font-sans font-semibold" style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.8))" }}>{feature}</span>
                   </div>
                 ))}
               </div>
@@ -216,11 +216,12 @@ export default function EnvironmentSection() {
             return (
               <div
                 key={areaIndex}
-                className="group relative bg-white/90 backdrop-blur-md border-2 border-gray-100 rounded-xl md:rounded-2xl overflow-hidden hover:border-blue-500 hover:shadow-2xl transition-all duration-500 glass-card cursor-pointer hover-lift mouse-glow card-3d"
+                className="group relative backdrop-blur-md border-2 border-white/10 rounded-xl md:rounded-2xl overflow-hidden hover:border-purple-500 hover:shadow-2xl transition-all duration-500 glass-card cursor-pointer hover-lift mouse-glow card-3d"
                 data-office-card
                 style={{
-                  boxShadow: '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)',
+                  boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2)',
                   borderRadius: '20px',
+                  background: "linear-gradient(135deg, rgba(20, 20, 30, 0.8) 0%, rgba(30, 30, 45, 0.6) 100%)",
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(40px)',
                   transition: 'opacity 0.8s ease-out, transform 0.8s ease-out',
@@ -228,11 +229,11 @@ export default function EnvironmentSection() {
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-6px) scale(1.015)';
-                  e.currentTarget.style.boxShadow = '0 20px 60px rgba(59, 130, 246, 0.15), 0 8px 20px rgba(0, 0, 0, 0.08)';
+                  e.currentTarget.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.4), 0 8px 20px rgba(0, 0, 0, 0.3)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = 'translateY(0) scale(1)';
-                  e.currentTarget.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.03)';
+                  e.currentTarget.style.boxShadow = '0 10px 40px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.2)';
                 }}
               >
                 {/* Image */}
@@ -245,10 +246,10 @@ export default function EnvironmentSection() {
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   ) : (
-                    <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-gradient-to-br from-gray-700 to-gray-800 flex items-center justify-center">
                       <div className="text-center">
                         <Icon className="w-10 h-10 md:w-12 md:h-12 text-gray-400 mx-auto mb-2" />
-                        <p className="text-xs md:text-sm font-medium text-gray-600 font-sans">{area.title}</p>
+                        <p className="text-xs md:text-sm font-medium text-gray-400 font-sans">{area.title}</p>
                       </div>
                     </div>
                   )}
@@ -257,11 +258,13 @@ export default function EnvironmentSection() {
 
                 {/* Content */}
                 <div className="p-5 md:p-6">
-                  <h4 className="text-lg md:text-xl font-bold text-gray-900 mb-2 font-sans opacity-0 transition-all duration-600 ease-out" style={{
-                    transform: 'translateY(10px)'
+                  <h4 className="text-lg md:text-xl font-black text-white mb-2 font-sans opacity-0 transition-all duration-600 ease-out" style={{
+                    transform: 'translateY(10px)',
+                    filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.8))"
                   }}>{area.title}</h4>
-                  <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-3 md:mb-4 font-sans opacity-0 transition-all duration-600 ease-out" style={{
-                    transform: 'translateY(10px)'
+                  <p className="text-sm md:text-base text-white/90 leading-relaxed mb-3 md:mb-4 font-sans opacity-0 transition-all duration-600 ease-out font-medium" style={{
+                    transform: 'translateY(10px)',
+                    filter: "drop-shadow(0 1px 4px rgba(0,0,0,0.8))"
                   }}>
                     {area.description}
                   </p>
@@ -269,9 +272,10 @@ export default function EnvironmentSection() {
                     {area.features.map((feature, i) => (
                       <div
                         key={i}
-                        className="flex items-center space-x-2 text-xs md:text-sm text-gray-600 font-sans opacity-0 transition-all duration-600 ease-out"
+                        className="flex items-center space-x-2 text-xs md:text-sm text-white/90 font-sans font-semibold opacity-0 transition-all duration-600 ease-out"
                         style={{
-                          transform: 'translateX(1rem)'
+                          transform: 'translateX(1rem)',
+                          filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.8))"
                         }}
                         data-feature-item
                       >
