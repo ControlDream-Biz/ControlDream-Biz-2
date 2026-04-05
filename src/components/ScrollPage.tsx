@@ -61,10 +61,10 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
     <div
       className="fixed inset-0 overflow-hidden"
       style={{
-        zIndex: isActive ? 10 : 1,
+        zIndex: isActive ? 10 : 0,
       }}
     >
-      {/* 背景层 - 只有首页有彩色背景，参与滑动 */}
+      {/* 背景层 - 只有首页有深紫蓝调渐变背景，参与滑动 */}
       {isHome && (
         <div
           style={{
@@ -76,8 +76,22 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
             position: 'absolute',
             inset: 0,
             zIndex: 1,
+            background: 'linear-gradient(135deg, #1a1d2e 0%, #2d2b4a 50%, #1f1a2e 100%)',
           }}
-        />
+        >
+          {/* 右下角纤细装饰线条 */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+              width: '30vw',
+              height: '1px',
+              background: 'linear-gradient(270deg, rgba(255,255,255,0.15) 0%, transparent 100%)',
+              transformOrigin: 'bottom right',
+            }}
+          />
+        </div>
       )}
 
       {/* 内容层 - 所有页面都参与滑动 */}

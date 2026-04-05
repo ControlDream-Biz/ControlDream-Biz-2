@@ -374,7 +374,7 @@ export function ParticleBackground() {
   return (
     <svg
       ref={svgRef}
-      className="fixed inset-0 pointer-events-none"
+      className="absolute inset-0 pointer-events-none"
       style={{
         zIndex: 15,
         width: '100%',
