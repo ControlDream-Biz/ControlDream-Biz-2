@@ -139,7 +139,7 @@ export function ParticleBackground() {
     const height = window.innerHeight;
 
     const isMobile = width < 768;
-    const particleCount = isMobile ? 70 : 140;
+    const particleCount = isMobile ? 50 : 100; // 减少粒子数量
 
     const newParticles: Particle[] = [];
 
@@ -201,12 +201,12 @@ export function ParticleBackground() {
         particle.vx += particle.ax;
         particle.vy += particle.ay;
 
-        // 强速度阻尼（让运动更慢）
-        particle.vx *= 0.998; // 增强阻尼
-        particle.vy *= 0.998;
+        // 速度阻尼（加快变换速度）
+        particle.vx *= 0.995; // 降低阻尼，变换更快
+        particle.vy *= 0.995;
 
-        // 速度限制（更慢）
-        const maxSpeed = isMobile ? 0.6 : 1.0; // 进一步降低最大速度
+        // 速度限制（加快变换速度）
+        const maxSpeed = isMobile ? 0.8 : 1.3; // 提高最大速度，变换更快
         const speed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
         if (speed > maxSpeed) {
           particle.vx = (particle.vx / speed) * maxSpeed;
@@ -235,8 +235,8 @@ export function ParticleBackground() {
         particle.opacity = Math.max(isMobile ? 0.3 : 0.4, Math.min(isMobile ? 0.8 : 0.9, particle.opacity));
       });
 
-      // 增大连线距离，减少线条数量，让粒子分布更散
-      const connectionDistance = isMobile ? 220 : 280; // 增大连线距离
+      // 大幅增加连线距离，减少线条数量
+      const connectionDistance = isMobile ? 300 : 380;
 
       const connectionElements: JSX.Element[] = [];
       // 移除移动端粒子数量限制，所有设备都显示线条
