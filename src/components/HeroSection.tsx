@@ -237,47 +237,52 @@ export default function HeroSection() {
         .gradient-text-1 {
           background-image: linear-gradient(90deg, 
             #FF0000 0%, 
-            #FF1F00 8%, 
-            #FF3F00 16%, 
-            #FF5F00 24%, 
-            #FF7F00 32%, 
-            #FF9F00 40%, 
-            #FFBF00 48%, 
-            #00FF00 56%, 
-            #00FFFF 64%, 
-            #0000FF 72%, 
-            #FF00FF 80%, 
-            #FF0080 88%, 
+            #FF2D00 7%, 
+            #FF5A00 14%, 
+            #FF8700 21%, 
+            #FFB400 28%, 
+            #FFE100 35%, 
+            #FFFF00 42%, 
+            #00FF00 49%, 
+            #00FFFF 56%, 
+            #0080FF 63%, 
+            #0000FF 70%, 
+            #8000FF 77%, 
+            #FF00FF 84%, 
+            #FF0080 91%, 
             #FF0000 100%
           );
           background-size: 300% auto;
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
-          animation: gradientFlow 30s linear infinite;
-          filter: saturate(1.5) contrast(1.2);
+          animation: gradientFlow 25s linear infinite;
+          filter: saturate(1.8) contrast(1.3) brightness(1.1);
         }
 
         .gradient-text-2 {
           background-image: linear-gradient(90deg, 
-            #8B00FF 0%, 
-            #9B00FF 10%, 
-            #AB00FF 20%, 
-            #BB00FF 30%, 
-            #CB00FF 40%, 
-            #DB00FF 50%, 
-            #EB00FF 60%, 
-            #FB00FF 70%, 
-            #FF00FB 80%, 
-            #FF00EB 90%, 
-            #8B00FF 100%
+            #00FFFF 0%, 
+            #00E0FF 8%, 
+            #00C0FF 16%, 
+            #00A0FF 24%, 
+            #0080FF 32%, 
+            #0060FF 40%, 
+            #0040FF 48%, 
+            #8020FF 56%, 
+            #C000FF 64%, 
+            #FF00C0 72%, 
+            #FF0080 80%, 
+            #FF0040 88%, 
+            #FF0000 92%, 
+            #00FFFF 100%
           );
           background-size: 300% auto;
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
-          animation: gradientFlow 35s linear infinite reverse;
-          filter: saturate(1.5) contrast(1.2);
+          animation: gradientFlow 30s linear infinite reverse;
+          filter: saturate(1.8) contrast(1.3) brightness(1.1);
         }
 
         @keyframes gradientFlow {
