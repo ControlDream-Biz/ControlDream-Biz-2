@@ -130,28 +130,21 @@ interface ScrollContainerProps {
 
 export function ScrollContainer({ children, onPageChange }: ScrollContainerProps) {
   const [currentPage, setCurrentPage] = useState(0);
-  const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const dragOffsetRef = useRef(0); // 使用 ref 而不是 state 来避免无限循环
+  const forceUpdateRef = useRef(0); // 用于强制重新渲染
   const totalPages = children.length;
 
-  // 增强的滚动状态管理
+  // 滚动状态管理
   const scrollStateRef = useRef({
     accumulatedDelta: 0,
     lastWheelTime: 0,
-    isScrolling: false,
-    touchStartY: 0,
-    touchStartX: 0,
-    touchStartTime: 0,
-    velocity: 0,
-    lastScrollY: 0,
     isTouchActive: false,
     hasSwitchedInThisTouch: false,
-    hasMovedVertically: false, // 检测是否有明确的垂直滑动意图
-    horizontalMovement: 0, // 记录水平移动量
-    verticalMovement: 0, // 记录垂直移动量
-    lastWheelDirection: 0, // 记录上一次滚轮方向
-    wheelConsistency: 0, // 记录滚轮方向一致性
-    isTouchpad: false, // 检测是否为触控板
+    touchStartY: 0,
+    touchStartX: 0,
+    horizontalMovement: 0,
+    verticalMovement: 0,
   });
 
   const handlePageChange = useCallback((newPage: number) => {
@@ -164,54 +157,25 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   useEffect(() => {
     const state = scrollStateRef.current;
 
-    // 检测是否为触控板设备
-    const detectTouchpad = (e: WheelEvent) => {
-      // 触控板通常deltaX和deltaY较小，且有连续的滚动事件
-      const isFineDelta = Math.abs(e.deltaX) < 50 && Math.abs(e.deltaY) < 50;
-      const isSmallDelta = Math.abs(e.deltaY) < 10;
-      state.isTouchpad = isFineDelta || isSmallDelta;
-    };
-
-    // 改进的滚轮处理逻辑 - 防止误触
+    // 简化的滚轮处理逻辑 - 降低阈值，提高灵敏度
     const handleWheel = (e: WheelEvent) => {
-      detectTouchpad(e);
-
       const now = performance.now();
       const delta = e.deltaY;
 
-      // 检查滚轮方向一致性
-      const currentDirection = delta > 0 ? 1 : -1;
-      if (currentDirection === state.lastWheelDirection) {
-        state.wheelConsistency++;
-      } else {
-        state.wheelConsistency = 0;
-      }
-      state.lastWheelDirection = currentDirection;
-
-      // 触控板需要更严格的条件
-      const isTouchpad = state.isTouchpad;
-      const scrollThreshold = isTouchpad ? 80 : 60; // 降低阈值，让翻页更灵敏
-      const consistencyThreshold = isTouchpad ? 3 : 1; // 降低一致性要求
-      const throttleTime = isTouchpad ? 800 : 600; // 降低节流时间，提高响应速度
+      // 降低节流时间，提高响应速度
+      const throttleTime = 300;
+      const scrollThreshold = 40; // 降低阈值
 
       // 累积滚动量
       state.accumulatedDelta += delta;
 
-      // 必须满足所有条件才触发翻页：
-      // 1. 超过阈值
-      // 2. 方向一致且连续
-      // 3. 超过节流时间
-      const absAccumulatedDelta = Math.abs(state.accumulatedDelta);
-
-      if (absAccumulatedDelta >= scrollThreshold &&
-          state.wheelConsistency >= consistencyThreshold) {
-
+      // 超过阈值且超过节流时间就触发翻页
+      if (Math.abs(state.accumulatedDelta) >= scrollThreshold) {
         if (now - state.lastWheelTime < throttleTime) return;
         state.lastWheelTime = now;
 
         // 重置累积值
         state.accumulatedDelta = 0;
-        state.wheelConsistency = 0;
 
         if (delta > 0 && currentPage < totalPages - 1) {
           handlePageChange(currentPage + 1);
@@ -224,15 +188,15 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     // 触摸事件处理
     const handleTouchStart = (e: TouchEvent) => {
       const touch = e.touches[0];
+      state.accumulatedDelta = 0;
       state.touchStartY = touch.clientY;
       state.touchStartX = touch.clientX;
-      state.touchStartTime = performance.now();
       state.isTouchActive = true;
       state.hasSwitchedInThisTouch = false;
-      state.hasMovedVertically = false;
       state.horizontalMovement = 0;
       state.verticalMovement = 0;
 
+      dragOffsetRef.current = 0;
       setIsDragging(true);
     };
 
@@ -249,66 +213,54 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.verticalMovement = Math.abs(deltaY);
 
       // 检测是否有明确的垂直滑动意图
-      if (Math.abs(deltaY) > 10 && !state.hasMovedVertically) {
-        state.hasMovedVertically = true;
+      if (Math.abs(deltaY) > 10) {
+        e.preventDefault();
+        // 更新拖拽偏移量
+        dragOffsetRef.current = deltaY;
+        // 强制重新渲染
+        forceUpdateRef.current++;
+        setIsDragging(true);
       }
-
-      // 只有当有明确的垂直滑动意图时，才允许页面切换
-      if (!state.hasMovedVertically) return;
-
-      e.preventDefault();
-
-      // 更新拖拽偏移量
-      setDragOffset(deltaY);
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
       if (!state.isTouchActive) return;
 
-      const touchEndTime = performance.now();
-      const touchDuration = touchEndTime - state.touchStartTime;
       const deltaY = state.verticalMovement;
+      const deltaX = state.horizontalMovement;
 
-      // 只有当垂直移动量显著大于水平移动量时，才触发翻页
-      // 并且需要有一定的最小移动距离和最大持续时间
-      const isVerticalSwipe = deltaY > state.horizontalMovement * 1.5;
-      const isSignificantMove = deltaY > 30; // 最小移动距离
-      const isReasonableDuration = touchDuration < 500; // 最大持续时间
+      // 当垂直移动量显著大于水平移动量时，才触发翻页
+      const isVerticalSwipe = deltaY > deltaX * 1.5;
+      const isSignificantMove = deltaY > 30;
 
-      if (isVerticalSwipe && isSignificantMove && isReasonableDuration && !state.hasSwitchedInThisTouch) {
-        const lastOffset = Math.abs(dragOffset);
+      if (isVerticalSwipe && isSignificantMove && !state.hasSwitchedInThisTouch) {
+        const lastOffset = Math.abs(dragOffsetRef.current);
 
-        if (lastOffset > window.innerHeight * 0.25) {
+        if (lastOffset > window.innerHeight * 0.2) {
           state.hasSwitchedInThisTouch = true;
 
-          if (dragOffset > 0 && currentPage > 0) {
+          if (dragOffsetRef.current > 0 && currentPage > 0) {
             handlePageChange(currentPage - 1);
-          } else if (dragOffset < 0 && currentPage < totalPages - 1) {
+          } else if (dragOffsetRef.current < 0 && currentPage < totalPages - 1) {
             handlePageChange(currentPage + 1);
           }
         }
       }
 
       // 重置状态
-      state.isScrolling = false;
-      state.touchStartY = 0;
-      state.touchStartX = 0;
-      state.touchStartTime = 0;
-      state.velocity = 0;
       state.isTouchActive = false;
-      state.hasMovedVertically = false;
       state.horizontalMovement = 0;
       state.verticalMovement = 0;
 
       // 回弹动画
+      dragOffsetRef.current = 0;
       setIsDragging(false);
-      setDragOffset(0);
     };
 
-    // 键盘导航 - 改进的节流
+    // 键盘导航
     const handleKeyDown = (e: KeyboardEvent) => {
       const now = performance.now();
-      if (now - state.lastWheelTime < 1000) return;
+      if (now - state.lastWheelTime < 500) return;
 
       const keyMap: Record<string, number> = {
         'ArrowDown': 1,
@@ -327,7 +279,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    // 事件监听 - 使用passive: false
+    // 事件监听
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
@@ -391,7 +343,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           key={index}
           index={index}
           currentPage={currentPage}
-          dragOffset={dragOffset}
+          dragOffset={dragOffsetRef.current}
           isDragging={isDragging}
         >
           {child}

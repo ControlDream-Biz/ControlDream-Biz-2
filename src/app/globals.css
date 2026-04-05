@@ -192,6 +192,42 @@ html, body {
   animation: slideInRight 0.5s var(--apple-spring-gentle) forwards;
 }
 
+/* 波浪抖动动画 - 循环上下移动 */
+@keyframes wave-1 {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-10px); }
+  50% { transform: translateY(0); }
+  75% { transform: translateY(-5px); }
+}
+
+@keyframes wave-2 {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-5px); }
+  50% { transform: translateY(-10px); }
+  75% { transform: translateY(-5px); }
+}
+
+@keyframes wave-3 {
+  0%, 100% { transform: translateY(0); }
+  25% { transform: translateY(-8px); }
+  50% { transform: translateY(-4px); }
+  75% { transform: translateY(-12px); }
+}
+
+.animate-wave-1 {
+  animation: wave-1 3s ease-in-out infinite;
+}
+
+.animate-wave-2 {
+  animation: wave-2 3s ease-in-out infinite;
+  animation-delay: 0.5s;
+}
+
+.animate-wave-3 {
+  animation: wave-3 3s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
 /* ========== 性能优化工具类 ========== */
 
 /* 避免重绘 - CPU优化 */
