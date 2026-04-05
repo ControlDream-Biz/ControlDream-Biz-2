@@ -424,6 +424,28 @@ input, textarea {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* ========== 渐变文字优化 ========== */
+
+/* 优化渐变文字渲染，避免模糊时出现方块 */
+.gradient-text {
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translateZ(0);
+  will-change: transform;
+  /* 确保渐变平滑过渡 */
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* 降低模糊对渐变文字的影响 */
+.gradient-text-with-filter {
+  /* 使用backdrop-filter而不是filter，减少对渐变文字的影响 */
+  backdrop-filter: blur(1px) saturate(150%);
+  -webkit-backdrop-filter: blur(1px) saturate(150%);
+}
+
 /* ========== 苹果设计系统 - 毛玻璃组件 ========== */
 
 /* 标准毛玻璃效果 */

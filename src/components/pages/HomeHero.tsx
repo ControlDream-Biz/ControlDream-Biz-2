@@ -43,6 +43,13 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 display: 'inline-block',
                 filter: 'drop-shadow(0 0 20px rgba(239, 68, 68, 0.4)) drop-shadow(0 2px 12px rgba(220, 38, 38, 0.25))',
                 letterSpacing: '-0.02em',
+                // 优化渐变文字渲染
+                textRendering: 'geometricPrecision',
+                WebkitFontSmoothing: 'antialiased',
+                MozOsxFontSmoothing: 'grayscale',
+                // 强制GPU渲染
+                transform: 'translateZ(0)',
+                willChange: 'transform',
               }}
             >
               游戏创新
@@ -70,6 +77,13 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 display: 'inline-block',
                 filter: 'drop-shadow(0 0 20px rgba(99, 102, 241, 0.4)) drop-shadow(0 2px 12px rgba(139, 92, 246, 0.25))',
                 letterSpacing: '-0.02em',
+                // 优化渐变文字渲染
+                textRendering: 'geometricPrecision',
+                WebkitFontSmoothing: 'antialiased',
+                MozOsxFontSmoothing: 'grayscale',
+                // 强制GPU渲染
+                transform: 'translateZ(0)',
+                willChange: 'transform',
               }}
             >
               软件赋能
@@ -97,6 +111,13 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 display: 'inline-block',
                 filter: 'drop-shadow(0 0 20px rgba(6, 182, 212, 0.4)) drop-shadow(0 2px 12px rgba(59, 130, 246, 0.25))',
                 letterSpacing: '-0.02em',
+                // 优化渐变文字渲染
+                textRendering: 'geometricPrecision',
+                WebkitFontSmoothing: 'antialiased',
+                MozOsxFontSmoothing: 'grayscale',
+                // 强制GPU渲染
+                transform: 'translateZ(0)',
+                willChange: 'transform',
               }}
             >
               硬件智造

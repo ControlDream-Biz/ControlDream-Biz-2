@@ -30,34 +30,34 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
     if (isActive) {
       // 当前页面：随拖拽移动，轻微缩放，使用线性阻尼效果
       const dampedOffset = dragOffset * 0.7;  // 更线性的阻尼
-      scale = 1 - (progress * 0.025);  // 更线性的缩放
+      scale = 1 - (progress * 0.015);  // 进一步减少缩放
       transform = `translateY(${dampedOffset}px) scale(${scale})`;
-      opacity = 1 - (progress * 0.12);  // 更线性的透明度
-      blur = progress * 2.5;  // 更线性的模糊
+      opacity = 1 - (progress * 0.08);  // 进一步减少透明度变化
+      blur = progress * 1;  // 大幅降低模糊值，避免渐变文字方块
     } else if (isNext && dragOffset < 0) {
       // 下一页：从下方进入
       const startOffset = 80;
       const dampedOffset = dragOffset * 0.5;
-      scale = 0.975 + (progress * 0.025);  // 更线性的缩放
+      scale = 0.985 + (progress * 0.015);  // 进一步减少缩放
       transform = `translateY(${startOffset + dampedOffset}px) scale(${scale})`;
-      opacity = 0.15 + (progress * 0.85);  // 更线性的透明度
-      blur = (1 - progress) * 3.5;  // 更线性的模糊
+      opacity = 0.25 + (progress * 0.75);
+      blur = (1 - progress) * 1.5;  // 大幅降低模糊值
     } else if (isPrev && dragOffset > 0) {
       // 上一页：从上方进入
       const startOffset = -80;
       const dampedOffset = dragOffset * 0.5;
-      scale = 0.975 + (progress * 0.025);  // 更线性的缩放
+      scale = 0.985 + (progress * 0.015);  // 进一步减少缩放
       transform = `translateY(${startOffset + dampedOffset}px) scale(${scale})`;
-      opacity = 0.15 + (progress * 0.85);  // 更线性的透明度
-      blur = (1 - progress) * 3.5;  // 更线性的模糊
+      opacity = 0.25 + (progress * 0.75);
+      blur = (1 - progress) * 1.5;  // 大幅降低模糊值
     } else if (isPrev) {
-      transform = `translateY(-100vh) scale(0.975)`;
+      transform = `translateY(-100vh) scale(0.985)`;
       opacity = 0;
-      scale = 0.975;
+      scale = 0.985;
     } else if (isNext) {
-      transform = `translateY(100vh) scale(0.975)`;
+      transform = `translateY(100vh) scale(0.985)`;
       opacity = 0;
-      scale = 0.975;
+      scale = 0.985;
     }
   } else {
     if (isActive) {
