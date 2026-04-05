@@ -6,17 +6,6 @@ interface HomeHeroProps {
   isActive?: boolean;
 }
 
-// 手机震动工具函数
-function triggerVibration() {
-  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
-    try {
-      navigator.vibrate(50);
-    } catch (error) {
-      // 忽略错误
-    }
-  }
-}
-
 // 使用React.memo优化性能，避免不必要的重渲染
 export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProps) {
   const [mounted, setMounted] = useState(false);
@@ -54,9 +43,11 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 display: 'inline-block',
                 textShadow: '0 0 1px rgba(239, 68, 68, 0.1), 0 0 2px rgba(239, 68, 68, 0.15), 0 0 3px rgba(239, 68, 68, 0.15), 0 0 5px rgba(239, 68, 68, 0.2), 0 0 8px rgba(239, 68, 68, 0.2), 0 0 12px rgba(239, 68, 68, 0.2), 0 0 18px rgba(239, 68, 68, 0.15), 0 0 25px rgba(239, 68, 68, 0.1)',
                 letterSpacing: '-0.02em',
+                // 优化渐变文字渲染
                 textRendering: 'geometricPrecision',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
+                // 强制GPU渲染
                 transform: 'translateZ(0)',
                 willChange: 'transform',
               }}
@@ -86,9 +77,11 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 display: 'inline-block',
                 textShadow: '0 0 1px rgba(99, 102, 241, 0.1), 0 0 2px rgba(99, 102, 241, 0.15), 0 0 3px rgba(99, 102, 241, 0.15), 0 0 5px rgba(99, 102, 241, 0.2), 0 0 8px rgba(99, 102, 241, 0.2), 0 0 12px rgba(139, 92, 246, 0.2), 0 0 18px rgba(139, 92, 246, 0.15), 0 0 25px rgba(139, 92, 246, 0.1)',
                 letterSpacing: '-0.02em',
+                // 优化渐变文字渲染
                 textRendering: 'geometricPrecision',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
+                // 强制GPU渲染
                 transform: 'translateZ(0)',
                 willChange: 'transform',
               }}
@@ -118,9 +111,11 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 display: 'inline-block',
                 textShadow: '0 0 1px rgba(6, 182, 212, 0.1), 0 0 2px rgba(6, 182, 212, 0.15), 0 0 3px rgba(6, 182, 212, 0.15), 0 0 5px rgba(6, 182, 212, 0.2), 0 0 8px rgba(6, 182, 212, 0.2), 0 0 12px rgba(59, 130, 246, 0.2), 0 0 18px rgba(59, 130, 246, 0.15), 0 0 25px rgba(59, 130, 246, 0.1)',
                 letterSpacing: '-0.02em',
+                // 优化渐变文字渲染
                 textRendering: 'geometricPrecision',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
+                // 强制GPU渲染
                 transform: 'translateZ(0)',
                 willChange: 'transform',
               }}
@@ -184,54 +179,6 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
               </p>
             </div>
           ))}
-        </div>
-
-        {/* 往下滑动指示器 */}
-        <div
-          className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
-          style={{
-            opacity: mounted ? 1 : 0,
-            transition: 'all 1000ms ease-out 0.8s',
-          }}
-          onClick={() => {
-            triggerVibration();
-            const event = new CustomEvent('jump-to-page', { detail: { pageIndex: 1 } });
-            window.dispatchEvent(event);
-          }}
-        >
-          {/* 手机端：简单箭头 */}
-          <div className="flex flex-col items-center gap-1 sm:hidden">
-            <span className="text-white/50 text-xs tracking-widest">下滑</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50 animate-bounce">
-              <path d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-          </div>
-
-          {/* 平板端：圆形边框 */}
-          <div className="hidden sm:flex md:hidden flex-col items-center gap-2">
-            <span className="text-white/50 text-xs tracking-widest">下滑</span>
-            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
-              <div
-                className="w-1 h-3 bg-white/50 rounded-full animate-bounce"
-                style={{
-                  animation: 'scroll-indicator 1.5s ease-in-out infinite',
-                }}
-              />
-            </div>
-          </div>
-
-          {/* 桌面端：大号圆形边框 */}
-          <div className="hidden md:flex flex-col items-center gap-2">
-            <span className="text-white/50 text-xs tracking-widest">下滑</span>
-            <div className="w-8 h-12 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
-              <div
-                className="w-1.5 h-4 bg-white/50 rounded-full animate-bounce"
-                style={{
-                  animation: 'scroll-indicator 1.5s ease-in-out infinite',
-                }}
-              />
-            </div>
-          </div>
         </div>
       </div>
       </div>

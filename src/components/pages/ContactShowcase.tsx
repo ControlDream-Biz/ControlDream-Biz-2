@@ -22,17 +22,6 @@ interface FormErrors {
   message?: string;
 }
 
-// 手机震动工具函数
-function triggerVibration() {
-  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
-    try {
-      navigator.vibrate(50);
-    } catch (error) {
-      // 忽略错误
-    }
-  }
-}
-
 // 使用React.memo优化性能
 export const ContactShowcase = memo(function ContactShowcase({ isActive = true }: ContactShowcaseProps) {
   const [mounted, setMounted] = useState(false);
@@ -151,7 +140,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
       <div className="relative z-10 flex flex-col items-center justify-start px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
         {/* 标题 */}
         <div
-          className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 relative"
+          className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
