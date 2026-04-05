@@ -15,72 +15,22 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center overflow-hidden"
+      className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center"
       style={{ minHeight: 'calc(100vh - 60px)' }}
     >
-      {/* 游戏展示背景 - 清晰显示 */}
+      {/* 游戏展示背景 - 直接显示，不做任何处理 */}
       <div className="absolute inset-0 -z-10">
-        {/* 主背景图 - 提高亮度 */}
+        {/* 主背景图 */}
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: "url('/hero-bg.jpg')",
-            filter: 'brightness(1.0) saturate(1.0)',
           }}
         />
 
-        {/* 文字背后突出显示游戏元素 */}
+        {/* 仅在文字区域添加轻微遮罩 */}
         <div
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full"
-        >
-          {/* 左上游戏框 */}
-          <div
-            className="absolute top-[8%] left-[3%] w-[28%] h-[40%] rounded-2xl overflow-hidden border-2 border-white/30 shadow-2xl"
-            style={{
-              backgroundImage: "url('/hero-bg.jpg')",
-              backgroundPosition: '10% 15%',
-              backgroundSize: 'cover',
-              opacity: 1.0,
-            }}
-          />
-
-          {/* 右上游戏框 */}
-          <div
-            className="absolute top-[5%] right-[3%] w-[32%] h-[45%] rounded-2xl overflow-hidden border-2 border-white/30 shadow-2xl"
-            style={{
-              backgroundImage: "url('/hero-bg.jpg')",
-              backgroundPosition: '60% 20%',
-              backgroundSize: 'cover',
-              opacity: 1.0,
-            }}
-          />
-
-          {/* 左下游戏框 */}
-          <div
-            className="absolute bottom-[5%] left-[5%] w-[30%] h-[42%] rounded-2xl overflow-hidden border-2 border-white/30 shadow-2xl"
-            style={{
-              backgroundImage: "url('/hero-bg.jpg')",
-              backgroundPosition: '90% 70%',
-              backgroundSize: 'cover',
-              opacity: 1.0,
-            }}
-          />
-
-          {/* 右下游戏框 */}
-          <div
-            className="absolute bottom-[8%] right-[5%] w-[28%] h-[38%] rounded-2xl overflow-hidden border-2 border-white/30 shadow-2xl"
-            style={{
-              backgroundImage: "url('/hero-bg.jpg')",
-              backgroundPosition: '40% 80%',
-              backgroundSize: 'cover',
-              opacity: 1.0,
-            }}
-          />
-        </div>
-
-        {/* 仅在底部添加轻微渐变，确保文字可读 */}
-        <div
-          className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/40 via-transparent to-transparent"
+          className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"
         />
       </div>
 
@@ -134,7 +84,7 @@ export default function HeroSection() {
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.2s",
                 minHeight: "60px",
-                textShadow: "0 2px 12px rgba(0,0,0,0.9)",
+                textShadow: "0 2px 8px rgba(0,0,0,0.8)",
               }}
             >
               我们专注于自主研发，在游戏、软件、硬件领域持续投入，
@@ -193,15 +143,15 @@ export default function HeroSection() {
               }}
             >
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}>8+</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}>8+</div>
                 <div className="text-xs text-gray-300 uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>年持续投入</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}>30+</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}>30+</div>
                 <div className="text-xs text-gray-300 uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>自研产品</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}>20+</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.8)" }}>20+</div>
                 <div className="text-xs text-gray-300 uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>核心团队</div>
               </div>
             </div>
