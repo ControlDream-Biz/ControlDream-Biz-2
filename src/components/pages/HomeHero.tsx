@@ -20,11 +20,11 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
       <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-4 pb-16 sm:pt-6 sm:pb-20 md:pt-8 md:pb-24">
 
       <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto flex flex-col items-center justify-center">
-        {/* 顶级彩字排版 - 三行分离，缩小尺寸 */}
-        <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-8 mb-4 sm:mb-6 md:mb-8 lg:mb-10">
+        {/* 顶级彩字排版 - 网格布局 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 lg:gap-16 mb-4 sm:mb-6 md:mb-8 lg:mb-10 items-center justify-center">
           {/* 第一行：游戏创新 - 橙红色渐变 */}
           <div
-            className="w-full flex justify-center"
+            className="flex justify-center"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(40px)',
@@ -32,9 +32,9 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
             }}
           >
             <h1
-              className="font-black leading-none tracking-tight animate-wave-1"
+              className="font-black leading-none tracking-tight animate-wave-1 text-center"
               style={{
-                fontSize: 'clamp(1.5rem, 4.5vw, 3.5rem)',
+                fontSize: 'clamp(1.8rem, 5vw, 4rem)',
                 lineHeight: '1.1',
                 backgroundImage: 'linear-gradient(135deg, #FB923C 0%, #F87171 15%, #F43F5E 35%, #E11D48 55%, #DC2626 75%, #B91C1C 100%)',
                 WebkitBackgroundClip: 'text',
@@ -43,11 +43,9 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 display: 'inline-block',
                 textShadow: '0 0 1px rgba(239, 68, 68, 0.1), 0 0 2px rgba(239, 68, 68, 0.15), 0 0 3px rgba(239, 68, 68, 0.15), 0 0 5px rgba(239, 68, 68, 0.2), 0 0 8px rgba(239, 68, 68, 0.2), 0 0 12px rgba(239, 68, 68, 0.2), 0 0 18px rgba(239, 68, 68, 0.15), 0 0 25px rgba(239, 68, 68, 0.1)',
                 letterSpacing: '-0.02em',
-                // 优化渐变文字渲染
                 textRendering: 'geometricPrecision',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
-                // 强制GPU渲染
                 transform: 'translateZ(0)',
                 willChange: 'transform',
               }}
@@ -58,7 +56,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
 
           {/* 第二行：软件赋能 - 蓝紫色渐变 */}
           <div
-            className="w-full flex justify-center"
+            className="flex justify-center"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(40px)',
@@ -66,9 +64,9 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
             }}
           >
             <h1
-              className="font-black leading-none tracking-tight animate-wave-2"
+              className="font-black leading-none tracking-tight animate-wave-2 text-center"
               style={{
-                fontSize: 'clamp(1.5rem, 4.5vw, 3.5rem)',
+                fontSize: 'clamp(1.8rem, 5vw, 4rem)',
                 lineHeight: '1.1',
                 backgroundImage: 'linear-gradient(135deg, #60A5FA 0%, #3B82F6 15%, #6366F1 35%, #8B5CF6 55%, #A855F7 75%, #7C3AED 100%)',
                 WebkitBackgroundClip: 'text',
@@ -77,11 +75,9 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 display: 'inline-block',
                 textShadow: '0 0 1px rgba(99, 102, 241, 0.1), 0 0 2px rgba(99, 102, 241, 0.15), 0 0 3px rgba(99, 102, 241, 0.15), 0 0 5px rgba(99, 102, 241, 0.2), 0 0 8px rgba(99, 102, 241, 0.2), 0 0 12px rgba(139, 92, 246, 0.2), 0 0 18px rgba(139, 92, 246, 0.15), 0 0 25px rgba(139, 92, 246, 0.1)',
                 letterSpacing: '-0.02em',
-                // 优化渐变文字渲染
                 textRendering: 'geometricPrecision',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
-                // 强制GPU渲染
                 transform: 'translateZ(0)',
                 willChange: 'transform',
               }}
@@ -92,7 +88,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
 
           {/* 第三行：硬件智造 - 青蓝色渐变 */}
           <div
-            className="w-full flex justify-center"
+            className="flex justify-center sm:col-span-2 lg:col-span-1"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(40px)',
@@ -100,9 +96,9 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
             }}
           >
             <h1
-              className="font-black leading-none tracking-tight animate-wave-3"
+              className="font-black leading-none tracking-tight animate-wave-3 text-center"
               style={{
-                fontSize: 'clamp(1.5rem, 4.5vw, 3.5rem)',
+                fontSize: 'clamp(1.8rem, 5vw, 4rem)',
                 lineHeight: '1.1',
                 backgroundImage: 'linear-gradient(135deg, #22D3EE 0%, #06B6D4 15%, #0EA5E9 35%, #3B82F6 55%, #6366F1 75%, #4F46E5 100%)',
                 WebkitBackgroundClip: 'text',
@@ -111,11 +107,9 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 display: 'inline-block',
                 textShadow: '0 0 1px rgba(6, 182, 212, 0.1), 0 0 2px rgba(6, 182, 212, 0.15), 0 0 3px rgba(6, 182, 212, 0.15), 0 0 5px rgba(6, 182, 212, 0.2), 0 0 8px rgba(6, 182, 212, 0.2), 0 0 12px rgba(59, 130, 246, 0.2), 0 0 18px rgba(59, 130, 246, 0.15), 0 0 25px rgba(59, 130, 246, 0.1)',
                 letterSpacing: '-0.02em',
-                // 优化渐变文字渲染
                 textRendering: 'geometricPrecision',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
-                // 强制GPU渲染
                 transform: 'translateZ(0)',
                 willChange: 'transform',
               }}
@@ -227,7 +221,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
               />
             </div>
           </div>
-      </div>
+        </div>
       </div>
     </>
   );
