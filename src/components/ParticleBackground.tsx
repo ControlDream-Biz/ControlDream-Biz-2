@@ -144,9 +144,9 @@ export function ParticleBackground() {
     const newParticles: Particle[] = [];
 
     // 优先在四个角落分配粒子，确保上下左右角始终有粒子
-    // 移动端50个粒子：左上、右上、左下、右下各6个，中间26个
-    // 电脑端100个粒子：左上、右上、左下、右下各12个，中间52个
-    const particlesPerCorner = isMobile ? 6 : 12;
+    // 移动端50个粒子：左上、右上、左下、右下各8个，中间18个
+    // 电脑端100个粒子：左上、右上、左下、右下各16个，中间36个
+    const particlesPerCorner = isMobile ? 8 : 16;
     const cornerParticles = particlesPerCorner * 4; // 4个角落
     const middleParticles = particleCount - cornerParticles;
 
