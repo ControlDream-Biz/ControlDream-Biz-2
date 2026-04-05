@@ -2,39 +2,61 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ========== 全局性能优化 - 支持高刷新率 ========== */
+/* ========== 苹果风格性能优化 - CPU/GPU调度 ========== */
 
 /* 浏览器会自动根据显示器刷新率渲染，无需强制动画
    强制设置animation-duration可能导致掉帧和动画不流畅 */
 
-/* 移除强制120HZ动画，避免掉帧 */
+/* ========== GPU调度优化 ========== */
 
-/* 移除强制GPU加速，因为会破坏 fixed 定位 */
-/* 注意：transform 会创建新的包含块，导致 position: fixed 失效 */
-
-/* 优化渲染性能 */
+/* 优化字体渲染 - CPU优化 */
 html {
-  /* 优化字体渲染 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  /* 优化文本渲染 */
-  text-rendering: optimizeSpeed;
+  text-rendering: optimizeLegibility;
 }
 
-/* 优化滚动容器 */
+/* GPU合成层优化 - 苹果风格 */
+.gpu-layer {
+  /* 创建独立的GPU合成层 */
+  transform: translateZ(0);
+  /* 智能GPU加速 - 仅对动态元素 */
+  will-change: transform, opacity;
+  /* 限制重绘范围 */
+  contain: layout style paint;
+}
+
+/* 仅对动画元素启用GPU加速 */
+.animate-transform {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+/* 苹果风格的淡入淡出 */
+.animate-fade {
+  will-change: opacity;
+}
+
+/* ========== 滚动容器优化 ========== */
+
+/* 优化滚动容器 - CPU/GPU协同 */
 html, body {
-  /* 优化滚动 */
+  /* iOS平滑滚动 - GPU加速 */
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: none; /* 禁止浏览器的下拉刷新和过度滚动 */
+  
+  /* 禁止浏览器的下拉刷新和过度滚动 - 减少CPU负载 */
+  overscroll-behavior: none;
   overscroll-behavior-x: none;
   overscroll-behavior-y: none;
-
-  /* 防止滚动闪烁 */
+  
+  /* 优化滚动条渲染 */
   scrollbar-width: thin;
-
-  /* 禁用默认的触摸行为 */
+  
+  /* 触摸行为优化 */
   touch-action: pan-y;
+  
+  /* 优化滚动性能 - GPU加速 */
+  scroll-behavior: smooth;
 }
 
 /* 防止iOS Safari的下拉刷新 */
@@ -42,9 +64,20 @@ html, body {
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
   touch-action: none;
+  /* 限制重绘范围 */
+  contain: strict;
 }
 
+/* ========== 动画性能优化 ========== */
+
+/* 苹果风格缓动曲线 - CPU优化 */
 :root {
+  --apple-ease-in: cubic-bezier(0.42, 0, 1, 1);
+  --apple-ease-out: cubic-bezier(0, 0, 0.58, 1);
+  --apple-ease-in-out: cubic-bezier(0.42, 0, 0.58, 1);
+  --apple-spring: cubic-bezier(0.4, 0.0, 0.2, 1);
+  --apple-spring-gentle: cubic-bezier(0.25, 0.1, 0.25, 1);
+  
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -79,6 +112,7 @@ html, body {
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* 苹果风格动画 - GPU优化 */
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
@@ -92,686 +126,192 @@ html, body {
 }
 
 .animate-gradient {
-  animation: gradient 15s ease-in-out infinite;
+  animation: gradient 15s var(--apple-ease-in-out) infinite;
   background-size: 400% auto;
 }
 
 @keyframes gradientMove {
   0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
+    background-position: 0% 0%;
   }
   100% {
-    background-position: 0% 50%;
+    background-position: 100% 100%;
   }
 }
 
-.animate-gradient-text {
-  background-size: 200% 100%;
-  animation: gradientMove 15s ease-in-out infinite;
-  -webkit-animation: gradientMove 15s ease-in-out infinite;
+.animate-gradient-move {
+  animation: gradientMove 8s var(--apple-ease-in-out) infinite;
+  background-size: 200% 200%;
 }
 
-/* iOS应用打开风格动画 - 从按钮位置线性放大弹出 */
-@keyframes menuSlideDown {
-  0% {
-    opacity: 0;
-    transform: translateY(0) scale(0.4);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.animate-menu-slide-down {
-  animation: menuSlideDown 0.1s cubic-bezier(0.33, 1, 0.68, 1) forwards;
-}
-
-/* 悬停放大效果 */
-@keyframes hoverPulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.02);
-  }
-}
-
-.hover-pulse {
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.hover-pulse:hover {
-  animation: hoverPulse 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-/* 平滑滚动 */
-html {
-  scroll-behavior: smooth;
-}
-
-/* 硬件加速 */
-.gpu-accelerated {
-  transform: translateZ(0);
-  will-change: transform;
-}
-
-/* 优化动画性能 */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) translateZ(0);
-  }
-  50% {
-    transform: translateY(-10px) translateZ(0);
-  }
-}
-
-.animate-float {
-  animation: float 8s ease-in-out infinite;
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
-/* 科技感多彩毛玻璃雾化背景 */
-.tech-glass-bg {
-  background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.25) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(139, 92, 246, 0.22) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 30% at 0% 50%, rgba(236, 72, 153, 0.18) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 50% at 80% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse 40% 30% at 20% 90%, rgba(16, 185, 129, 0.12) 0%, transparent 50%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.92) 0%, rgba(248, 250, 252, 0.95) 100%);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  position: relative;
-}
-
-.tech-glass-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 100% 60% at 50% -10%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse 80% 50% at 90% 10%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 10% 60%, rgba(236, 72, 153, 0.08) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* 科技感多彩毛玻璃雾化背景 */
-.tech-glass-bg {
-  background:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse 50% 30% at 0% 50%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 50% at 80% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 40% 30% at 20% 90%, rgba(16, 185, 129, 0.06) 0%, transparent 50%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.98) 100%);
-  backdrop-filter: blur(40px) saturate(180%);
-  -webkit-backdrop-filter: blur(40px) saturate(180%);
-  position: relative;
-}
-
-.tech-glass-bg::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(ellipse 100% 60% at 50% -10%, rgba(99, 102, 241, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 80% 50% at 90% 10%, rgba(139, 92, 246, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse 60% 40% at 10% 60%, rgba(236, 72, 153, 0.05) 0%, transparent 50%);
-  pointer-events: none;
-  z-index: -1;
-}
-
-body {
-  position: relative;
-}
-
-body {
-  position: relative;
-  background: #000000;
-}
-
-body::before {
-  display: none;
-}
-
-body::after {
-  display: none;
-}
-
-body {
-  @apply font-sans;
-  /* GPU加速优化 - 注意：移除 transform 避免影响 fixed 定位 */
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* 顶级 iOS 26 液态玻璃效果 */
-.glass {
-  background: rgba(255, 255, 255, 0.78);
-  backdrop-filter: blur(32px) saturate(160%);
-  -webkit-backdrop-filter: blur(32px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.06),
-    0 2px 8px rgba(0, 0, 0, 0.03);
-  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-.glass:hover {
-  background: rgba(255, 255, 255, 0.85);
-  box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.08),
-    0 3px 12px rgba(0, 0, 0, 0.04);
-}
-
-.glass-dark {
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(32px) saturate(140%);
-  -webkit-backdrop-filter: blur(32px) saturate(140%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.4),
-    0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-.glass-dark:hover {
-  background: rgba(15, 23, 42, 0.75);
-  box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.5),
-    0 3px 12px rgba(0, 0, 0, 0.25);
-}
-
-.glass-card {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.88) 0%,
-    rgba(255, 255, 255, 0.72) 50%,
-    rgba(255, 255, 255, 0.65) 100%
-  );
-  backdrop-filter: blur(24px) saturate(150%);
-  -webkit-backdrop-filter: blur(24px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.75);
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.06),
-    0 3px 12px rgba(0, 0, 0, 0.03);
-  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-.glass-card:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 16px 48px rgba(0, 0, 0, 0.1),
-    0 6px 20px rgba(0, 0, 0, 0.05);
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.93) 0%,
-    rgba(255, 255, 255, 0.78) 50%,
-    rgba(255, 255, 255, 0.72) 100%
-  );
-}
-
-.glass-button {
-  background: linear-gradient(
-    135deg,
-    rgba(59, 130, 246, 0.92) 0%,
-    rgba(99, 102, 241, 0.92) 100%
-  );
-  backdrop-filter: blur(16px) saturate(150%);
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  box-shadow:
-    0 8px 24px rgba(59, 130, 246, 0.35),
-    0 3px 8px rgba(0, 0, 0, 0.12);
-  transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.glass-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.3),
-    transparent
-  );
-  transition: left 0.5s ease;
-}
-
-.glass-button:hover::before {
-  left: 100%;
-}
-
-.glass-button:hover {
-  transform: translateY(-1px);
-  background: linear-gradient(
-    135deg,
-    rgba(59, 130, 246, 1) 0%,
-    rgba(99, 102, 241, 1) 100%
-  );
-  box-shadow:
-    0 12px 32px rgba(59, 130, 246, 0.45),
-    0 5px 12px rgba(0, 0, 0, 0.15);
-}
-
-.glass-button:active {
-  transform: translateY(0);
-  box-shadow:
-    0 4px 16px rgba(59, 130, 246, 0.3),
-    0 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-.glass-nav {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(24px) saturate(160%);
-  -webkit-backdrop-filter: blur(24px) saturate(160%);
-  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
-  box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.05),
-    0 1px 4px rgba(0, 0, 0, 0.02);
-  transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-.glass-nav:hover {
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow:
-    0 6px 28px rgba(0, 0, 0, 0.06),
-    0 2px 6px rgba(0, 0, 0, 0.03);
-}
-
-/* 浮动效果 */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-/* 光晕效果 */
-@keyframes glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
-  }
-}
-
-.animate-glow {
-  animation: glow 2s ease-in-out infinite;
-}
-
-/* 缩放脉冲 */
-@keyframes scalePulse {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.02);
-  }
-}
-
-.animate-scale-pulse {
-  animation: scalePulse 2s ease-in-out infinite;
-}
-
-/* 性能优化 - 移除强制120HZ动画，避免掉帧 */
-/* 浏览器会自动根据显示器刷新率渲染，无需强制动画 */
-
-/* 平滑动画优化 - 苹果线性风格 */
-.smooth-animation {
-  animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1);
-  animation-fill-mode: both;
-}
-
-/* 高刷新率优化 */
-@media (hover: none) and (pointer: coarse) {
-  /* 手机 120HZ */
-  .smooth-animation {
-    animation-duration: 8.333ms;
-  }
-}
-
-@media (hover: hover) and (pointer: fine) {
-  /* 电脑 240HZ */
-  .smooth-animation {
-    animation-duration: 4.167ms;
-  }
-}
-
-/* 减少 repaint 和 reflow */
-.optimized-element {
-  contain: layout style paint;
-  /* 防止子元素影响布局 */
-  isolation: isolate;
-}
-
-/* ========== 滚动动画效果 ========== */
-
-/* 初始状态 - 淡入 + 上移 */
-[data-scroll-animate].opacity-0 {
-  opacity: 0 !important;
-}
-
-[data-scroll-animate].translate-y-8 {
-  transform: translateY(2rem) !important;
-}
-
-[data-scroll-animate].-translate-y-8 {
-  transform: translateY(-2rem) !important;
-}
-
-/* 动画状态 - 显示 + 原位 */
-[data-scroll-animate].opacity-100 {
-  opacity: 1 !important;
-}
-
-[data-scroll-animate].translate-y-0 {
-  transform: translateY(0) !important;
-}
-
-/* 过渡效果 */
-[data-scroll-animate] {
-  transition:
-    opacity 0.6s cubic-bezier(0.25, 0.1, 0.25, 1),
-    transform 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) !important;
-}
-
-/* 文本元素特殊优化 */
-h1[data-scroll-animate],
-h2[data-scroll-animate],
-h3[data-scroll-animate],
-h4[data-scroll-animate],
-h5[data-scroll-animate],
-h6[data-scroll-animate] {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-p[data-scroll-animate],
-span[data-scroll-animate],
-div[data-scroll-animate] {
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-}
-
-/* 滚动动画进入视口时的效果 */
-[data-scroll-animate].animate-in {
-  animation: scrollFadeIn 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
-}
-
-@keyframes scrollFadeIn {
+/* 苹果风格淡入动画 - GPU优化 */
+@keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(2rem);
+    transform: translate3d(0, 20px, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
-/* 渐变文字动画优化 */
-@keyframes gradientText {
-  0% {
-    background-position: 0% 50%;
+.animate-fadeInUp {
+  animation: fadeInUp 0.6s var(--apple-spring-gentle) forwards;
+}
+
+/* 苹果风格缩放动画 - GPU优化 */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale3d(0.95, 0.95, 1);
   }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
   }
 }
 
-.animate-gradient-text-optimized {
-  background-size: 200% 100%;
-  animation: gradientText 15s ease-in-out infinite;
+.animate-scaleIn {
+  animation: scaleIn 0.4s var(--apple-ease-out) forwards;
+}
+
+/* 苹果风格滑动动画 - GPU优化 */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translate3d(20px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.5s var(--apple-spring-gentle) forwards;
+}
+
+/* ========== 性能优化工具类 ========== */
+
+/* 避免重绘 - CPU优化 */
+.no-reflow {
+  contain: layout style paint;
+}
+
+/* GPU加速的transform */
+.gpu-transform {
+  transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
-  will-change: background-position;
+  perspective: 1000px;
 }
 
-/* 炫酷文字淡入效果 */
-@keyframes coolTextReveal {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.95);
-  }
-  50% {
-    opacity: 0.8;
-    transform: translateY(10px) scale(0.98);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+/* 优化的透明度动画 */
+.gpu-opacity {
+  will-change: opacity;
 }
 
-.cool-text-reveal {
-  opacity: 0;
-  transition: all 0.6s cubic-bezier(0.25, 0.1, 0.25, 1);
+/* 隐藏滚动条但保留功能 */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-.cool-text-reveal.visible {
-  opacity: 1;
-  animation: coolTextReveal 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
 
-/* 发光脉冲效果 */
-@keyframes glowPulse {
-  0% {
-    text-shadow:
-      0 0 10px rgba(99, 102, 241, 0.3),
-      0 0 20px rgba(99, 102, 241, 0.2),
-      0 0 30px rgba(99, 102, 241, 0.1);
-  }
-  50% {
-    text-shadow:
-      0 0 20px rgba(99, 102, 241, 0.6),
-      0 0 40px rgba(139, 92, 246, 0.4),
-      0 0 60px rgba(236, 72, 153, 0.2);
-  }
-  100% {
-    text-shadow:
-      0 0 10px rgba(99, 102, 241, 0.3),
-      0 0 20px rgba(99, 102, 241, 0.2),
-      0 0 30px rgba(99, 102, 241, 0.1);
-  }
+/* 苹果风格的滚动条 */
+.apple-scrollbar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.glow-text {
-  animation: glowPulse 3s ease-in-out infinite;
+.apple-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
 }
 
-/* 苹果官网风格淡入效果 - 简洁版 */
-@keyframes fadeInSimple {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
+.apple-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  transition: background 0.2s var(--apple-ease-out);
 }
 
-.animate-fade-in {
-  animation: fadeInSimple 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
+.apple-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
 }
 
-/* 苹果官网风格缩放淡入 */
-@keyframes fadeInScale {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
+/* ========== 避免布局抖动 ========== */
+
+/* 使用transform代替top/left - GPU优化 */
+.transform-based {
+  position: absolute;
+  transform: translate3d(0, 0, 0);
+}
+
+/* 避免频繁的尺寸变化 */
+.size-stable {
+  contain: strict;
+}
+
+/* ========== 响应式优化 ========== */
+
+/* 移动端性能优化 */
+@media (max-width: 768px) {
+  .gpu-layer {
+    /* 移动端减少GPU合成层 */
+    contain: style paint;
   }
-  100% {
-    opacity: 1;
-    transform: scale(1);
+  
+  /* 移动端减少动画复杂度 */
+  .animate-gradient,
+  .animate-gradient-move {
+    animation-duration: 2s;
   }
 }
 
-.animate-fade-in-scale {
-  animation: fadeInScale 0.8s cubic-bezier(0.25, 0.1, 0.25, 1) forwards;
-}
-
-/* 滚动提示动画 - GPU加速 */
-@keyframes scrollBounce {
-  0%, 100% {
-    transform: translateY(0) translateZ(0);
-    opacity: 1;
-  }
-  50% {
-    transform: translateY(10px) translateZ(0);
-    opacity: 0.5;
+/* 高性能模式 - 减少动画 */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
-/* 上下缓慢抖动的呼吸效果 - GPU加速 */
-@keyframes breathing {
-  0%, 100% {
-    transform: translateY(0) translateZ(0);
-  }
-  50% {
-    transform: translateY(-6px) translateZ(0);
-  }
+/* ========== 其他工具 ========== */
+
+/* 文本选择优化 */
+::selection {
+  background: oklch(0.708 0 0);
+  color: oklch(1 0 0);
 }
 
-.animate-breathing {
-  animation: breathing 4s ease-in-out infinite;
+/* 链接优化 */
+a {
+  text-decoration: none;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* 波浪抖动动画 - 不规则上下抖动 - 极缓版本 */
-@keyframes waveBounce {
-  0%, 100% {
-    transform: translateY(0) translateZ(0);
-  }
-  20% {
-    transform: translateY(-8px) translateZ(0);
-  }
-  40% {
-    transform: translateY(4px) translateZ(0);
-  }
-  60% {
-    transform: translateY(-6px) translateZ(0);
-  }
-  80% {
-    transform: translateY(3px) translateZ(0);
-  }
+/* 图片优化 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
-/* 三行波浪动画 - 第一行：延迟 0s，周期 10s */
-.animate-wave-1 {
-  animation: waveBounce 10s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+/* 按钮优化 */
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* 三行波浪动画 - 第二行：延迟 1.2s，周期 10s */
-.animate-wave-2 {
-  animation: waveBounce 10s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
-  animation-delay: 1.2s;
+/* 输入框优化 */
+input, textarea {
+  -webkit-tap-highlight-color: transparent;
 }
-
-/* 三行波浪动画 - 第三行：延迟 2.4s，周期 10s */
-.animate-wave-3 {
-  animation: waveBounce 10s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
-  animation-delay: 2.4s;
-}
-
-/* 渐变文字优化 */
-.text-gradient {
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
-}
-
-/* 分字符动画 */
-.char-animate {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-/* 爆炸文字动画 - 从屏幕四面八方集合 */
-.char-explode {
-  display: inline-block;
-  opacity: 0;
-  transform: translate(var(--offset-x), var(--offset-y)) rotate(var(--rotation)) scale(var(--scale));
-  transition: all 0.8s cubic-bezier(0.25, 0.1, 0.25, 1);
-}
-
-.text-visible .char-explode {
-  opacity: 1;
-  transform: translate(0, 0) rotate(0deg) scale(1);
-}
-
-.text-hidden {
-  opacity: 0;
-}
-
-.text-visible {
-  opacity: 1;
-  transition: opacity 0.3s ease-out;
-}
-
-/* 背景光晕扩散 */
-@keyframes bgGlow {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-/* 其他动画继续保留... */

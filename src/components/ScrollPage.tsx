@@ -43,31 +43,69 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
     }
   } else {
     if (isActive) {
-      transform = `translateY(0)`;
+      transform = 'translateY(0)';
       opacity = 1;
     } else if (isPrev) {
-      transform = `translateY(-50vh)`;
+      transform = 'translateY(-50vh)';
       opacity = 0;
     } else if (isNext) {
-      transform = `translateY(50vh)`;
+      transform = 'translateY(50vh)';
       opacity = 0;
     }
   }
+
+  // 判断是否为首页
+  const isHome = index === 0;
 
   return (
     <div
       className="fixed inset-0 overflow-hidden"
       style={{
-        opacity,
-        pointerEvents: isActive ? 'auto' : 'none',
-        transform,
-        transition: isDragging
-          ? 'none'
-          : 'transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)',
         zIndex: isActive ? 10 : 1,
       }}
     >
-      <div className="w-full h-full overflow-y-auto scrollbar-hide">
+      {/* 背景层 - 第二页开始固定不动，不参与滑动 */}
+      {isHome ? (
+        // 首页：背景层参与滑动
+        <div
+          style={{
+            opacity,
+            transform,
+            transition: isDragging
+              ? 'none'
+              : 'transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)',
+            position: 'absolute',
+            inset: 0,
+            zIndex: 1,
+          }}
+        />
+      ) : (
+        // 第二页开始：背景层固定不动
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundColor: 'black',
+            zIndex: 1,
+          }}
+        />
+      )}
+
+      {/* 内容层 - 所有页面都参与滑动 */}
+      <div
+        className="w-full h-full overflow-y-auto scrollbar-hide"
+        style={{
+          opacity,
+          pointerEvents: isActive ? 'auto' : 'none',
+          transform,
+          transition: isDragging
+            ? 'none'
+            : 'transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.3s cubic-bezier(0.25, 0.1, 0.25, 1)',
+          position: 'absolute',
+          inset: 0,
+          zIndex: 10,
+        }}
+      >
         <div className="w-full min-h-full px-4 py-8">
           {React.isValidElement(children)
             ? (children as React.ReactElement<Record<string, unknown>>).props.isActive !== undefined
