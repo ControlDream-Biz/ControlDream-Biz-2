@@ -246,12 +246,11 @@ export const BusinessShowcase = memo(function BusinessShowcase({
                       return (
                         <div
                           key={`${businessIndex}-${i}`}
-                          className="flex items-start space-x-2 sm:space-x-3 transition-all duration-700 ease-out"
+                          className="flex items-start space-x-2 sm:space-x-3 transition-opacity duration-500 ease-out"
                           data-small-text
                           data-page-index={pageIndex}
                           style={{
-                            opacity: isVisible ? getSlideFadeOpacity(i) : 0,
-                            transform: isVisible ? 'translateX(0)' : 'translateX(2.5rem)',
+                            opacity: isVisible ? 1 : 0,
                           }}
                         >
                           <div className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 bg-gradient-to-br ${business.color}`}></div>

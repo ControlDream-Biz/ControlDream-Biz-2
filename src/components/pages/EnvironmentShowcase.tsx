@@ -233,7 +233,7 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                   {area.description}
                 </p>
 
-                {/* 小字列表 - 腾讯式从右向左滚动淡入 */}
+                {/* 小字列表 - 依次淡入 */}
                 <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
                   {area.items.map((item, i) => {
                     // 计算全局索引：前面所有 area 的 items 数量 + 当前索引
@@ -243,12 +243,11 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                     return (
                       <div
                         key={`${areaIndex}-${i}`}
-                        className="flex items-start space-x-2 sm:space-x-3 transition-all duration-700 ease-out"
+                        className="flex items-start space-x-2 sm:space-x-3 transition-opacity duration-500 ease-out"
                         data-small-text
                         data-page-index={pageIndex}
                         style={{
-                          opacity: isVisible ? getSlideFadeOpacity(i) : 0,
-                          transform: isVisible ? 'translateX(0)' : 'translateX(2.5rem)',
+                          opacity: isVisible ? 1 : 0,
                         }}
                       >
                         <div className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 bg-gradient-to-br ${area.color}`}></div>
