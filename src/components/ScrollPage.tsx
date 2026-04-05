@@ -28,36 +28,36 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
     const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
 
     if (isActive) {
-      // 当前页面：随拖拽移动，轻微缩放
-      const dampedOffset = dragOffset * 0.7;
-      scale = 1 - (progress * 0.01);  // 极小缩放
+      // 当前页面：随拖拽移动，轻微缩放，使用线性阻尼效果
+      const dampedOffset = dragOffset * 0.7;  // 更线性的阻尼
+      scale = 1 - (progress * 0.025);  // 更线性的缩放
       transform = `translateY(${dampedOffset}px) scale(${scale})`;
-      opacity = 1 - (progress * 0.05);  // 极小透明度变化
-      blur = 0;  // 完全移除模糊
+      opacity = 1 - (progress * 0.12);  // 更线性的透明度
+      blur = progress * 2.5;  // 更线性的模糊
     } else if (isNext && dragOffset < 0) {
       // 下一页：从下方进入
       const startOffset = 80;
       const dampedOffset = dragOffset * 0.5;
-      scale = 0.99 + (progress * 0.01);  // 极小缩放
+      scale = 0.975 + (progress * 0.025);  // 更线性的缩放
       transform = `translateY(${startOffset + dampedOffset}px) scale(${scale})`;
-      opacity = 0.3 + (progress * 0.7);  // 调整透明度
-      blur = 0;  // 完全移除模糊
+      opacity = 0.15 + (progress * 0.85);  // 更线性的透明度
+      blur = (1 - progress) * 3.5;  // 更线性的模糊
     } else if (isPrev && dragOffset > 0) {
       // 上一页：从上方进入
       const startOffset = -80;
       const dampedOffset = dragOffset * 0.5;
-      scale = 0.99 + (progress * 0.01);  // 极小缩放
+      scale = 0.975 + (progress * 0.025);  // 更线性的缩放
       transform = `translateY(${startOffset + dampedOffset}px) scale(${scale})`;
-      opacity = 0.3 + (progress * 0.7);  // 调整透明度
-      blur = 0;  // 完全移除模糊
+      opacity = 0.15 + (progress * 0.85);  // 更线性的透明度
+      blur = (1 - progress) * 3.5;  // 更线性的模糊
     } else if (isPrev) {
-      transform = `translateY(-100vh) scale(0.99)`;
+      transform = `translateY(-100vh) scale(0.975)`;
       opacity = 0;
-      scale = 0.99;
+      scale = 0.975;
     } else if (isNext) {
-      transform = `translateY(100vh) scale(0.99)`;
+      transform = `translateY(100vh) scale(0.975)`;
       opacity = 0;
-      scale = 0.99;
+      scale = 0.975;
     }
   } else {
     if (isActive) {
@@ -84,7 +84,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
       data-page-index={index}
       style={{
         zIndex: isActive ? 10 : 0,
-        visibility: (isActive || (isDragging && isAdjacent)) ? 'visible' : (isDragging ? 'hidden' : 'visible'),
+        visibility: (isActive || (isDragging && isAdjacent)) ? 'visible' : 'hidden',
       }}
     >
       {isHome && (
@@ -92,9 +92,10 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
           style={{
             opacity,
             transform,
+            filter: `blur(${blur}px)`,
             transition: isDragging
               ? 'none'
-              : 'transform 0.6s linear, opacity 0.4s linear',
+              : 'transform 0.6s linear, opacity 0.4s linear, filter 0.4s linear',
             position: 'absolute',
             inset: 0,
             zIndex: 1,
@@ -105,7 +106,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
               radial-gradient(circle at 20% 75%, rgba(6, 182, 212, 0.4) 0%, rgba(14, 165, 233, 0.3) 15%, rgba(56, 189, 248, 0.2) 30%, rgba(56, 189, 248, 0.12) 45%, rgba(56, 189, 248, 0.06) 60%, transparent 85%),
               radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.35) 0%, rgba(147, 51, 234, 0.25) 15%, rgba(126, 34, 206, 0.18) 25%, rgba(126, 34, 206, 0.1) 35%, rgba(126, 34, 206, 0.05) 50%, transparent 85%)
             `,
-            willChange: 'transform, opacity',
+            willChange: 'transform, opacity, filter',
           }}
         >
           <ParticleBackground />
@@ -118,13 +119,14 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
           opacity,
           pointerEvents: isActive ? 'auto' : 'none',
           transform,
+          filter: `blur(${blur}px)`,
           transition: isDragging
             ? 'none'
-            : 'transform 0.6s linear, opacity 0.4s linear',
+            : 'transform 0.6s linear, opacity 0.4s linear, filter 0.4s linear',
           position: 'absolute',
           inset: 0,
           zIndex: 10,
-          willChange: 'transform, opacity',
+          willChange: 'transform, opacity, filter',
         }}
       >
         <div className="w-full min-h-full px-4 py-8">
