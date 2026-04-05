@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, useRef } from 'react';
 
 interface HomeHeroProps {
   isActive?: boolean;
@@ -20,18 +20,66 @@ function triggerVibration() {
 // 使用React.memo优化性能，避免不必要的重渲染
 export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProps) {
   const [mounted, setMounted] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement>(null);
 
   // 首次加载时触发动画
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // 处理合作应聘按钮点击
-  const handleCareersClick = () => {
-    triggerVibration();
-    // 可以跳转到联系我们页面或弹出一个模态框
-    const event = new CustomEvent('jump-to-page', { detail: { pageIndex: 5 } });
-    window.dispatchEvent(event);
+  // 监听页面变化，离开首页时停止播放
+  useEffect(() => {
+    const handlePageChange = (e: CustomEvent<{ pageIndex: number }>) => {
+      const audio = audioRef.current;
+      if (audio && e.detail.pageIndex !== 0) {
+        audio.pause();
+        audio.currentTime = 0;
+        setIsPlaying(false);
+      }
+    };
+
+    window.addEventListener('page-changed', handlePageChange as EventListener);
+    return () => window.removeEventListener('page-changed', handlePageChange as EventListener);
+  }, []);
+
+  // 首页加载时自动播放
+  useEffect(() => {
+    if (isActive && audioRef.current && !isPlaying) {
+      const audio = audioRef.current;
+      audio.muted = true;
+      audio.volume = 0.3;
+
+      const attemptPlay = async () => {
+        try {
+          await audio.play();
+          setIsPlaying(true);
+          setTimeout(() => {
+            audio.muted = false;
+          }, 100);
+        } catch (error) {
+          console.log('自动播放被阻止');
+        }
+      };
+
+      setTimeout(attemptPlay, 500);
+    }
+  }, [isActive]);
+
+  // 切换播放状态
+  const togglePlay = () => {
+    const audio = audioRef.current;
+    if (audio) {
+      triggerVibration();
+      if (isPlaying) {
+        audio.pause();
+        setIsPlaying(false);
+      } else {
+        audio.muted = false;
+        audio.play();
+        setIsPlaying(true);
+      }
+    }
   };
 
   return (
@@ -200,7 +248,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
           ))}
         </div>
 
-        {/* 合作应聘按钮 */}
+        {/* 音乐播放按钮 - 合作应聘 */}
         <div
           className="mt-8 sm:mt-10 md:mt-12 lg:mt-16"
           style={{
@@ -210,68 +258,56 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
           }}
         >
           <button
-            onClick={handleCareersClick}
-            className="relative px-6 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5 rounded-2xl overflow-hidden group cursor-pointer liquid-glass-button"
-            style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              backdropFilter: 'blur(12px)',
-              WebkitBackdropFilter: 'blur(12px)',
-              border: '1px solid rgba(255, 255, 255, 0.15)',
-              boxShadow: '0 4px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-              transition: 'all 0.3s ease',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
-              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)';
-            }}
+            onClick={togglePlay}
+            className="relative cursor-pointer transition-all duration-300 hover:scale-110"
           >
-            <div className="relative z-10 flex items-center gap-2 sm:gap-3">
-              <span
-                className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-white"
-                style={{
-                  letterSpacing: '0.15em',
-                  textShadow: '0 0 20px rgba(255, 255, 255, 0.3)',
-                }}
-              >
-                合作应聘
-              </span>
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="text-white group-hover:translate-x-1 transition-transform duration-300"
-                style={{
-                  filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.5))',
-                }}
-              >
-                <path d="M5 12h14" />
-                <path d="M12 5l7 7-7 7" />
-              </svg>
-            </div>
-            {/* 按钮光晕效果 */}
-            <div
-              className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            <span
+              className="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-white/80 hover:text-white transition-colors"
               style={{
-                filter: 'blur(20px)',
+                letterSpacing: '0.2em',
+                textShadow: isPlaying ? '0 0 30px rgba(139, 92, 246, 0.5)' : '0 0 20px rgba(255, 255, 255, 0.3)',
+              }}
+            >
+              合作应聘
+              {isPlaying ? ' 🎵' : ''}
+            </span>
+          </button>
+        </div>
+
+        {/* 往下滑动指示器 */}
+        <div
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
+          style={{
+            opacity: mounted ? 1 : 0,
+            transition: 'all 1000ms ease-out 0.8s',
+          }}
+          onClick={() => {
+            triggerVibration();
+            const event = new CustomEvent('jump-to-page', { detail: { pageIndex: 1 } });
+            window.dispatchEvent(event);
+          }}
+        >
+          <span className="text-white/50 text-xs tracking-widest">下滑</span>
+          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
+            <div
+              className="w-1 h-3 bg-white/50 rounded-full animate-bounce"
+              style={{
+                animation: 'scroll-indicator 1.5s ease-in-out infinite',
               }}
             />
-          </button>
+          </div>
         </div>
       </div>
       </div>
+
+      {/* 音频元素 */}
+      <audio
+        ref={audioRef}
+        loop
+        style={{ display: 'none' }}
+      >
+        <source src="/music/forever-friends.mp3" type="audio/mpeg" />
+      </audio>
     </>
   );
 });
