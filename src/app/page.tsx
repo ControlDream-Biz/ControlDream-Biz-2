@@ -20,10 +20,16 @@ export default function Page() {
     <ContactShowcase key="contact" />,
   ];
 
+  const handlePageChange = (pageIndex: number) => {
+    // 触发scrollToSection事件，通知ScrollProgress组件
+    const event = new CustomEvent('scrollToSection', { detail: { sectionIndex: pageIndex } });
+    window.dispatchEvent(event);
+  };
+
   return (
     <>
       <Navbar />
-      <ScrollContainer>{pages}</ScrollContainer>
+      <ScrollContainer onPageChange={handlePageChange}>{pages}</ScrollContainer>
       <ScrollProgress />
     </>
   );

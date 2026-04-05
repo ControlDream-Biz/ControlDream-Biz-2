@@ -14,7 +14,6 @@ const pages = [
 export function ScrollProgress() {
   const [currentPage, setCurrentPage] = useState(0);
   const [showLabel, setShowLabel] = useState(false);
-  const totalPages = pages.length;
   const stayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -28,10 +27,10 @@ export function ScrollProgress() {
         clearTimeout(stayTimerRef.current);
       }
 
-      // 2秒后隐藏标签
+      // 3秒后隐藏标签（行业标准）
       stayTimerRef.current = setTimeout(() => {
         setShowLabel(false);
-      }, 2000);
+      }, 3000);
     };
 
     window.addEventListener('scrollToSection', handleScrollToSection as EventListener);
@@ -50,37 +49,42 @@ export function ScrollProgress() {
 
   return (
     <div
-      className="fixed right-0 top-0 bottom-0 z-50 flex items-center pr-4"
+      className="fixed right-0 top-0 bottom-0 z-50 pr-4"
     >
-      {/* 导航内容 */}
-      <div className="flex items-center gap-4">
-        {/* 当前页面名称（只在showLabel为true时显示） */}
-        {showLabel && (
-          <div className="flex flex-col items-end transition-all duration-500 opacity-100">
-            <span className="text-base text-white font-bold whitespace-nowrap">
-              {pages[currentPage].label}
-            </span>
-          </div>
-        )}
+      {/* 圆点列表（垂直分布） */}
+      <div className="absolute right-0 top-0 bottom-0 w-6 flex flex-col items-center justify-between py-6">
+        {pages.map((page, index) => {
+          const isCurrent = index === currentPage;
 
-        {/* 进度指示器（右侧，紧靠右边） */}
-        <div className="flex flex-col items-center gap-3">
-          {Array.from({ length: totalPages }).map((_, index) => {
-            const isCurrent = index === currentPage;
+          return (
+            <div key={page.id} className="relative w-full h-4 flex items-center justify-center">
+              {/* 当前页面的中文标签（从圆点弹出） */}
+              {showLabel && isCurrent && (
+                <div
+                  className="absolute right-6 transition-all duration-500 ease-out"
+                  style={{
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                  }}
+                >
+                  <span className="text-base text-white font-bold whitespace-nowrap">
+                    {page.label}
+                  </span>
+                </div>
+              )}
 
-            return (
+              {/* 圆点 */}
               <button
-                key={index}
                 onClick={() => scrollToSection(index)}
                 className={`
-                  w-0.5 h-0.5 rounded-full transition-all duration-300
-                  ${isCurrent ? 'bg-white' : 'bg-white/30'}
+                  w-1 h-1 rounded-full transition-all duration-300
+                  ${isCurrent ? 'bg-white scale-150' : 'bg-white/30 hover:bg-white/50'}
                 `}
-                aria-label={`跳转到第${index + 1}页`}
+                aria-label={`跳转到${page.label}`}
               />
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
