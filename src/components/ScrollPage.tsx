@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 
 interface ScrollPageProps {
   children: React.ReactNode;
@@ -57,26 +57,22 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   const containerRef = useRef<HTMLDivElement>(null);
   const totalPages = children.length;
 
-  const resetScrollingState = () => {
+  const resetScrollingState = useCallback(() => {
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
     }
     scrollTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false);
     }, 800);
-  };
+  }, []);
 
   useEffect(() => {
     onPageChange?.(currentPage);
   }, [currentPage, onPageChange]);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
-      e.stopPropagation();
 
       const now = Date.now();
       if (isScrolling || now - lastWheelTime.current < 100) {
@@ -132,21 +128,22 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    container.addEventListener('wheel', handleWheel, { passive: false });
-    container.addEventListener('touchstart', handleTouchStart, { passive: true });
-    container.addEventListener('touchend', handleTouchEnd, { passive: true });
+    // 绑定到 window 上，确保捕获所有滚动事件
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
     window.addEventListener('scrollToSection', handleScrollToSection as EventListener);
 
     return () => {
-      container.removeEventListener('wheel', handleWheel);
-      container.removeEventListener('touchstart', handleTouchStart);
-      container.removeEventListener('touchend', handleTouchEnd);
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('scrollToSection', handleScrollToSection as EventListener);
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
     };
-  }, [isScrolling, totalPages]);
+  }, [isScrolling, totalPages, resetScrollingState]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -167,7 +164,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isScrolling, totalPages]);
+  }, [isScrolling, totalPages, resetScrollingState]);
 
   return (
     <div ref={containerRef} className="fixed inset-0 overflow-hidden bg-black">

@@ -32,30 +32,30 @@ export function Navbar() {
 
   return (
     <>
-      {/* 左上角 Logo - 始终显示 */}
-      <div className="fixed top-6 left-6 z-50 flex items-center gap-3 hover:opacity-90 transition-opacity cursor-pointer group">
+      {/* 左上角 Logo + 公司名称 */}
+      <div className="fixed top-6 left-6 z-50 flex items-center gap-4 hover:opacity-90 transition-opacity cursor-pointer group">
         <div
           onClick={() => scrollToSection('#home', 0)}
-          className="relative w-12 h-12 flex-shrink-0 bg-white/10 backdrop-blur-xl rounded-xl overflow-hidden border border-white/20 group-hover:border-white/40 transition-all duration-300"
+          className="relative w-16 h-16 flex-shrink-0"
         >
           <Image
-            src="/logo-cm-final-clean.png"
+            src="/cm-logo-glowing-white.png"
             alt="创梦计算机系统有限公司"
             fill
-            className="object-contain p-2"
-            sizes="(max-width: 768px) 48px, 48px"
+            className="object-contain"
+            sizes="(max-width: 768px) 64px, 64px"
             priority
           />
         </div>
         <div
           onClick={() => scrollToSection('#home', 0)}
-          className="hidden sm:block"
+          className="hidden md:flex flex-col justify-center"
         >
-          <div className="text-lg font-black text-white tracking-tight leading-none mb-1">
-            创梦
+          <div className="text-xl font-black text-white tracking-tight leading-none mb-1">
+            创梦计算机系统有限公司
           </div>
-          <div className="text-xs text-white/60 font-medium tracking-wider">
-            CHUANGMENG
+          <div className="text-xs text-white/60 font-medium tracking-widest uppercase">
+            CHUANGMENG COMPUTER SYSTEM
           </div>
         </div>
       </div>
