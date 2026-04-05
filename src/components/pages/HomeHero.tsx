@@ -11,22 +11,23 @@ export function HomeHero() {
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center bg-black overflow-hidden">
-      {/* 动态背景光晕 - 固定定位，不随内容滚动 */}
+      {/* 动态背景光晕 - 固定定位，不随内容滚动，z-index 确保在文字后面 */}
       <div
         className="fixed inset-0 transition-opacity duration-1000 ease-out pointer-events-none"
         style={{
+          zIndex: 0,
           opacity: mounted ? 1 : 0,
           background: `
-            radial-gradient(circle at 25% 35%, rgba(139, 92, 246, 0.4) 0%, rgba(124, 58, 237, 0.3) 20%, rgba(109, 40, 217, 0.2) 40%, rgba(99, 102, 241, 0.1) 60%, transparent 70%),
-            radial-gradient(circle at 75% 45%, rgba(59, 130, 246, 0.4) 0%, rgba(37, 99, 235, 0.3) 20%, rgba(29, 78, 216, 0.2) 40%, rgba(99, 102, 241, 0.1) 60%, transparent 70%),
-            radial-gradient(circle at 50% 55%, rgba(236, 72, 153, 0.3) 0%, rgba(239, 68, 68, 0.2) 20%, rgba(220, 38, 38, 0.15) 35%, transparent 55%),
-            radial-gradient(circle at 20% 75%, rgba(6, 182, 212, 0.35) 0%, rgba(14, 165, 233, 0.25) 20%, rgba(56, 189, 248, 0.15) 40%, transparent 60%),
-            radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.3) 0%, rgba(147, 51, 234, 0.2) 20%, rgba(126, 34, 206, 0.15) 35%, transparent 55%)
+            radial-gradient(circle at 25% 35%, rgba(139, 92, 246, 0.45) 0%, rgba(124, 58, 237, 0.35) 15%, rgba(109, 40, 217, 0.25) 30%, rgba(99, 102, 241, 0.15) 45%, rgba(99, 102, 241, 0.08) 60%, rgba(99, 102, 241, 0.04) 75%, transparent 90%),
+            radial-gradient(circle at 75% 45%, rgba(59, 130, 246, 0.45) 0%, rgba(37, 99, 235, 0.35) 15%, rgba(29, 78, 216, 0.25) 30%, rgba(99, 102, 241, 0.15) 45%, rgba(99, 102, 241, 0.08) 60%, rgba(99, 102, 241, 0.04) 75%, transparent 90%),
+            radial-gradient(circle at 50% 55%, rgba(236, 72, 153, 0.35) 0%, rgba(239, 68, 68, 0.25) 15%, rgba(220, 38, 38, 0.18) 25%, rgba(220, 38, 38, 0.1) 35%, rgba(220, 38, 38, 0.05) 50%, transparent 85%),
+            radial-gradient(circle at 20% 75%, rgba(6, 182, 212, 0.4) 0%, rgba(14, 165, 233, 0.3) 15%, rgba(56, 189, 248, 0.2) 30%, rgba(56, 189, 248, 0.12) 45%, rgba(56, 189, 248, 0.06) 60%, transparent 85%),
+            radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.35) 0%, rgba(147, 51, 234, 0.25) 15%, rgba(126, 34, 206, 0.18) 25%, rgba(126, 34, 206, 0.1) 35%, rgba(126, 34, 206, 0.05) 50%, transparent 85%)
           `,
         }}
       />
 
-      <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto flex flex-col items-center justify-center">
+      <div className="relative z-20 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto flex flex-col items-center justify-center">
         {/* 主标题 - 波浪抖动动画 */}
         <div
           className="mb-2 sm:mb-3 md:mb-4 lg:mb-6"
