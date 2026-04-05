@@ -148,8 +148,8 @@ export function ParticleBackground() {
       const y = Math.random() * height;
       const vx = (Math.random() - 0.5) * 0.3; // 初始速度很慢
       const vy = (Math.random() - 0.5) * 0.3;
-      const r = isMobile ? Math.random() * 1.5 + 1 : Math.random() * 3 + 1.5;
-      const opacity = isMobile ? Math.random() * 0.3 + 0.2 : Math.random() * 0.5 + 0.3;
+      const r = isMobile ? Math.random() * 2 + 1.5 : Math.random() * 4 + 2;
+      const opacity = isMobile ? Math.random() * 0.4 + 0.4 : Math.random() * 0.5 + 0.5;
       const phase = Math.random() * Math.PI * 2; // 随机相位
       const frequency = 0.5 + Math.random() * 1.5; // 随机频率
       const amplitude = 0.5 + Math.random() * 1.5; // 随机振幅
@@ -232,35 +232,34 @@ export function ParticleBackground() {
 
         // 闪烁效果（更慢）
         particle.opacity += (Math.random() - 0.5) * 0.01;
-        particle.opacity = Math.max(isMobile ? 0.1 : 0.2, Math.min(isMobile ? 0.5 : 0.8, particle.opacity));
+        particle.opacity = Math.max(isMobile ? 0.3 : 0.4, Math.min(isMobile ? 0.8 : 0.9, particle.opacity));
       });
 
       // 调整连线距离，控制线条数量
       const connectionDistance = isMobile ? 150 : 180; // 减少连线距离
 
       const connectionElements: JSX.Element[] = [];
-      if (!isMobile || isMobile && particleCount <= 45) {
-        for (let i = 0; i < currentParticles.length; i++) {
-          for (let j = i + 1; j < currentParticles.length; j++) {
-            const dx = currentParticles[j].cx - currentParticles[i].cx;
-            const dy = currentParticles[j].cy - currentParticles[i].cy;
-            const distance = Math.sqrt(dx * dx + dy * dy);
+      // 移除移动端粒子数量限制，所有设备都显示线条
+      for (let i = 0; i < currentParticles.length; i++) {
+        for (let j = i + 1; j < currentParticles.length; j++) {
+          const dx = currentParticles[j].cx - currentParticles[i].cx;
+          const dy = currentParticles[j].cy - currentParticles[i].cy;
+          const distance = Math.sqrt(dx * dx + dy * dy);
 
-            if (distance < connectionDistance) {
-              const lineOpacity = (isMobile ? 0.12 : 0.25) * (1 - distance / connectionDistance);
-              connectionElements.push(
-                <line
-                  key={`line-${i}-${j}`}
-                  x1={currentParticles[i].cx}
-                  y1={currentParticles[i].cy}
-                  x2={currentParticles[j].cx}
-                  y2={currentParticles[j].cy}
-                  stroke={`rgba(255, 255, 255, ${lineOpacity})`}
-                  strokeWidth={isMobile ? 1 : 1.2}
-                  strokeLinecap="round"
-                />
-              );
-            }
+          if (distance < connectionDistance) {
+            const lineOpacity = (isMobile ? 0.25 : 0.35) * (1 - distance / connectionDistance);
+            connectionElements.push(
+              <line
+                key={`line-${i}-${j}`}
+                x1={currentParticles[i].cx}
+                y1={currentParticles[i].cy}
+                x2={currentParticles[j].cx}
+                y2={currentParticles[j].cy}
+                stroke={`rgba(255, 255, 255, ${lineOpacity})`}
+                strokeWidth={isMobile ? 1.2 : 1.5}
+                strokeLinecap="round"
+              />
+            );
           }
         }
       }
