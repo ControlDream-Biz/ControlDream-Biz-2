@@ -222,17 +222,17 @@ export default function FloatingButtons() {
     customerServicePopup.style.willChange = 'opacity, transform';
 
     customerServicePopup.innerHTML = `
-      <!-- 顶部红色标题栏 - 玻璃效果 -->
+      <!-- 顶部红色标题栏 - 透明玻璃效果 -->
       <div style="
-        background: rgba(239, 68, 68, 0.25);
+        background: rgba(239, 68, 68, 0.15);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border: 1.5px solid rgba(239, 68, 68, 0.3);
+        border: 1.5px solid rgba(239, 68, 68, 0.25);
         border-radius: 20px 20px 0 0;
         padding: 16px 20px;
         color: white;
         position: relative;
-        box-shadow: 0 8px 32px rgba(239, 68, 68, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+        box-shadow: 0 8px 32px rgba(239, 68, 68, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.15);
       ">
         <div style="display: flex; align-items: center; justify-content: space-between;">
           <div>
@@ -267,12 +267,12 @@ export default function FloatingButtons() {
         </div>
       </div>
 
-      <!-- 主体选项区域 - 白色玻璃效果 -->
+      <!-- 主体选项区域 - 透明玻璃效果 -->
       <div style="
-        background: rgba(255, 255, 255, 0.75);
+        background: rgba(255, 255, 255, 0.55);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border: 1.5px solid rgba(255, 255, 255, 0.5);
+        border: 1.5px solid rgba(255, 255, 255, 0.4);
         border-radius: 0 0 20px 20px;
         border-top: none;
       ">
@@ -339,12 +339,12 @@ export default function FloatingButtons() {
         </div>
       </div>
 
-      <!-- 底部工作时间栏 - 玻璃效果 -->
+      <!-- 底部工作时间栏 - 透明玻璃效果 -->
       <div style="
-        background: rgba(249, 250, 251, 0.6);
+        background: rgba(249, 250, 251, 0.45);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        border-top: 1px solid rgba(0, 0, 0, 0.03);
         border-radius: 0 0 20px 20px;
         padding: 12px 20px;
         text-align: center;
