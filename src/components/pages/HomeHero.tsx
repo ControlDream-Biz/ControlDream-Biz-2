@@ -38,7 +38,7 @@ export function HomeHero() {
           }}
         >
           <h2
-            className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-1 inline-block"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-1 inline-block"
             style={{
               backgroundImage: 'linear-gradient(135deg, #FB923C 0%, #F87171 15%, #F43F5E 35%, #E11D48 55%, #DC2626 75%, #B91C1C 100%)',
               WebkitBackgroundClip: 'text',
@@ -51,7 +51,7 @@ export function HomeHero() {
             自主游戏产品
           </h2>
           <h2
-            className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-2 inline-block"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-2 inline-block"
             style={{
               backgroundImage: 'linear-gradient(135deg, #60A5FA 0%, #3B82F6 15%, #6366F1 35%, #8B5CF6 55%, #A855F7 75%, #7C3AED 100%)',
               WebkitBackgroundClip: 'text',
@@ -64,7 +64,7 @@ export function HomeHero() {
             自主软件产品
           </h2>
           <h2
-            className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-3 inline-block"
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-3 inline-block"
             style={{
               backgroundImage: 'linear-gradient(135deg, #22D3EE 0%, #06B6D4 15%, #0EA5E9 35%, #3B82F6 55%, #6366F1 75%, #4F46E5 100%)',
               WebkitBackgroundClip: 'text',

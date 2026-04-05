@@ -28,7 +28,7 @@ export function ContactShowcase() {
   };
 
   return (
-    <div className="relative w-full h-full flex flex-col bg-black overflow-hidden">
+    <div className="relative w-full flex flex-col bg-black overflow-hidden">
       {/* 背景光晕 */}
       <div
         className="absolute inset-0 transition-opacity duration-1000 ease-out"
@@ -38,7 +38,7 @@ export function ContactShowcase() {
         }}
       />
 
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-12 sm:py-16 md:py-20">
+      <div className="relative z-10 flex flex-col items-center justify-start px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
         {/* 标题 */}
         <div
           className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16"

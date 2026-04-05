@@ -33,7 +33,7 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black overflow-y-auto scrollbar-hide"
+      className="fixed inset-0 bg-black overflow-y-auto scrollbar-hide"
       style={{
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
@@ -43,7 +43,7 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
         willChange: 'transform, opacity',
       }}
     >
-      <div className="w-full px-4 py-8">
+      <div className="w-full min-h-full px-4 py-8">
         {React.isValidElement(children)
           ? (children as React.ReactElement<Record<string, unknown>>).props.isActive !== undefined
             ? React.cloneElement(children as ChildWithProps, { isActive })
