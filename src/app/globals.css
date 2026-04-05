@@ -679,17 +679,14 @@ div[data-scroll-animate] {
   0% {
     opacity: 0;
     transform: translateY(30px) scale(0.8) rotateX(90deg);
-    filter: blur(10px);
   }
   50% {
     opacity: 0.8;
     transform: translateY(10px) scale(0.95) rotateX(15deg);
-    filter: blur(3px);
   }
   100% {
     opacity: 1;
     transform: translateY(0) scale(1) rotateX(0deg);
-    filter: blur(0);
   }
 }
 
@@ -733,11 +730,9 @@ div[data-scroll-animate] {
 @keyframes fadeInSimple {
   0% {
     opacity: 0;
-    filter: blur(4px);
   }
   100% {
     opacity: 1;
-    filter: blur(0);
   }
 }
 
@@ -750,12 +745,10 @@ div[data-scroll-animate] {
   0% {
     opacity: 0;
     transform: scale(0.95);
-    filter: blur(4px);
   }
   100% {
     opacity: 1;
     transform: scale(1);
-    filter: blur(0);
   }
 }
 
@@ -818,7 +811,6 @@ div[data-scroll-animate] {
   display: inline-block;
   opacity: 0;
   transform: translateY(30px) rotateX(90deg) scale(0.5);
-  filter: blur(8px);
   transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
@@ -829,9 +821,8 @@ div[data-scroll-animate] {
   display: inline-block;
   opacity: 0;
   transform: translate(var(--offset-x), var(--offset-y)) rotate(var(--rotation)) scale(var(--scale));
-  filter: blur(8px);
   transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-  will-change: transform, opacity, filter;
+  will-change: transform, opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
@@ -839,7 +830,6 @@ div[data-scroll-animate] {
 .text-visible .char-explode {
   opacity: 1;
   transform: translate(0, 0) rotate(0deg) scale(1);
-  filter: blur(0);
 }
 
 .text-hidden {
@@ -919,7 +909,6 @@ div[data-scroll-animate] {
   background: linear-gradient(135deg, #6366F1, #EC4899);
   border-radius: 50%;
   opacity: 0;
-  filter: blur(2px);
   animation: particleFloat 3s ease-in-out infinite;
 }
 
