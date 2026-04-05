@@ -3,28 +3,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ========== 全局性能优化 - 强制高刷新率 ========== */
+/* ========== 全局性能优化 - 支持高刷新率 ========== */
 
-/* 手机端 120HZ 优化 */
-@media (hover: none) and (pointer: coarse) {
-  * {
-    animation-duration: 8.333ms !important; /* 1/120秒 */
-  }
-}
+/* 浏览器会自动根据显示器刷新率渲染，无需强制动画
+   强制设置animation-duration可能导致掉帧和动画不流畅 */
 
-/* 电脑端 240HZ 优化 */
-@media (hover: hover) and (pointer: fine) {
-  * {
-    animation-duration: 4.167ms !important; /* 1/240秒 */
-  }
-}
-
-/* 向下兼容：默认 60HZ */
-@supports not (animation-duration: 8.333ms) {
-  * {
-    animation-duration: 16.667ms !important; /* 1/60秒 */
-  }
-}
+/* 移除强制120HZ动画，避免掉帧 */
 
 /* 移除强制GPU加速，因为会破坏 fixed 定位 */
 /* 注意：transform 会创建新的包含块，导致 position: fixed 失效 */
@@ -802,13 +786,25 @@ div[data-scroll-animate] {
   animation: fadeInScale 1.2s cubic-bezier(0.32, 0.72, 0, 1) forwards;
 }
 
-/* 上下缓慢抖动的呼吸效果 */
-@keyframes breathing {
+/* 滚动提示动画 - GPU加速 */
+@keyframes scrollBounce {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
+    opacity: 1;
   }
   50% {
-    transform: translateY(-6px);
+    transform: translateY(10px) translateZ(0);
+    opacity: 0.5;
+  }
+}
+
+/* 上下缓慢抖动的呼吸效果 - GPU加速 */
+@keyframes breathing {
+  0%, 100% {
+    transform: translateY(0) translateZ(0);
+  }
+  50% {
+    transform: translateY(-6px) translateZ(0);
   }
 }
 
@@ -819,19 +815,19 @@ div[data-scroll-animate] {
 /* 波浪抖动动画 - 不规则上下抖动 - 极缓版本 */
 @keyframes waveBounce {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(0) translateZ(0);
   }
   20% {
-    transform: translateY(-8px);
+    transform: translateY(-8px) translateZ(0);
   }
   40% {
-    transform: translateY(4px);
+    transform: translateY(4px) translateZ(0);
   }
   60% {
-    transform: translateY(-6px);
+    transform: translateY(-6px) translateZ(0);
   }
   80% {
-    transform: translateY(3px);
+    transform: translateY(3px) translateZ(0);
   }
 }
 
@@ -1357,7 +1353,7 @@ html {
   display: none;  /* Chrome, Safari, Opera */
 }
 
-/* 腾讯式滚动淡入动画优化 */
+/* 腾讯式滚动淡入动画优化 - GPU加速 */
 .texas-slide-in {
   will-change: transform, opacity;
   backface-visibility: hidden;
@@ -1365,20 +1361,5 @@ html {
   perspective: 1000px;
   -webkit-perspective: 1000px;
   transform: translateZ(0);
-  /* 高刷新率优化 */
-  animation-duration: 4.167ms;
-}
-
-/* 高刷新率优化 - 手机端 */
-@media (hover: none) and (pointer: coarse) {
-  .texas-slide-in {
-    animation-duration: 8.333ms;
-  }
-}
-
-/* 高刷新率优化 - 电脑端 */
-@media (hover: hover) and (pointer: fine) {
-  .texas-slide-in {
-    animation-duration: 4.167ms;
-  }
+  /* 移除强制animation-duration，避免掉帧 */
 }

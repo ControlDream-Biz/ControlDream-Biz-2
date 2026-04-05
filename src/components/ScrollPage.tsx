@@ -132,9 +132,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const deltaTime = currentTime - state.touchStartTime;
       const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
 
-      // 只在快速滑动时阻止默认行为（velocity >= 0.5），慢速滑动允许滚动内容
-      // 同时需要滑动超过30px，避免轻微抖动触发
-      if (absDeltaY > 30 && velocity >= 0.5 && e.cancelable) {
+      // 只在快速滑动时阻止默认行为（velocity >= 0.6），慢速滑动允许滚动内容
+      // 同时需要滑动超过40px，避免轻微抖动触发
+      if (absDeltaY > 40 && velocity >= 0.6 && e.cancelable) {
         e.preventDefault();
         e.stopPropagation();
       }
@@ -150,12 +150,12 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 计算滑动速度 (px/ms)
       const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
 
-      // 判断翻页条件：
-      // 1. 滑动距离超过60px 且 速度快于0.6px/ms（快速滑动）
-      // 2. 或者 滑动距离超过100px（大幅度滑动）
-      const swipeThreshold = 60;
-      const largeSwipeThreshold = 100;
-      const velocityThreshold = 0.6;
+      // 判断翻页条件（更严格的条件）：
+      // 1. 滑动距离超过80px 且 速度快于0.7px/ms（快速滑动）
+      // 2. 或者 滑动距离超过120px（大幅度滑动）
+      const swipeThreshold = 80;
+      const largeSwipeThreshold = 120;
+      const velocityThreshold = 0.7;
       const absDeltaY = Math.abs(deltaY);
 
       const shouldSwitchPage = (absDeltaY >= swipeThreshold && velocity >= velocityThreshold) ||
@@ -163,15 +163,27 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       if (shouldSwitchPage) {
         // 增加节流时间，避免频繁翻页
-        if (touchEndTime - state.lastWheelTime < 400) return;
+        if (touchEndTime - state.lastWheelTime < 500) return;
         state.lastWheelTime = touchEndTime;
 
+        // 检查是否可以翻页
         if (deltaY > 0) {
-          handlePageChange(currentPage + 1);
+          // 上滑（手指向上），向下翻页
+          if (currentPage < totalPages - 1) {
+            handlePageChange(currentPage + 1);
+          }
         } else {
-          handlePageChange(currentPage - 1);
+          // 下滑（手指向下），向上翻页
+          if (currentPage > 0) {
+            handlePageChange(currentPage - 1);
+          }
         }
       }
+
+      // 重置状态
+      state.isScrolling = false;
+      state.touchStartY = 0;
+      state.touchStartTime = 0;
     };
 
     // 苹果官网式的键盘导航
@@ -229,6 +241,18 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     return () => window.removeEventListener('scrollToSection', handleNavigation);
   }, [handlePageChange]);
 
+  // 监听置顶事件（来自FloatingButtons）
+  useEffect(() => {
+    const handleScrollToTop = (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      handlePageChange(0);
+    };
+
+    window.addEventListener('scroll-to-top', handleScrollToTop);
+    return () => window.removeEventListener('scroll-to-top', handleScrollToTop);
+  }, [handlePageChange]);
+
   return (
     <div className="fixed inset-0 overflow-hidden bg-black">
       {children.map((child, index) => (
@@ -250,14 +274,15 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
               e.stopPropagation();
               handlePageChange(index);
             }}
-            className={`pointer-events-auto h-1 rounded-full transition-all duration-300 ${
+            className={`pointer-events-auto h-1 rounded-full ${
               index === currentPage
                 ? 'bg-white w-8'
                 : 'bg-white/30 hover:bg-white/50 w-1.5'
             }`}
             style={{
               boxShadow: index === currentPage ? '0 0 20px rgba(255, 255, 255, 0.5)' : 'none',
-              transition: 'all 0.6s cubic-bezier(0.32, 0.72, 0, 1)',
+              transition: 'width 0.6s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.3s ease',
+              willChange: 'width, background-color',
             }}
             aria-label={`Page ${index + 1}`}
           />
