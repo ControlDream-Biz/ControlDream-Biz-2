@@ -136,6 +136,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
   const scrollStateRef = useRef({
     lastWheelTime: 0,
+    wheelDelta: 0,
     isTouchActive: false,
     hasSwitchedInThisTouch: false,
     touchStartY: 0,
@@ -155,7 +156,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     const handleWheel = (e: WheelEvent) => {
       const now = performance.now();
       const delta = e.deltaY;
-      const deltaAbs = Math.abs(delta);
+
+      // 累积滚动
+      state.wheelDelta += delta;
 
       // 获取当前页面的滚动容器
       const activePage = document.querySelector(`[data-page-index="${currentPage}"]`);
@@ -163,33 +166,28 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       let shouldAllowPageChange = true;
 
-      // 如果有滚动容器，检查是否可以滚动
       if (scrollContainer) {
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
 
-        // 检查内容是否可以滚动（至少比屏幕高50px）
-        const isScrollable = scrollHeight > clientHeight + 50;
+        // 检查是否还有可滚动的内容
+        const remainingScroll = scrollHeight - (scrollTop + clientHeight);
 
-        if (isScrollable) {
-          // 计算到顶部和底部的距离
-          const distanceFromTop = scrollTop;
-          const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
-
-          // 只有在非常接近边界（<30px）时才允许翻页
-          const isAtTop = distanceFromTop < 30;
-          const isAtBottom = distanceFromBottom < 30;
-
-          // 检查翻页方向
-          const shouldPageDown = delta > 0 && isAtBottom;
-          const shouldPageUp = delta < 0 && isAtTop;
-
-          // 如果在中间或方向不对，不允许翻页
-          if (!shouldPageDown && !shouldPageUp) {
-            shouldAllowPageChange = false;
-          }
+        // 如果还有超过50px可以滚动，不允许翻页
+        if (remainingScroll > 50 && delta > 0) {
+          shouldAllowPageChange = false;
         }
+
+        // 如果还没到顶部，不允许向上翻页
+        if (scrollTop > 50 && delta < 0) {
+          shouldAllowPageChange = false;
+        }
+      }
+
+      // 如果累积滚动超过100px，强制允许翻页
+      if (Math.abs(state.wheelDelta) > 100) {
+        shouldAllowPageChange = true;
       }
 
       if (!shouldAllowPageChange) {
@@ -197,8 +195,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
 
       // 节流
-      if (now - state.lastWheelTime < 200) return;
+      if (now - state.lastWheelTime < 150) return;
       state.lastWheelTime = now;
+
+      // 重置累积
+      state.wheelDelta = 0;
 
       // 翻页
       if (delta > 0 && currentPage < totalPages - 1) {
@@ -234,26 +235,16 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
 
-        const isScrollable = scrollHeight > clientHeight + 50;
+        const remainingScroll = scrollHeight - (scrollTop + clientHeight);
 
-        if (isScrollable) {
-          const distanceFromTop = scrollTop;
-          const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+        const shouldPageDown = deltaY > 0 && remainingScroll <= 50;
+        const shouldPageUp = deltaY < 0 && scrollTop <= 50;
 
-          const isAtTop = distanceFromTop < 30;
-          const isAtBottom = distanceFromBottom < 30;
+        if (!shouldPageDown && !shouldPageUp) {
+          return;
+        }
 
-          const shouldPageDown = deltaY > 0 && isAtBottom;
-          const shouldPageUp = deltaY < 0 && isAtTop;
-
-          if (!shouldPageDown && !shouldPageUp) {
-            return;
-          }
-
-          if (shouldPageDown || shouldPageUp) {
-            shouldPreventDefault = true;
-          }
-        } else {
+        if (shouldPageDown || shouldPageUp) {
           shouldPreventDefault = true;
         }
       } else {
