@@ -249,8 +249,8 @@ export function ParticleBackground() {
         particle.opacity = Math.max(isMobile ? 0.3 : 0.4, Math.min(isMobile ? 0.8 : 0.9, particle.opacity));
       });
 
-      // 连线距离增大50%，线条减半
-      const connectionDistance = isMobile ? 270 : 345;
+      // 连线距离进一步增大，粒子更分散
+      const connectionDistance = isMobile ? 350 : 450;
 
       const connectionElements: JSX.Element[] = [];
       // 移除移动端粒子数量限制，所有设备都显示线条
