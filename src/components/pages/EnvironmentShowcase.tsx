@@ -94,23 +94,35 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
 
   // 页面激活时触发动画
   useEffect(() => {
-    console.log(`EnvironmentShowcase 触发动画: pageIndex=${pageIndex}`);
-    setMounted(true);
+    console.log(`EnvironmentShowcase 触发动画: pageIndex=${pageIndex}, isActive=${isActive}, mounted=${mounted}`);
+    
+    if (isActive) {
+      // 延迟触发，确保页面完全渲染
+      const timer = setTimeout(() => {
+        setMounted(true);
 
-    // 清空可见索引
-    setVisibleIndices(new Set());
+        // 清空可见索引
+        setVisibleIndices(new Set());
 
-    // 计算总小字数
-    const totalItems = areas.reduce((sum, a) => sum + a.items.length, 0);
+        // 计算总小字数
+        const totalItems = areas.reduce((sum, a) => sum + a.items.length, 0);
+        console.log(`总共有 ${totalItems} 个小字，准备执行动画`);
 
-    // 依次显示每个小字
-    for (let i = 0; i < totalItems; i++) {
-      setTimeout(() => {
-        setVisibleIndices(prev => new Set([...prev, i]));
-        console.log(`显示第 ${i} 个小字`);
-      }, 400 + i * 200);
+        // 依次显示每个小字
+        for (let i = 0; i < totalItems; i++) {
+          setTimeout(() => {
+            setVisibleIndices(prev => {
+              const newSet = new Set([...prev, i]);
+              console.log(`显示第 ${i} 个小字，当前可见: ${Array.from(newSet).join(', ')}`);
+              return newSet;
+            });
+          }, 400 + i * 200);
+        }
+      }, 300); // 延迟300ms
+
+      return () => clearTimeout(timer);
     }
-  }, [pageIndex]); // 只监听 pageIndex
+  }, [pageIndex]); // 只监听 pageIndex，避免依赖数组变化导致重复执行
 
   return (
     <div className="relative w-full bg-black overflow-hidden">
@@ -198,7 +210,7 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                     return (
                       <div
                         key={`${pageIndex}-${areaIndex}-${i}`}
-                        className="flex items-start space-x-2 sm:space-x-3"
+                        className={`flex items-start space-x-2 sm:space-x-3 ${isVisible ? '' : 'invisible'}`}
                         style={{
                           opacity: isVisible ? 1 : 0,
                           transform: isVisible ? 'translateX(0)' : 'translateX(20px)',
