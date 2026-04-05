@@ -119,33 +119,33 @@ export function Navbar() {
             {/* 上横杠 - 变成左边竖线 */}
             <line
               x1={mobileMenuOpen ? 6 : 4}
-              y1={mobileMenuOpen ? 8 : 6}
+              y1={mobileMenuOpen ? 6 : 6}
               x2={mobileMenuOpen ? 6 : 20}
-              y2={mobileMenuOpen ? 16 : 6}
+              y2={mobileMenuOpen ? 18 : 6}
               style={{
-                transition: 'all 0.2s linear',
+                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
             />
 
             {/* 中横杠 - 变成右边竖线 */}
             <line
               x1={mobileMenuOpen ? 18 : 4}
-              y1={mobileMenuOpen ? 8 : 12}
+              y1={mobileMenuOpen ? 6 : 12}
               x2={mobileMenuOpen ? 18 : 20}
-              y2={mobileMenuOpen ? 16 : 12}
+              y2={mobileMenuOpen ? 18 : 12}
               style={{
-                transition: 'all 0.2s linear',
+                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.05s',
               }}
             />
 
-            {/* 下横杠 - 消失 */}
+            {/* 下横杠 - 变成第二条竖线的一部分（或消失） */}
             <line
-              x1="4"
-              y1="18"
-              x2="20"
-              y2="18"
+              x1={mobileMenuOpen ? 6 : 4}
+              y1={mobileMenuOpen ? 12 : 18}
+              x2={mobileMenuOpen ? 6 : 20}
+              y2={mobileMenuOpen ? 12 : 18}
               style={{
-                transition: 'all 0.15s linear',
+                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.1s',
                 opacity: mobileMenuOpen ? 0 : 1,
                 transform: mobileMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
               }}
