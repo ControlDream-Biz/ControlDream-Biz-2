@@ -147,7 +147,7 @@ export function SiteFooter() {
           创新服务
         </h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
           {innovationFeatures.map((feature, index) => {
             const Icon = feature.icon;
             return (
@@ -157,16 +157,16 @@ export function SiteFooter() {
                 className="group relative overflow-hidden rounded-lg bg-white/5 hover:bg-white/10 transition-all duration-300"
               >
                 <div className="absolute inset-0 bg-gradient-to-br opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
-                <div className="relative p-6 sm:p-8">
+                <div className="relative p-5 sm:p-6 md:p-8">
                   <div
-                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform duration-300`}
+                    className={`w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-3 sm:mb-4 md:mb-6 group-hover:scale-110 transition-transform duration-300`}
                   >
                     <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                   </div>
-                  <h4 className="text-lg sm:text-xl font-black text-white mb-2 sm:mb-3">
+                  <h4 className="text-base sm:text-lg md:text-xl font-black text-white mb-2 sm:mb-3">
                     {feature.title}
                   </h4>
-                  <p className="text-sm sm:text-base text-white/60 mb-4 sm:mb-5 line-clamp-2">
+                  <p className="text-sm sm:text-base md:text-lg text-white/60 mb-3 sm:mb-4 md:mb-5 line-clamp-2 leading-relaxed">
                     {feature.description}
                   </p>
                   <div className="flex items-center text-white/80 group-hover:text-white transition-colors duration-300">
