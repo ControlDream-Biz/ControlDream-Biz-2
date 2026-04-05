@@ -122,12 +122,12 @@ export const BusinessShowcase = memo(function BusinessShowcase({
         zIndex: 5,
       }}
     >
-      {/* 背景光晕 - 更柔和 */}
+      {/* 背景光晕 - 更柔和，全屏扩散 */}
       <div
         className="absolute inset-0 transition-opacity duration-1500 ease-out"
         style={{
-          opacity: mounted ? 0.08 : 0, // 降低透明度，更柔和
-          background: 'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 70%)',
+          opacity: mounted ? 0.08 : 0,
+          background: 'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 85%)',
         }}
       />
 

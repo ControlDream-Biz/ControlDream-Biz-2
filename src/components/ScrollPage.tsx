@@ -8,74 +8,20 @@ interface ScrollPageProps {
   currentPage: number;
   dragOffset?: number;
   isDragging?: boolean;
-  progress?: number; // 新增：过渡进度
 }
 
-type ChildWithProps = React.ReactElement<{ isActive?: boolean; dragOffset?: number; isDragging?: boolean; pageIndex?: number; currentPage?: number; progress?: number }>;
+type ChildWithProps = React.ReactElement<{ isActive?: boolean; dragOffset?: number; isDragging?: boolean; pageIndex?: number; currentPage?: number }>;
 
-// ===== 物理引擎核心 =====
-
-// 弹簧-阻尼物理模型
-interface SpringConfig {
-  stiffness: number;  // 刚度
-  damping: number;    // 阻尼
-  mass: number;      // 质量
-}
-
-class SpringPhysics {
-  private config: SpringConfig;
-  private value: number = 0;
-  private target: number = 0;
-  private velocity: number = 0;
-  private animationFrame: number | null = null;
-
-  constructor(config: SpringConfig) {
-    this.config = config;
-  }
-
-  setValue(value: number) {
-    this.value = value;
-  }
-
-  setTarget(target: number) {
-    this.target = target;
-  }
-
-  update(): number {
-    const displacement = this.target - this.value;
-    const springForce = this.config.stiffness * displacement;
-    const dampingForce = this.config.damping * this.velocity;
-    const force = springForce - dampingForce;
-    const acceleration = force / this.config.mass;
-
-    this.velocity += acceleration;
-    this.value += this.velocity;
-
-    return this.value;
-  }
-
-  isSettled(threshold: number = 0.01): boolean {
-    const displacement = Math.abs(this.target - this.value);
-    const speed = Math.abs(this.velocity);
-    return displacement < threshold && speed < threshold;
-  }
-
-  reset() {
-    this.value = 0;
-    this.velocity = 0;
-  }
-}
+// Apple级别缓动曲线
+const EASE_APPLE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+const EASE_QUARTIC = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 
 // 平滑缓动函数
 function easeOutCubic(t: number): number {
   return 1 - Math.pow(1 - t, 3);
 }
 
-function easeInOutQuart(t: number): number {
-  return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
-}
-
-export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDragging = false, progress = 0 }: ScrollPageProps) {
+export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDragging = false }: ScrollPageProps) {
   const isActive = index === currentPage;
   const isPrev = index < currentPage;
   const isNext = index > currentPage;
@@ -89,34 +35,31 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
   if (isDragging && dragOffset !== 0) {
     const viewportHeight = window.innerHeight;
     const rawProgress = Math.min(Math.abs(dragOffset) / viewportHeight, 1);
-    const smoothProgress = easeInOutQuart(rawProgress); // 使用更平滑的缓动
+    const smoothProgress = easeOutCubic(rawProgress);
 
     if (isActive) {
-      // 当前页面：极其细微的物理反馈
-      const scaleEffect = 1 - smoothProgress * 0.008;
-      const dragFeedback = dragOffset * 0.2; // 更跟手
-      blur = smoothProgress * 1.5; // 更轻微的模糊
-      brightness = 100 - smoothProgress * 5; // 亮度变化
+      const scaleEffect = 1 - smoothProgress * 0.01;
+      const dragFeedback = dragOffset * 0.25;
+      blur = smoothProgress * 1.5;
+      brightness = 100 - smoothProgress * 5;
       transform = `translate3d(0, ${dragFeedback}px, 0) scale(${scaleEffect})`;
-      opacity = 1 - smoothProgress * 0.03;
+      opacity = 1 - smoothProgress * 0.04;
     } else if (isNext && dragOffset < 0) {
-      // 下一页：从下方滑入
-      const startOffset = 10; // 更小的起始偏移
-      const entryOffset = startOffset + dragOffset * 0.2;
-      const scaleEffect = 1 - (1 - smoothProgress) * 0.01;
+      const startOffset = 12;
+      const entryOffset = startOffset + dragOffset * 0.25;
+      const scaleEffect = 1 - (1 - smoothProgress) * 0.012;
       blur = (1 - smoothProgress) * 2;
       brightness = 100 - (1 - smoothProgress) * 8;
       transform = `translate3d(0, ${entryOffset}px, 0) scale(${scaleEffect})`;
-      opacity = Math.max(0.7, smoothProgress * 0.98);
+      opacity = Math.max(0.65, smoothProgress * 0.97);
     } else if (isPrev && dragOffset > 0) {
-      // 上一页：从上方滑入
-      const startOffset = -10;
-      const entryOffset = startOffset + dragOffset * 0.2;
-      const scaleEffect = 1 - (1 - smoothProgress) * 0.01;
+      const startOffset = -12;
+      const entryOffset = startOffset + dragOffset * 0.25;
+      const scaleEffect = 1 - (1 - smoothProgress) * 0.012;
       blur = (1 - smoothProgress) * 2;
       brightness = 100 - (1 - smoothProgress) * 8;
       transform = `translate3d(0, ${entryOffset}px, 0) scale(${scaleEffect})`;
-      opacity = Math.max(0.7, smoothProgress * 0.98);
+      opacity = Math.max(0.65, smoothProgress * 0.97);
     } else if (isPrev) {
       transform = `translate3d(0, -50vh, 0) scale(${scale})`;
       opacity = 0;
@@ -125,7 +68,6 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
       opacity = 0;
     }
   } else {
-    // 非拖动状态
     if (isActive) {
       transform = `translate3d(0, 0, 0) scale(${scale})`;
       opacity = 1;
@@ -140,7 +82,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
 
   return (
     <div
-      className="fixed inset-0 overflow-hidden"
+      className="fixed inset-0 overflow-hidden bg-black"
       style={{
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
@@ -148,7 +90,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
         filter: `blur(${blur}px) brightness(${brightness}%)`,
         transition: isDragging
           ? 'none'
-          : 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
+          : `transform 0.65s ${EASE_APPLE}, opacity 0.55s ${EASE_APPLE}, filter 0.55s ${EASE_APPLE}`,
         zIndex: isActive ? 10 : 1,
         willChange: isDragging ? 'transform, opacity, filter' : 'auto',
         backfaceVisibility: 'hidden' as const,
@@ -165,8 +107,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
                   dragOffset,
                   isDragging,
                   pageIndex: index,
-                  currentPage,
-                  progress
+                  currentPage
                 })
               : children
             : children}
@@ -185,23 +126,15 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   const [currentPage, setCurrentPage] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const [transitionProgress, setTransitionProgress] = useState(0);
   const totalPages = children.length;
 
-  // 物理引擎实例
-  const springRef = useRef<SpringPhysics | null>(null);
-  const rafRef = useRef<number | null>(null);
-
-  // 超级强化的滚动状态
   const scrollStateRef = useRef({
     accumulatedDelta: 0,
     lastWheelTime: 0,
-    isScrolling: false,
     touchStartY: 0,
     touchStartX: 0,
     touchStartTime: 0,
     velocity: 0,
-    lastScrollY: 0,
     isTouchActive: false,
     hasSwitchedInThisTouch: false,
     hasMovedVertically: false,
@@ -213,16 +146,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     stableDeltaHistory: [] as number[],
     directionLocked: false,
     lockTimeout: null as number | null,
-    // 惯性滚动相关
-    momentumVelocity: 0,
-    lastTouchY: 0,
-    lastTouchTime: 0,
-    momentumStartTime: 0,
-    // 物理模拟相关
-    springValue: 0,
-    springVelocity: 0,
-    isSpringing: false,
   });
+
+  const rafRef = useRef<number | null>(null);
 
   const handlePageChange = useCallback((newPage: number) => {
     if (newPage >= 0 && newPage < totalPages && newPage !== currentPage) {
@@ -231,92 +157,21 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     }
   }, [currentPage, totalPages, onPageChange]);
 
-  // 初始化物理引擎
-  useEffect(() => {
-    springRef.current = new SpringPhysics({
-      stiffness: 0.5,
-      damping: 0.7,
-      mass: 1,
-    });
-  }, []);
-
-  // 物理动画循环
-  useEffect(() => {
-    const animate = () => {
-      const state = scrollStateRef.current;
-      const spring = springRef.current;
-      
-      if (spring && state.isSpringing) {
-        spring.update();
-        setTransitionProgress(spring.update());
-        
-        if (spring.isSettled()) {
-          state.isSpringing = false;
-          spring.reset();
-        }
-      }
-      
-      // 惯性滚动
-      if (state.momentumVelocity !== 0 && !state.isTouchActive) {
-        const deltaTime = 16; // ~60fps
-        const momentumOffset = state.momentumVelocity * deltaTime;
-        
-        setDragOffset((prev) => {
-          const newOffset = prev + momentumOffset;
-          
-          // 边界检查
-          const viewportHeight = window.innerHeight;
-          const maxOffset = viewportHeight * 0.8;
-          
-          if (Math.abs(newOffset) >= maxOffset) {
-            state.momentumVelocity = 0;
-            state.momentumStartTime = 0;
-            return newOffset > 0 ? maxOffset : -maxOffset;
-          }
-          
-          return newOffset;
-        });
-        
-        // 速度衰减
-        state.momentumVelocity *= 0.95;
-        
-        // 停止惯性
-        if (Math.abs(state.momentumVelocity) < 0.1) {
-          state.momentumVelocity = 0;
-          state.momentumStartTime = 0;
-        }
-      }
-      
-      rafRef.current = requestAnimationFrame(animate);
-    };
-    
-    animate();
-    
-    return () => {
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-    };
-  }, []);
-
   useEffect(() => {
     const state = scrollStateRef.current;
 
-    // 检测触控板设备
     const detectTouchpad = (e: WheelEvent) => {
       const isFineDelta = Math.abs(e.deltaX) < 50 && Math.abs(e.deltaY) < 50;
       const isSmallDelta = Math.abs(e.deltaY) < 10;
       state.isTouchpad = isFineDelta || isSmallDelta;
     };
 
-    // 超级强化的滚轮处理
     const handleWheel = (e: WheelEvent) => {
       detectTouchpad(e);
 
       const now = performance.now();
       const delta = e.deltaY;
 
-      // 方向锁定
       if (state.directionLocked) {
         const currentDirection = delta > 0 ? 1 : -1;
         if (currentDirection !== state.lastWheelDirection) {
@@ -324,14 +179,12 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         }
       }
 
-      // 记录delta历史
       state.stableDeltaHistory.push(delta);
-      if (state.stableDeltaHistory.length > 10) {
+      if (state.stableDeltaHistory.length > 8) {
         state.stableDeltaHistory.shift();
       }
 
-      // 检查方向稳定性
-      const recentDeltas = state.stableDeltaHistory.slice(-10);
+      const recentDeltas = state.stableDeltaHistory.slice(-8);
       const allPositive = recentDeltas.every(d => d > 0);
       const allNegative = recentDeltas.every(d => d < 0);
       const isDirectionStable = allPositive || allNegative;
@@ -345,11 +198,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
       state.lastWheelDirection = currentDirection;
 
-      // 大幅提高阈值
       const isTouchpad = state.isTouchpad;
-      const scrollThreshold = isTouchpad ? 140 : 120;
-      const consistencyThreshold = isTouchpad ? 5 : 5;
-      const throttleTime = isTouchpad ? 1200 : 1000;
+      const scrollThreshold = isTouchpad ? 120 : 100;
+      const consistencyThreshold = isTouchpad ? 4 : 4;
+      const throttleTime = isTouchpad ? 1000 : 800;
 
       const absAccumulatedDelta = Math.abs(state.accumulatedDelta);
 
@@ -364,7 +216,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.lockTimeout = window.setTimeout(() => {
           state.directionLocked = false;
           state.lockTimeout = null;
-        }, 600);
+        }, 500);
 
         if (state.accumulatedDelta > 0) {
           handlePageChange(currentPage + 1);
@@ -378,22 +230,17 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    // 超级强化的触摸处理 - 添加惯性
     const handleTouchStart = (e: TouchEvent) => {
       state.touchStartY = e.touches[0].clientY;
       state.touchStartX = e.touches[0].clientX;
       state.touchStartTime = performance.now();
-      state.lastTouchY = e.touches[0].clientY;
-      state.lastTouchTime = performance.now();
       state.velocity = 0;
-      state.isScrolling = false;
       state.isTouchActive = true;
       state.hasSwitchedInThisTouch = false;
       state.hasMovedVertically = false;
       state.horizontalMovement = 0;
       state.verticalMovement = 0;
       state.directionLocked = false;
-      state.momentumVelocity = 0;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -402,28 +249,25 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const absDeltaY = Math.abs(deltaY);
       const absDeltaX = Math.abs(deltaX);
 
-      // 计算瞬时速度
-      const currentTime = performance.now();
-      const timeDiff = currentTime - state.lastTouchTime;
-      if (timeDiff > 0) {
-        const instantaneousVelocity = (e.touches[0].clientY - state.lastTouchY) / timeDiff;
-        state.velocity = instantaneousVelocity;
-        state.lastTouchY = e.touches[0].clientY;
-        state.lastTouchTime = currentTime;
-      }
-
       state.horizontalMovement = absDeltaX;
       state.verticalMovement = absDeltaY;
 
-      const isVerticalSwipe = absDeltaY > absDeltaX * 2.2 && absDeltaY > 90;
+      const currentTime = performance.now();
+      const deltaTime = currentTime - state.touchStartTime;
+      const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
+
+      if (velocity > state.velocity) {
+        state.velocity = velocity;
+      }
+
+      const isVerticalSwipe = absDeltaY > absDeltaX * 2 && absDeltaY > 80;
 
       if (isVerticalSwipe) {
         state.hasMovedVertically = true;
 
-        if (absDeltaY > 90 && e.cancelable) {
+        if (absDeltaY > 80 && e.cancelable) {
           e.preventDefault();
           e.stopPropagation();
-          state.isScrolling = true;
         }
 
         if (rafRef.current === null) {
@@ -444,15 +288,13 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const deltaTime = touchEndTime - state.touchStartTime;
       const absDeltaY = Math.abs(deltaY);
 
-      // 计算最终速度
-      const finalVelocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
-      const effectiveVelocity = Math.max(finalVelocity, Math.abs(state.velocity));
+      const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
+      const effectiveVelocity = Math.max(velocity, state.velocity);
 
-      // 大幅提高翻页条件
-      const minSwipeTime = 250;
+      const minSwipeTime = 200;
       const maxSwipeTime = 750;
-      const swipeThreshold = 110;
-      const velocityThreshold = 0.8;
+      const swipeThreshold = 90;
+      const velocityThreshold = 0.7;
 
       const shouldSwitchPage =
         state.hasMovedVertically &&
@@ -464,7 +306,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         effectiveVelocity >= velocityThreshold;
 
       if (shouldSwitchPage) {
-        if (touchEndTime - state.lastWheelTime < 1200) return;
+        if (touchEndTime - state.lastWheelTime < 1000) return;
         state.lastWheelTime = touchEndTime;
         state.hasSwitchedInThisTouch = true;
 
@@ -472,7 +314,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.lockTimeout = window.setTimeout(() => {
           state.directionLocked = false;
           state.lockTimeout = null;
-        }, 700);
+        }, 600);
 
         if (deltaY > 0) {
           if (currentPage < totalPages - 1) {
@@ -485,18 +327,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         }
       }
 
-      // 启动惯性滚动
-      if (!shouldSwitchPage && absDeltaY > 50) {
-        const momentumVelocity = (deltaY / deltaTime) * 1000; // 转换为px/s
-        state.momentumVelocity = momentumVelocity;
-        state.momentumStartTime = performance.now();
-      }
-
-      state.isScrolling = false;
-      state.touchStartY = 0;
-      state.touchStartX = 0;
-      state.touchStartTime = 0;
-      state.velocity = 0;
       state.isTouchActive = false;
       state.hasMovedVertically = false;
       state.horizontalMovement = 0;
@@ -511,10 +341,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       setDragOffset(0);
     };
 
-    // 键盘导航
     const handleKeyDown = (e: KeyboardEvent) => {
       const now = performance.now();
-      if (now - state.lastWheelTime < 1200) return;
+      if (now - state.lastWheelTime < 1000) return;
 
       const keyMap: Record<string, number> = {
         'ArrowDown': 1,
@@ -533,7 +362,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    // 事件监听
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
@@ -555,7 +383,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     };
   }, [currentPage, handlePageChange, totalPages]);
 
-  // 自定义导航事件
   useEffect(() => {
     const handleNavigation = (e: Event) => {
       const customEvent = e as CustomEvent<{ sectionIndex: number }>;
@@ -567,7 +394,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     return () => window.removeEventListener('scrollToSection', handleNavigation);
   }, [handlePageChange]);
 
-  // 监听置顶事件
   useEffect(() => {
     const handleScrollToTop = (e: Event) => {
       e.preventDefault();
@@ -580,14 +406,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   }, [handlePageChange]);
 
   return (
-    <div
-      className="fixed inset-0 overflow-hidden"
-      style={{
-        transform: 'translateZ(0)',
-        willChange: 'transform',
-        contain: 'strict',
-      }}
-    >
+    <div className="fixed inset-0 overflow-hidden">
       {children.map((child, index) => (
         <ScrollPage
           key={index}
@@ -595,13 +414,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           currentPage={currentPage}
           dragOffset={dragOffset}
           isDragging={isDragging}
-          progress={transitionProgress}
         >
           {child}
         </ScrollPage>
       ))}
 
-      {/* 滚动提示 */}
       {currentPage < totalPages - 1 && (
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-white/50 pointer-events-none">
           <span className="text-xs font-medium tracking-wider">
@@ -614,7 +431,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
             viewBox="0 0 24 24"
             style={{
               animation: 'scrollBounce 2s infinite',
-              animationTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
+              animationTimingFunction: EASE_APPLE,
             }}
           >
             <path
