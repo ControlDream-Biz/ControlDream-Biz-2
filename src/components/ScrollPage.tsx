@@ -183,9 +183,13 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
-        isScrollable = scrollHeight > clientHeight + 20; // 宽松的判断
-        isAtTop = scrollTop <= 10;
-        isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 10;
+
+        // 宽松的可滚动判断 - 适用于所有页面
+        isScrollable = scrollHeight > clientHeight + 15;
+
+        // 更宽松的边界判断 - 适用于所有页面
+        isAtTop = scrollTop <= 15;
+        isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 15;
       }
 
       // 如果内容可滚动且不在边界，让内容正常滚动
@@ -193,11 +197,12 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         return; // 让内容滚动，不触发翻页
       }
 
-      // 强力备用检测：在边界附近，快速滚动直接翻页
-      if (isScrollable && (isAtTop || isAtBottom) && deltaAbs > 50) {
+      // 边界附近的快速翻页 - 适用于所有页面
+      if (isScrollable && (isAtTop || isAtBottom) && deltaAbs > 40) {
         if (now - state.lastWheelTime < 150) return;
         state.lastWheelTime = now;
 
+        // 翻页逻辑 - 适用于所有页面
         if (delta > 0 && currentPage < totalPages - 1) {
           handlePageChange(currentPage + 1);
         } else if (delta < 0 && currentPage > 0) {
@@ -206,11 +211,12 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         return;
       }
 
-      // 备用检测：如果滚动量很大，直接翻页
-      if (deltaAbs > 80) {
+      // 备用大力度翻页 - 适用于所有页面
+      if (deltaAbs > 70) {
         if (now - state.lastWheelTime < 150) return;
         state.lastWheelTime = now;
 
+        // 翻页逻辑 - 适用于所有页面
         if (delta > 0 && currentPage < totalPages - 1) {
           handlePageChange(currentPage + 1);
         } else if (delta < 0 && currentPage > 0) {
@@ -231,13 +237,13 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 累积滚动量
       state.accumulatedDelta += delta;
 
-      // 核心参数
+      // 核心参数 - 降低阈值，适用于所有页面
       const throttleTime = 150;
-      const fastScrollThreshold = 30;
-      const cumulativeThreshold = 40;
+      const fastScrollThreshold = 25;
+      const cumulativeThreshold = 35;
       const consistencyThreshold = 1;
 
-      // 快速翻页条件
+      // 快速翻页条件 - 适用于所有页面
       if (deltaAbs >= fastScrollThreshold && state.wheelConsistency >= consistencyThreshold) {
         if (now - state.lastWheelTime < throttleTime) return;
         state.lastWheelTime = now;
@@ -245,6 +251,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.accumulatedDelta = 0;
         state.wheelConsistency = 0;
 
+        // 翻页逻辑 - 适用于所有页面
         if (delta > 0 && currentPage < totalPages - 1) {
           handlePageChange(currentPage + 1);
         } else if (delta < 0 && currentPage > 0) {
@@ -253,7 +260,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         return;
       }
 
-      // 慢速翻页条件
+      // 慢速翻页条件 - 适用于所有页面
       if (Math.abs(state.accumulatedDelta) >= cumulativeThreshold &&
           state.wheelConsistency >= consistencyThreshold) {
         if (now - state.lastWheelTime < throttleTime) return;
@@ -262,6 +269,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.accumulatedDelta = 0;
         state.wheelConsistency = 0;
 
+        // 翻页逻辑 - 适用于所有页面
         if (delta > 0 && currentPage < totalPages - 1) {
           handlePageChange(currentPage + 1);
         } else if (delta < 0 && currentPage > 0) {
@@ -307,9 +315,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
-        const isScrollable = scrollHeight > clientHeight + 20; // 宽松判断
-        const isAtTop = scrollTop <= 10;
-        const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 10;
+
+        // 宽松的可滚动判断 - 适用于所有页面
+        const isScrollable = scrollHeight > clientHeight + 15;
+        const isAtTop = scrollTop <= 15;
+        const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 15;
 
         // 如果内容可滚动且不在边界，允许内容滚动
         if (isScrollable && !isAtTop && !isAtBottom) {
@@ -361,22 +371,24 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           const scrollTop = scrollContainer.scrollTop;
           const scrollHeight = scrollContainer.scrollHeight;
           const clientHeight = scrollContainer.clientHeight;
-          const isScrollable = scrollHeight > clientHeight + 20; // 宽松判断
-          const isAtTop = scrollTop <= 10;
-          const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 10;
+
+          // 宽松的可滚动判断 - 适用于所有页面
+          const isScrollable = scrollHeight > clientHeight + 15;
+          const isAtTop = scrollTop <= 15;
+          const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 15;
 
           if (isScrollable) {
-            // 内容可滚动，需要在边界
+            // 内容可滚动，需要在边界 - 适用于所有页面
             if ((isAtTop && dragOffsetRef.current > 0) ||
                 (isAtBottom && dragOffsetRef.current < 0)) {
               shouldTriggerPageChange = true;
             }
           } else {
-            // 内容不可滚动，可以翻页
+            // 内容不可滚动，可以翻页 - 适用于所有页面
             shouldTriggerPageChange = true;
           }
         } else {
-          // 没有滚动容器，可以翻页
+          // 没有滚动容器，可以翻页 - 适用于所有页面
           shouldTriggerPageChange = true;
         }
 
