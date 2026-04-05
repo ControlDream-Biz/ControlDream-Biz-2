@@ -70,7 +70,7 @@ export function ScrollProgress() {
                 style={{
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  transition: 'all 600ms cubic-bezier(0.22, 1, 0.36, 1)',
+                  transition: 'all 500ms cubic-bezier(0.4, 0, 0.2, 1)',
                   filter: showLabel && isCurrent ? 'none' : 'blur(3px)',
                 }}
               >
