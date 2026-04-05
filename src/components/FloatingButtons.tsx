@@ -194,7 +194,7 @@ export default function FloatingButtons() {
       customerServiceBtn.style.borderColor = 'rgba(239, 68, 68, 0.3)';
     });
 
-    // 创建客服弹窗 - 现代玻璃效果（更透明，使用按钮样式）
+    // 创建客服弹窗 - 极透明玻璃效果
     const customerServicePopup = document.createElement('div');
     customerServicePopup.id = 'customer-service-popup';
     customerServicePopup.style.position = 'fixed';
@@ -202,15 +202,15 @@ export default function FloatingButtons() {
     customerServicePopup.style.right = '20px';
     customerServicePopup.style.width = '320px';
     customerServicePopup.style.maxWidth = 'calc(100vw - 50px)';
-    customerServicePopup.style.backgroundColor = 'rgba(255, 255, 255, 0.65)';
+    customerServicePopup.style.backgroundColor = 'rgba(255, 255, 255, 0.08)';
     customerServicePopup.style.backdropFilter = 'blur(40px)';
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     customerServicePopup.style['webkitBackdropFilter' as any] = 'blur(40px)';
     customerServicePopup.style.borderRadius = '20px';
-    customerServicePopup.style.border = '1.5px solid rgba(255, 255, 255, 0.5)';
+    customerServicePopup.style.border = '1.5px solid rgba(255, 255, 255, 0.35)';
     customerServicePopup.style.boxShadow = `
-      0 12px 48px rgba(0, 0, 0, 0.2),
-      inset 0 1px 2px rgba(255, 255, 255, 0.6)
+      0 12px 48px rgba(0, 0, 0, 0.15),
+      inset 0 1px 2px rgba(255, 255, 255, 0.4)
     `;
     customerServicePopup.style.overflow = 'hidden';
     customerServicePopup.style.pointerEvents = 'auto';
@@ -222,17 +222,17 @@ export default function FloatingButtons() {
     customerServicePopup.style.willChange = 'opacity, transform';
 
     customerServicePopup.innerHTML = `
-      <!-- 顶部红色标题栏 - 半透明透视效果 -->
+      <!-- 顶部红色标题栏 - 极透明玻璃效果 -->
       <div style="
-        background: rgba(239, 68, 68, 0.1);
+        background: rgba(239, 68, 68, 0.08);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border: 1.5px solid rgba(239, 68, 68, 0.2);
+        border: 1.5px solid rgba(239, 68, 68, 0.18);
         border-radius: 20px 20px 0 0;
         padding: 16px 20px;
         color: white;
         position: relative;
-        box-shadow: 0 8px 32px rgba(239, 68, 68, 0.08), inset 0 1px 2px rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px rgba(239, 68, 68, 0.06), inset 0 1px 2px rgba(255, 255, 255, 0.08);
       ">
         <div style="display: flex; align-items: center; justify-content: space-between;">
           <div>
@@ -267,12 +267,12 @@ export default function FloatingButtons() {
         </div>
       </div>
 
-      <!-- 主体选项区域 - 半透明透视效果 -->
+      <!-- 主体选项区域 - 极透明玻璃效果 -->
       <div style="
-        background: rgba(255, 255, 255, 0.35);
+        background: rgba(255, 255, 255, 0.25);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border: 1.5px solid rgba(255, 255, 255, 0.3);
+        border: 1.5px solid rgba(255, 255, 255, 0.25);
         border-radius: 0 0 20px 20px;
         border-top: none;
       ">
@@ -339,12 +339,12 @@ export default function FloatingButtons() {
         </div>
       </div>
 
-      <!-- 底部工作时间栏 - 半透明透视效果 -->
+      <!-- 底部工作时间栏 - 极透明玻璃效果 -->
       <div style="
-        background: rgba(249, 250, 251, 0.3);
+        background: rgba(249, 250, 251, 0.2);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
-        border-top: 1px solid rgba(0, 0, 0, 0.02);
+        border-top: 1px solid rgba(0, 0, 0, 0.015);
         border-radius: 0 0 20px 20px;
         padding: 12px 20px;
         text-align: center;
