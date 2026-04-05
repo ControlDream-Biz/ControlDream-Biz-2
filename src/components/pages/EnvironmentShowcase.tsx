@@ -171,22 +171,23 @@ export function EnvironmentShowcase({ isActive }: EnvironmentShowcaseProps) {
                   {area.description}
                 </p>
 
-                {/* 小字列表 - 从右向左滚动淡入 */}
+                {/* 小字列表 - 腾讯式从右向左滚动淡入 */}
                 <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
                   {area.items.map((item, i) => (
                     <div
                       key={i}
-                      className="flex items-start space-x-2 sm:space-x-3 opacity-0 transition-all duration-700 ease-out"
+                      className="flex items-start space-x-2 sm:space-x-3 opacity-0 transition-all duration-800 ease-out texas-slide-in"
                       style={{
-                        transform: mounted ? 'translateX(0)' : 'translateX(2.5rem)',
+                        transform: mounted ? 'translateX(0)' : 'translateX(4rem)',
                         opacity: mounted ? 1 : 0,
-                        transitionDelay: `${mounted ? (0.8 + i * 0.15) : 0}s`,
+                        transitionDelay: `${mounted ? (0.6 + i * 0.12) : 0}s`,
+                        transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                       }}
                     >
                       <div className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 bg-gradient-to-br ${area.color}`}></div>
-                      <div>
-                        <div className={`text-xs sm:text-sm font-medium bg-gradient-to-r ${area.color} bg-clip-text text-transparent`}>{item.label}</div>
-                        <div className="text-[10px] sm:text-xs text-gray-400">{item.desc}</div>
+                      <div className="flex-1">
+                        <div className={`text-xs sm:text-sm font-medium bg-gradient-to-r ${area.color} bg-clip-text text-transparent mb-0.5`}>{item.label}</div>
+                        <div className="text-[10px] sm:text-xs text-gray-400 leading-tight">{item.desc}</div>
                       </div>
                     </div>
                   ))}

@@ -8,6 +8,8 @@ interface ScrollPageProps {
   currentPage: number;
 }
 
+type ChildWithProps = React.ReactElement<{ isActive?: boolean }>;
+
 export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
   const isActive = index === currentPage;
   const isPrev = index < currentPage;
@@ -42,8 +44,8 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
       }}
     >
       <div className="w-full pt-12 pb-32 px-4">
-        {React.isValidElement(children)
-          ? React.cloneElement(children as any, { isActive })
+        {React.isValidElement(children) && 'isActive' in children.props
+          ? React.cloneElement(children as ChildWithProps, { isActive })
           : children}
       </div>
     </div>
@@ -125,7 +127,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       // 随滑随停：滑动超过20px就立即响应
       if (absDeltaY > 20) {
-        e.preventDefault();
+        if (e.cancelable) {
+          e.preventDefault();
+        }
       }
     };
 

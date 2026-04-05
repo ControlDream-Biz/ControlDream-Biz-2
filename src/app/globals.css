@@ -27,7 +27,7 @@ html {
 body {
   /* 优化滚动 */
   -webkit-overflow-scrolling: touch;
-  overscroll-behavior: smooth;
+  overscroll-behavior: none; /* 禁止浏览器的下拉刷新和过度滚动 */
 
   /* 防止滚动闪烁 */
   scrollbar-width: thin;
@@ -1288,4 +1288,13 @@ html {
 
 .scrollbar-hide::-webkit-scrollbar {
   display: none;  /* Chrome, Safari, Opera */
+}
+
+/* 腾讯式滚动淡入动画优化 */
+.texas-slide-in {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  perspective: 1000px;
+  -webkit-perspective: 1000px;
 }
