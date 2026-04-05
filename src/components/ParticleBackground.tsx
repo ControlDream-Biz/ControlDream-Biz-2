@@ -93,7 +93,7 @@ export function ParticleBackground() {
                   x2={currentParticles[j].cx}
                   y2={currentParticles[j].cy}
                   stroke={`rgba(255, 255, 255, ${lineOpacity})`}
-                  strokeWidth={isMobile ? 0.3 : 0.6}
+                  strokeWidth={isMobile ? 0.8 : 1}
                   strokeLinecap="round"
                 />
               );
@@ -120,7 +120,7 @@ export function ParticleBackground() {
   return (
     <svg
       ref={svgRef}
-      className="fixed inset-0 pointer-events-none"
+      className="absolute inset-0 pointer-events-none"
       style={{
         zIndex: 15,
         width: '100%',
