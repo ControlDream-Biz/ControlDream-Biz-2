@@ -1,44 +1,28 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 interface ScrollPageProps {
   children: React.ReactNode;
   index: number;
   currentPage: number;
-  totalPages: number;
 }
 
-export function ScrollPage({ children, index, currentPage, totalPages }: ScrollPageProps) {
+export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
   const isActive = index === currentPage;
-  const isPrev = index < currentPage;
-  const isNext = index > currentPage;
 
   return (
     <div
       className="fixed inset-0 flex items-center justify-center bg-black"
       style={{
-        zIndex: totalPages - index,
         opacity: isActive ? 1 : 0,
         pointerEvents: isActive ? 'auto' : 'none',
-        transition: 'opacity 0.8s ease-in-out, transform 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
-        transform: isPrev
-          ? 'translateY(-100%) scale(0.9)'
-          : isNext
-          ? 'translateY(100%) scale(0.9)'
-          : 'translateY(0) scale(1)',
+        transform: isActive ? 'translateY(0)' : index > currentPage ? 'translateY(100%)' : 'translateY(-100%)',
+        transition: 'all 0.8s cubic-bezier(0.4, 0, 0.2, 1)',
+        zIndex: isActive ? 10 : 1,
       }}
     >
-      <div
-        className="w-full h-full"
-        style={{
-          transition: 'transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s ease-in-out',
-          transform: isActive ? 'translateY(0)' : isNext ? 'translateY(10%)' : 'translateY(-10%)',
-          opacity: isActive ? 1 : 0.6,
-        }}
-      >
-        {children}
-      </div>
+      {children}
     </div>
   );
 }
@@ -50,148 +34,141 @@ interface ScrollContainerProps {
 
 export function ScrollContainer({ children, onPageChange }: ScrollContainerProps) {
   const [currentPage, setCurrentPage] = useState(0);
-  const [isScrolling, setIsScrolling] = useState(false);
-  const touchStartY = useRef(0);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const lastWheelTime = useRef(0);
-  const containerRef = useRef<HTMLDivElement>(null);
   const totalPages = children.length;
 
-  const resetScrollingState = useCallback(() => {
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
+  const handlePageChange = useCallback((newPage: number) => {
+    if (newPage >= 0 && newPage < totalPages && newPage !== currentPage) {
+      setCurrentPage(newPage);
+      onPageChange?.(newPage);
     }
-    scrollTimeoutRef.current = setTimeout(() => {
-      setIsScrolling(false);
-    }, 800);
-  }, []);
+  }, [currentPage, totalPages, onPageChange]);
 
   useEffect(() => {
-    onPageChange?.(currentPage);
-  }, [currentPage, onPageChange]);
+    let isLocked = false;
+    let lockTimer: NodeJS.Timeout | null = null;
+    let touchStartY = 0;
 
-  useEffect(() => {
+    const unlockScroll = () => {
+      isLocked = false;
+    };
+
     const handleWheel = (e: WheelEvent) => {
+      if (isLocked) return;
+
+      // 防止默认滚动行为
       e.preventDefault();
 
-      const now = Date.now();
-      if (isScrolling || now - lastWheelTime.current < 100) {
-        return;
-      }
-      lastWheelTime.current = now;
+      const delta = e.deltaY;
+      const absDelta = Math.abs(delta);
 
-      const delta = Math.abs(e.deltaY);
-      if (delta < 30) return;
+      // 设置最小滚动阈值
+      if (absDelta < 50) return;
 
-      setIsScrolling(true);
+      // 锁定滚动，防止连续触发
+      isLocked = true;
+      if (lockTimer) clearTimeout(lockTimer);
+      lockTimer = setTimeout(unlockScroll, 1000);
 
-      if (e.deltaY > 0) {
-        setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
+      // 根据滚动方向切换页面
+      if (delta > 0) {
+        // 向下滚动，下一页
+        handlePageChange(currentPage + 1);
       } else {
-        setCurrentPage((prev) => Math.max(prev - 1, 0));
-      }
-
-      resetScrollingState();
-    };
-
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY.current = e.touches[0].clientY;
-    };
-
-    const handleTouchEnd = (e: TouchEvent) => {
-      if (isScrolling) return;
-
-      const touchEndY = e.changedTouches[0].clientY;
-      const diff = touchStartY.current - touchEndY;
-
-      if (Math.abs(diff) > 50) {
-        setIsScrolling(true);
-
-        if (diff > 0) {
-          setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
-        } else {
-          setCurrentPage((prev) => Math.max(prev - 1, 0));
-        }
-
-        resetScrollingState();
+        // 向上滚动，上一页
+        handlePageChange(currentPage - 1);
       }
     };
 
-    const handleScrollToSection = (e: CustomEvent<{ sectionIndex: number }>) => {
-      if (isScrolling) return;
-
-      const { sectionIndex } = e.detail;
-      if (sectionIndex >= 0 && sectionIndex < totalPages) {
-        setIsScrolling(true);
-        setCurrentPage(sectionIndex);
-        resetScrollingState();
-      }
-    };
-
-    // 绑定到 window 上，确保捕获所有滚动事件
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
-    window.addEventListener('scrollToSection', handleScrollToSection as EventListener);
-
-    return () => {
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
-      window.removeEventListener('scrollToSection', handleScrollToSection as EventListener);
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-    };
-  }, [isScrolling, totalPages, resetScrollingState]);
-
-  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (isScrolling) return;
+      if (isLocked) return;
 
       if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
         e.preventDefault();
-        setIsScrolling(true);
-        setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1));
-        resetScrollingState();
+        isLocked = true;
+        if (lockTimer) clearTimeout(lockTimer);
+        lockTimer = setTimeout(unlockScroll, 1000);
+        handlePageChange(currentPage + 1);
       } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
         e.preventDefault();
-        setIsScrolling(true);
-        setCurrentPage((prev) => Math.max(prev - 1, 0));
-        resetScrollingState();
+        isLocked = true;
+        if (lockTimer) clearTimeout(lockTimer);
+        lockTimer = setTimeout(unlockScroll, 1000);
+        handlePageChange(currentPage - 1);
       }
     };
 
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (isLocked) return;
+
+      const touchEndY = e.changedTouches[0].clientY;
+      const diff = touchStartY - touchEndY;
+      const absDiff = Math.abs(diff);
+
+      if (absDiff < 50) return;
+
+      isLocked = true;
+      if (lockTimer) clearTimeout(lockTimer);
+      lockTimer = setTimeout(unlockScroll, 1000);
+
+      if (diff > 0) {
+        // 向上滑动，下一页
+        handlePageChange(currentPage + 1);
+      } else {
+        // 向下滑动，上一页
+        handlePageChange(currentPage - 1);
+      }
+    };
+
+    // 绑定到 window，确保捕获所有事件
+    window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isScrolling, totalPages, resetScrollingState]);
+    window.addEventListener('touchstart', handleTouchStart);
+    window.addEventListener('touchend', handleTouchEnd);
+
+    return () => {
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
+      if (lockTimer) clearTimeout(lockTimer);
+    };
+  }, [currentPage, totalPages, handlePageChange]);
+
+  // 处理来自 Navbar 的导航事件
+  useEffect(() => {
+    const handleNavigation = (e: Event) => {
+      const customEvent = e as CustomEvent<{ sectionIndex: number }>;
+      const { sectionIndex } = customEvent.detail;
+      handlePageChange(sectionIndex);
+    };
+
+    window.addEventListener('scrollToSection', handleNavigation);
+    return () => window.removeEventListener('scrollToSection', handleNavigation);
+  }, [handlePageChange]);
 
   return (
-    <div ref={containerRef} className="fixed inset-0 overflow-hidden bg-black">
+    <div className="fixed inset-0 overflow-hidden bg-black">
+      {/* 页面 */}
       {children.map((child, index) => (
-        <ScrollPage
-          key={index}
-          index={index}
-          currentPage={currentPage}
-          totalPages={totalPages}
-        >
+        <ScrollPage key={index} index={index} currentPage={currentPage}>
           {child}
         </ScrollPage>
       ))}
 
       {/* 页面指示器 */}
-      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3">
+      <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3 pointer-events-none">
         {children.map((_, index) => (
           <button
             key={index}
-            onClick={() => {
-              if (!isScrolling) {
-                setIsScrolling(true);
-                setCurrentPage(index);
-                resetScrollingState();
-              }
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePageChange(index);
             }}
-            className={`h-1 rounded-full transition-all duration-500 ease-out ${
+            className={`pointer-events-auto h-1 rounded-full transition-all duration-300 ${
               index === currentPage
                 ? 'bg-white w-8'
                 : 'bg-white/30 hover:bg-white/50 w-1.5'
@@ -206,7 +183,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       {/* 滚动提示 */}
       {currentPage < totalPages - 1 && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-white/50">
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-white/50 pointer-events-none">
           <span className="text-xs font-medium tracking-wider">向下滚动</span>
           <svg
             className="w-5 h-5 animate-bounce"

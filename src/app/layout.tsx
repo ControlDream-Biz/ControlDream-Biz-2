@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inspector } from 'react-dev-inspector';
 import { Inter, Noto_Sans_SC, Noto_Serif_SC } from 'next/font/google';
 import './globals.css';
+import './fonts.css';
 import FloatingButtons from '@/components/FloatingButtons';
 import { GlobalBackground } from '@/components/GlobalBackground';
 
