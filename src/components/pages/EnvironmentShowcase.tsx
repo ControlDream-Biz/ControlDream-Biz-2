@@ -141,7 +141,7 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
   }, [isActive]); // 只监听 isActive
 
   return (
-    <div className="relative w-full overflow-hidden">
+    <div className="relative w-full bg-black overflow-hidden" style={{ zIndex: 5 }}>
       {/* 背景光晕 */}
       <div
         className="absolute inset-0 transition-opacity duration-1000 ease-out"

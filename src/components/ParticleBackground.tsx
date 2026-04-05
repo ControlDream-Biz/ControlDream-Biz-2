@@ -42,9 +42,9 @@ function forceField(x: number, y: number, width: number, height: number, time: n
   const fx2 = -dx * gravityForce;
   const fy2 = -dy * gravityForce;
 
-  // 3. 斥力场（适度斥力，防止聚集但不要推到边缘）
+  // 3. 斥力场（平衡斥力，让粒子分散但不聚集）
   const distance = Math.sqrt(dx * dx + dy * dy);
-  const repulsionForce = distance < 250 ? 0.00015 * (250 - distance) / 250 : 0; // 调整到250，力度适中
+  const repulsionForce = distance < 300 ? 0.00025 * (300 - distance) / 300 : 0; // 增强斥力，距离和力度都提升
   const fx3 = dx * repulsionForce;
   const fy3 = dy * repulsionForce;
 
