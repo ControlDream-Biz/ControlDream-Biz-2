@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { ParticleBackground } from '@/components/ParticleBackground';
 
 interface ScrollPageProps {
   children: React.ReactNode;
@@ -67,7 +68,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
         visibility: (isActive || (isDragging && isAdjacent)) ? 'visible' : 'hidden',
       }}
     >
-      {/* 背景层 - 只有首页有彩色光晕背景，参与滑动 */}
+      {/* 背景层 - 只有首页有彩色光晕背景和粒子效果，参与滑动 */}
       {isHome && (
         <div
           style={{
@@ -87,7 +88,10 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
               radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.35) 0%, rgba(147, 51, 234, 0.25) 15%, rgba(126, 34, 206, 0.18) 25%, rgba(126, 34, 206, 0.1) 35%, rgba(126, 34, 206, 0.05) 50%, transparent 85%)
             `,
           }}
-        />
+        >
+          {/* 首页粒子背景 - 从 HomeHero 移到这里，避免被内容层裁剪 */}
+          <ParticleBackground />
+        </div>
       )}
 
       {/* 内容层 - 所有页面都参与滑动 */}

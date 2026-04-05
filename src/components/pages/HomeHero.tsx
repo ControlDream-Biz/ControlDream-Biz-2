@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState, memo } from 'react';
-import { ParticleBackground } from '@/components/ParticleBackground';
 
 interface HomeHeroProps {
   isActive?: boolean;
@@ -19,9 +18,6 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
   return (
     <>
       <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-4 pb-16 sm:pt-6 sm:pb-20 md:pt-8 md:pb-24">
-
-        {/* 粒子背景 - 只在首页显示，叠加在彩色光晕背景上 */}
-        <ParticleBackground />
 
       <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto flex flex-col items-center justify-center">
         {/* 顶级彩字排版 - 三行分离，缩小尺寸 */}
