@@ -52,8 +52,8 @@ export default function HeroSection() {
           style={{
             background: `radial-gradient(
               circle at ${50 + mousePosition.x * 20}% ${50 + mousePosition.y * 20}%,
-              rgba(139, 92, 246, 0.15) 0%,
-              rgba(59, 130, 246, 0.1) 30%,
+              rgba(220, 38, 38, 0.12) 0%,
+              rgba(30, 58, 138, 0.08) 30%,
               transparent 60%
             )`,
             transition: 'background 0.3s ease-out',
@@ -65,13 +65,14 @@ export default function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-left">
             <h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6"
+              className="text-4xl md:text-5xl lg:text-6xl font-black leading-tight mb-6"
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.8s ease-out 0.1s",
                 minHeight: "120px",
-                filter: "drop-shadow(2px 4px 8px rgba(0,0,0,0.85))",
+                filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.9))",
+                letterSpacing: "-0.02em",
               }}
             >
               <span
@@ -88,13 +89,13 @@ export default function HeroSection() {
             </h1>
 
             <p
-              className="text-base md:text-lg text-white leading-relaxed mb-8 max-w-2xl font-medium"
+              className="text-base md:text-lg text-white leading-relaxed mb-8 max-w-2xl font-semibold"
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.2s",
                 minHeight: "60px",
-                textShadow: "2px 2px 8px rgba(0,0,0,0.9)",
+                textShadow: "0 2px 12px rgba(0,0,0,0.95)",
               }}
             >
               我们专注于自主研发，在游戏、软件、硬件领域持续投入，
@@ -112,12 +113,10 @@ export default function HeroSection() {
             >
               <Link href="#contact">
                 <Button
-                  className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200 ripple-effect magnetic-btn"
+                  className="h-12 px-8 text-sm font-bold rounded-lg hover:shadow-lg transition-all duration-200 ripple-effect magnetic-btn"
                   style={{
-                    background: "rgba(99, 102, 241, 0.95)",
-                    backdropFilter: "blur(10px)",
-                    WebkitBackdropFilter: "blur(10px)",
-                    border: "2px solid rgba(255, 255, 255, 0.5)",
+                    background: "linear-gradient(135deg, #DC2626 0%, #EF4444 100%)",
+                    border: "2px solid rgba(255, 255, 255, 0.3)",
                     color: "white",
                     minWidth: "120px",
                   }}
@@ -128,13 +127,13 @@ export default function HeroSection() {
               </Link>
               <Link href="#services">
                 <Button
-                  className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200 ripple-effect magnetic-btn"
+                  className="h-12 px-8 text-sm font-bold rounded-lg hover:shadow-lg transition-all duration-200 ripple-effect magnetic-btn"
                   style={{
-                    background: "rgba(255, 255, 255, 0.95)",
+                    background: "rgba(0, 0, 0, 0.85)",
                     backdropFilter: "blur(10px)",
                     WebkitBackdropFilter: "blur(10px)",
-                    border: "2px solid rgba(255, 255, 255, 0.7)",
-                    color: "#333",
+                    border: "2px solid rgba(255, 255, 255, 0.4)",
+                    color: "white",
                     minWidth: "120px",
                   }}
                 >
@@ -144,7 +143,7 @@ export default function HeroSection() {
             </div>
 
             <div
-              className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/50"
+              className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/60"
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
@@ -153,16 +152,16 @@ export default function HeroSection() {
               }}
             >
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "2px 2px 8px rgba(0,0,0,0.9)" }}>8+</div>
-                <div className="text-xs text-white uppercase tracking-wide font-semibold" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.9)" }}>年持续投入</div>
+                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.95)" }}>8+</div>
+                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}>年持续投入</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "2px 2px 8px rgba(0,0,0,0.9)" }}>30+</div>
-                <div className="text-xs text-white uppercase tracking-wide font-semibold" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.9)" }}>自研产品</div>
+                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.95)" }}>30+</div>
+                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}>自研产品</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "2px 2px 8px rgba(0,0,0,0.9)" }}>20+</div>
-                <div className="text-xs text-white uppercase tracking-wide font-semibold" style={{ textShadow: "2px 2px 6px rgba(0,0,0,0.9)" }}>核心团队</div>
+                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.95)" }}>20+</div>
+                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}>核心团队</div>
               </div>
             </div>
           </div>
@@ -179,52 +178,53 @@ export default function HeroSection() {
               <div
                 className="relative rounded-2xl overflow-hidden shadow-2xl transition-all duration-700 ease-out"
                 style={{
-                  background: "linear-gradient(135deg, rgba(0, 82, 217, 0.9) 0%, rgba(0, 102, 255, 0.9) 100%)",
-                  backdropFilter: "blur(10px)",
-                  WebkitBackdropFilter: "blur(10px)",
+                  background: "linear-gradient(135deg, rgba(220, 38, 38, 0.95) 0%, rgba(239, 68, 68, 0.85) 100%)",
                   aspectRatio: "4/3",
                   transform: `perspective(1000px) rotateY(${mousePosition.x * 2}deg) rotateX(${mousePosition.y * -2}deg)`,
+                  boxShadow: "0 20px 60px rgba(220, 38, 38, 0.4)",
                 }}
               >
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <div className="text-6xl mb-4">🎮</div>
-                    <div className="text-white text-xl font-semibold">游戏开发</div>
-                    <div className="text-white/80 text-sm mt-2">打造精品游戏体验</div>
+                    <div className="text-white text-2xl font-black">游戏开发</div>
+                    <div className="text-white/90 text-sm mt-2 font-semibold">打造精品游戏体验</div>
                   </div>
                 </div>
               </div>
 
               <div
-                className="absolute -top-8 -left-8 bg-white/95 rounded-xl shadow-lg p-4 backdrop-blur-lg transition-all duration-500 ease-out"
+                className="absolute -top-8 -left-8 bg-black/90 border-2 border-red-600 rounded-xl shadow-2xl p-4 transition-all duration-500 ease-out"
                 style={{
                   transform: `translate(${mousePosition.x * -20}px, ${mousePosition.y * -20}px)`,
+                  boxShadow: "0 10px 40px rgba(220, 38, 38, 0.3)",
                 }}
               >
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-red-600 flex items-center justify-center">
                     <span className="text-xl">💡</span>
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-gray-900">创新思维</div>
-                    <div className="text-xs text-gray-500">持续突破</div>
+                    <div className="text-sm font-black text-white">创新思维</div>
+                    <div className="text-xs text-white/80 font-semibold">持续突破</div>
                   </div>
                 </div>
               </div>
 
               <div
-                className="absolute -bottom-8 -right-8 bg-white/95 rounded-xl shadow-lg p-4 backdrop-blur-lg transition-all duration-500 ease-out"
+                className="absolute -bottom-8 -right-8 bg-black/90 border-2 border-red-600 rounded-xl shadow-2xl p-4 transition-all duration-500 ease-out"
                 style={{
                   transform: `translate(${mousePosition.x * 20}px, ${mousePosition.y * 20}px)`,
+                  boxShadow: "0 10px 40px rgba(220, 38, 38, 0.3)",
                 }}
               >
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-red-600 flex items-center justify-center">
                     <span className="text-xl">🎯</span>
                   </div>
                   <div>
-                    <div className="text-sm font-semibold text-gray-900">精准定位</div>
-                    <div className="text-xs text-gray-500">高效交付</div>
+                    <div className="text-sm font-black text-white">精准定位</div>
+                    <div className="text-xs text-white/80 font-semibold">高效交付</div>
                   </div>
                 </div>
               </div>
@@ -236,58 +236,41 @@ export default function HeroSection() {
       <style jsx global>{`
         .gradient-text-1 {
           background-image: linear-gradient(90deg, 
-            #FF0000 0%, 
-            #FF2D00 7%, 
-            #FF5A00 14%, 
-            #FF8700 21%, 
-            #FFB400 28%, 
-            #FFE100 35%, 
-            #FFFF00 42%, 
-            #00FF00 49%, 
-            #00FFFF 56%, 
-            #0080FF 63%, 
-            #0000FF 70%, 
-            #8000FF 77%, 
-            #FF00FF 84%, 
-            #FF0080 91%, 
-            #FF0000 100%
+            #1F1F1F 0%, 
+            #3D0A0A 20%, 
+            #DC2626 35%, 
+            #EF4444 50%, 
+            #DC2626 65%, 
+            #3D0A0A 80%, 
+            #1F1F1F 100%
           );
-          background-size: 300% auto;
+          background-size: 150% auto;
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
-          animation: gradientFlow 25s linear infinite;
-          filter: saturate(1.8) contrast(1.3) brightness(1.1);
+          animation: gradientPulse 8s ease-in-out infinite;
+          filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.8));
         }
 
         .gradient-text-2 {
           background-image: linear-gradient(90deg, 
-            #00FFFF 0%, 
-            #00E0FF 8%, 
-            #00C0FF 16%, 
-            #00A0FF 24%, 
-            #0080FF 32%, 
-            #0060FF 40%, 
-            #0040FF 48%, 
-            #8020FF 56%, 
-            #C000FF 64%, 
-            #FF00C0 72%, 
-            #FF0080 80%, 
-            #FF0040 88%, 
-            #FF0000 92%, 
-            #00FFFF 100%
+            #1E3A5F 0%, 
+            #1E40AF 25%, 
+            #3B82F6 50%, 
+            #1E40AF 75%, 
+            #1E3A5F 100%
           );
-          background-size: 300% auto;
+          background-size: 150% auto;
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
-          animation: gradientFlow 30s linear infinite reverse;
-          filter: saturate(1.8) contrast(1.3) brightness(1.1);
+          animation: gradientPulse 10s ease-in-out infinite reverse;
+          filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8));
         }
 
-        @keyframes gradientFlow {
-          0% { background-position: 0% 50%; }
-          100% { background-position: 300% 50%; }
+        @keyframes gradientPulse {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
         }
       `}</style>
     </section>
