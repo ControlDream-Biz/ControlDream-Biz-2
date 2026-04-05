@@ -15,10 +15,46 @@ export default function HeroSection() {
   return (
     <section
       id="home"
-      className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center"
+      className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center overflow-hidden"
       style={{ minHeight: 'calc(100vh - 60px)' }}
     >
-      <div className="container mx-auto px-4 max-w-7xl">
+      {/* 透视背景图 */}
+      <div className="absolute inset-0 -z-10">
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url('/hero-bg.jpg')",
+            perspective: '1000px',
+          }}
+        >
+          {/* 3D透视变换 */}
+          <div
+            className="absolute inset-0 transform"
+            style={{
+              transform: 'rotateX(15deg) scale(1.1)',
+              transformOrigin: 'center center',
+            }}
+          >
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: "url('/hero-bg.jpg')",
+                filter: 'brightness(0.4) contrast(1.2)',
+              }}
+            />
+          </div>
+        </div>
+
+        {/* 渐变叠加层 */}
+        <div
+          className="absolute inset-0 bg-gradient-to-b from-blue-900/30 via-purple-900/20 to-gray-900/60"
+        />
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-transparent to-purple-900/20"
+        />
+      </div>
+
+      <div className="container mx-auto px-4 max-w-7xl relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="text-left">
             <h1
@@ -62,12 +98,13 @@ export default function HeroSection() {
             </h1>
 
             <p
-              className="text-base md:text-lg text-gray-600 leading-relaxed mb-8 max-w-2xl"
+              className="text-base md:text-lg text-gray-200 leading-relaxed mb-8 max-w-2xl"
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.2s",
                 minHeight: "60px",
+                textShadow: "0 2px 8px rgba(0,0,0,0.5)",
               }}
             >
               我们专注于自主研发，在游戏、软件、硬件领域持续投入，
@@ -87,10 +124,10 @@ export default function HeroSection() {
                 <Button
                   className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200 ripple-effect magnetic-btn"
                   style={{
-                    background: "rgba(99, 102, 241, 0.85)",
+                    background: "rgba(99, 102, 241, 0.9)",
                     backdropFilter: "blur(20px)",
                     WebkitBackdropFilter: "blur(20px)",
-                    border: "1px solid rgba(255, 255, 255, 0.3)",
+                    border: "1px solid rgba(255, 255, 255, 0.4)",
                     color: "white",
                     minWidth: "120px",
                   }}
@@ -103,11 +140,11 @@ export default function HeroSection() {
                 <Button
                   className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200 ripple-effect magnetic-btn"
                   style={{
-                    background: "rgba(255, 255, 255, 0.7)",
+                    background: "rgba(255, 255, 255, 0.9)",
                     backdropFilter: "blur(20px)",
                     WebkitBackdropFilter: "blur(20px)",
-                    border: "1px solid rgba(255, 255, 255, 0.5)",
-                    color: "#666",
+                    border: "1px solid rgba(255, 255, 255, 0.6)",
+                    color: "#333",
                     minWidth: "120px",
                   }}
                 >
@@ -117,7 +154,7 @@ export default function HeroSection() {
             </div>
 
             <div
-              className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-gray-100"
+              className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/20"
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
@@ -126,16 +163,16 @@ export default function HeroSection() {
               }}
             >
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">8+</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">年持续投入</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>8+</div>
+                <div className="text-xs text-gray-300 uppercase tracking-wide">年持续投入</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">30+</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">自研产品</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>30+</div>
+                <div className="text-xs text-gray-300 uppercase tracking-wide">自研产品</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-1">20+</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wide">核心团队</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>20+</div>
+                <div className="text-xs text-gray-300 uppercase tracking-wide">核心团队</div>
               </div>
             </div>
           </div>
@@ -152,7 +189,9 @@ export default function HeroSection() {
               <div
                 className="relative rounded-2xl overflow-hidden shadow-2xl"
                 style={{
-                  background: "linear-gradient(135deg, #0052D9 0%, #0066FF 100%)",
+                  background: "linear-gradient(135deg, rgba(0, 82, 217, 0.9) 0%, rgba(0, 102, 255, 0.9) 100%)",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
                   aspectRatio: "4/3",
                 }}
               >
@@ -166,7 +205,7 @@ export default function HeroSection() {
               </div>
 
               <div
-                className="absolute -top-8 -left-8 bg-white rounded-xl shadow-lg p-4"
+                className="absolute -top-8 -left-8 bg-white/95 rounded-xl shadow-lg p-4 backdrop-blur-lg"
               >
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
@@ -180,7 +219,7 @@ export default function HeroSection() {
               </div>
 
               <div
-                className="absolute -bottom-8 -right-8 bg-white rounded-xl shadow-lg p-4"
+                className="absolute -bottom-8 -right-8 bg-white/95 rounded-xl shadow-lg p-4 backdrop-blur-lg"
               >
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
