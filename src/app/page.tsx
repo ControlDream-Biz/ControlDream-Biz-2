@@ -5,6 +5,7 @@ import BusinessSection from '@/components/BusinessSection';
 import EnvironmentSection from '@/components/EnvironmentSection';
 import Footer from '@/components/Footer';
 import ScrollToTop from '@/components/ScrollToTop';
+import GlobalBackground from '@/components/GlobalBackground';
 
 export const metadata: Metadata = {
   title: '创梦计算机系统有限公司 - 自主游戏 · 独立软件 · 智能硬件',
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <>
+      <GlobalBackground />
       <ScrollToTop />
       <main className="min-h-screen">
         <Navbar />

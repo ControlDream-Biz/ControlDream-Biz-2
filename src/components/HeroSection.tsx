@@ -37,63 +37,14 @@ export default function HeroSection() {
       className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center overflow-hidden"
       style={{ minHeight: 'calc(100vh - 60px)' }}
     >
-      {/* 电竞风格背景图案层 */}
-      <div className="absolute inset-0 -z-30 overflow-hidden">
-        <div
-          className="absolute inset-0 transition-transform duration-1000 ease-out"
-          style={{
-            transform: `translate(${mousePosition.x * 30}px, ${mousePosition.y * 30}px)`,
-            backgroundSize: "60px 60px",
-            backgroundImage: `
-              linear-gradient(rgba(139, 92, 246, 0.05) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(139, 92, 246, 0.05) 1px, transparent 1px)
-            `,
-          }}
-        />
-        <div
-          className="absolute inset-0 transition-transform duration-1200 ease-out"
-          style={{
-            transform: `translate(${mousePosition.x * -20}px, ${mousePosition.y * -20}px)`,
-            backgroundSize: "120px 120px",
-            backgroundImage: `
-              linear-gradient(rgba(59, 130, 246, 0.03) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(59, 130, 246, 0.03) 1px, transparent 1px)
-            `,
-          }}
-        />
-        <div
-          className="absolute inset-0 transition-transform duration-1500 ease-out"
-          style={{
-            transform: `translate(${mousePosition.x * 15}px, ${mousePosition.y * 15}px)`,
-            backgroundSize: "180px 180px",
-            backgroundImage: `
-              linear-gradient(rgba(220, 38, 38, 0.02) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(220, 38, 38, 0.02) 1px, transparent 1px)
-            `,
-          }}
-        />
-      </div>
-
-      {/* 背景图片层 */}
-      <div className="absolute inset-0 -z-20">
-        <div
-          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out"
-          style={{
-            backgroundImage: "url('/hero-bg.jpg')",
-            transform: `scale(1.05) translate(${mousePosition.x * -5}px, ${mousePosition.y * -5}px)`,
-            opacity: 0.5,
-          }}
-        />
-      </div>
-
       {/* 玻璃效果层 */}
       <div className="absolute inset-0 -z-10">
         <div
           className="absolute inset-0"
           style={{
-            backdropFilter: "blur(2px)",
-            WebkitBackdropFilter: "blur(2px)",
-            background: "linear-gradient(135deg, rgba(15, 15, 25, 0.6) 0%, rgba(25, 25, 40, 0.5) 50%, rgba(15, 15, 25, 0.6) 100%)",
+            backdropFilter: "blur(3px)",
+            WebkitBackdropFilter: "blur(3px)",
+            background: "linear-gradient(135deg, rgba(15, 15, 25, 0.4) 0%, rgba(25, 25, 40, 0.3) 50%, rgba(15, 15, 25, 0.4) 100%)",
           }}
         />
         {/* 动态光效层 */}
