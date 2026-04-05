@@ -142,9 +142,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.velocity = velocity;
       }
 
-      // 在明显的快速滑动时阻止默认行为（速度 > 0.48 且 距离 > 40px）
-      // 适当提高阈值，降低过于灵敏的问题
-      if (absDeltaY > 40 && velocity > 0.48 && e.cancelable) {
+      // 在明显的快速滑动时阻止默认行为（速度 > 0.55 且 距离 > 50px）
+      // 更严格的条件，防止误触
+      if (absDeltaY > 50 && velocity > 0.55 && e.cancelable) {
         e.preventDefault();
         e.stopPropagation();
         state.isScrolling = true;
@@ -165,11 +165,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 使用最大速度和最终速度的较大值
       const effectiveVelocity = Math.max(velocity, state.velocity);
 
-      // 翻页条件 - 适当提高阈值，降低过于灵敏的问题
+      // 翻页条件 - 更严格的条件，彻底解决误触问题
       const minSwipeTime = 100;
       const maxSwipeTime = 1200;
-      const swipeThreshold = 55;  // 从50提高到55
-      const velocityThreshold = 0.48;  // 从0.45提高到0.48
+      const swipeThreshold = 70;  // 从55提高到70
+      const velocityThreshold = 0.55;  // 从0.48提高到0.55
 
       // 只在条件满足且本次触摸未翻页时才翻页
       const shouldSwitchPage =
@@ -180,8 +180,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         effectiveVelocity >= velocityThreshold;
 
       if (shouldSwitchPage) {
-        // 节流检查：距离上次翻页至少750ms（适当提高，降低灵敏度）
-        if (touchEndTime - state.lastWheelTime < 750) return;
+        // 节流检查：距离上次翻页至少800ms（进一步提高冷却时间）
+        if (touchEndTime - state.lastWheelTime < 800) return;
         state.lastWheelTime = touchEndTime;
         state.hasSwitchedInThisTouch = true;  // 标记已翻页
 

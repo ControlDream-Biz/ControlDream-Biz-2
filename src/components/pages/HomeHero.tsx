@@ -10,7 +10,7 @@ export function HomeHero() {
   }, []);
 
   return (
-    <div className="relative w-full h-full flex items-start justify-center bg-black overflow-hidden">
+    <div className="relative w-full h-full flex items-center justify-center bg-black overflow-hidden">
       {/* 动态背景光晕 */}
       <div
         className="absolute inset-0 transition-opacity duration-1000 ease-out"
@@ -20,7 +20,7 @@ export function HomeHero() {
         }}
       />
 
-      <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto pt-4">
+      <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto">
         {/* 主标题 - 波浪抖动动画 */}
         <div
           className="mb-2 sm:mb-3 md:mb-4 lg:mb-6"
