@@ -79,118 +79,66 @@ export function BusinessShowcase() {
           </p>
         </div>
 
-        {/* 业务卡片 - 移除圆角底版，采用苹果官网风格 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-12 w-full max-w-6xl">
+        {/* 业务内容 - 纯文字布局，去除方框 */}
+        <div className="w-full max-w-6xl space-y-16 sm:space-y-20 md:space-y-24">
           {businesses.map((business, index) => {
             const Icon = business.icon;
             return (
               <div
                 key={index}
-                className="group relative bg-transparent border border-white/10 p-5 sm:p-6 md:p-8 lg:p-12 transition-all duration-500 hover:bg-white/5 hover:border-white/20"
+                className="group relative"
                 style={{
                   opacity: mounted ? 1 : 0,
-                  transform: mounted ? 'translateY(0)' : 'translateY(60px)',
-                  transitionDelay: `${0.2 + index * 0.15}s`,
-                  transition: 'all 0.8s cubic-bezier(0.32, 0.72, 0, 1)',
+                  filter: mounted ? 'blur(0)' : 'blur(8px)',
+                  transitionDelay: `${0.3 + index * 0.2}s`,
+                  transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
                   ...textStyle,
                 }}
               >
-                {/* 图标 - 完全照搬苹果官网移动端尺寸 */}
+                {/* 图标 */}
                 <div
-                  className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-20 bg-gradient-to-br ${business.color} flex items-center justify-center mb-4 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform duration-500`}
-                  style={{
-                    opacity: mounted ? 1 : 0,
-                    transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-                    transitionDelay: `${0.3 + index * 0.15}s`,
-                    transition: 'all 0.8s cubic-bezier(0.32, 0.72, 0, 1)',
-                  }}
+                  className={`w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-28 bg-gradient-to-br ${business.color} flex items-center justify-center mb-6 sm:mb-8 group-hover:scale-105 transition-transform duration-500`}
                 >
-                  <Icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:w-10 md:h-10 text-white" />
+                  <Icon className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-14 text-white" />
                 </div>
 
-                {/* 标题 - 完全照搬苹果官网移动端字体大小，带淡入效果 */}
-                <h3
-                  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white mb-1.5 sm:mb-2"
-                  style={{
-                    ...textStyle,
-                    opacity: mounted ? 1 : 0,
-                    transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-                    transitionDelay: `${0.35 + index * 0.15}s`,
-                    transition: 'all 0.8s cubic-bezier(0.32, 0.72, 0, 1)',
-                  }}
-                >
+                {/* 标题 */}
+                <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white mb-2 sm:mb-3" style={textStyle}>
                   {business.title}
                 </h3>
-                <p
-                  className="text-xs sm:text-sm md:text-base text-white/50 mb-3 sm:mb-4 font-medium tracking-wide"
-                  style={{
-                    ...textStyle,
-                    opacity: mounted ? 1 : 0,
-                    transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-                    transitionDelay: `${0.4 + index * 0.15}s`,
-                    transition: 'all 0.8s cubic-bezier(0.32, 0.72, 0, 1)',
-                  }}
-                >
+                <p className="text-sm sm:text-base md:text-lg text-white/50 mb-4 sm:mb-6 font-medium tracking-wide" style={textStyle}>
                   {business.subtitle}
                 </p>
 
-                {/* 描述 - 完全照搬苹果官网移动端字体大小，带淡入效果 */}
-                <p
-                  className="text-sm sm:text-base md:text-lg text-white/70 mb-4 sm:mb-6 leading-relaxed"
-                  style={{
-                    ...textStyle,
-                    opacity: mounted ? 1 : 0,
-                    transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-                    transitionDelay: `${0.45 + index * 0.15}s`,
-                    transition: 'all 0.8s cubic-bezier(0.32, 0.72, 0, 1)',
-                  }}
-                >
+                {/* 描述 */}
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 mb-6 sm:mb-8 leading-relaxed max-w-2xl" style={textStyle}>
                   {business.description}
                 </p>
 
-                {/* 特性 - 完全照搬苹果官网移动端字体大小，带淡入效果 */}
-                <div className="space-y-1.5 sm:space-y-2 mb-6 sm:mb-8">
+                {/* 特性列表 */}
+                <div className="flex flex-wrap gap-3 sm:gap-4 md:gap-6 mb-6 sm:mb-8">
                   {business.features.map((feature, i) => (
-                    <div
+                    <span
                       key={i}
-                      className="flex items-center space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base text-white/60"
-                      style={{
-                        ...textStyle,
-                        opacity: mounted ? 1 : 0,
-                        transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-                        transitionDelay: `${0.5 + index * 0.15 + i * 0.05}s`,
-                        transition: 'all 0.8s cubic-bezier(0.32, 0.72, 0, 1)',
-                      }}
+                      className="text-sm sm:text-base md:text-lg text-white/60 px-4 py-2 border border-white/20 inline-block"
+                      style={textStyle}
                     >
-                      <div
-                        className={`w-1 sm:w-1.5 h-1 sm:h-1.5 bg-gradient-to-r ${business.color}`}
-                      />
-                      <span>{feature}</span>
-                    </div>
+                      {feature}
+                    </span>
                   ))}
                 </div>
 
-                {/* 统计 - 完全照搬苹果官网移动端字体大小，带淡入效果 */}
-                <div
-                  className="pt-4 sm:pt-6 border-t border-white/10"
-                  style={{
-                    opacity: mounted ? 1 : 0,
-                    transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-                    transitionDelay: `${0.65 + index * 0.15}s`,
-                    transition: 'all 0.8s cubic-bezier(0.32, 0.72, 0, 1)',
-                  }}
-                >
-                  <div className="flex items-baseline space-x-1.5 sm:space-x-2">
-                    <span
-                      className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black bg-gradient-to-r ${business.color} bg-clip-text text-transparent`}
-                      style={textStyle}
-                    >
-                      {business.stat}
-                    </span>
-                    <span className="text-xs sm:text-sm md:text-base text-white/50 font-medium" style={textStyle}>
-                      {business.statLabel}
-                    </span>
-                  </div>
+                {/* 统计 */}
+                <div className="flex items-baseline space-x-3 sm:space-x-4">
+                  <span
+                    className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black bg-gradient-to-r ${business.color} bg-clip-text text-transparent`}
+                    style={textStyle}
+                  >
+                    {business.stat}
+                  </span>
+                  <span className="text-sm sm:text-base md:text-lg lg:text-xl text-white/50 font-medium" style={textStyle}>
+                    {business.statLabel}
+                  </span>
                 </div>
               </div>
             );
