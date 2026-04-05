@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, memo, useRef } from 'react';
+import { useEffect, useState, memo } from 'react';
 import Image from 'next/image';
 import { Mail, Coffee, Users, Monitor, Zap, Wifi } from 'lucide-react';
 
@@ -90,47 +90,72 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
   currentPage = 0
 }: EnvironmentShowcaseProps) {
   const [mounted, setMounted] = useState(false);
-  const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const smallTextRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [visibleItems, setVisibleItems] = useState<number[]>([]);
 
   // 首次加载和页面切换时触发小字动画
   useEffect(() => {
     console.log(`EnvironmentShowcase useEffect 触发: isActive=${isActive}, pageIndex=${pageIndex}`);
 
-    // 清除之前的动画定时器
-    if (animationTimerRef.current) {
-      clearTimeout(animationTimerRef.current);
-    }
-
     // 确保mounted为true
     setMounted(true);
 
-    // 延迟后触发小字动画（等待页面完全渲染）
-    animationTimerRef.current = setTimeout(() => {
-      console.log(`开始触发小字动画，共 ${smallTextRefs.current.length} 个元素`);
-      smallTextRefs.current.forEach((element, index) => {
-        if (element) {
-          console.log(`处理第 ${index} 个小字元素`);
-          // 重置初始状态
-          element.style.opacity = '0';
-          element.style.transform = 'translateX(2.5rem)';
-          // 依次触发动画
-          setTimeout(() => {
-            console.log(`触发第 ${index} 个小字动画`);
-            element.style.opacity = '1';
-            element.style.transform = 'translateX(0)';
-          }, 400 + index * 200); // 400ms 后开始，每个间隔 200ms
-        }
-      });
-      animationTimerRef.current = null;
-    }, 300); // 增加延迟时间，确保页面完全渲染
+    // 清空可见项，重新开始动画
+    setVisibleItems([]);
 
-    return () => {
-      if (animationTimerRef.current) {
-        clearTimeout(animationTimerRef.current);
-      }
-    };
+    // 计算总共有多少个小字
+    const totalItems = areas.reduce((sum, a) => sum + a.items.length, 0);
+    console.log(`总共有 ${totalItems} 个小字`);
+
+    // 依次显示每个小字
+    areas.forEach((area, areaIndex) => {
+      area.items.forEach((_, itemIndex) => {
+        // 计算全局索引
+        const globalIndex = areas.slice(0, areaIndex).reduce((sum, a) => sum + a.items.length, 0) + itemIndex;
+
+        setTimeout(() => {
+          setVisibleItems(prev => [...prev, globalIndex]);
+          console.log(`显示第 ${globalIndex} 个小字`);
+        }, 400 + globalIndex * 200);
+      });
+    });
   }, [isActive, pageIndex]); // 监听isActive和pageIndex变化，页面切换时重新触发
+
+  // 计算滑动淡入效果 - 小字随滑动产生淡入动画
+  const getSlideFadeOpacity = (itemIndex: number) => {
+    if (!isDragging || dragOffset === 0) return 1;
+
+    // 判断是向上滑动还是向下滑动
+    const isSlidingUp = dragOffset < 0;
+
+    // 如果当前页面是活跃的，且正在向上滑动（显示下一页）
+    if (isActive && isSlidingUp) {
+      // 当前页面的小字随滑动淡出
+      const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
+      const progressCubic = progress * progress * (3 - 2 * progress);
+      return 1 - progressCubic * 0.5;
+    }
+
+    // 如果这是下一页，且正在向上滑动
+    if (!isActive && pageIndex === currentPage + 1 && isSlidingUp) {
+      // 下一页的小字随滑动淡入
+      const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
+      const progressCubic = progress * progress * (3 - 2 * progress);
+      // 每个小字依次淡入，基于 itemIndex
+      const itemProgress = Math.max(0, (progress - itemIndex * 0.05) / (1 - itemIndex * 0.05));
+      return Math.min(progressCubic * 0.8 * itemProgress, 1);
+    }
+
+    // 如果这是上一页，且正在向下滑动
+    if (!isActive && pageIndex === currentPage - 1 && !isSlidingUp) {
+      // 上一页的小字随滑动淡入
+      const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
+      const progressCubic = progress * progress * (3 - 2 * progress);
+      const itemProgress = Math.max(0, (progress - itemIndex * 0.05) / (1 - itemIndex * 0.05));
+      return Math.min(progressCubic * 0.8 * itemProgress, 1);
+    }
+
+    return 1;
+  };
 
   return (
     <div className="relative w-full bg-black overflow-hidden">
@@ -213,17 +238,17 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                   {area.items.map((item, i) => {
                     // 计算全局索引：前面所有 area 的 items 数量 + 当前索引
                     const globalIndex = areas.slice(0, areaIndex).reduce((sum, a) => sum + a.items.length, 0) + i;
-                    
+                    const isVisible = visibleItems.includes(globalIndex);
+
                     return (
                       <div
                         key={`${areaIndex}-${i}`}
-                        ref={(el) => { smallTextRefs.current[globalIndex] = el; }}
                         className="flex items-start space-x-2 sm:space-x-3 transition-all duration-700 ease-out"
                         data-small-text
                         data-page-index={pageIndex}
                         style={{
-                          opacity: 0,
-                          transform: 'translateX(2.5rem)',
+                          opacity: isVisible ? getSlideFadeOpacity(i) : 0,
+                          transform: isVisible ? 'translateX(0)' : 'translateX(2.5rem)',
                         }}
                       >
                         <div className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 bg-gradient-to-br ${area.color}`}></div>
