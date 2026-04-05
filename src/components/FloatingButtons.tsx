@@ -47,15 +47,16 @@ export function BackgroundMusic() {
         try {
           // 尝试静音播放
           await audio.play();
+          // 播放成功后立即更新状态和显示
           setIsPlaying(true);
+          setShowVolume(true);
+          startVolumeHideTimer();
           // 播放成功后取消静音
           setTimeout(() => {
             audio.muted = false;
-            setShowVolume(true);
-            startVolumeHideTimer();
           }, 100);
         } catch (error) {
-          console.log('自动播放被阻止，尝试静音播放', error);
+          console.log('自动播放被阻止，显示提示', error);
           // 如果静音播放也失败，提示用户点击
           // 创建一个提示覆盖层
           const prompt = document.createElement('div');
@@ -83,6 +84,8 @@ export function BackgroundMusic() {
               audio.muted = false;
               await audio.play();
               setIsPlaying(true);
+              setShowVolume(true);
+              startVolumeHideTimer();
               document.body.removeChild(prompt);
             } catch (e) {
               console.error('播放失败', e);
