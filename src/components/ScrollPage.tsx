@@ -70,7 +70,10 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
         transform,
         transition: isDragging ? 'none' : 'transform 0.9s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.7s cubic-bezier(0.32, 0.72, 0, 1)',
         zIndex: isActive ? 10 : 1,
-        willChange: 'transform, opacity',
+        willChange: isDragging ? 'transform, opacity, content' : 'transform, opacity',
+        // 添加GPU加速提示
+        backfaceVisibility: 'hidden' as const,
+        perspective: 1000,
       }}
     >
       <div className="w-full min-h-full px-4 py-8">
@@ -111,6 +114,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
   // 使用ref存储RAF回调，避免频繁创建
   const rafRef = useRef<number | null>(null);
+  const highRefreshRAFRef = useRef<number | null>(null);  // 持续RAF循环，保持高刷新率
 
   const handlePageChange = useCallback((newPage: number) => {
     if (newPage >= 0 && newPage < totalPages && newPage !== currentPage) {
@@ -121,6 +125,16 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
   useEffect(() => {
     const state = scrollStateRef.current;
+
+    // 持续RAF循环，保持高刷新率（120Hz+）
+    const runHighRefreshLoop = () => {
+      // 这个循环持续运行，确保浏览器保持在高刷新率模式
+      // 实际的状态更新在handleTouchMove中通过RAF节流控制
+      highRefreshRAFRef.current = requestAnimationFrame(runHighRefreshLoop);
+    };
+
+    // 启动高刷新率循环
+    highRefreshRAFRef.current = requestAnimationFrame(runHighRefreshLoop);
 
     // 苹果官网式的滚轮处理逻辑
     const handleWheel = (e: WheelEvent) => {
@@ -306,6 +320,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
       }
+      // 清理高刷新率RAF循环
+      if (highRefreshRAFRef.current !== null) {
+        cancelAnimationFrame(highRefreshRAFRef.current);
+        highRefreshRAFRef.current = null;
+      }
     };
   }, [currentPage, handlePageChange, totalPages]);
 
@@ -334,7 +353,16 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   }, [handlePageChange]);
 
   return (
-    <div className="fixed inset-0 overflow-hidden bg-black">
+    <div
+      className="fixed inset-0 overflow-hidden bg-black"
+      style={{
+        // 强制GPU加速，支持120Hz+高刷新率
+        transform: 'translateZ(0)',
+        willChange: 'transform',
+        // 优化渲染性能
+        contain: 'strict',
+      }}
+    >
       {children.map((child, index) => (
         <ScrollPage
           key={index}
