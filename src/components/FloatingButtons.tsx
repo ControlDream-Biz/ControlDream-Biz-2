@@ -76,7 +76,9 @@ export default function FloatingButtons() {
 
     backToTopBtn.addEventListener('click', scrollToTop);
 
+    // 悬停效果
     backToTopBtn.addEventListener('mouseenter', () => {
+      backToTopBtn.style.transition = 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)';
       backToTopBtn.style.transform = 'scale(1.1) translateZ(0)';
       backToTopBtn.style.boxShadow = `
         0 12px 40px rgba(14, 165, 233, 0.3),
@@ -86,7 +88,21 @@ export default function FloatingButtons() {
       backToTopBtn.style.borderColor = 'rgba(14, 165, 233, 0.5)';
     });
 
+    // 点击弹性动画效果
+    backToTopBtn.addEventListener('mousedown', () => {
+      backToTopBtn.style.transition = 'transform 0.1s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      backToTopBtn.style.transform = 'scale(1.15) translateZ(0)';
+    });
+
+    backToTopBtn.addEventListener('mouseup', () => {
+      setTimeout(() => {
+        backToTopBtn.style.transition = 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        backToTopBtn.style.transform = 'scale(1) translateZ(0)';
+      }, 50);
+    });
+
     backToTopBtn.addEventListener('mouseleave', () => {
+      backToTopBtn.style.transition = 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
       backToTopBtn.style.transform = 'scale(1) translateZ(0)';
       backToTopBtn.style.boxShadow = `
         0 8px 32px rgba(14, 165, 233, 0.2),
@@ -133,7 +149,9 @@ export default function FloatingButtons() {
 
     customerServiceBtn.addEventListener('click', (e) => toggleCustomerService(e));
 
+    // 悬停效果
     customerServiceBtn.addEventListener('mouseenter', () => {
+      customerServiceBtn.style.transition = 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)';
       customerServiceBtn.style.transform = 'scale(1.1) translateZ(0)';
       customerServiceBtn.style.boxShadow = `
         0 12px 40px rgba(239, 68, 68, 0.3),
@@ -143,7 +161,21 @@ export default function FloatingButtons() {
       customerServiceBtn.style.borderColor = 'rgba(239, 68, 68, 0.5)';
     });
 
+    // 点击弹性动画效果
+    customerServiceBtn.addEventListener('mousedown', () => {
+      customerServiceBtn.style.transition = 'transform 0.1s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      customerServiceBtn.style.transform = 'scale(1.15) translateZ(0)';
+    });
+
+    customerServiceBtn.addEventListener('mouseup', () => {
+      setTimeout(() => {
+        customerServiceBtn.style.transition = 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        customerServiceBtn.style.transform = 'scale(1) translateZ(0)';
+      }, 50);
+    });
+
     customerServiceBtn.addEventListener('mouseleave', () => {
+      customerServiceBtn.style.transition = 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
       customerServiceBtn.style.transform = 'scale(1) translateZ(0)';
       customerServiceBtn.style.boxShadow = `
         0 8px 32px rgba(239, 68, 68, 0.2),
