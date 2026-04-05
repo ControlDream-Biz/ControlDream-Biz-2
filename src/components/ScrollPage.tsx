@@ -6,29 +6,59 @@ interface ScrollPageProps {
   children: React.ReactNode;
   index: number;
   currentPage: number;
+  dragOffset?: number;  // 触摸滑动偏移量
+  isDragging?: boolean;  // 是否正在触摸滑动
 }
 
 type ChildWithProps = React.ReactElement<{ isActive?: boolean }>;
 
-export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
+export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDragging = false }: ScrollPageProps) {
   const isActive = index === currentPage;
   const isPrev = index < currentPage;
   const isNext = index > currentPage;
 
-  // 苹果官网式的页面切换动画
+  // 苹果官网式的页面切换动画 - 支持触摸跟随
   let transform = '';
   let opacity = 1;
   const scale = 1;
 
-  if (isActive) {
-    transform = `translate3d(0, 0, 0) scale(${scale})`;
-    opacity = 1;
-  } else if (isPrev) {
-    transform = `translate3d(0, -100vh, 0) scale(${scale})`;
-    opacity = 0;
-  } else if (isNext) {
-    transform = `translate3d(0, 100vh, 0) scale(${scale})`;
-    opacity = 0;
+  // 如果正在触摸滑动，使用实时偏移量
+  if (isDragging && dragOffset !== 0) {
+    // 当前页面跟随手指移动
+    if (isActive) {
+      transform = `translate3d(0, ${dragOffset}px, 0) scale(${scale})`;
+      opacity = 1 - Math.abs(dragOffset) / window.innerHeight;
+    }
+    // 下一页跟随手指移动（向上滑动，显示下一页）
+    else if (isNext && dragOffset < 0) {
+      transform = `translate3d(0, ${100 * window.innerHeight + dragOffset}px, 0) scale(${scale})`;
+      opacity = Math.abs(dragOffset) / window.innerHeight;
+    }
+    // 上一页跟随手指移动（向下滑动，显示上一页）
+    else if (isPrev && dragOffset > 0) {
+      transform = `translate3d(0, ${-100 * window.innerHeight + dragOffset}px, 0) scale(${scale})`;
+      opacity = Math.abs(dragOffset) / window.innerHeight;
+    }
+    // 其他页面保持原位
+    else if (isPrev) {
+      transform = `translate3d(0, -100vh, 0) scale(${scale})`;
+      opacity = 0;
+    } else if (isNext) {
+      transform = `translate3d(0, 100vh, 0) scale(${scale})`;
+      opacity = 0;
+    }
+  } else {
+    // 没有触摸滑动，使用标准动画
+    if (isActive) {
+      transform = `translate3d(0, 0, 0) scale(${scale})`;
+      opacity = 1;
+    } else if (isPrev) {
+      transform = `translate3d(0, -100vh, 0) scale(${scale})`;
+      opacity = 0;
+    } else if (isNext) {
+      transform = `translate3d(0, 100vh, 0) scale(${scale})`;
+      opacity = 0;
+    }
   }
 
   return (
@@ -38,7 +68,7 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
         transform,
-        transition: 'transform 0.9s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.7s cubic-bezier(0.32, 0.72, 0, 1)',
+        transition: isDragging ? 'none' : 'transform 0.9s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.7s cubic-bezier(0.32, 0.72, 0, 1)',
         zIndex: isActive ? 10 : 1,
         willChange: 'transform, opacity',
       }}
@@ -61,6 +91,8 @@ interface ScrollContainerProps {
 
 export function ScrollContainer({ children, onPageChange }: ScrollContainerProps) {
   const [currentPage, setCurrentPage] = useState(0);
+  const [dragOffset, setDragOffset] = useState(0);  // 触摸滑动偏移量
+  const [isDragging, setIsDragging] = useState(false);  // 是否正在触摸滑动
   const totalPages = children.length;
   const animationRef = useRef<number | null>(null);
 
@@ -142,6 +174,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.velocity = velocity;
       }
 
+      // 实时更新拖动偏移量，实现触摸跟随效果
+      setDragOffset(deltaY);
+      setIsDragging(true);
+
       // 苹果官网式的阻止默认行为
       // 距离 > 60px 且 速度 > 0.5 才阻止默认行为
       if (absDeltaY > 60 && velocity > 0.5 && e.cancelable) {
@@ -205,6 +241,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.touchStartTime = 0;
       state.velocity = 0;
       state.isTouchActive = false;
+
+      // 回弹动画：重置拖动偏移量
+      setIsDragging(false);
+      setDragOffset(0);
     };
 
     // 苹果官网式的键盘导航
@@ -281,6 +321,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           key={index}
           index={index}
           currentPage={currentPage}
+          dragOffset={dragOffset}
+          isDragging={isDragging}
         >
           {child}
         </ScrollPage>
