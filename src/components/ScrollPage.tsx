@@ -28,39 +28,36 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
     const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
 
     if (isActive) {
-      // 当前页面：随拖拽移动，轻微缩放，使用阻尼效果
-      const dampedOffset = dragOffset * 0.6;
-      const scaleProgress = Math.min(progress * 0.03, 0.02);
-      scale = 1 - scaleProgress;
+      // 当前页面：随拖拽移动，轻微缩放，使用线性阻尼效果
+      const dampedOffset = dragOffset * 0.7;  // 更线性的阻尼
+      scale = 1 - (progress * 0.025);  // 更线性的缩放
       transform = `translateY(${dampedOffset}px) scale(${scale})`;
-      opacity = Math.max(1 - progress * 0.15, 0.85);
-      blur = Math.min(progress * 3, 2);
+      opacity = 1 - (progress * 0.12);  // 更线性的透明度
+      blur = progress * 2.5;  // 更线性的模糊
     } else if (isNext && dragOffset < 0) {
       // 下一页：从下方进入
-      const startOffset = 100;
-      const dampedOffset = dragOffset * 0.4;
-      const incomingProgress = 1 - progress;
-      scale = 0.97 + (incomingProgress * 0.03);
+      const startOffset = 80;
+      const dampedOffset = dragOffset * 0.5;
+      scale = 0.975 + (progress * 0.025);  // 更线性的缩放
       transform = `translateY(${startOffset + dampedOffset}px) scale(${scale})`;
-      opacity = 0.2 + progress * 0.8;
-      blur = Math.min((1 - progress) * 4, 3);
+      opacity = 0.15 + (progress * 0.85);  // 更线性的透明度
+      blur = (1 - progress) * 3.5;  // 更线性的模糊
     } else if (isPrev && dragOffset > 0) {
       // 上一页：从上方进入
-      const startOffset = -100;
-      const dampedOffset = dragOffset * 0.4;
-      const incomingProgress = 1 - progress;
-      scale = 0.97 + (incomingProgress * 0.03);
+      const startOffset = -80;
+      const dampedOffset = dragOffset * 0.5;
+      scale = 0.975 + (progress * 0.025);  // 更线性的缩放
       transform = `translateY(${startOffset + dampedOffset}px) scale(${scale})`;
-      opacity = 0.2 + progress * 0.8;
-      blur = Math.min((1 - progress) * 4, 3);
+      opacity = 0.15 + (progress * 0.85);  // 更线性的透明度
+      blur = (1 - progress) * 3.5;  // 更线性的模糊
     } else if (isPrev) {
-      transform = `translateY(-100vh) scale(0.97)`;
+      transform = `translateY(-100vh) scale(0.975)`;
       opacity = 0;
-      scale = 0.97;
+      scale = 0.975;
     } else if (isNext) {
-      transform = `translateY(100vh) scale(0.97)`;
+      transform = `translateY(100vh) scale(0.975)`;
       opacity = 0;
-      scale = 0.97;
+      scale = 0.975;
     }
   } else {
     if (isActive) {
@@ -98,7 +95,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
             filter: `blur(${blur}px)`,
             transition: isDragging
               ? 'none'
-              : 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+              : 'transform 0.6s linear, opacity 0.4s linear, filter 0.4s linear',
             position: 'absolute',
             inset: 0,
             zIndex: 1,
@@ -125,7 +122,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
           filter: `blur(${blur}px)`,
           transition: isDragging
             ? 'none'
-            : 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+            : 'transform 0.6s linear, opacity 0.4s linear, filter 0.4s linear',
           position: 'absolute',
           inset: 0,
           zIndex: 10,
