@@ -36,17 +36,17 @@ export function Navbar() {
       {/* 左上角 Logo + 公司名称 */}
       <div
         onClick={() => scrollToSection('#home', 0)}
-        className="fixed top-4 left-4 z-50 flex items-center gap-2 sm:gap-3 cursor-pointer select-none group linear-transition"
+        className="fixed top-4 left-4 z-50 flex items-center gap-1.5 sm:gap-2 cursor-pointer select-none group linear-transition"
         style={{ opacity: 0.95 }}
       >
         {/* LOGO - 透明背景 */}
-        <div className="relative w-10 h-10 flex-shrink-0 sm:w-11 sm:h-11 lg:w-12 lg:h-12 linear-transition group-hover:scale-105">
+        <div className="relative w-8 h-8 flex-shrink-0 sm:w-9 sm:h-9 lg:w-10 lg:h-10 linear-transition group-hover:scale-105">
           <Image
             src="/logo-cm-transparent.png"
             alt="创梦计算机系统有限公司"
             fill
             className="object-contain"
-            sizes="(max-width: 640px) 40px, (max-width: 1024px) 44px, 48px"
+            sizes="(max-width: 640px) 32px, (max-width: 1024px) 36px, 40px"
             priority
           />
         </div>
@@ -54,18 +54,18 @@ export function Navbar() {
         {/* 公司名称 */}
         <div className="flex flex-col justify-center linear-transition">
           {/* 中文公司名 */}
-          <div className="text-xs font-bold text-white tracking-tight leading-tight mb-0.5 sm:text-sm lg:text-base select-none">
+          <div className="text-[10px] font-bold text-white tracking-tight leading-none mb-0.5 sm:text-[11px] lg:text-xs select-none">
             创梦计算机系统有限公司
           </div>
 
           {/* 英文副标题 */}
           <div
-            className="text-[5px] sm:text-[8px] lg:text-[10px] text-white/70 font-medium uppercase select-none"
+            className="text-[4px] sm:text-[5px] lg:text-[6px] text-white/70 font-medium uppercase select-none leading-none"
             style={{
-              letterSpacing: '0.18em'
+              letterSpacing: '0.15em'
             }}
           >
-            <span className="hidden sm:inline" style={{ letterSpacing: '0.15em' }}>
+            <span className="hidden sm:inline" style={{ letterSpacing: '0.12em' }}>
               CHUANGMENG COMPUTER SYSTEM
             </span>
             <span className="sm:hidden">
