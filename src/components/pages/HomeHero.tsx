@@ -10,20 +10,10 @@ interface HomeHeroProps {
 export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProps) {
   const [mounted, setMounted] = useState(false);
 
+  // 首次加载时触发动画
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // 当页面切换回来时重新触发动画，和其他页面保持一致
-  useEffect(() => {
-    if (isActive) {
-      setMounted(false);
-      const timer = setTimeout(() => {
-        setMounted(true);
-      }, 50);
-      return () => clearTimeout(timer);
-    }
-  }, [isActive]);
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center bg-black overflow-hidden pt-12 pb-8">

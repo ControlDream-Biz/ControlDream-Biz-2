@@ -131,32 +131,24 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
     return 1;
   };
 
-  useEffect(() => {
-    // 只在首次加载时执行淡入动画
-    if (!initializedRef.current) {
-      initializedRef.current = true;
-      setMounted(true);
-    }
-  }, []);
-
-  // 首次加载和页面切换时触发小字动画
+  // 首次加载和页面切换时触发动画
   useEffect(() => {
     // 清除之前的动画定时器
     if (animationTimerRef.current) {
       clearTimeout(animationTimerRef.current);
     }
 
-    // 如果页面是活跃的，触发小字动画
-    if (isActive) {
-      // 重置小字动画状态
-      setShouldAnimate(false);
+    // 步骤1: 确保mounted为true
+    setMounted(true);
 
-      // 延迟后触发小字动画（确保两次渲染之间有时间差）
-      animationTimerRef.current = setTimeout(() => {
-        setShouldAnimate(true);
-        animationTimerRef.current = null;
-      }, 100);
-    }
+    // 步骤2: 重置小字动画状态
+    setShouldAnimate(false);
+
+    // 步骤3: 延迟后触发小字动画（确保两次渲染之间有时间差）
+    animationTimerRef.current = setTimeout(() => {
+      setShouldAnimate(true);
+      animationTimerRef.current = null;
+    }, 100);
 
     return () => {
       if (animationTimerRef.current) {
@@ -164,16 +156,6 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
       }
     };
   }, [isActive]); // 监听isActive变化，页面切换时重新触发
-
-  // 计算滚入动画的opacity（基于shouldAnimate状态）
-  const getScrollInOpacity = () => {
-    // 如果shouldAnimate为true，opacity为1（由CSS transition控制）
-    // 如果shouldAnimate为false，opacity为0
-    return shouldAnimate ? 1 : 0;
-  };
-
-  // 不在页面切换时重置mounted，避免页面闪烁
-  // 小字动画使用slideFadeOpacity计算，不依赖mounted重置
 
   return (
     <div className="relative w-full bg-black overflow-hidden">
@@ -254,16 +236,12 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                 {/* 小字列表 - 腾讯式从右向左滚动淡入 + 滑动淡入 */}
                 <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
                   {area.items.map((item, i) => {
-                    const scrollInOpacity = getScrollInOpacity();
                     const slideFadeOpacity = getSlideFadeOpacity(i);
 
                     // 综合计算最终opacity：
                     // 如果正在拖拽，使用slideFadeOpacity
-                    // 如果不在拖拽，使用scrollInOpacity（由shouldAnimate控制）
-                    // 如果shouldAnimate为false，opacity始终为0
-                    const finalOpacity = isDragging
-                      ? slideFadeOpacity
-                      : (shouldAnimate ? scrollInOpacity : 0);
+                    // 如果不在拖拽，opacity由shouldAnimate控制（通过transition过渡）
+                    const finalOpacity = isDragging ? slideFadeOpacity : (shouldAnimate ? 1 : 0);
 
                     return (
                       <div
@@ -272,9 +250,9 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                         style={{
                           transform: shouldAnimate ? 'translateX(0)' : 'translateX(4rem)',
                           opacity: finalOpacity,
-                          transitionDelay: shouldAnimate ? `${i * 0.15}s` : '0s',
+                          transitionDelay: shouldAnimate ? `${i * 0.2}s` : '0s',
                           transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                          transitionDuration: isDragging ? '0s' : '800ms',
+                          transitionDuration: isDragging ? '0s' : '1000ms',
                           transitionProperty: 'transform, opacity',
                         }}
                       >

@@ -15,20 +15,10 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // 首次加载时触发动画
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // 当页面切换回来时重新触发动画，和其他页面保持一致
-  useEffect(() => {
-    if (isActive) {
-      setMounted(false);
-      const timer = setTimeout(() => {
-        setMounted(true);
-      }, 50);
-      return () => clearTimeout(timer);
-    }
-  }, [isActive]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
