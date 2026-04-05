@@ -91,7 +91,6 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
 }: EnvironmentShowcaseProps) {
   const [mounted, setMounted] = useState(false);
   const [shouldAnimate, setShouldAnimate] = useState(false); // 控制小字滚入动画
-  const initializedRef = useRef(false);
   const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   // 计算滑动淡入效果 - 小字随滑动产生淡入动画
@@ -245,14 +244,14 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
 
                     return (
                       <div
-                        key={`item-${index}-${i}-${shouldAnimate}`}
+                        key={`${index}-${i}-${shouldAnimate}`}
                         className="flex items-start space-x-2 sm:space-x-3"
                         style={{
                           transform: shouldAnimate ? 'translateX(0)' : 'translateX(4rem)',
                           opacity: finalOpacity,
                           transitionDelay: shouldAnimate ? `${i * 0.2}s` : '0s',
                           transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                          transitionDuration: isDragging ? '0s' : '1000ms',
+                          transitionDuration: shouldAnimate ? '800ms' : '0s',
                           transitionProperty: 'transform, opacity',
                         }}
                       >
