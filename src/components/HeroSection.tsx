@@ -72,7 +72,7 @@ export default function HeroSection() {
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.8s ease-out 0.1s",
                 minHeight: "120px",
-                filter: "drop-shadow(0 4px 12px rgba(0,0,0,0.9))",
+                filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.4))",
                 letterSpacing: "-0.02em",
               }}
             >
@@ -96,7 +96,7 @@ export default function HeroSection() {
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.2s",
                 minHeight: "60px",
-                textShadow: "0 2px 12px rgba(0,0,0,0.95)",
+                textShadow: "0 2px 8px rgba(0,0,0,0.6)",
               }}
             >
               我们专注于自主研发，在游戏、软件、硬件领域持续投入，
@@ -130,10 +130,8 @@ export default function HeroSection() {
                 <Button
                   className="h-12 px-8 text-sm font-bold rounded-lg hover:shadow-lg transition-all duration-200 ripple-effect magnetic-btn"
                   style={{
-                    background: "rgba(0, 0, 0, 0.85)",
-                    backdropFilter: "blur(10px)",
-                    WebkitBackdropFilter: "blur(10px)",
-                    border: "2px solid rgba(255, 255, 255, 0.4)",
+                    background: "linear-gradient(135deg, #3B82F6 0%, #8B5CF6 50%, #DC2626 100%)",
+                    border: "2px solid rgba(255, 255, 255, 0.3)",
                     color: "white",
                     minWidth: "120px",
                   }}
@@ -153,16 +151,16 @@ export default function HeroSection() {
               }}
             >
               <div>
-                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.95)" }}>8+</div>
-                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}>年持续投入</div>
+                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}>8+</div>
+                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>年持续投入</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.95)" }}>30+</div>
-                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}>自研产品</div>
+                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}>30+</div>
+                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>自研产品</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.95)" }}>20+</div>
-                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.9)" }}>核心团队</div>
+                <div className="text-2xl md:text-3xl font-black text-white mb-1" style={{ textShadow: "0 1px 6px rgba(0,0,0,0.6)" }}>20+</div>
+                <div className="text-xs text-white uppercase tracking-widest font-bold" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}>核心团队</div>
               </div>
             </div>
           </div>
