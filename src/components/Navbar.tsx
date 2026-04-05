@@ -93,10 +93,10 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* 导航菜单 - 右上角 - 液态玻璃设计系统 */}
-      <nav className="fixed top-4 right-4 z-50 select-none sm:top-4 sm:right-4 lg:top-6 lg:right-6">
-        {/* Desktop Navigation - 液态玻璃导航栏 */}
-        <div className="hidden lg:flex items-center gap-1 liquid-glass-nav px-2 py-2">
+      {/* 导航菜单 - 桌面端居中，移动端右上角 */}
+      {/* Desktop Navigation - 液态玻璃导航栏 - 居中 */}
+      <nav className="hidden lg:flex fixed top-6 left-1/2 -translate-x-1/2 z-50 select-none">
+        <div className="flex items-center gap-1 liquid-glass-nav px-2 py-2">
           {navItems.map((item) => (
             <button
               key={item.href}
@@ -112,16 +112,17 @@ export function Navbar() {
             </button>
           ))}
         </div>
+      </nav>
 
-        {/* Mobile Menu Button - 精简双竖线 */}
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            triggerVibration();
-            setMobileMenuOpen(!mobileMenuOpen);
-          }}
-          className="lg:hidden liquid-glass-menu-btn w-12 h-12 sm:w-12 sm:h-12"
-        >
+      {/* Mobile Menu Button - 精简双竖线 - 右上角 */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          triggerVibration();
+          setMobileMenuOpen(!mobileMenuOpen);
+        }}
+        className="lg:hidden fixed top-4 right-4 z-50 liquid-glass-menu-btn w-12 h-12 sm:w-12 sm:h-12"
+      >
           <svg
             width="24"
             height="24"
@@ -170,7 +171,6 @@ export function Navbar() {
             />
           </svg>
         </button>
-      </nav>
 
       {/* Mobile Menu - 液态玻璃效果 */}
       {mobileMenuOpen && (
