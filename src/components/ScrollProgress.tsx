@@ -64,17 +64,17 @@ export function ScrollProgress() {
                   absolute right-4 whitespace-nowrap px-3 py-1.5 rounded
                   ${showLabel && isCurrent
                     ? 'opacity-100 translate-x-0 scale-100 blur-0'
-                    : 'opacity-0 translate-x-3 scale-90 blur-sm pointer-events-none'
+                    : 'opacity-0 translate-x-2 scale-95 blur-sm pointer-events-none'
                   }
                 `}
                 style={{
                   top: '50%',
                   transform: 'translateY(-50%)',
-                  transition: 'all 800ms cubic-bezier(0.16, 1, 0.3, 1)',
-                  filter: showLabel && isCurrent ? 'none' : 'blur(4px)',
+                  transition: 'all 600ms cubic-bezier(0.22, 1, 0.36, 1)',
+                  filter: showLabel && isCurrent ? 'none' : 'blur(3px)',
                 }}
               >
-                <span className="text-lg text-white font-extrabold drop-shadow-2xl">
+                <span className="text-lg text-white font-extrabold drop-shadow-xl">
                   {page.label}
                 </span>
               </div>

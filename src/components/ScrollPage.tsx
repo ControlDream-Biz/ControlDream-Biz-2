@@ -65,7 +65,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
         transform,
         transition: isDragging
           ? 'none'
-          : 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+          : 'transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1)',
         zIndex: isActive ? 10 : 1,
         willChange: isDragging ? 'transform, opacity' : 'transform, opacity',
         backfaceVisibility: 'hidden' as const,
@@ -161,9 +161,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       // 触控板需要更严格的条件
       const isTouchpad = state.isTouchpad;
-      const scrollThreshold = isTouchpad ? 150 : 100; // 触控板需要更大的阈值
-      const consistencyThreshold = isTouchpad ? 8 : 3; // 触控板需要更多连续同方向滚动
-      const throttleTime = isTouchpad ? 1200 : 1000; // 触控板需要更长的节流时间
+      const scrollThreshold = isTouchpad ? 120 : 80; // 降低阈值，让翻页更灵敏
+      const consistencyThreshold = isTouchpad ? 6 : 2; // 降低一致性要求
+      const throttleTime = isTouchpad ? 1000 : 800; // 降低节流时间，提高响应速度
 
       // 累积滚动量
       state.accumulatedDelta += delta;
