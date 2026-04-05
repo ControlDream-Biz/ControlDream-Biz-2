@@ -43,29 +43,29 @@ export function Navbar() {
       {/* 左上角 Logo + 公司名称 - 苹果官网式布局 */}
       <div
         onClick={() => scrollToSection('#home', 0)}
-        className="fixed top-6 left-6 z-50 flex items-center gap-3 hover:opacity-90 transition-opacity cursor-pointer group select-none"
+        className="fixed top-6 left-6 z-50 flex items-center gap-2 hover:opacity-90 transition-opacity cursor-pointer group select-none"
       >
-        {/* LOGO - 透明背景，白色线条 */}
-        <div className="relative w-12 h-12 flex-shrink-0">
+        {/* LOGO - 透明背景，白色线条，调小尺寸 */}
+        <div className="relative w-8 h-8 flex-shrink-0">
           <Image
             src="/logo-cm-transparent.png"
             alt="创梦计算机系统有限公司"
             fill
             className="object-contain"
-            sizes="(max-width: 768px) 48px, 48px"
+            sizes="(max-width: 768px) 32px, 32px"
             priority
           />
         </div>
 
-        {/* 公司名称 - 紧贴LOGO */}
+        {/* 公司名称 - 紧贴LOGO，调小字体 */}
         <div className="hidden md:flex flex-col justify-center">
-          {/* 中文公司名 */}
-          <div className="text-lg font-bold text-white tracking-tight leading-none mb-0.5 select-none" style={fontStyles}>
+          {/* 中文公司名 - 调小 */}
+          <div className="text-sm font-bold text-white tracking-tight leading-none mb-0.5 select-none" style={fontStyles}>
             创梦计算机系统有限公司
           </div>
 
-          {/* 英文副标题 - 和中文对齐 */}
-          <div className="text-[11px] text-white/60 font-medium tracking-wide uppercase select-none" style={fontStyles}>
+          {/* 英文副标题 - 和中文对齐，调小 */}
+          <div className="text-[9px] text-white/60 font-medium tracking-wide uppercase select-none" style={fontStyles}>
             CHUANGMENG COMPUTER SYSTEM
           </div>
         </div>
