@@ -350,14 +350,37 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         </ScrollPage>
       ))}
 
-      {/* 滚动提示 */}
+      {/* 滚动提示 - 分别设置手机端和电脑端图标 */}
       {currentPage < totalPages - 1 && (
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-white/50 pointer-events-none">
-          <span className="text-xs font-medium tracking-wider">
-            向下滚动
-          </span>
-          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
-            <div className="w-1 h-2 bg-white/50 rounded-full animate-bounce" />
+        <div className="fixed bottom-12 sm:bottom-16 md:bottom-20 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-white/50 pointer-events-none">
+          {/* 手机端：简洁的向下箭头 */}
+          <div className="sm:hidden flex flex-col items-center gap-1">
+            <svg
+              className="w-5 h-5 animate-bounce"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 14l-7 7m0 0l-7-7m7 7V3"
+              />
+            </svg>
+            <span className="text-[10px] font-medium tracking-wider">
+              滑动
+            </span>
+          </div>
+
+          {/* 电脑端：带圆圈的滚动提示 */}
+          <div className="hidden sm:flex flex-col items-center gap-2">
+            <span className="text-xs font-medium tracking-wider">
+              向下滚动
+            </span>
+            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
+              <div className="w-1 h-2 bg-white/50 rounded-full animate-bounce" />
+            </div>
           </div>
         </div>
       )}
