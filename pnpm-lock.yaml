@@ -207,6 +207,9 @@ importers:
       eslint-config-next:
         specifier: 16.1.1
         version: 16.1.1(@typescript-eslint/parser@8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+      lightningcss-linux-x64-gnu:
+        specifier: 1.30.2
+        version: 1.30.2
       only-allow:
         specifier: ^1.2.2
         version: 1.2.2
@@ -10950,8 +10953,7 @@ snapshots:
   lightningcss-linux-arm64-musl@1.30.2:
     optional: true
 
-  lightningcss-linux-x64-gnu@1.30.2:
-    optional: true
+  lightningcss-linux-x64-gnu@1.30.2: {}
 
   lightningcss-linux-x64-musl@1.30.2:
     optional: true
