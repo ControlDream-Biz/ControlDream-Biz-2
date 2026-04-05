@@ -30,41 +30,42 @@ export function Navbar() {
     setMobileMenuOpen(false);
   };
 
+  // 全局字体渲染样式（苹果官网标准）
+  const fontStyles = {
+    fontSmooth: 'always',
+    WebkitFontSmoothing: 'antialiased',
+    MozOsxFontSmoothing: 'grayscale',
+    textRendering: 'geometricPrecision'
+  } as const;
+
   return (
     <>
-      {/* 左上角 Logo + 公司名称 */}
+      {/* 左上角 Logo + 公司名称 - 苹果官网式布局 */}
       <div
         onClick={() => scrollToSection('#home', 0)}
-        className="fixed top-6 left-6 z-50 flex items-center gap-4 hover:opacity-90 transition-opacity cursor-pointer group select-none"
+        className="fixed top-6 left-6 z-50 flex items-center gap-3 hover:opacity-90 transition-opacity cursor-pointer group select-none"
       >
-        {/* 使用原始LOGO图片 - 黑底白LOGO */}
-        <div className="relative w-16 h-16 flex-shrink-0">
+        {/* LOGO - 透明背景，白色线条 */}
+        <div className="relative w-12 h-12 flex-shrink-0">
           <Image
-            src="/logo-cm-white.jpg"
+            src="/logo-cm-transparent.png"
             alt="创梦计算机系统有限公司"
             fill
             className="object-contain"
-            sizes="(max-width: 768px) 64px, 64px"
+            sizes="(max-width: 768px) 48px, 48px"
             priority
           />
         </div>
+
+        {/* 公司名称 - 紧贴LOGO */}
         <div className="hidden md:flex flex-col justify-center">
-          {/* 使用SVG渲染中文公司名 */}
-          <div className="text-xl font-bold text-white tracking-tight leading-none mb-1 select-none" style={{
-            fontSmooth: 'always',
-            WebkitFontSmoothing: 'antialiased',
-            MozOsxFontSmoothing: 'grayscale',
-            textRendering: 'geometricPrecision'
-          }}>
+          {/* 中文公司名 */}
+          <div className="text-lg font-bold text-white tracking-tight leading-none mb-0.5 select-none" style={fontStyles}>
             创梦计算机系统有限公司
           </div>
-          {/* 使用SVG渲染英文副标题 */}
-          <div className="text-xs text-white/60 font-medium tracking-widest uppercase select-none" style={{
-            fontSmooth: 'always',
-            WebkitFontSmoothing: 'antialiased',
-            MozOsxFontSmoothing: 'grayscale',
-            textRendering: 'geometricPrecision'
-          }}>
+
+          {/* 英文副标题 - 和中文对齐 */}
+          <div className="text-[11px] text-white/60 font-medium tracking-wide uppercase select-none" style={fontStyles}>
             CHUANGMENG COMPUTER SYSTEM
           </div>
         </div>
@@ -72,8 +73,8 @@ export function Navbar() {
 
       {/* 导航菜单 - 右上角 */}
       <nav className="fixed top-6 right-6 z-50 select-none">
-        {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-1 bg-black/30 backdrop-blur-xl rounded-full px-6 py-3 border border-white/10">
+        {/* Desktop Navigation - 苹果官网式设计 */}
+        <div className="hidden md:flex items-center gap-1 bg-black/30 backdrop-blur-xl rounded-full px-5 py-2.5 border border-white/10">
           {navItems.map((item) => (
             <button
               key={item.href}
@@ -86,19 +87,14 @@ export function Navbar() {
                   ? 'bg-white text-black'
                   : 'text-white/70 hover:text-white hover:bg-white/10'
               }`}
-              style={{
-                fontSmooth: 'always',
-                WebkitFontSmoothing: 'antialiased',
-                MozOsxFontSmoothing: 'grayscale',
-                textRendering: 'geometricPrecision'
-              }}
+              style={fontStyles}
             >
               {item.label}
             </button>
           ))}
         </div>
 
-        {/* Mobile Menu Button */}
+        {/* Mobile Menu Button - 苹果官网式设计 */}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -114,7 +110,7 @@ export function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu - 苹果官网式设计 */}
       {mobileMenuOpen && (
         <div
           onClick={() => setMobileMenuOpen(false)}
@@ -132,12 +128,7 @@ export function Navbar() {
                   ? 'text-white'
                   : 'text-white/50 hover:text-white'
               }`}
-              style={{
-                fontSmooth: 'always',
-                WebkitFontSmoothing: 'antialiased',
-                MozOsxFontSmoothing: 'grayscale',
-                textRendering: 'geometricPrecision'
-              }}
+              style={fontStyles}
             >
               {item.label}
             </button>

@@ -13,18 +13,24 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
   const isPrev = index < currentPage;
   const isNext = index > currentPage;
 
+  // 苹果官网式的页面切换动画
   let transform = '';
   let opacity = 1;
+  const scale = 1;
+  let filter = 'none';
 
   if (isActive) {
-    transform = `translateY(0) scale(1)`;
+    transform = `translate3d(0, 0, 0) scale(${scale})`;
     opacity = 1;
+    filter = 'none';
   } else if (isPrev) {
-    transform = `translateY(-100%) scale(0.95)`;
+    transform = `translate3d(0, -100vh, 0) scale(${scale})`;
     opacity = 0;
+    filter = 'blur(10px)';
   } else if (isNext) {
-    transform = `translateY(100%) scale(0.95)`;
+    transform = `translate3d(0, 100vh, 0) scale(${scale})`;
     opacity = 0;
+    filter = 'blur(10px)';
   }
 
   return (
@@ -34,9 +40,10 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
         transform,
-        transition: 'transform 1.2s cubic-bezier(0.4, 0.0, 0.2, 1), opacity 1s cubic-bezier(0.4, 0.0, 0.2, 1)',
+        filter,
+        transition: 'transform 1.1s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.9s cubic-bezier(0.32, 0.72, 0, 1), filter 0.9s cubic-bezier(0.32, 0.72, 0, 1)',
         zIndex: isActive ? 10 : 1,
-        willChange: 'transform, opacity',
+        willChange: 'transform, opacity, filter',
       }}
     >
       {children}
@@ -53,9 +60,17 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   const [currentPage, setCurrentPage] = useState(0);
   const totalPages = children.length;
   const animationRef = useRef<number | null>(null);
-  const lastWheelTime = useRef(0);
-  const accumulatedDelta = useRef(0);
-  const touchStartY = useRef(0);
+
+  // 苹果官网式的滚动状态管理
+  const scrollStateRef = useRef({
+    accumulatedDelta: 0,
+    lastWheelTime: 0,
+    isScrolling: false,
+    touchStartY: 0,
+    touchStartTime: 0,
+    velocity: 0,
+    lastScrollY: 0,
+  });
 
   const handlePageChange = useCallback((newPage: number) => {
     if (newPage >= 0 && newPage < totalPages && newPage !== currentPage) {
@@ -65,33 +80,44 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   }, [currentPage, totalPages, onPageChange]);
 
   useEffect(() => {
+    const state = scrollStateRef.current;
+
+    // 苹果官网式的滚轮处理逻辑
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
 
-      const now = Date.now();
+      const now = performance.now();
       const delta = e.deltaY;
 
-      accumulatedDelta.current += delta;
+      // 苹果官网的动量滚动处理
+      state.accumulatedDelta += delta;
 
-      const threshold = 50;
-      const absAccumulatedDelta = Math.abs(accumulatedDelta.current);
+      // 苹果官网的滚动阈值：约40-50px
+      const scrollThreshold = 45;
+      const absAccumulatedDelta = Math.abs(state.accumulatedDelta);
 
-      if (absAccumulatedDelta >= threshold) {
-        if (now - lastWheelTime.current < 800) return;
-        lastWheelTime.current = now;
+      if (absAccumulatedDelta >= scrollThreshold) {
+        // 苹果官网的节流时间：约750ms
+        if (now - state.lastWheelTime < 750) return;
+        state.lastWheelTime = now;
 
-        if (accumulatedDelta.current > 0) {
+        // 判断滚动方向
+        if (state.accumulatedDelta > 0) {
           handlePageChange(currentPage + 1);
         } else {
           handlePageChange(currentPage - 1);
         }
 
-        accumulatedDelta.current = 0;
+        // 重置累积量
+        state.accumulatedDelta = 0;
       }
     };
 
+    // 苹果官网式的触摸处理逻辑
     const handleTouchStart = (e: TouchEvent) => {
-      touchStartY.current = e.touches[0].clientY;
+      state.touchStartY = e.touches[0].clientY;
+      state.touchStartTime = performance.now();
+      state.velocity = 0;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -101,19 +127,27 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
-      const touchStart = touchStartY.current;
       const touchEndY = e.changedTouches[0].clientY;
-      const diff = touchStart - touchEndY;
-      const absDiff = Math.abs(diff);
+      const touchEndTime = performance.now();
 
-      const threshold = 50;
+      const deltaY = state.touchStartY - touchEndY;
+      const deltaTime = touchEndTime - state.touchStartTime;
 
-      if (absDiff >= threshold) {
-        const now = Date.now();
-        if (now - lastWheelTime.current < 800) return;
-        lastWheelTime.current = now;
+      // 苹果官网的速度计算
+      if (deltaTime > 0) {
+        state.velocity = Math.abs(deltaY) / deltaTime;
+      }
 
-        if (diff > 0) {
+      // 苹果官网的触摸滑动阈值
+      const swipeThreshold = 40;
+      const absDeltaY = Math.abs(deltaY);
+
+      if (absDeltaY >= swipeThreshold) {
+        // 苹果官网的触摸节流时间
+        if (touchEndTime - state.lastWheelTime < 750) return;
+        state.lastWheelTime = touchEndTime;
+
+        if (deltaY > 0) {
           handlePageChange(currentPage + 1);
         } else {
           handlePageChange(currentPage - 1);
@@ -121,26 +155,36 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
+    // 苹果官网式的键盘导航
     const handleKeyDown = (e: KeyboardEvent) => {
-      const now = Date.now();
-      if (now - lastWheelTime.current < 800) return;
-      lastWheelTime.current = now;
+      const now = performance.now();
+      if (now - state.lastWheelTime < 750) return;
 
-      if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+      const keyMap: Record<string, number> = {
+        'ArrowDown': 1,
+        'ArrowUp': -1,
+        'PageDown': 1,
+        'PageUp': -1,
+        ' ': 1,
+        'Home': -currentPage,
+        'End': totalPages - 1 - currentPage,
+      };
+
+      if (keyMap[e.key] !== undefined) {
         e.preventDefault();
-        handlePageChange(currentPage + 1);
-      } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
-        e.preventDefault();
-        handlePageChange(currentPage - 1);
+        state.lastWheelTime = now;
+        handlePageChange(currentPage + keyMap[e.key]);
       }
     };
 
+    // 苹果官网式的事件监听
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('touchend', handleTouchEnd, { passive: true });
     window.addEventListener('keydown', handleKeyDown);
 
+    // 清理函数
     return () => {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('touchstart', handleTouchStart);
@@ -152,8 +196,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         cancelAnimationFrame(currentRef);
       }
     };
-  }, [currentPage, handlePageChange]);
+  }, [currentPage, handlePageChange, totalPages]);
 
+  // 自定义导航事件处理（与苹果官网的导航系统保持一致）
   useEffect(() => {
     const handleNavigation = (e: Event) => {
       const customEvent = e as CustomEvent<{ sectionIndex: number }>;
@@ -177,6 +222,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         </ScrollPage>
       ))}
 
+      {/* 苹果官网式的页面指示器 */}
       <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3 pointer-events-none">
         {children.map((_, index) => (
           <button
@@ -192,23 +238,32 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
             }`}
             style={{
               boxShadow: index === currentPage ? '0 0 20px rgba(255, 255, 255, 0.5)' : 'none',
-              transition: 'all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1)',
+              transition: 'all 0.6s cubic-bezier(0.32, 0.72, 0, 1)',
             }}
             aria-label={`Page ${index + 1}`}
           />
         ))}
       </div>
 
+      {/* 苹果官网式的滚动提示 */}
       {currentPage < totalPages - 1 && (
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-white/50 pointer-events-none">
-          <span className="text-xs font-medium tracking-wider">向下滚动</span>
+          <span className="text-xs font-medium tracking-wider" style={{
+            fontSmooth: 'always',
+            WebkitFontSmoothing: 'antialiased',
+            MozOsxFontSmoothing: 'grayscale',
+            textRendering: 'geometricPrecision'
+          }}>
+            向下滚动
+          </span>
           <svg
-            className="w-5 h-5 animate-bounce"
+            className="w-5 h-5"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
             style={{
-              animation: 'bounce 2s infinite',
+              animation: 'scrollBounce 2s infinite',
+              animationTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)',
             }}
           >
             <path
