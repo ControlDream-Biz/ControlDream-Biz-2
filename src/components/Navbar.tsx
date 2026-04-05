@@ -123,7 +123,7 @@ export function Navbar() {
               x2="20"
               y2="6"
               style={{
-                transformOrigin: 'center',
+                transformOrigin: '12px 12px',
                 transition: 'all 0.2s linear',
                 transform: mobileMenuOpen
                   ? 'translate(-6px, 0) rotate(90deg)'
@@ -138,7 +138,7 @@ export function Navbar() {
               x2="20"
               y2="12"
               style={{
-                transformOrigin: 'center',
+                transformOrigin: '12px 12px',
                 transition: 'all 0.2s linear',
                 transform: mobileMenuOpen
                   ? 'translate(6px, 0) rotate(90deg)'
@@ -153,7 +153,7 @@ export function Navbar() {
               x2="20"
               y2="18"
               style={{
-                transformOrigin: 'center',
+                transformOrigin: '12px 12px',
                 transition: 'all 0.15s linear',
                 opacity: mobileMenuOpen ? 0 : 1,
                 transform: mobileMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
