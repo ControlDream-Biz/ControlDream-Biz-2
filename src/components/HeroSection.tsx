@@ -17,43 +17,43 @@ export default function HeroSection() {
     return () => clearTimeout(timer);
   }, []);
 
-  // 为每个字符计算从屏幕四面八方散开的位置
+  // 为每个字符计算从屏幕四个角落散开的位置
   const renderAnimatedText = (text: string, delay: number) => {
     const chars = text.split('');
     const total = chars.length;
 
     return chars.map((char, index) => {
-      // 将字符均匀分布在屏幕四周
-      // 0-25%: 顶部，25-50%: 右侧，50-75%: 底部，75-100%: 左侧
+      // 将字符分配到四个角落
+      // 0-25%: 左下，25-50%: 右下，50-75%: 左上，75-100%: 右上
       const segment = index / total;
       const positionInSegment = (index % (total / 4)) / (total / 4);
 
       let offsetX, offsetY, scale, rotation;
 
       if (segment < 0.25) {
-        // 顶部边缘
-        offsetX = -50 + positionInSegment * 100; // -50vw 到 50vw
-        offsetY = -80; // 向上移动80vh
-        scale = 0.5 + Math.random() * 0.5;
-        rotation = Math.random() * 30 - 15;
+        // 左下角
+        offsetX = -60 - Math.random() * 20; // -60vw 到 -80vw
+        offsetY = 50 + Math.random() * 30; // 50vh 到 80vh
+        scale = 0.3 + Math.random() * 0.4;
+        rotation = Math.random() * 45 - 22.5;
       } else if (segment < 0.5) {
-        // 右侧边缘
-        offsetX = 80; // 向右移动80vw
-        offsetY = -50 + positionInSegment * 100; // -50vh 到 50vh
-        scale = 0.5 + Math.random() * 0.5;
-        rotation = Math.random() * 30 - 15;
+        // 右下角
+        offsetX = 60 + Math.random() * 20; // 60vw 到 80vw
+        offsetY = 50 + Math.random() * 30; // 50vh 到 80vh
+        scale = 0.3 + Math.random() * 0.4;
+        rotation = Math.random() * 45 - 22.5;
       } else if (segment < 0.75) {
-        // 底部边缘
-        offsetX = -50 + positionInSegment * 100; // -50vw 到 50vw
-        offsetY = 80; // 向下移动80vh
-        scale = 0.5 + Math.random() * 0.5;
-        rotation = Math.random() * 30 - 15;
+        // 左上角
+        offsetX = -60 - Math.random() * 20; // -60vw 到 -80vw
+        offsetY = -50 - Math.random() * 30; // -50vh 到 -80vh
+        scale = 0.3 + Math.random() * 0.4;
+        rotation = Math.random() * 45 - 22.5;
       } else {
-        // 左侧边缘
-        offsetX = -80; // 向左移动80vw
-        offsetY = -50 + positionInSegment * 100; // -50vh 到 50vh
-        scale = 0.5 + Math.random() * 0.5;
-        rotation = Math.random() * 30 - 15;
+        // 右上角
+        offsetX = 60 + Math.random() * 20; // 60vw 到 80vw
+        offsetY = -50 - Math.random() * 30; // -50vh 到 -80vh
+        scale = 0.3 + Math.random() * 0.4;
+        rotation = Math.random() * 45 - 22.5;
       }
 
       return (
@@ -65,7 +65,7 @@ export default function HeroSection() {
             '--offset-y': `${offsetY}vh`,
             '--scale': scale,
             '--rotation': `${rotation}deg`,
-            transitionDelay: `${delay + index * 0.05}s`,
+            transitionDelay: `${delay + index * 0.06}s`,
           } as any}
         >
           {char === ' ' ? '\u00A0' : char}
@@ -121,7 +121,7 @@ export default function HeroSection() {
                 ></div>
               </div>
               <br />
-              <div className={`relative inline-block mt-2 ${textVisible ? 'text-visible' : 'text-hidden'}`} style={{ transitionDelay: '0.4s' }}>
+              <div className={`relative inline-block mt-2 ${textVisible ? 'text-visible' : 'text-hidden'}`} style={{ transitionDelay: '0.48s' }}>
                 <span
                   className="glow-text text-3d-effect inline-block"
                   style={{
