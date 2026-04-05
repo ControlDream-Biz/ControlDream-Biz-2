@@ -143,29 +143,44 @@ export function ParticleBackground() {
 
     const newParticles: Particle[] = [];
 
-    // 定义9个区域（3x3网格），确保粒子分散到上下左右角
-    const regions = [
-      { xMin: 0, xMax: width * 0.33, yMin: 0, yMax: height * 0.33 },           // 左上
-      { xMin: width * 0.33, xMax: width * 0.67, yMin: 0, yMax: height * 0.33 }, // 中上
-      { xMin: width * 0.67, xMax: width, yMin: 0, yMax: height * 0.33 },       // 右上
-      { xMin: 0, xMax: width * 0.33, yMin: height * 0.33, yMax: height * 0.67 }, // 左中
-      { xMin: width * 0.33, xMax: width * 0.67, yMin: height * 0.33, yMax: height * 0.67 }, // 中中
-      { xMin: width * 0.67, xMax: width, yMin: height * 0.33, yMax: height * 0.67 },       // 右中
-      { xMin: 0, xMax: width * 0.33, yMin: height * 0.67, yMax: height },       // 左下
-      { xMin: width * 0.33, xMax: width * 0.67, yMin: height * 0.67, yMax: height }, // 中下
-      { xMin: width * 0.67, xMax: width, yMin: height * 0.67, yMax: height },       // 右下
+    // 优先在四个角落分配粒子，确保上下左右角始终有粒子
+    // 移动端10个粒子：左上、右上、左下、右下各1个，中间6个
+    // 电脑端20个粒子：左上、右上、左下、右下各2个，中间12个
+    const particlesPerCorner = isMobile ? 1 : 2;
+    const cornerParticles = particlesPerCorner * 4; // 4个角落
+    const middleParticles = particleCount - cornerParticles;
+
+    // 四个角落区域
+    const corners = [
+      { xMin: 0, xMax: width * 0.25, yMin: 0, yMax: height * 0.25 },           // 左上
+      { xMin: width * 0.75, xMax: width, yMin: 0, yMax: height * 0.25 },       // 右上
+      { xMin: 0, xMax: width * 0.25, yMin: height * 0.75, yMax: height },       // 左下
+      { xMin: width * 0.75, xMax: width, yMin: height * 0.75, yMax: height },   // 右下
     ];
 
-    const particlesPerRegion = Math.ceil(particleCount / 9);
+    // 中间区域
+    const middleArea = {
+      xMin: width * 0.25,
+      xMax: width * 0.75,
+      yMin: height * 0.25,
+      yMax: height * 0.75,
+    };
 
     for (let i = 0; i < particleCount; i++) {
-      // 每个粒子分配到不同的区域
-      const regionIndex = i % 9;
-      const region = regions[regionIndex];
-
-      // 在区域内随机分布
-      const x = region.xMin + Math.random() * (region.xMax - region.xMin);
-      const y = region.yMin + Math.random() * (region.yMax - region.yMin);
+      let x, y;
+      
+      // 前cornerParticles个粒子分配到角落，其余分配到中间
+      if (i < cornerParticles) {
+        // 分配到角落
+        const cornerIndex = Math.floor(i / particlesPerCorner);
+        const corner = corners[cornerIndex];
+        x = corner.xMin + Math.random() * (corner.xMax - corner.xMin);
+        y = corner.yMin + Math.random() * (corner.yMax - corner.yMin);
+      } else {
+        // 分配到中间区域
+        x = middleArea.xMin + Math.random() * (middleArea.xMax - middleArea.xMin);
+        y = middleArea.yMin + Math.random() * (middleArea.yMax - middleArea.yMin);
+      }
       const vx = (Math.random() - 0.5) * 0.3; // 初始速度很慢
       const vy = (Math.random() - 0.5) * 0.3;
       const r = isMobile ? Math.random() * 1 + 1 : Math.random() * 2 + 1.5; // 粒子更小
