@@ -42,6 +42,13 @@ const areas = [
   },
 ];
 
+const textStyle = {
+  fontSmooth: 'always' as const,
+  WebkitFontSmoothing: 'antialiased' as const,
+  MozOsxFontSmoothing: 'grayscale' as const,
+  textRendering: 'geometricPrecision' as const,
+};
+
 export function EnvironmentShowcase() {
   const [mounted, setMounted] = useState(false);
 
@@ -60,51 +67,53 @@ export function EnvironmentShowcase() {
         }}
       />
 
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 md:px-6 max-w-7xl mx-auto">
-        {/* 标题 */}
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto">
+        {/* 标题 - 完全照搬苹果官网移动端字体大小 */}
         <div
-          className="text-center mb-16 md:mb-20 transition-all duration-1000 ease-out"
+          className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20 transition-all duration-1000 ease-out"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(40px)',
+            ...textStyle,
           }}
         >
-          <h2 className="text-5xl md:text-7xl lg:text-9xl font-black text-white mb-6 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl xl:text-9xl font-black text-white mb-3 sm:mb-4 md:mb-6 tracking-tight" style={textStyle}>
             办公环境
           </h2>
-          <p className="text-lg md:text-2xl lg:text-3xl text-white/60 font-light">
+          <p className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/60 font-light" style={textStyle}>
             为团队创造舒适的工作空间
           </p>
         </div>
 
-        {/* 办公区域网格 */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full max-w-6xl">
+        {/* 办公区域网格 - 完全照搬苹果官网移动端布局 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8 w-full max-w-6xl">
           {areas.map((area, index) => {
             const Icon = area.icon;
             return (
               <div
                 key={index}
-                className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 transition-all duration-500 hover:bg-white/10 hover:border-white/20 hover:scale-105"
+                className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-5 md:p-6 lg:p-8 transition-all duration-500 hover:bg-white/10 hover:border-white/20 hover:scale-105"
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(40px)',
                   transitionDelay: `${0.2 + index * 0.08}s`,
+                  ...textStyle,
                 }}
               >
-                {/* 图标 */}
+                {/* 图标 - 完全照搬苹果官网移动端尺寸 */}
                 <div
-                  className={`w-14 h-14 md:w-16 md:h-16 rounded-xl bg-gradient-to-br ${area.color} flex items-center justify-center mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:w-16 md:h-16 rounded-lg sm:rounded-xl bg-gradient-to-br ${area.color} flex items-center justify-center mb-3 sm:mb-4 md:mb-5 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
                 >
-                  <Icon className="w-7 h-7 md:w-8 md:h-8 text-white" />
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:w-8 md:h-8 text-white" />
                 </div>
 
-                {/* 标题 */}
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-black text-white mb-3">
+                {/* 标题 - 完全照搬苹果官网移动端字体大小 */}
+                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-white mb-2 sm:mb-3" style={textStyle}>
                   {area.title}
                 </h3>
 
-                {/* 描述 */}
-                <p className="text-base md:text-lg text-white/60 leading-relaxed">
+                {/* 描述 - 完全照搬苹果官网移动端字体大小 */}
+                <p className="text-sm sm:text-base md:text-lg text-white/60 leading-relaxed" style={textStyle}>
                   {area.description}
                 </p>
               </div>
@@ -112,16 +121,17 @@ export function EnvironmentShowcase() {
           })}
         </div>
 
-        {/* 底部文字 */}
+        {/* 底部文字 - 完全照搬苹果官网移动端字体大小 */}
         <div
-          className="mt-12 md:mt-16 text-center transition-all duration-1000 ease-out"
+          className="mt-8 sm:mt-10 md:mt-12 lg:mt-16 text-center transition-all duration-1000 ease-out"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(40px)',
             transitionDelay: '0.8s',
+            ...textStyle,
           }}
         >
-          <p className="text-base md:text-lg lg:text-xl text-white/40 font-light">
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white/40 font-light" style={textStyle}>
             每个细节都为团队打造
           </p>
         </div>

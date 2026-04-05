@@ -36,6 +36,13 @@ const businesses = [
   },
 ];
 
+const textStyle = {
+  fontSmooth: 'always' as const,
+  WebkitFontSmoothing: 'antialiased' as const,
+  MozOsxFontSmoothing: 'grayscale' as const,
+  textRendering: 'geometricPrecision' as const,
+};
+
 export function BusinessShowcase() {
   const [mounted, setMounted] = useState(false);
 
@@ -54,81 +61,84 @@ export function BusinessShowcase() {
         }}
       />
 
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 md:px-6 max-w-7xl mx-auto">
-        {/* 标题 */}
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto">
+        {/* 标题 - 完全照搬苹果官网移动端字体大小 */}
         <div
-          className="text-center mb-16 md:mb-20 transition-all duration-1000 ease-out"
+          className="text-center mb-10 sm:mb-12 md:mb-16 lg:mb-20 transition-all duration-1000 ease-out"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(40px)',
+            ...textStyle,
           }}
         >
-          <h2 className="text-5xl md:text-7xl lg:text-9xl font-black text-white mb-6 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl xl:text-9xl font-black text-white mb-3 sm:mb-4 md:mb-6 tracking-tight" style={textStyle}>
             三大领域
           </h2>
-          <p className="text-lg md:text-2xl lg:text-3xl text-white/60 font-light">
+          <p className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/60 font-light" style={textStyle}>
             在自己擅长的领域深耕
           </p>
         </div>
 
-        {/* 业务卡片 */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 w-full max-w-6xl">
+        {/* 业务卡片 - 完全照搬苹果官网移动端布局 */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-12 w-full max-w-6xl">
           {businesses.map((business, index) => {
             const Icon = business.icon;
             return (
               <div
                 key={index}
-                className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-8 md:p-12 transition-all duration-500 hover:bg-white/10 hover:border-white/20"
+                className="group relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl sm:rounded-3xl p-5 sm:p-6 md:p-8 lg:p-12 transition-all duration-500 hover:bg-white/10 hover:border-white/20"
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(40px)',
                   transitionDelay: `${0.2 + index * 0.1}s`,
+                  ...textStyle,
                 }}
               >
-                {/* 图标 */}
+                {/* 图标 - 完全照搬苹果官网移动端尺寸 */}
                 <div
-                  className={`w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-gradient-to-br ${business.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-500`}
+                  className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-20 rounded-xl sm:rounded-2xl bg-gradient-to-br ${business.color} flex items-center justify-center mb-4 sm:mb-5 md:mb-6 group-hover:scale-110 transition-transform duration-500`}
                 >
-                  <Icon className="w-8 h-8 md:w-10 md:h-10 text-white" />
+                  <Icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:w-10 md:h-10 text-white" />
                 </div>
 
-                {/* 标题 */}
-                <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-white mb-2">
+                {/* 标题 - 完全照搬苹果官网移动端字体大小 */}
+                <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white mb-1.5 sm:mb-2" style={textStyle}>
                   {business.title}
                 </h3>
-                <p className="text-sm md:text-base text-white/50 mb-4 font-medium tracking-wide">
+                <p className="text-xs sm:text-sm md:text-base text-white/50 mb-3 sm:mb-4 font-medium tracking-wide" style={textStyle}>
                   {business.subtitle}
                 </p>
 
-                {/* 描述 */}
-                <p className="text-base md:text-lg text-white/70 mb-6 leading-relaxed">
+                {/* 描述 - 完全照搬苹果官网移动端字体大小 */}
+                <p className="text-sm sm:text-base md:text-lg text-white/70 mb-4 sm:mb-6 leading-relaxed" style={textStyle}>
                   {business.description}
                 </p>
 
-                {/* 特性 */}
-                <div className="space-y-2 mb-8">
+                {/* 特性 - 完全照搬苹果官网移动端字体大小 */}
+                <div className="space-y-1.5 sm:space-y-2 mb-6 sm:mb-8">
                   {business.features.map((feature, i) => (
                     <div
                       key={i}
-                      className="flex items-center space-x-3 text-sm md:text-base text-white/60"
+                      className="flex items-center space-x-2 sm:space-x-3 text-xs sm:text-sm md:text-base text-white/60" style={textStyle}
                     >
                       <div
-                        className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${business.color}`}
+                        className={`w-1 sm:w-1.5 h-1 sm:h-1.5 rounded-full bg-gradient-to-r ${business.color}`}
                       />
                       <span>{feature}</span>
                     </div>
                   ))}
                 </div>
 
-                {/* 统计 */}
-                <div className="pt-6 border-t border-white/10">
-                  <div className="flex items-baseline space-x-2">
+                {/* 统计 - 完全照搬苹果官网移动端字体大小 */}
+                <div className="pt-4 sm:pt-6 border-t border-white/10">
+                  <div className="flex items-baseline space-x-1.5 sm:space-x-2">
                     <span
-                      className={`text-4xl md:text-5xl font-black bg-gradient-to-r ${business.color} bg-clip-text text-transparent`}
+                      className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black bg-gradient-to-r ${business.color} bg-clip-text text-transparent`}
+                      style={textStyle}
                     >
                       {business.stat}
                     </span>
-                    <span className="text-sm md:text-base text-white/50 font-medium">
+                    <span className="text-xs sm:text-sm md:text-base text-white/50 font-medium" style={textStyle}>
                       {business.statLabel}
                     </span>
                   </div>

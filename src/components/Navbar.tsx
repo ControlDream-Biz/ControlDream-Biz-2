@@ -40,39 +40,39 @@ export function Navbar() {
 
   return (
     <>
-      {/* 左上角 Logo + 公司名称 - 苹果官网式布局 */}
+      {/* 左上角 Logo + 公司名称 - 苹果官网式布局，完全照搬移动端设计 */}
       <div
         onClick={() => scrollToSection('#home', 0)}
-        className="fixed top-6 left-6 z-50 flex items-center gap-1.5 sm:gap-2 hover:opacity-90 transition-opacity cursor-pointer group select-none"
+        className="fixed top-4 left-4 z-50 flex items-center gap-1 sm:gap-2 hover:opacity-90 transition-opacity cursor-pointer group select-none"
       >
-        {/* LOGO - 透明背景，白色线条，响应式尺寸 */}
-        <div className="relative w-7 h-7 flex-shrink-0 sm:w-12 sm:h-12">
+        {/* LOGO - 透明背景，白色线条，响应式尺寸 - 苹果官网移动端尺寸 */}
+        <div className="relative w-6 h-6 flex-shrink-0 sm:w-10 sm:h-10 lg:w-12 lg:h-12">
           <Image
             src="/logo-cm-transparent.png"
             alt="创梦计算机系统有限公司"
             fill
             className="object-contain"
-            sizes="(max-width: 640px) 28px, 48px"
+            sizes="(max-width: 640px) 24px, (max-width: 1024px) 40px, 48px"
             priority
           />
         </div>
 
-        {/* 公司名称 - 移动端和桌面端都显示，响应式字体大小 */}
+        {/* 公司名称 - 移动端和桌面端都显示，完全照搬苹果官网响应式字体大小 */}
         <div className="flex flex-col justify-center">
-          {/* 中文公司名 - 响应式字体大小，苹果官网移动端风格 */}
-          <div className="text-[10px] font-bold text-white tracking-tight leading-tight mb-0.5 sm:text-base select-none" style={fontStyles}>
+          {/* 中文公司名 - 完全照搬苹果官网移动端字体大小 */}
+          <div className="text-[9px] font-bold text-white tracking-tight leading-tight mb-0.5 sm:text-sm lg:text-base select-none" style={fontStyles}>
             创梦计算机系统有限公司
           </div>
 
-          {/* 英文副标题 - 宽度与中文对齐，响应式字体大小，苹果官网移动端风格 */}
+          {/* 英文副标题 - 宽度与中文对齐，完全照搬苹果官网移动端字体大小 */}
           <div
-            className="text-[7px] sm:text-[10px] text-white/70 font-medium uppercase select-none"
+            className="text-[6px] sm:text-[8px] lg:text-[10px] text-white/70 font-medium uppercase select-none"
             style={{
               ...fontStyles,
-              letterSpacing: '0.15em'
+              letterSpacing: '0.12em'
             }}
           >
-            <span className="hidden sm:inline" style={{ letterSpacing: '0.18em' }}>
+            <span className="hidden sm:inline" style={{ letterSpacing: '0.15em' }}>
               CHUANGMENG COMPUTER SYSTEM
             </span>
             <span className="sm:hidden">
@@ -82,10 +82,10 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* 导航菜单 - 右上角 */}
-      <nav className="fixed top-6 right-6 z-50 select-none">
+      {/* 导航菜单 - 右上角 - 完全照搬苹果官网移动端设计 */}
+      <nav className="fixed top-4 right-4 z-50 select-none sm:top-4 sm:right-4 lg:top-6 lg:right-6">
         {/* Desktop Navigation - 苹果官网式设计 */}
-        <div className="hidden md:flex items-center gap-1 bg-black/30 backdrop-blur-xl rounded-full px-5 py-2.5 border border-white/10">
+        <div className="hidden lg:flex items-center gap-1 bg-black/30 backdrop-blur-xl rounded-full px-5 py-2.5 border border-white/10">
           {navItems.map((item) => (
             <button
               key={item.href}
@@ -105,27 +105,27 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Mobile Menu Button - 苹果官网式设计 */}
+        {/* Mobile Menu Button - 完全照搬苹果官网移动端设计 */}
         <button
           onClick={(e) => {
             e.stopPropagation();
             setMobileMenuOpen(!mobileMenuOpen);
           }}
-          className="md:hidden w-12 h-12 bg-black/30 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all duration-300 select-none"
+          className="lg:hidden w-10 h-10 sm:w-11 sm:h-11 bg-black/30 backdrop-blur-xl rounded-full flex items-center justify-center border border-white/10 hover:bg-white/10 transition-all duration-300 select-none active:scale-95"
         >
           {mobileMenuOpen ? (
-            <X className="w-5 h-5 text-white" />
+            <X className="w-5 h-5 text-white" strokeWidth={1.5} />
           ) : (
-            <Menu className="w-5 h-5 text-white" />
+            <Menu className="w-5 h-5 text-white" strokeWidth={1.5} />
           )}
         </button>
       </nav>
 
-      {/* Mobile Menu - 苹果官网式设计 */}
+      {/* Mobile Menu - 完全照搬苹果官网移动端全屏菜单设计 */}
       {mobileMenuOpen && (
         <div
           onClick={() => setMobileMenuOpen(false)}
-          className="md:hidden fixed top-0 left-0 right-0 bottom-0 z-40 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center gap-6"
+          className="lg:hidden fixed top-0 left-0 right-0 bottom-0 z-40 bg-black/95 backdrop-blur-2xl flex flex-col items-center justify-center gap-8 transition-opacity duration-300"
         >
           {navItems.map((item) => (
             <button
@@ -134,10 +134,10 @@ export function Navbar() {
                 e.stopPropagation();
                 scrollToSection(item.href, item.index);
               }}
-              className={`text-2xl font-medium transition-all duration-300 select-none ${
+              className={`text-[28px] sm:text-3xl font-semibold tracking-tight transition-all duration-300 select-none ${
                 currentPage === item.index
-                  ? 'text-white'
-                  : 'text-white/50 hover:text-white'
+                  ? 'text-white scale-105'
+                  : 'text-white/60 hover:text-white hover:scale-105'
               }`}
               style={fontStyles}
             >
