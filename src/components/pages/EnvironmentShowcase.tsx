@@ -11,6 +11,10 @@ const areas = [
     description: '现代化办公前台，简约大气的设计展现企业品牌形象，专业接待团队为访客提供贴心服务。',
     color: 'from-blue-400 to-blue-600',
     image: '/env-reception.jpg',
+    items: [
+      { label: '品牌展示', desc: '企业文化墙' },
+      { label: '接待服务', desc: '专业前台团队' },
+    ],
   },
   {
     title: '休息区',
@@ -18,6 +22,10 @@ const areas = [
     description: '精心设计的员工休息空间，配备舒适沙发、茶饮设施，让团队在工作间隙放松身心、激发灵感。',
     color: 'from-purple-400 to-purple-600',
     image: '/env-lounge.jpg',
+    items: [
+      { label: '舒适设施', desc: '沙发 + 茶饮' },
+      { label: '休闲空间', desc: '放松身心' },
+    ],
   },
   {
     title: '会议室',
@@ -25,6 +33,10 @@ const areas = [
     description: '配备专业会议设备和智能协作系统的高效会议室，支持远程会议与团队协作，提升沟通效率。',
     color: 'from-red-400 to-red-600',
     image: '/env-meeting.jpg',
+    items: [
+      { label: '会议设备', desc: '智能协作系统' },
+      { label: '远程支持', desc: '视频会议' },
+    ],
   },
   {
     title: '工作区',
@@ -32,6 +44,10 @@ const areas = [
     description: '开放式创意办公环境，配备人体工学椅、升降桌、多屏显示器，为团队打造舒适高效的工作空间。',
     color: 'from-blue-400 to-purple-600',
     image: '/env-workspace.jpg',
+    items: [
+      { label: '人体工学', desc: '升降桌 + 人体工学椅' },
+      { label: '多屏支持', desc: '多显示器配置' },
+    ],
   },
   {
     title: '研发中心',
@@ -39,6 +55,10 @@ const areas = [
     description: '配备高性能计算设备、专用测试仪器、硬件实验室的研发中心，为产品创新提供强大技术支撑。',
     color: 'from-purple-400 to-red-600',
     image: '/env-lab.jpg',
+    items: [
+      { label: '高性能设备', desc: '专用测试仪器' },
+      { label: '硬件实验室', desc: '产品创新支撑' },
+    ],
   },
   {
     title: '网络设施',
@@ -46,6 +66,10 @@ const areas = [
     description: '千兆光纤网络、企业级网络安全系统、备用电源保障，确保业务连续性和数据安全。',
     color: 'from-blue-400 to-red-600',
     image: '/env-network.jpg',
+    items: [
+      { label: '千兆光纤', desc: '高速网络' },
+      { label: '安全保障', desc: '企业级安全系统' },
+    ],
   },
 ];
 
@@ -133,6 +157,27 @@ export function EnvironmentShowcase() {
                 <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 leading-relaxed flex-grow">
                   {area.description}
                 </p>
+
+                {/* 小字列表 - 从右向左滚动淡入 */}
+                <div className="space-y-3 mt-4">
+                  {area.items.map((item, i) => (
+                    <div
+                      key={i}
+                      className="flex items-start space-x-3 opacity-0 transition-all duration-700 ease-out"
+                      style={{
+                        transform: mounted ? 'translateX(0)' : 'translateX(2.5rem)',
+                        opacity: mounted ? 1 : 0,
+                        transitionDelay: `${mounted ? (0.8 + i * 0.15) : 0}s`,
+                      }}
+                    >
+                      <div className={`w-1 h-1 rounded-full mt-2 flex-shrink-0 bg-gradient-to-br ${area.color}`}></div>
+                      <div>
+                        <div className={`text-sm font-medium bg-gradient-to-r ${area.color} bg-clip-text text-transparent`}>{item.label}</div>
+                        <div className="text-xs text-gray-400">{item.desc}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             );
           })}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { Gamepad2, Cpu, HardDrive } from 'lucide-react';
 
@@ -15,6 +15,11 @@ const businesses = [
     stat: '10+',
     statLabel: '自主游戏',
     image: '/business-game.jpg',
+    items: [
+      { label: '核心玩法', desc: '回合制战斗 + 策略养成' },
+      { label: '画面表现', desc: '3D角色 + 精美场景' },
+      { label: '社交系统', desc: '公会战 + 好友互动' },
+    ],
   },
   {
     title: '软件产品',
@@ -26,6 +31,11 @@ const businesses = [
     stat: '20+',
     statLabel: '产品矩阵',
     image: '/business-software.jpg',
+    items: [
+      { label: '云服务', desc: '公有云 + 私有云' },
+      { label: '平台能力', desc: 'API + SDK' },
+      { label: '数据安全', desc: '加密 + 权限控制' },
+    ],
   },
   {
     title: '硬件产品',
@@ -37,14 +47,31 @@ const businesses = [
     stat: '30+',
     statLabel: '技术专利',
     image: '/business-hardware.jpg',
+    items: [
+      { label: '硬件设备', desc: '智能网关 + 传感器' },
+      { label: '软件应用', desc: 'APP控制 + 语音交互' },
+      { label: '生态整合', desc: '多品牌兼容 + 场景联动' },
+    ],
   },
 ];
 
 export function BusinessShowcase() {
   const [mounted, setMounted] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // 监听滚动页面切换
+  useEffect(() => {
+    const handlePageChange = (e: Event) => {
+      const customEvent = e as CustomEvent<{ page: number }>;
+      setCurrentPage(customEvent.detail.page);
+    };
+
+    window.addEventListener('pageChange', handlePageChange);
+    return () => window.removeEventListener('pageChange', handlePageChange);
   }, []);
 
   return (
@@ -140,10 +167,30 @@ export function BusinessShowcase() {
                       <span
                         key={i}
                         className="text-sm sm:text-base md:text-lg text-white/60 px-4 py-2 border border-white/20 inline-block"
-                       
                       >
                         {feature}
                       </span>
+                    ))}
+                  </div>
+
+                  {/* 小字列表 - 从右向左滚动淡入 */}
+                  <div className="space-y-3 mt-6">
+                    {business.items.map((item, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start space-x-3 opacity-0 transition-all duration-700 ease-out"
+                        style={{
+                          transform: mounted ? 'translateX(0)' : 'translateX(2.5rem)',
+                          opacity: mounted ? 1 : 0,
+                          transitionDelay: `${mounted ? (0.8 + i * 0.15) : 0}s`,
+                        }}
+                      >
+                        <div className={`w-1 h-1 rounded-full mt-2 flex-shrink-0 bg-gradient-to-br ${business.color}`}></div>
+                        <div>
+                          <div className={`text-sm font-medium bg-gradient-to-r ${business.color} bg-clip-text text-transparent`}>{item.label}</div>
+                          <div className="text-xs text-gray-400">{item.desc}</div>
+                        </div>
+                      </div>
                     ))}
                   </div>
 
