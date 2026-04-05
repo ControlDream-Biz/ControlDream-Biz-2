@@ -90,78 +90,12 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
   currentPage = 0
 }: EnvironmentShowcaseProps) {
   const [mounted, setMounted] = useState(false);
-  const [visibleItems, setVisibleItems] = useState<number[]>([]);
 
-  // 首次加载和页面切换时触发小字动画
+  // 页面激活时触发动画
   useEffect(() => {
-    console.log(`EnvironmentShowcase useEffect 触发: isActive=${isActive}, pageIndex=${pageIndex}, currentPage=${currentPage}`);
-
-    // 只有当前页面是活跃页面时才触发动画
-    if (!isActive) {
-      console.log('当前页面不是活跃页面，不触发动画');
-      return;
-    }
-
-    // 确保mounted为true
+    console.log(`EnvironmentShowcase useEffect 触发: isActive=${isActive}, pageIndex=${pageIndex}`);
     setMounted(true);
-
-    // 清空可见项，重新开始动画
-    setVisibleItems([]);
-
-    // 计算总共有多少个小字
-    const totalItems = areas.reduce((sum, a) => sum + a.items.length, 0);
-    console.log(`总共有 ${totalItems} 个小字`);
-
-    // 依次显示每个小字
-    areas.forEach((area, areaIndex) => {
-      area.items.forEach((_, itemIndex) => {
-        // 计算全局索引
-        const globalIndex = areas.slice(0, areaIndex).reduce((sum, a) => sum + a.items.length, 0) + itemIndex;
-
-        setTimeout(() => {
-          setVisibleItems(prev => [...prev, globalIndex]);
-          console.log(`显示第 ${globalIndex} 个小字`);
-        }, 400 + globalIndex * 200);
-      });
-    });
-  }, [pageIndex, isActive]); // 监听pageIndex和isActive变化
-
-  // 计算滑动淡入效果 - 小字随滑动产生淡入动画
-  const getSlideFadeOpacity = (itemIndex: number) => {
-    if (!isDragging || dragOffset === 0) return 1;
-
-    // 判断是向上滑动还是向下滑动
-    const isSlidingUp = dragOffset < 0;
-
-    // 如果当前页面是活跃的，且正在向上滑动（显示下一页）
-    if (isActive && isSlidingUp) {
-      // 当前页面的小字随滑动淡出
-      const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
-      const progressCubic = progress * progress * (3 - 2 * progress);
-      return 1 - progressCubic * 0.5;
-    }
-
-    // 如果这是下一页，且正在向上滑动
-    if (!isActive && pageIndex === currentPage + 1 && isSlidingUp) {
-      // 下一页的小字随滑动淡入
-      const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
-      const progressCubic = progress * progress * (3 - 2 * progress);
-      // 每个小字依次淡入，基于 itemIndex
-      const itemProgress = Math.max(0, (progress - itemIndex * 0.05) / (1 - itemIndex * 0.05));
-      return Math.min(progressCubic * 0.8 * itemProgress, 1);
-    }
-
-    // 如果这是上一页，且正在向下滑动
-    if (!isActive && pageIndex === currentPage - 1 && !isSlidingUp) {
-      // 上一页的小字随滑动淡入
-      const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
-      const progressCubic = progress * progress * (3 - 2 * progress);
-      const itemProgress = Math.max(0, (progress - itemIndex * 0.05) / (1 - itemIndex * 0.05));
-      return Math.min(progressCubic * 0.8 * itemProgress, 1);
-    }
-
-    return 1;
-  };
+  }, [isActive, pageIndex]);
 
   return (
     <div className="relative w-full bg-black overflow-hidden">
@@ -244,16 +178,16 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                   {area.items.map((item, i) => {
                     // 计算全局索引：前面所有 area 的 items 数量 + 当前索引
                     const globalIndex = areas.slice(0, areaIndex).reduce((sum, a) => sum + a.items.length, 0) + i;
-                    const isVisible = visibleItems.includes(globalIndex);
 
                     return (
                       <div
                         key={`${areaIndex}-${i}`}
-                        className="flex items-start space-x-2 sm:space-x-3 transition-opacity duration-500 ease-out"
+                        className="flex items-start space-x-2 sm:space-x-3"
                         data-small-text
                         data-page-index={pageIndex}
                         style={{
-                          opacity: isVisible ? 1 : 0,
+                          opacity: 0,
+                          animation: `fadeIn 0.5s ease-out ${0.4 + globalIndex * 0.2}s forwards`,
                         }}
                       >
                         <div className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 bg-gradient-to-br ${area.color}`}></div>
