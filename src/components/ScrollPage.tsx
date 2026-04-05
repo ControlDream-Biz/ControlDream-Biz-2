@@ -163,10 +163,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   useEffect(() => {
     const state = scrollStateRef.current;
 
-    // 优化的滚轮处理逻辑 - 平衡灵敏度和防误触
+    // 快速翻页逻辑 - 快速滑动立即触发，防止误触
     const handleWheel = (e: WheelEvent) => {
       const now = performance.now();
       const delta = e.deltaY;
+      const deltaAbs = Math.abs(delta);
 
       // 检查滚轮方向一致性
       const currentDirection = delta > 0 ? 1 : -1;
@@ -177,24 +178,39 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.lastWheelDirection = currentDirection;
       }
 
-      // 平衡的阈值和节流时间
-      const throttleTime = 300; // 降低节流时间，更快响应
-      const scrollThreshold = 60; // 降低阈值，更容易触发
-      const consistencyThreshold = 2; // 降低连续滚动要求
-
       // 累积滚动量
       state.accumulatedDelta += delta;
 
-      // 必须满足所有条件才触发翻页：
-      // 1. 超过阈值
-      // 2. 方向一致且连续
-      // 3. 超过节流时间
-      if (Math.abs(state.accumulatedDelta) >= scrollThreshold &&
+      // 核心参数
+      const throttleTime = 100; // 极短节流，快速滚动立即响应
+      const fastScrollThreshold = 50; // 单次快速滚动阈值
+      const cumulativeThreshold = 60; // 累积滚动阈值
+      const consistencyThreshold = 1; // 只需1次同方向
+
+      // 快速翻页条件（单次大幅滚动）
+      if (deltaAbs >= fastScrollThreshold && state.wheelConsistency >= consistencyThreshold) {
+        if (now - state.lastWheelTime < throttleTime) return;
+        state.lastWheelTime = now;
+
+        // 重置状态
+        state.accumulatedDelta = 0;
+        state.wheelConsistency = 0;
+
+        if (delta > 0 && currentPage < totalPages - 1) {
+          handlePageChange(currentPage + 1);
+        } else if (delta < 0 && currentPage > 0) {
+          handlePageChange(currentPage - 1);
+        }
+        return;
+      }
+
+      // 慢速翻页条件（累积滚动）
+      if (Math.abs(state.accumulatedDelta) >= cumulativeThreshold &&
           state.wheelConsistency >= consistencyThreshold) {
         if (now - state.lastWheelTime < throttleTime) return;
         state.lastWheelTime = now;
 
-        // 重置累积值
+        // 重置状态
         state.accumulatedDelta = 0;
         state.wheelConsistency = 0;
 
@@ -252,12 +268,12 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       // 当垂直移动量显著大于水平移动量时，才触发翻页
       const isVerticalSwipe = deltaY > deltaX * 1.5;
-      const isSignificantMove = deltaY > 30; // 降低最小移动距离
+      const isSignificantMove = deltaY > 20; // 快速滑动更容易触发
 
       if (isVerticalSwipe && isSignificantMove && !state.hasSwitchedInThisTouch) {
         const lastOffset = Math.abs(dragOffsetRef.current);
 
-        if (lastOffset > window.innerHeight * 0.2) { // 降低阈值到 20%
+        if (lastOffset > window.innerHeight * 0.15) { // 降低阈值到 15%，快速滑动更容易翻页
           state.hasSwitchedInThisTouch = true;
 
           if (dragOffsetRef.current > 0 && currentPage > 0) {
