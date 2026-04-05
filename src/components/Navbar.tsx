@@ -33,19 +33,19 @@ export function Navbar() {
 
   return (
     <>
-      {/* 左上角 Logo + 公司名称 - 液态玻璃交互 */}
+      {/* 左上角 Logo + 公司名称 */}
       <div
         onClick={() => scrollToSection('#home', 0)}
         className="fixed top-4 left-4 z-50 flex items-center gap-2 sm:gap-3 cursor-pointer select-none group linear-transition"
         style={{ opacity: 0.95 }}
       >
-        {/* LOGO - 液态玻璃容器 */}
-        <div className="relative w-10 h-10 flex-shrink-0 sm:w-11 sm:h-11 lg:w-12 lg:h-12 liquid-glass flex items-center justify-center linear-transition overflow-hidden group-hover:scale-105">
+        {/* LOGO - 透明背景 */}
+        <div className="relative w-10 h-10 flex-shrink-0 sm:w-11 sm:h-11 lg:w-12 lg:h-12 linear-transition group-hover:scale-105">
           <Image
             src="/logo-cm-transparent.png"
             alt="创梦计算机系统有限公司"
             fill
-            className="object-contain p-2"
+            className="object-contain"
             sizes="(max-width: 640px) 40px, (max-width: 1024px) 44px, 48px"
             priority
           />
