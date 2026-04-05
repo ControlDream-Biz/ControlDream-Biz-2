@@ -6,8 +6,8 @@ interface ScrollPageProps {
   children: React.ReactNode;
   index: number;
   currentPage: number;
-  dragOffset?: number;  // 触摸滑动偏移量
-  isDragging?: boolean;  // 是否正在触摸滑动
+  dragOffset?: number;
+  isDragging?: boolean;
 }
 
 type ChildWithProps = React.ReactElement<{ isActive?: boolean; dragOffset?: number; isDragging?: boolean; pageIndex?: number; currentPage?: number }>;
@@ -17,42 +17,26 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
   const isPrev = index < currentPage;
   const isNext = index > currentPage;
 
-  // 行业顶级过渡动画 - 柔和层叠效果
   let transform = '';
   let opacity = 1;
   const scale = 1;
 
-  // 如果正在触摸滑动，使用实时偏移量
   if (isDragging && dragOffset !== 0) {
     const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
-    const progressCubic = progress * progress * (3 - 2 * progress); // smoothstep 缓动
+    const progressCubic = progress * progress * (3 - 2 * progress);
 
-    // 当前页面跟随手指移动 - 柔和层叠效果
     if (isActive) {
-      if (dragOffset < 0) {
-        // 向上滑动，当前页面上移
-        transform = `translate3d(0, ${dragOffset * 0.4}px, 0) scale(${1 - progress * 0.02})`;
-        opacity = 1 - progressCubic * 0.3;
-      } else {
-        // 向下滑动，当前页面向下移
-        transform = `translate3d(0, ${dragOffset * 0.4}px, 0) scale(${1 - progress * 0.02})`;
-        opacity = 1 - progressCubic * 0.3;
-      }
-    }
-    // 下一页跟随手指移动（向上滑动，显示下一页）- 从下方半透明渐入
-    else if (isNext && dragOffset < 0) {
-      const startOffset = 50; // vh
-      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.6}px, 0) scale(${1 - progress * 0.02})`;
+      transform = `translate3d(0, ${dragOffset * 0.3}px, 0) scale(${1 - progress * 0.01})`;
+      opacity = 1 - progressCubic * 0.2;
+    } else if (isNext && dragOffset < 0) {
+      const startOffset = 50;
+      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.5}px, 0) scale(${1 - progress * 0.01})`;
       opacity = progressCubic * 0.7;
-    }
-    // 上一页跟随手指移动（向下滑动，显示上一页）- 从上方半透明渐入
-    else if (isPrev && dragOffset > 0) {
-      const startOffset = -50; // vh
-      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.6}px, 0) scale(${1 - progress * 0.02})`;
+    } else if (isPrev && dragOffset > 0) {
+      const startOffset = -50;
+      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.5}px, 0) scale(${1 - progress * 0.01})`;
       opacity = progressCubic * 0.7;
-    }
-    // 其他页面保持原位
-    else if (isPrev) {
+    } else if (isPrev) {
       transform = `translate3d(0, -50vh, 0) scale(${scale})`;
       opacity = 0;
     } else if (isNext) {
@@ -60,7 +44,6 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
       opacity = 0;
     }
   } else {
-    // 没有触摸滑动，使用标准动画 - 层叠效果
     if (isActive) {
       transform = `translate3d(0, 0, 0) scale(${scale})`;
       opacity = 1;
@@ -75,7 +58,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
 
   return (
     <div
-      className="fixed inset-0 overflow-y-auto scrollbar-hide"
+      className="fixed inset-0 overflow-hidden"
       style={{
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
@@ -85,25 +68,25 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
           : 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         zIndex: isActive ? 10 : 1,
         willChange: isDragging ? 'transform, opacity' : 'transform, opacity',
-        // 添加GPU加速提示
         backfaceVisibility: 'hidden' as const,
         perspective: 1000,
-        // 使用content-visibility优化渲染
         contentVisibility: isActive ? 'visible' : 'auto' as const,
       }}
     >
-      <div className="w-full min-h-full px-4 py-8">
-        {React.isValidElement(children)
-          ? (children as React.ReactElement<Record<string, unknown>>).props.isActive !== undefined
-            ? React.cloneElement(children as ChildWithProps, {
-                isActive,
-                dragOffset,
-                isDragging,
-                pageIndex: index,
-                currentPage
-              })
-            : children
-          : children}
+      <div className="w-full h-full overflow-y-auto scrollbar-hide">
+        <div className="w-full min-h-full px-4 py-8">
+          {React.isValidElement(children)
+            ? (children as React.ReactElement<Record<string, unknown>>).props.isActive !== undefined
+              ? React.cloneElement(children as ChildWithProps, {
+                  isActive,
+                  dragOffset,
+                  isDragging,
+                  pageIndex: index,
+                  currentPage
+                })
+              : children
+            : children}
+        </div>
       </div>
     </div>
   );
@@ -116,27 +99,31 @@ interface ScrollContainerProps {
 
 export function ScrollContainer({ children, onPageChange }: ScrollContainerProps) {
   const [currentPage, setCurrentPage] = useState(0);
-  const [dragOffset, setDragOffset] = useState(0);  // 触摸滑动偏移量
-  const [isDragging, setIsDragging] = useState(false);  // 是否正在触摸滑动
+  const [dragOffset, setDragOffset] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
   const totalPages = children.length;
-  const animationRef = useRef<number | null>(null);
 
-  // 苹果官网式的滚动状态管理
+  // 增强的滚动状态管理
   const scrollStateRef = useRef({
     accumulatedDelta: 0,
     lastWheelTime: 0,
     isScrolling: false,
     touchStartY: 0,
+    touchStartX: 0,
     touchStartTime: 0,
     velocity: 0,
     lastScrollY: 0,
-    isTouchActive: false,  // 标记触摸是否活跃
-    hasSwitchedInThisTouch: false,  // 标记本次触摸是否已经翻页
+    isTouchActive: false,
+    hasSwitchedInThisTouch: false,
+    hasMovedVertically: false, // 检测是否有明确的垂直滑动意图
+    horizontalMovement: 0, // 记录水平移动量
+    verticalMovement: 0, // 记录垂直移动量
+    lastWheelDirection: 0, // 记录上一次滚轮方向
+    wheelConsistency: 0, // 记录滚轮方向一致性
+    isTouchpad: false, // 检测是否为触控板
   });
 
-  // 使用ref存储RAF回调，避免频繁创建
   const rafRef = useRef<number | null>(null);
-  const highRefreshRAFRef = useRef<number | null>(null);  // 持续RAF循环，保持高刷新率
 
   const handlePageChange = useCallback((newPage: number) => {
     if (newPage >= 0 && newPage < totalPages && newPage !== currentPage) {
@@ -148,33 +135,49 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   useEffect(() => {
     const state = scrollStateRef.current;
 
-    // 持续RAF循环，保持高刷新率（120Hz+）
-    const runHighRefreshLoop = () => {
-      // 这个循环持续运行，确保浏览器保持在高刷新率模式
-      // 实际的状态更新在handleTouchMove中通过RAF节流控制
-      highRefreshRAFRef.current = requestAnimationFrame(runHighRefreshLoop);
+    // 检测是否为触控板设备
+    const detectTouchpad = (e: WheelEvent) => {
+      // 触控板通常deltaX和deltaY较小，且有连续的滚动事件
+      const isFineDelta = Math.abs(e.deltaX) < 50 && Math.abs(e.deltaY) < 50;
+      const isSmallDelta = Math.abs(e.deltaY) < 10;
+      state.isTouchpad = isFineDelta || isSmallDelta;
     };
 
-    // 启动高刷新率循环
-    highRefreshRAFRef.current = requestAnimationFrame(runHighRefreshLoop);
-
-    // 苹果官网式的滚轮处理逻辑
+    // 改进的滚轮处理逻辑 - 防止误触
     const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
+      detectTouchpad(e);
 
       const now = performance.now();
       const delta = e.deltaY;
 
-      // 苹果官网的动量滚动处理
+      // 检查滚轮方向一致性
+      const currentDirection = delta > 0 ? 1 : -1;
+      if (currentDirection === state.lastWheelDirection) {
+        state.wheelConsistency++;
+      } else {
+        state.wheelConsistency = 0;
+      }
+      state.lastWheelDirection = currentDirection;
+
+      // 触控板需要更严格的条件
+      const isTouchpad = state.isTouchpad;
+      const scrollThreshold = isTouchpad ? 150 : 100; // 触控板需要更大的阈值
+      const consistencyThreshold = isTouchpad ? 8 : 3; // 触控板需要更多连续同方向滚动
+      const throttleTime = isTouchpad ? 1200 : 1000; // 触控板需要更长的节流时间
+
+      // 累积滚动量
       state.accumulatedDelta += delta;
 
-      // 苹果官网的滚动阈值：约40px
-      const scrollThreshold = 40;
+      // 必须满足所有条件才触发翻页：
+      // 1. 超过阈值
+      // 2. 方向一致且连续
+      // 3. 超过节流时间
       const absAccumulatedDelta = Math.abs(state.accumulatedDelta);
 
-      if (absAccumulatedDelta >= scrollThreshold) {
-        // 苹果官网的节流时间：约700ms
-        if (now - state.lastWheelTime < 700) return;
+      if (absAccumulatedDelta >= scrollThreshold &&
+          state.wheelConsistency >= consistencyThreshold) {
+
+        if (now - state.lastWheelTime < throttleTime) return;
         state.lastWheelTime = now;
 
         // 判断滚动方向
@@ -186,48 +189,67 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
         // 重置累积量
         state.accumulatedDelta = 0;
+        state.wheelConsistency = 0;
       }
     };
 
-    // 苹果官网式的触摸处理逻辑 - 防止连续多次翻页
+    // 改进的触摸处理逻辑 - 防止误触
     const handleTouchStart = (e: TouchEvent) => {
       state.touchStartY = e.touches[0].clientY;
+      state.touchStartX = e.touches[0].clientX;
       state.touchStartTime = performance.now();
       state.velocity = 0;
       state.isScrolling = false;
       state.isTouchActive = true;
-      state.hasSwitchedInThisTouch = false;  // 重置翻页标志
+      state.hasSwitchedInThisTouch = false;
+      state.hasMovedVertically = false;
+      state.horizontalMovement = 0;
+      state.verticalMovement = 0;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       const deltaY = e.touches[0].clientY - state.touchStartY;
+      const deltaX = e.touches[0].clientX - state.touchStartX;
       const absDeltaY = Math.abs(deltaY);
+      const absDeltaX = Math.abs(deltaX);
 
-      // 计算实时速度
-      const currentTime = performance.now();
-      const deltaTime = currentTime - state.touchStartTime;
-      const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
+      // 更新移动量
+      state.horizontalMovement = absDeltaX;
+      state.verticalMovement = absDeltaY;
 
-      // 记录最大速度
-      if (velocity > state.velocity) {
-        state.velocity = velocity;
-      }
+      // 检测滑动意图：必须是明确的垂直滑动
+      // 垂直移动量必须大于水平移动量的1.5倍，且垂直移动至少80px
+      const isVerticalSwipe = absDeltaY > absDeltaX * 1.5 && absDeltaY > 80;
 
-      // 苹果官网式的阻止默认行为
-      // 距离 > 60px 且 速度 > 0.5 才阻止默认行为
-      if (absDeltaY > 60 && velocity > 0.5 && e.cancelable) {
-        e.preventDefault();
-        e.stopPropagation();
-        state.isScrolling = true;
-      }
+      if (isVerticalSwipe) {
+        state.hasMovedVertically = true;
 
-      // 使用requestAnimationFrame节流状态更新，避免频繁重渲染
-      if (rafRef.current === null) {
-        rafRef.current = requestAnimationFrame(() => {
-          setDragOffset(deltaY);
-          setIsDragging(true);
-          rafRef.current = null;
-        });
+        const currentTime = performance.now();
+        const deltaTime = currentTime - state.touchStartTime;
+        const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
+
+        if (velocity > state.velocity) {
+          state.velocity = velocity;
+        }
+
+        // 阻止默认行为：只有明确的垂直滑动才阻止
+        if (absDeltaY > 80 && e.cancelable) {
+          e.preventDefault();
+          e.stopPropagation();
+          state.isScrolling = true;
+        }
+
+        // 使用RAF节流
+        if (rafRef.current === null) {
+          rafRef.current = requestAnimationFrame(() => {
+            setDragOffset(deltaY);
+            setIsDragging(true);
+            rafRef.current = null;
+          });
+        }
+      } else {
+        // 水平滑动或滑动距离不够，不阻止默认行为
+        // 允许页面内的水平滚动
       }
     };
 
@@ -239,40 +261,43 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const deltaTime = touchEndTime - state.touchStartTime;
       const absDeltaY = Math.abs(deltaY);
 
-      // 计算滑动速度 (px/ms)
+      // 计算滑动速度
       const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
-
-      // 使用最大速度和最终速度的较大值
       const effectiveVelocity = Math.max(velocity, state.velocity);
 
-      // 苹果官网式的翻页条件
-      const minSwipeTime = 120;    // 最短滑动时间120ms
-      const maxSwipeTime = 900;    // 最长滑动时间900ms
-      const swipeThreshold = 70;   // 滑动距离70px
-      const velocityThreshold = 0.65; // 速度阈值0.65 px/ms
+      // 改进的翻页条件：更严格
+      const minSwipeTime = 150;    // 增加到150ms
+      const maxSwipeTime = 1000;   // 增加到1000ms
+      const swipeThreshold = 100;  // 增加到100px
+      const velocityThreshold = 0.8; // 增加到0.8 px/ms
 
-      // 只在条件满足且本次触摸未翻页时才翻页
+      // 只有满足所有条件才翻页：
+      // 1. 有明确的垂直滑动意图
+      // 2. 滑动距离足够
+      // 3. 速度足够快
+      // 4. 时间在合理范围内
+      // 5. 本次触摸未翻页
       const shouldSwitchPage =
-        !state.hasSwitchedInThisTouch &&  // 本次触摸未翻页
+        state.hasMovedVertically &&
+        !state.hasSwitchedInThisTouch &&
         deltaTime >= minSwipeTime &&
         deltaTime <= maxSwipeTime &&
         absDeltaY >= swipeThreshold &&
         effectiveVelocity >= velocityThreshold;
 
       if (shouldSwitchPage) {
-        // 苹果官网的节流检查：距离上次翻页至少700ms
-        if (touchEndTime - state.lastWheelTime < 700) return;
+        // 节流检查
+        if (touchEndTime - state.lastWheelTime < 1000) return;
         state.lastWheelTime = touchEndTime;
-        state.hasSwitchedInThisTouch = true;  // 标记已翻页
+        state.hasSwitchedInThisTouch = true;
 
-        // 检查是否可以翻页
         if (deltaY > 0) {
-          // 上滑（手指向上），向下翻页
+          // 上滑，向下翻页
           if (currentPage < totalPages - 1) {
             handlePageChange(currentPage + 1);
           }
         } else {
-          // 下滑（手指向下），向上翻页
+          // 下滑，向上翻页
           if (currentPage > 0) {
             handlePageChange(currentPage - 1);
           }
@@ -282,9 +307,13 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 重置状态
       state.isScrolling = false;
       state.touchStartY = 0;
+      state.touchStartX = 0;
       state.touchStartTime = 0;
       state.velocity = 0;
       state.isTouchActive = false;
+      state.hasMovedVertically = false;
+      state.horizontalMovement = 0;
+      state.verticalMovement = 0;
 
       // 清理RAF
       if (rafRef.current !== null) {
@@ -292,15 +321,15 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         rafRef.current = null;
       }
 
-      // 回弹动画：重置拖动偏移量
+      // 回弹动画
       setIsDragging(false);
       setDragOffset(0);
     };
 
-    // 苹果官网式的键盘导航
+    // 键盘导航 - 改进的节流
     const handleKeyDown = (e: KeyboardEvent) => {
       const now = performance.now();
-      if (now - state.lastWheelTime < 700) return;
+      if (now - state.lastWheelTime < 1000) return;
 
       const keyMap: Record<string, number> = {
         'ArrowDown': 1,
@@ -319,7 +348,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    // 苹果官网式的事件监听 - 使用passive: false以支持preventDefault
+    // 事件监听 - 使用passive: false
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
@@ -333,24 +362,14 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('keydown', handleKeyDown);
-      const currentRef = animationRef.current;
-      if (currentRef) {
-        cancelAnimationFrame(currentRef);
-      }
-      // 清理RAF
       if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current);
         rafRef.current = null;
       }
-      // 清理高刷新率RAF循环
-      if (highRefreshRAFRef.current !== null) {
-        cancelAnimationFrame(highRefreshRAFRef.current);
-        highRefreshRAFRef.current = null;
-      }
     };
   }, [currentPage, handlePageChange, totalPages]);
 
-  // 自定义导航事件处理（与苹果官网的导航系统保持一致）
+  // 自定义导航事件
   useEffect(() => {
     const handleNavigation = (e: Event) => {
       const customEvent = e as CustomEvent<{ sectionIndex: number }>;
@@ -362,7 +381,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     return () => window.removeEventListener('scrollToSection', handleNavigation);
   }, [handlePageChange]);
 
-  // 监听置顶事件（来自FloatingButtons）
+  // 监听置顶事件
   useEffect(() => {
     const handleScrollToTop = (e: Event) => {
       e.preventDefault();
@@ -378,10 +397,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     <div
       className="fixed inset-0 overflow-hidden"
       style={{
-        // 强制GPU加速，支持120Hz+高刷新率
         transform: 'translateZ(0)',
         willChange: 'transform',
-        // 优化渲染性能
         contain: 'strict',
       }}
     >
@@ -397,7 +414,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         </ScrollPage>
       ))}
 
-      {/* 苹果官网式的页面指示器 */}
+      {/* 页面指示器 */}
       <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3 pointer-events-none">
         {children.map((_, index) => (
           <button
@@ -421,7 +438,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         ))}
       </div>
 
-      {/* 苹果官网式的滚动提示 */}
+      {/* 滚动提示 */}
       {currentPage < totalPages - 1 && (
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-white/50 pointer-events-none">
           <span className="text-xs font-medium tracking-wider">
