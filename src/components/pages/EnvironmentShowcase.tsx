@@ -9,8 +9,6 @@ interface EnvironmentShowcaseProps {
 }
 
 // 使用React.memo优化性能
-export const EnvironmentShowcase = memo(function EnvironmentShowcase({ isActive }: EnvironmentShowcaseProps) {
-
 const areas = [
   {
     title: '前台接待',
@@ -80,7 +78,7 @@ const areas = [
   },
 ];
 
-function EnvironmentShowcase({ isActive }: EnvironmentShowcaseProps) {
+export const EnvironmentShowcase = memo(function EnvironmentShowcase({ isActive }: EnvironmentShowcaseProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -217,4 +215,4 @@ function EnvironmentShowcase({ isActive }: EnvironmentShowcaseProps) {
       </div>
     </div>
   );
-}););
+});

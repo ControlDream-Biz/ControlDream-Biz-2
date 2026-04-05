@@ -9,8 +9,6 @@ interface BusinessShowcaseProps {
 }
 
 // 使用React.memo优化性能
-export const BusinessShowcase = memo(function BusinessShowcase({ isActive }: BusinessShowcaseProps) {
-
 const businesses = [
   {
     title: '自主游戏产品',
@@ -62,7 +60,7 @@ const businesses = [
   },
 ];
 
-function BusinessShowcase({ isActive }: BusinessShowcaseProps) {
+export const BusinessShowcase = memo(function BusinessShowcase({ isActive }: BusinessShowcaseProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
