@@ -7,25 +7,27 @@ export default function FloatingButtons() {
   const [currentPage, setCurrentPage] = useState(0);
   const isInitialized = useRef(false);
   const shouldHidePopup = useRef(false);
-  const lastBackToTopClick = useRef(0); // 记录上次点击时间戳
+  const backToTopTimeout = useRef<NodeJS.Timeout | null>(null);
 
   const scrollToTop = () => {
-    const now = Date.now();
-    const timeDiff = now - lastBackToTopClick.current;
-    const isDoubleClick = timeDiff < 500; // 500ms内视为双击
+    // 如果已有定时器，说明这是双击
+    if (backToTopTimeout.current) {
+      // 清除定时器，执行双击逻辑（回到首页）
+      clearTimeout(backToTopTimeout.current);
+      backToTopTimeout.current = null;
 
-    if (isDoubleClick) {
-      // 双击：回到首页
       const event = new CustomEvent('jump-to-page', { detail: { pageIndex: 0 } });
       window.dispatchEvent(event);
     } else {
-      // 单击：往上翻一页
-      const targetPage = Math.max(0, currentPage - 1);
-      const event = new CustomEvent('jump-to-page', { detail: { pageIndex: targetPage } });
-      window.dispatchEvent(event);
+      // 第一次点击，等待300ms看是否有第二次点击
+      backToTopTimeout.current = setTimeout(() => {
+        // 300ms内没有第二次点击，执行单击逻辑（往上翻一页）
+        const targetPage = Math.max(0, currentPage - 1);
+        const event = new CustomEvent('jump-to-page', { detail: { pageIndex: targetPage } });
+        window.dispatchEvent(event);
+        backToTopTimeout.current = null;
+      }, 300);
     }
-
-    lastBackToTopClick.current = now;
   };
 
   const toggleCustomerService = (e?: MouseEvent) => {
@@ -555,6 +557,12 @@ export default function FloatingButtons() {
     return () => {
       document.removeEventListener('click', handleOutsideClick);
       window.removeEventListener('page-changed', handlePageChange as EventListener);
+
+      // 清除定时器
+      if (backToTopTimeout.current) {
+        clearTimeout(backToTopTimeout.current);
+      }
+
       if (document.body.contains(buttonGroup)) {
         document.body.removeChild(buttonGroup);
       }
