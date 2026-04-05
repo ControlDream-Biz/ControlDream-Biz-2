@@ -193,7 +193,7 @@ export default function FloatingButtons() {
       customerServiceBtn.style.borderColor = 'rgba(239, 68, 68, 0.3)';
     });
 
-    // 创建客服弹窗 - 现代玻璃效果
+    // 创建客服弹窗 - 现代玻璃效果（更透明，使用按钮样式）
     const customerServicePopup = document.createElement('div');
     customerServicePopup.id = 'customer-service-popup';
     customerServicePopup.style.position = 'fixed';
@@ -201,16 +201,15 @@ export default function FloatingButtons() {
     customerServicePopup.style.right = '20px';
     customerServicePopup.style.width = '320px';
     customerServicePopup.style.maxWidth = 'calc(100vw - 50px)';
-    customerServicePopup.style.backgroundColor = 'rgba(255, 255, 255, 0.95)';
-    customerServicePopup.style.backdropFilter = 'blur(30px)';
+    customerServicePopup.style.backgroundColor = 'rgba(255, 255, 255, 0.65)';
+    customerServicePopup.style.backdropFilter = 'blur(40px)';
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    customerServicePopup.style['webkitBackdropFilter' as any] = 'blur(30px)';
+    customerServicePopup.style['webkitBackdropFilter' as any] = 'blur(40px)';
     customerServicePopup.style.borderRadius = '20px';
-    customerServicePopup.style.border = '1px solid rgba(255, 255, 255, 0.6)';
+    customerServicePopup.style.border = '1.5px solid rgba(255, 255, 255, 0.5)';
     customerServicePopup.style.boxShadow = `
-      inset 0 1px 3px rgba(255, 255, 255, 0.9),
-      0 12px 48px rgba(0, 0, 0, 0.15),
-      0 0 0 1px rgba(0, 0, 0, 0.05)
+      0 12px 48px rgba(0, 0, 0, 0.2),
+      inset 0 1px 2px rgba(255, 255, 255, 0.6)
     `;
     customerServicePopup.style.overflow = 'hidden';
     customerServicePopup.style.pointerEvents = 'auto';
@@ -393,9 +392,12 @@ export default function FloatingButtons() {
         popup.style.transform = 'scale(1) translateY(0)';
       });
 
-      // 改变按钮图标
-      btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>';
-      btn.style.backgroundColor = 'rgba(239, 68, 68, 0.3)';
+      // 改变按钮图标和颜色 - 平滑过渡
+      requestAnimationFrame(() => {
+        btn.style.transition = 'background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
+        btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>';
+        btn.style.backgroundColor = 'rgba(239, 68, 68, 0.25)';
+      });
       shouldHidePopup.current = false;
     } else {
       // 隐藏弹窗
@@ -411,9 +413,12 @@ export default function FloatingButtons() {
         }
       }, 150);
 
-      // 恢复按钮图标
-      btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
-      btn.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
+      // 恢复按钮图标和颜色 - 平滑过渡
+      requestAnimationFrame(() => {
+        btn.style.transition = 'background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
+        btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+        btn.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
+      });
     }
   }, [isCustomerServiceOpen]);
 

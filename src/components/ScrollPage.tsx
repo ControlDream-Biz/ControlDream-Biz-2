@@ -33,7 +33,7 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
 
   return (
     <div
-      className="fixed inset-0 flex items-start justify-center bg-black overflow-y-auto scrollbar-hide"
+      className="fixed inset-0 flex items-center justify-center bg-black overflow-y-auto scrollbar-hide"
       style={{
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
@@ -43,7 +43,7 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
         willChange: 'transform, opacity',
       }}
     >
-      <div className="w-full pt-8 pb-32 px-4">
+      <div className="w-full min-h-full px-4 py-8 flex items-center justify-center">
         {React.isValidElement(children)
           ? (children as React.ReactElement<Record<string, unknown>>).props.isActive !== undefined
             ? React.cloneElement(children as ChildWithProps, { isActive })
@@ -142,9 +142,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.velocity = velocity;
       }
 
-      // 在明显的快速滑动时阻止默认行为（速度 > 0.55 且 距离 > 50px）
-      // 更严格的条件，防止误触
-      if (absDeltaY > 50 && velocity > 0.55 && e.cancelable) {
+      // 更严格的阻止默认行为条件 - 防止误触
+      // 距离 > 40px 且 速度 > 0.4 就开始阻止默认行为
+      if (absDeltaY > 40 && velocity > 0.4 && e.cancelable) {
         e.preventDefault();
         e.stopPropagation();
         state.isScrolling = true;
@@ -168,8 +168,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 翻页条件 - 更严格的条件，彻底解决误触问题
       const minSwipeTime = 100;
       const maxSwipeTime = 1200;
-      const swipeThreshold = 70;  // 从55提高到70
-      const velocityThreshold = 0.55;  // 从0.48提高到0.55
+      const swipeThreshold = 85;  // 从70提高到85
+      const velocityThreshold = 0.65;  // 从0.55提高到0.65
 
       // 只在条件满足且本次触摸未翻页时才翻页
       const shouldSwitchPage =
@@ -180,8 +180,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         effectiveVelocity >= velocityThreshold;
 
       if (shouldSwitchPage) {
-        // 节流检查：距离上次翻页至少800ms（进一步提高冷却时间）
-        if (touchEndTime - state.lastWheelTime < 800) return;
+        // 节流检查：距离上次翻页至少1000ms（进一步提高冷却时间）
+        if (touchEndTime - state.lastWheelTime < 1000) return;
         state.lastWheelTime = touchEndTime;
         state.hasSwitchedInThisTouch = true;  // 标记已翻页
 
