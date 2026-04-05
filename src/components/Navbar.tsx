@@ -30,14 +30,6 @@ export function Navbar() {
     setMobileMenuOpen(false);
   };
 
-  // 全局字体渲染样式（苹果官网标准）
-  const fontStyles = {
-    fontSmooth: 'always',
-    WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale',
-    textRendering: 'geometricPrecision'
-  } as const;
-
   return (
     <>
       {/* 左上角 Logo + 公司名称 - 优化布局 */}
@@ -60,7 +52,7 @@ export function Navbar() {
         {/* 公司名称 - 优化尺寸和宽度 */}
         <div className="flex flex-col justify-center">
           {/* 中文公司名 - 缩小字体 */}
-          <div className="text-[10px] font-bold text-white tracking-tight leading-tight mb-0.5 sm:text-sm lg:text-base select-none" style={fontStyles}>
+          <div className="text-[10px] font-bold text-white tracking-tight leading-tight mb-0.5 sm:text-sm lg:text-base select-none">
             创梦计算机系统有限公司
           </div>
 
@@ -68,7 +60,6 @@ export function Navbar() {
           <div
             className="text-[5px] sm:text-[8px] lg:text-[10px] text-white/70 font-medium uppercase select-none"
             style={{
-              ...fontStyles,
               letterSpacing: '0.18em'
             }}
           >
@@ -98,7 +89,6 @@ export function Navbar() {
                   ? 'bg-white text-black'
                   : 'text-white/70 hover:text-white hover:bg-white/10'
               }`}
-              style={fontStyles}
             >
               {item.label}
             </button>
@@ -139,7 +129,6 @@ export function Navbar() {
                   ? 'text-white scale-105'
                   : 'text-white/60 hover:text-white hover:scale-105'
               }`}
-              style={fontStyles}
             >
               {item.label}
             </button>

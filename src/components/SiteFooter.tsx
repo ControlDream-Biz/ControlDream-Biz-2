@@ -17,13 +17,6 @@ import {
   Zap,
 } from 'lucide-react';
 
-const textStyle = {
-  fontSmooth: 'always' as const,
-  WebkitFontSmoothing: 'antialiased' as const,
-  MozOsxFontSmoothing: 'grayscale' as const,
-  textRendering: 'geometricPrecision' as const,
-};
-
 interface LinkGroup {
   title: string;
   links: Array<{
@@ -140,7 +133,7 @@ export function SiteFooter() {
   };
 
   return (
-    <footer className="w-full bg-black border-t border-white/10" style={textStyle}>
+    <footer className="w-full bg-black border-t border-white/10">
       {/* 创新功能区域 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-16 sm:py-20 md:py-24">
         <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-8 sm:mb-10 md:mb-12 text-center">

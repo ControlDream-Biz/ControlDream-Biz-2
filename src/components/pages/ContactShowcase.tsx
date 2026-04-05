@@ -3,13 +3,6 @@
 import { useEffect, useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 
-const textStyle = {
-  fontSmooth: 'always' as const,
-  WebkitFontSmoothing: 'antialiased' as const,
-  MozOsxFontSmoothing: 'grayscale' as const,
-  textRendering: 'geometricPrecision' as const,
-};
-
 export function ContactShowcase() {
   const [mounted, setMounted] = useState(false);
   const [email, setEmail] = useState('');
@@ -52,13 +45,13 @@ export function ContactShowcase() {
             opacity: mounted ? 1 : 0,
             filter: mounted ? 'blur(0)' : 'blur(8px)',
             transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-            ...textStyle,
+            
           }}
         >
-          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-3 sm:mb-4 md:mb-6 tracking-tight leading-tight" style={textStyle}>
+          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-3 sm:mb-4 md:mb-6 tracking-tight leading-tight">
             联系我们
           </h2>
-          <p className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/60 font-light leading-relaxed" style={textStyle}>
+          <p className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/60 font-light leading-relaxed">
             探索合作机会，共创产品生态
           </p>
         </div>
@@ -72,7 +65,7 @@ export function ContactShowcase() {
               filter: mounted ? 'blur(0)' : 'blur(8px)',
               transitionDelay: '0.3s',
               transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-              ...textStyle,
+              
             }}
           >
             {/* 邮箱 */}
@@ -81,11 +74,11 @@ export function ContactShowcase() {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                   <Mail className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-blue-400" />
                 </div>
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white" style={textStyle}>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white">
                   电子邮箱
                 </h3>
               </div>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/60 font-medium pl-16 sm:pl-19 md:pl-22" style={textStyle}>
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/60 font-medium pl-16 sm:pl-19 md:pl-22">
                 contact@chuangmeng.com
               </p>
             </div>
@@ -96,11 +89,11 @@ export function ContactShowcase() {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                   <Phone className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-purple-400" />
                 </div>
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white" style={textStyle}>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white">
                   联系电话
                 </h3>
               </div>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/60 font-medium pl-16 sm:pl-19 md:pl-22" style={textStyle}>
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/60 font-medium pl-16 sm:pl-19 md:pl-22">
                 +86 400-XXX-XXXX
               </p>
             </div>
@@ -111,11 +104,11 @@ export function ContactShowcase() {
                 <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-red-500/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                   <MapPin className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-red-400" />
                 </div>
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white" style={textStyle}>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white">
                   公司地址
                 </h3>
               </div>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/60 font-medium leading-relaxed pl-16 sm:pl-19 md:pl-22" style={textStyle}>
+              <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/60 font-medium leading-relaxed pl-16 sm:pl-19 md:pl-22">
                 北京市朝阳区创新大厦 A座 1001室
               </p>
             </div>
@@ -129,10 +122,10 @@ export function ContactShowcase() {
               filter: mounted ? 'blur(0)' : 'blur(8px)',
               transitionDelay: '0.4s',
               transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-              ...textStyle,
+              
             }}
           >
-            <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-8 sm:mb-10" style={textStyle}>
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-8 sm:mb-10">
               发送消息
             </h3>
 
@@ -141,7 +134,7 @@ export function ContactShowcase() {
               <div>
                 <label
                   htmlFor="email"
-                  className="block text-sm sm:text-base md:text-lg text-white/60 font-medium mb-3 sm:mb-4" style={textStyle}
+                  className="block text-sm sm:text-base md:text-lg text-white/60 font-medium mb-3 sm:mb-4"
                 >
                   邮箱地址
                 </label>
@@ -153,7 +146,7 @@ export function ContactShowcase() {
                   required
                   placeholder="your@email.com"
                   className="w-full bg-transparent border-b-2 border-white/20 py-3 sm:py-4 text-white placeholder-white/30 focus:outline-none focus:border-white/40 transition-all duration-300 text-base sm:text-lg md:text-xl"
-                  style={textStyle}
+                 
                 />
               </div>
 
@@ -161,7 +154,7 @@ export function ContactShowcase() {
               <div>
                 <label
                   htmlFor="message"
-                  className="block text-sm sm:text-base md:text-lg text-white/60 font-medium mb-3 sm:mb-4" style={textStyle}
+                  className="block text-sm sm:text-base md:text-lg text-white/60 font-medium mb-3 sm:mb-4"
                 >
                   消息内容
                 </label>
@@ -173,7 +166,7 @@ export function ContactShowcase() {
                   rows={5}
                   placeholder="请输入您的消息..."
                   className="w-full bg-transparent border-b-2 border-white/20 py-3 sm:py-4 text-white placeholder-white/30 focus:outline-none focus:border-white/40 transition-all duration-300 resize-none text-base sm:text-lg md:text-xl"
-                  style={textStyle}
+                 
                 />
               </div>
 
@@ -182,7 +175,7 @@ export function ContactShowcase() {
                 type="submit"
                 disabled={isSubmitting}
                 className="w-full bg-white text-black py-4 sm:py-5 font-black text-lg sm:text-xl md:text-2xl hover:bg-white/90 transition-all duration-300 flex items-center justify-center space-x-3 sm:space-x-4 disabled:opacity-50 disabled:cursor-not-allowed"
-                style={textStyle}
+               
               >
                 {isSubmitting ? (
                   <>
@@ -208,10 +201,10 @@ export function ContactShowcase() {
             filter: mounted ? 'blur(0)' : 'blur(8px)',
             transitionDelay: '0.5s',
             transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-            ...textStyle,
+            
           }}
         >
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white/40 font-light" style={textStyle}>
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white/40 font-light">
             感谢关注，期待与您共同打造行业领先的自主产品
           </p>
         </div>

@@ -49,13 +49,6 @@ const areas = [
   },
 ];
 
-const textStyle = {
-  fontSmooth: 'always' as const,
-  WebkitFontSmoothing: 'antialiased' as const,
-  MozOsxFontSmoothing: 'grayscale' as const,
-  textRendering: 'geometricPrecision' as const,
-};
-
 export function EnvironmentShowcase() {
   const [mounted, setMounted] = useState(false);
 
@@ -82,13 +75,13 @@ export function EnvironmentShowcase() {
             opacity: mounted ? 1 : 0,
             filter: mounted ? 'blur(0)' : 'blur(8px)',
             transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-            ...textStyle,
+            
           }}
         >
-          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-3 sm:mb-4 md:mb-6 tracking-tight leading-tight" style={textStyle}>
+          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-3 sm:mb-4 md:mb-6 tracking-tight leading-tight">
             办公环境
           </h2>
-          <p className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/60 font-light leading-relaxed" style={textStyle}>
+          <p className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/60 font-light leading-relaxed">
             打造激发创新灵感的现代化办公空间
           </p>
         </div>
@@ -106,7 +99,7 @@ export function EnvironmentShowcase() {
                   filter: mounted ? 'blur(0)' : 'blur(8px)',
                   transitionDelay: `${0.3 + index * 0.1}s`,
                   transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-                  ...textStyle,
+                  
                 }}
               >
                 {/* 图片区域 */}
@@ -132,12 +125,12 @@ export function EnvironmentShowcase() {
                 </div>
 
                 {/* 标题 */}
-                <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white mb-3 sm:mb-4" style={textStyle}>
+                <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white mb-3 sm:mb-4">
                   {area.title}
                 </h3>
 
                 {/* 描述 */}
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 leading-relaxed flex-grow" style={textStyle}>
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 leading-relaxed flex-grow">
                   {area.description}
                 </p>
               </div>
@@ -153,10 +146,10 @@ export function EnvironmentShowcase() {
             filter: mounted ? 'blur(0)' : 'blur(8px)',
             transitionDelay: '0.8s',
             transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-            ...textStyle,
+            
           }}
         >
-          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white/40 font-light" style={textStyle}>
+          <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white/40 font-light">
             每个细节都为团队打造，每个空间都为创新而生
           </p>
         </div>

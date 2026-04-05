@@ -248,12 +248,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       {/* 苹果官网式的滚动提示 */}
       {currentPage < totalPages - 1 && (
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 text-white/50 pointer-events-none">
-          <span className="text-xs font-medium tracking-wider" style={{
-            fontSmooth: 'always',
-            WebkitFontSmoothing: 'antialiased',
-            MozOsxFontSmoothing: 'grayscale',
-            textRendering: 'geometricPrecision'
-          }}>
+          <span className="text-xs font-medium tracking-wider">
             向下滚动
           </span>
           <svg

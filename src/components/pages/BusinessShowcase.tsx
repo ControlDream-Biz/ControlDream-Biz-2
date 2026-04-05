@@ -40,13 +40,6 @@ const businesses = [
   },
 ];
 
-const textStyle = {
-  fontSmooth: 'always' as const,
-  WebkitFontSmoothing: 'antialiased' as const,
-  MozOsxFontSmoothing: 'grayscale' as const,
-  textRendering: 'geometricPrecision' as const,
-};
-
 export function BusinessShowcase() {
   const [mounted, setMounted] = useState(false);
 
@@ -73,13 +66,13 @@ export function BusinessShowcase() {
             opacity: mounted ? 1 : 0,
             filter: mounted ? 'blur(0)' : 'blur(8px)',
             transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-            ...textStyle,
+            
           }}
         >
-          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-3 sm:mb-4 md:mb-6 tracking-tight leading-tight" style={textStyle}>
+          <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-3 sm:mb-4 md:mb-6 tracking-tight leading-tight">
             自主产品矩阵
           </h2>
-          <p className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/60 font-light leading-relaxed" style={textStyle}>
+          <p className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/60 font-light leading-relaxed">
             以创新驱动，打造软硬一体化的自主产品生态
           </p>
         </div>
@@ -97,7 +90,7 @@ export function BusinessShowcase() {
                   filter: mounted ? 'blur(0)' : 'blur(8px)',
                   transitionDelay: `${0.3 + index * 0.2}s`,
                   transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-                  ...textStyle,
+                  
                 }}
               >
                 {/* 图片区域 */}
@@ -129,15 +122,15 @@ export function BusinessShowcase() {
                   </div>
 
                   {/* 标题 */}
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white" style={textStyle}>
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white">
                     {business.title}
                   </h3>
-                  <p className="text-sm sm:text-base md:text-lg text-white/50 font-medium tracking-wide" style={textStyle}>
+                  <p className="text-sm sm:text-base md:text-lg text-white/50 font-medium tracking-wide">
                     {business.subtitle}
                   </p>
 
                   {/* 描述 */}
-                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 leading-relaxed" style={textStyle}>
+                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 leading-relaxed">
                     {business.description}
                   </p>
 
@@ -147,7 +140,7 @@ export function BusinessShowcase() {
                       <span
                         key={i}
                         className="text-sm sm:text-base md:text-lg text-white/60 px-4 py-2 border border-white/20 inline-block"
-                        style={textStyle}
+                       
                       >
                         {feature}
                       </span>
@@ -158,11 +151,11 @@ export function BusinessShowcase() {
                   <div className="flex items-baseline space-x-3 sm:space-x-4 pt-4 sm:pt-6">
                     <span
                       className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black bg-gradient-to-r ${business.color} bg-clip-text text-transparent`}
-                      style={textStyle}
+                     
                     >
                       {business.stat}
                     </span>
-                    <span className="text-sm sm:text-base md:text-lg lg:text-xl text-white/50 font-medium" style={textStyle}>
+                    <span className="text-sm sm:text-base md:text-lg lg:text-xl text-white/50 font-medium">
                       {business.statLabel}
                     </span>
                   </div>
