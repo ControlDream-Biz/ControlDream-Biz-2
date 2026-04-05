@@ -49,10 +49,10 @@ export function ScrollProgress() {
 
   return (
     <div
-      className="fixed right-0 top-0 bottom-0 z-50 pr-2 flex items-center"
+      className="fixed right-0 top-0 bottom-0 z-50 pr-1 flex items-center"
     >
-      {/* 圆点列表（在屏幕中间区域内极限集中） */}
-      <div className="w-4 flex flex-col items-center gap-1">
+      {/* 圆点列表（极限紧靠，极限紧凑） */}
+      <div className="w-3 flex flex-col items-center gap-0.5">
         {pages.map((page, index) => {
           const isCurrent = index === currentPage;
 
@@ -81,8 +81,12 @@ export function ScrollProgress() {
               {/* 圆点 */}
               <button
                 onClick={() => scrollToSection(index)}
+                style={{
+                  width: '3px',
+                  height: '3px',
+                }}
                 className={`
-                  w-1 h-1 rounded-full transition-all duration-300
+                  rounded-full transition-all duration-300
                   ${isCurrent ? 'bg-white scale-150' : 'bg-white/40 hover:bg-white/60'}
                 `}
                 aria-label={`跳转到${page.label}`}
