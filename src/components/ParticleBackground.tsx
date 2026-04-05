@@ -54,31 +54,31 @@ function ultraRandomForceField(
   particleIndex: number,
   particle: Particle
 ): [number, number] {
-  // 1. 复杂噪声力场（主要驱动力）
+  // 1. 复杂噪声力场（主要驱动力，提高强度）
   const [nx, ny] = complexPerlinNoise(x, y, time);
-  const noiseFx = nx * 0.00008;
-  const noiseFy = ny * 0.00008;
+  const noiseFx = nx * 0.00016; // 提高2倍
+  const noiseFy = ny * 0.00016;
 
-  // 2. 多重布朗运动（随机游走，不同频率）
-  const brownian1x = (Math.random() - 0.5) * 0.00003;
-  const brownian1y = (Math.random() - 0.5) * 0.00003;
+  // 2. 多重布朗运动（随机游走，不同频率，提高强度）
+  const brownian1x = (Math.random() - 0.5) * 0.00006; // 提高2倍
+  const brownian1y = (Math.random() - 0.5) * 0.00006;
 
-  const brownian2x = (Math.random() - 0.5) * 0.00002;
-  const brownian2y = (Math.random() - 0.5) * 0.00002;
+  const brownian2x = (Math.random() - 0.5) * 0.00004; // 提高2倍
+  const brownian2y = (Math.random() - 0.5) * 0.00004;
 
-  // 3. 相位波动力场（基于粒子相位的周期性运动）
-  const phaseForceX = Math.cos(particle.phase + time * particle.frequency * 0.5) * particle.amplitude * 0.00002;
-  const phaseForceY = Math.sin(particle.phase + time * particle.frequency * 0.5) * particle.amplitude * 0.00002;
+  // 3. 相位波动力场（基于粒子相位的周期性运动，提高强度）
+  const phaseForceX = Math.cos(particle.phase + time * particle.frequency * 1.0) * particle.amplitude * 0.00004; // 提高2倍
+  const phaseForceY = Math.sin(particle.phase + time * particle.frequency * 1.0) * particle.amplitude * 0.00004;
 
-  // 4. 脉冲力场（周期性爆发）
-  const pulsePhase = (time * 0.3 + particleIndex * 0.15) % (Math.PI * 2);
-  const pulseStrength = Math.sin(pulsePhase) * Math.cos(pulsePhase * 1.5) * 0.00002;
+  // 4. 脉冲力场（周期性爆发，提高强度）
+  const pulsePhase = (time * 0.5 + particleIndex * 0.15) % (Math.PI * 2); // 提高频率
+  const pulseStrength = Math.sin(pulsePhase) * Math.cos(pulsePhase * 1.5) * 0.00004; // 提高2倍
   const pulseAngle = pulsePhase * 2 + particleIndex * 0.3;
   const pulseFx = Math.cos(pulseAngle) * pulseStrength;
   const pulseFy = Math.sin(pulseAngle) * pulseStrength;
 
-  // 5. 温度力场（模拟分子热运动）
-  const temperature = 0.000025; // 基础温度
+  // 5. 温度力场（模拟分子热运动，提高强度）
+  const temperature = 0.00005; // 提高2倍
   const thermalFx = (Math.random() - 0.5) * temperature;
   const thermalFy = (Math.random() - 0.5) * temperature;
 
@@ -89,36 +89,46 @@ function ultraRandomForceField(
 
   if (x < boundaryMargin) {
     const strength = (boundaryMargin - x) / boundaryMargin;
-    boundaryFx += strength * 0.00015;
+    boundaryFx += strength * 0.0003; // 提高2倍
   }
   if (x > width - boundaryMargin) {
     const strength = (x - (width - boundaryMargin)) / boundaryMargin;
-    boundaryFx -= strength * 0.00015;
+    boundaryFx -= strength * 0.0003;
   }
   if (y < boundaryMargin) {
     const strength = (boundaryMargin - y) / boundaryMargin;
-    boundaryFy += strength * 0.00015;
+    boundaryFy += strength * 0.0003;
   }
   if (y > height - boundaryMargin) {
     const strength = (y - (height - boundaryMargin)) / boundaryMargin;
-    boundaryFy -= strength * 0.00015;
+    boundaryFy -= strength * 0.0003;
   }
 
-  // 7. 漂移力场（全局缓慢漂移，避免完全静止）
-  const driftFx = particle.driftX * 0.00005;
-  const driftFy = particle.driftY * 0.00005;
+  // 7. 漂移力场（全局缓慢漂移，避免完全静止，提高强度）
+  const driftFx = particle.driftX * 0.0001; // 提高2倍
+  const driftFy = particle.driftY * 0.0001;
 
-  // 8. 湍流力场（局部涡流，不旋转整体）
-  const turbulenceScale = 0.008;
-  const turbulenceStrength = 0.00006;
-  const t1 = Math.sin(x * turbulenceScale + time * 0.4) * Math.cos(y * turbulenceScale + time * 0.35);
-  const t2 = Math.cos(x * turbulenceScale * 1.2 + time * 0.45) * Math.sin(y * turbulenceScale * 1.2 + time * 0.4);
+  // 8. 湍流力场（局部涡流，不旋转整体，提高强度）
+  const turbulenceScale = 0.016; // 提高2倍
+  const turbulenceStrength = 0.00012; // 提高2倍
+  const t1 = Math.sin(x * turbulenceScale + time * 0.8) * Math.cos(y * turbulenceScale + time * 0.7); // 提高频率
+  const t2 = Math.cos(x * turbulenceScale * 1.2 + time * 0.9) * Math.sin(y * turbulenceScale * 1.2 + time * 0.8);
   const turbulenceFx = t1 * turbulenceStrength;
   const turbulenceFy = t2 * turbulenceStrength;
 
+  // 9. 旋转力场（增加新的力场，提高复杂度）
+  const cx = width / 2;
+  const cy = height / 2;
+  const dx = x - cx;
+  const dy = y - cy;
+  const distToCenter = Math.sqrt(dx * dx + dy * dy);
+  const rotationStrength = 0.00008;
+  const rotationFx = -dy / (distToCenter + 1) * rotationStrength;
+  const rotationFy = dx / (distToCenter + 1) * rotationStrength;
+
   // 叠加所有力场
-  const fx = noiseFx + brownian1x + brownian2x + phaseForceX + pulseFx + thermalFx + boundaryFx + driftFx + turbulenceFx;
-  const fy = noiseFy + brownian1y + brownian2y + phaseForceY + pulseFy + thermalFy + boundaryFy + driftFy + turbulenceFy;
+  const fx = noiseFx + brownian1x + brownian2x + phaseForceX + pulseFx + thermalFx + boundaryFx + driftFx + turbulenceFx + rotationFx;
+  const fy = noiseFy + brownian1y + brownian2y + phaseForceY + pulseFy + thermalFy + boundaryFy + driftFy + turbulenceFy + rotationFy;
 
   return [fx, fy];
 }
@@ -139,8 +149,8 @@ export function ParticleBackground() {
     const height = window.innerHeight;
 
     const isMobile = width < 768;
-    const particleCount = isMobile ? 50 : 100; // 原有粒子数量
-    const fillBlankCount = 6; // 填补空白区域的粒子数
+    const particleCount = isMobile ? 80 : 150; // 增加粒子数量
+    const fillBlankCount = 10; // 增加填补空白区域的粒子数
 
     const newParticles: Particle[] = [];
 
@@ -271,20 +281,20 @@ export function ParticleBackground() {
           particle
         );
 
-        // 应用加速度（速度0.5倍）
-        particle.ax = fx * 0.25; // 减小加速度，速度0.5倍
-        particle.ay = fy * 0.25;
+        // 应用加速度（提高速度，拉满性能）
+        particle.ax = fx * 0.5; // 提高加速度
+        particle.ay = fy * 0.5;
 
         // 更新速度
         particle.vx += particle.ax;
         particle.vy += particle.ay;
 
-        // 速度阻尼（保持持续变换）
-        particle.vx *= 0.99; // 减小阻尼，保持动态变换
-        particle.vy *= 0.99;
+        // 速度阻尼（降低阻尼，保持更高速度）
+        particle.vx *= 0.999; // 降低阻尼
+        particle.vy *= 0.999;
 
-        // 速度限制（速度0.5倍）
-        const maxSpeed = isMobile ? 0.25 : 0.5; // 降低最大速度，速度0.5倍
+        // 速度限制（提高最大速度）
+        const maxSpeed = isMobile ? 0.5 : 1.0; // 提高最大速度
         const speed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
         if (speed > maxSpeed) {
           particle.vx = (particle.vx / speed) * maxSpeed;
@@ -305,8 +315,8 @@ export function ParticleBackground() {
           particle.cy = Math.max(0, Math.min(height, particle.cy));
         }
 
-        // 确保持续动态变换（最小速度0.5倍）
-        const minSpeed = isMobile ? 0.05 : 0.1; // 降低最小速度，速度0.5倍
+        // 确保持续动态变换（提高最小速度）
+        const minSpeed = isMobile ? 0.1 : 0.2; // 提高最小速度
         const currentSpeed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
         if (currentSpeed < minSpeed && currentSpeed > 0) {
           // 速度太小，按原方向加速到最小速度
@@ -319,11 +329,11 @@ export function ParticleBackground() {
           particle.vy = Math.sin(angle) * minSpeed;
         }
 
-        // 更新相位（用于相位力场）
-        particle.phase += particle.frequency * 0.016;
+        // 更新相位（用于相位力场，提高频率）
+        particle.phase += particle.frequency * 0.032; // 提高相位更新频率
 
-        // 闪烁效果（更慢）
-        particle.opacity += (Math.random() - 0.5) * 0.01;
+        // 闪烁效果（加快）
+        particle.opacity += (Math.random() - 0.5) * 0.02;
         particle.opacity = Math.max(isMobile ? 0.3 : 0.4, Math.min(isMobile ? 0.8 : 0.9, particle.opacity));
       });
 
@@ -350,6 +360,9 @@ export function ParticleBackground() {
                 stroke={`rgba(255, 255, 255, ${lineOpacity})`}
                 strokeWidth={isMobile ? 1.2 : 1.5}
                 strokeLinecap="round"
+                style={{
+                  filter: `drop-shadow(0 0 2px rgba(255,255,255,${lineOpacity * 0.5}))`,
+                }}
               />
             );
           }
@@ -393,6 +406,7 @@ export function ParticleBackground() {
           fill={`rgba(255, 255, 255, ${particle.opacity})`}
           style={{
             shapeRendering: 'geometricPrecision',
+            filter: `drop-shadow(0 0 ${particle.r * 1.5}px rgba(255,255,255,${particle.opacity * 0.5}))`,
           }}
         />
       ))}

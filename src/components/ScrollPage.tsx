@@ -21,21 +21,28 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
   let opacity = 1;
   const scale = 1;
 
+  // 动态偏移（基于拖动状态）
+  const dynamicOffset = isDragging ? dragOffset * (0.3 + Math.abs(dragOffset) / 10000) : 0;
+
   if (isDragging && dragOffset !== 0) {
     const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
     const progressCubic = progress * progress * (3 - 2 * progress);
 
+    // 增加计算复杂度
+    const progressQuartic = progress * progress * progress * progress;
+    const combinedProgress = progressCubic * 0.7 + progressQuartic * 0.3;
+
     if (isActive) {
-      transform = `translate3d(0, ${dragOffset * 0.3}px, 0) scale(${1 - progress * 0.01})`;
-      opacity = 1 - progressCubic * 0.2;
+      transform = `translate3d(0, ${dynamicOffset}px, 0) scale(${1 - combinedProgress * 0.02}) rotateX(${combinedProgress * 2}deg)`;
+      opacity = 1 - combinedProgress * 0.3;
     } else if (isNext && dragOffset < 0) {
       const startOffset = 50;
-      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.5}px, 0) scale(${1 - progress * 0.01})`;
-      opacity = progressCubic * 0.7;
+      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.6}px, 0) scale(${1 - combinedProgress * 0.02}) rotateX(-${combinedProgress * 1}deg)`;
+      opacity = combinedProgress * 0.8;
     } else if (isPrev && dragOffset > 0) {
       const startOffset = -50;
-      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.5}px, 0) scale(${1 - progress * 0.01})`;
-      opacity = progressCubic * 0.7;
+      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.6}px, 0) scale(${1 - combinedProgress * 0.02}) rotateX(${combinedProgress * 1}deg)`;
+      opacity = combinedProgress * 0.8;
     } else if (isPrev) {
       transform = `translate3d(0, -50vh, 0) scale(${scale})`;
       opacity = 0;
@@ -65,16 +72,23 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
         transform,
         transition: isDragging
           ? 'none'
-          : 'transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+          : 'transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
         zIndex: isActive ? 10 : 1,
-        willChange: isDragging ? 'transform, opacity' : 'transform, opacity',
-        backfaceVisibility: 'hidden' as const,
-        perspective: 1000,
-        contentVisibility: isActive ? 'visible' : 'auto' as const,
+        willChange: 'transform, opacity',
+        backfaceVisibility: 'visible' as const,
+        perspective: 2000,
+        contentVisibility: 'visible' as const,
+        transformStyle: 'preserve-3d' as const,
+        filter: isDragging ? 'brightness(1.05) contrast(1.02)' : 'none',
       }}
     >
-      <div className="w-full h-full overflow-y-auto scrollbar-hide">
-        <div className="w-full min-h-full px-4 py-8">
+      <div className="w-full h-full overflow-y-auto scrollbar-hide" style={{
+        filter: isActive ? 'drop-shadow(0 0 20px rgba(255,255,255,0.1))' : 'none',
+      }}>
+        <div className="w-full min-h-full px-4 py-8" style={{
+          transform: isActive ? 'scale(1.001)' : 'scale(1)',
+          transition: 'transform 0.3s ease-out',
+        }}>
           {React.isValidElement(children)
             ? (children as React.ReactElement<Record<string, unknown>>).props.isActive !== undefined
               ? React.cloneElement(children as ChildWithProps, {
