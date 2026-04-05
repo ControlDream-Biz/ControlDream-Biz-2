@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -36,62 +37,33 @@ export function Navbar() {
         onClick={() => scrollToSection('#home', 0)}
         className="fixed top-6 left-6 z-50 flex items-center gap-4 hover:opacity-90 transition-opacity cursor-pointer group select-none"
       >
-        {/* SVG Logo - 清晰矢量图 */}
-        <div className="relative w-16 h-16 flex-shrink-0 flex items-center justify-center">
-          <svg
-            viewBox="0 0 100 100"
-            className="w-full h-full"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* 外圆 */}
-            <circle
-              cx="50"
-              cy="50"
-              r="45"
-              fill="none"
-              stroke="white"
-              strokeWidth="2"
-              opacity="0.8"
-            />
-            {/* 内圆 */}
-            <circle
-              cx="50"
-              cy="50"
-              r="35"
-              fill="white"
-              fillOpacity="0.1"
-            />
-            {/* 文字 CM */}
-            <text
-              x="50"
-              y="50"
-              textAnchor="middle"
-              dominantBaseline="middle"
-              fill="white"
-              fontSize="32"
-              fontWeight="bold"
-              fontFamily="Arial, sans-serif"
-              style={{ fontSmooth: 'always' }}
-            >
-              CM
-            </text>
-            {/* 装饰点 */}
-            <circle cx="50" cy="80" r="3" fill="white" opacity="0.6" />
-          </svg>
+        {/* 使用原始LOGO图片 */}
+        <div className="relative w-16 h-16 flex-shrink-0">
+          <Image
+            src="/logo-cm-final-clean.png"
+            alt="创梦计算机系统有限公司"
+            fill
+            className="object-contain"
+            sizes="(max-width: 768px) 64px, 64px"
+            priority
+          />
         </div>
         <div className="hidden md:flex flex-col justify-center">
+          {/* 使用SVG渲染中文公司名 */}
           <div className="text-xl font-bold text-white tracking-tight leading-none mb-1 select-none" style={{
             fontSmooth: 'always',
             WebkitFontSmoothing: 'antialiased',
-            MozOsxFontSmoothing: 'grayscale'
+            MozOsxFontSmoothing: 'grayscale',
+            textRendering: 'geometricPrecision'
           }}>
             创梦计算机系统有限公司
           </div>
+          {/* 使用SVG渲染英文副标题 */}
           <div className="text-xs text-white/60 font-medium tracking-widest uppercase select-none" style={{
             fontSmooth: 'always',
             WebkitFontSmoothing: 'antialiased',
-            MozOsxFontSmoothing: 'grayscale'
+            MozOsxFontSmoothing: 'grayscale',
+            textRendering: 'geometricPrecision'
           }}>
             CHUANGMENG COMPUTER SYSTEM
           </div>
@@ -117,7 +89,8 @@ export function Navbar() {
               style={{
                 fontSmooth: 'always',
                 WebkitFontSmoothing: 'antialiased',
-                MozOsxFontSmoothing: 'grayscale'
+                MozOsxFontSmoothing: 'grayscale',
+                textRendering: 'geometricPrecision'
               }}
             >
               {item.label}
@@ -162,7 +135,8 @@ export function Navbar() {
               style={{
                 fontSmooth: 'always',
                 WebkitFontSmoothing: 'antialiased',
-                MozOsxFontSmoothing: 'grayscale'
+                MozOsxFontSmoothing: 'grayscale',
+                textRendering: 'geometricPrecision'
               }}
             >
               {item.label}

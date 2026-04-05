@@ -2,6 +2,13 @@
 
 import { useEffect, useState } from 'react';
 
+const textStyle = {
+  fontSmooth: 'always' as const,
+  WebkitFontSmoothing: 'antialiased' as const,
+  MozOsxFontSmoothing: 'grayscale' as const,
+  textRendering: 'geometricPrecision' as const,
+};
+
 export function HomeHero() {
   const [mounted, setMounted] = useState(false);
 
@@ -27,15 +34,16 @@ export function HomeHero() {
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+            ...textStyle,
           }}
         >
-          <h2 className="text-4xl md:text-6xl lg:text-8xl font-black text-white leading-tight mb-4">
+          <h2 className="text-4xl md:text-6xl lg:text-8xl font-black text-white leading-tight mb-4" style={textStyle}>
             自主游戏
           </h2>
-          <h2 className="text-4xl md:text-6xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-red-400 leading-tight mb-4">
+          <h2 className="text-4xl md:text-6xl lg:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-red-400 leading-tight mb-4" style={textStyle}>
             独立软件
           </h2>
-          <h2 className="text-4xl md:text-6xl lg:text-8xl font-black text-white leading-tight">
+          <h2 className="text-4xl md:text-6xl lg:text-8xl font-black text-white leading-tight" style={textStyle}>
             智能硬件
           </h2>
         </div>
@@ -48,6 +56,7 @@ export function HomeHero() {
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transitionDelay: '0.2s',
             transition: 'all 1000ms ease-out',
+            ...textStyle,
           }}
         >
           在游戏、软件、硬件领域持续投入，用心做好每一款产品
@@ -61,6 +70,7 @@ export function HomeHero() {
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transitionDelay: '0.4s',
             transition: 'all 1000ms ease-out',
+            ...textStyle,
           }}
         >
           {[
@@ -78,10 +88,11 @@ export function HomeHero() {
                     ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400'
                     : 'text-white'
                 }`}
+                style={textStyle}
               >
                 {item.value}
               </div>
-              <p className="text-sm md:text-base text-white/50 font-medium group-hover:text-white/70 transition-colors">
+              <p className="text-sm md:text-base text-white/50 font-medium group-hover:text-white/70 transition-colors" style={textStyle}>
                 {item.label}
               </p>
             </div>
