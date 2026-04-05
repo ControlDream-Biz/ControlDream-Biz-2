@@ -777,7 +777,7 @@ div[data-scroll-animate] {
   animation: breathing 4s ease-in-out infinite;
 }
 
-/* 波浪抖动动画 - 不规则上下抖动 */
+/* 波浪抖动动画 - 不规则上下抖动 - 极缓版本 */
 @keyframes waveBounce {
   0%, 100% {
     transform: translateY(0);
@@ -796,21 +796,21 @@ div[data-scroll-animate] {
   }
 }
 
-/* 三行波浪动画 - 第一行：延迟 0s */
+/* 三行波浪动画 - 第一行：延迟 0s，周期 10s */
 .animate-wave-1 {
-  animation: waveBounce 3.5s ease-in-out infinite;
+  animation: waveBounce 10s ease-in-out infinite;
 }
 
-/* 三行波浪动画 - 第二行：延迟 0.4s */
+/* 三行波浪动画 - 第二行：延迟 1.2s，周期 10s */
 .animate-wave-2 {
-  animation: waveBounce 3.5s ease-in-out infinite;
-  animation-delay: 0.4s;
+  animation: waveBounce 10s ease-in-out infinite;
+  animation-delay: 1.2s;
 }
 
-/* 三行波浪动画 - 第三行：延迟 0.8s */
+/* 三行波浪动画 - 第三行：延迟 2.4s，周期 10s */
 .animate-wave-3 {
-  animation: waveBounce 3.5s ease-in-out infinite;
-  animation-delay: 0.8s;
+  animation: waveBounce 10s ease-in-out infinite;
+  animation-delay: 2.4s;
 }
 
 /* 分字符动画 */
