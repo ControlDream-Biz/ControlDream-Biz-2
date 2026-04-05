@@ -376,7 +376,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
   return (
     <div
-      className="fixed inset-0 overflow-hidden bg-black"
+      className="fixed inset-0 overflow-hidden"
       style={{
         // 强制GPU加速，支持120Hz+高刷新率
         transform: 'translateZ(0)',

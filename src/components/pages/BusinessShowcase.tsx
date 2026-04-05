@@ -124,7 +124,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
 
   return (
-    <div className="relative w-full bg-black overflow-hidden">
+    <div className="relative w-full overflow-hidden">
       {/* 背景光晕 */}
       <div
         className="absolute inset-0 transition-opacity duration-1000 ease-out"

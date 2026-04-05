@@ -42,9 +42,9 @@ function forceField(x: number, y: number, width: number, height: number, time: n
   const fx2 = -dx * gravityForce;
   const fy2 = -dy * gravityForce;
 
-  // 3. 斥力场（保持）
+  // 3. 斥力场（增强，让粒子更分散）
   const distance = Math.sqrt(dx * dx + dy * dy);
-  const repulsionForce = distance < 200 ? 0.0002 * (200 - distance) / 200 : 0;
+  const repulsionForce = distance < 400 ? 0.0003 * (400 - distance) / 400 : 0; // 从200增加到400，让粒子间隔更大
   const fx3 = dx * repulsionForce;
   const fy3 = dy * repulsionForce;
 
@@ -251,7 +251,7 @@ export function ParticleBackground() {
   return (
     <svg
       ref={svgRef}
-      className="absolute inset-0 pointer-events-none"
+      className="fixed inset-0 pointer-events-none"
       style={{
         zIndex: 15,
         width: '100%',
