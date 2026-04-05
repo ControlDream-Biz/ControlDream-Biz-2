@@ -76,6 +76,8 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
   // 首次加载和页面切换时触发小字动画
   useEffect(() => {
+    console.log(`BusinessShowcase useEffect 触发: isActive=${isActive}, pageIndex=${pageIndex}`);
+
     // 清除之前的动画定时器
     if (animationTimerRef.current) {
       clearTimeout(animationTimerRef.current);
@@ -86,28 +88,32 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
     // 延迟后触发小字动画（等待页面完全渲染）
     animationTimerRef.current = setTimeout(() => {
-      // 查找所有小字元素
-      const smallTextItems = document.querySelectorAll('[data-small-text]');
+      // 查找当前页面的小字元素（使用 data-page-index 过滤）
+      const selector = `[data-small-text][data-page-index="${pageIndex}"]`;
+      const smallTextItems = document.querySelectorAll(selector);
+      console.log(`找到 ${smallTextItems.length} 个小字元素 (pageIndex=${pageIndex}, selector=${selector})`);
       smallTextItems.forEach((item, index) => {
         const itemEl = item as HTMLElement;
+        console.log(`处理第 ${index} 个小字元素`);
         // 重置初始状态
         itemEl.style.opacity = '0';
         itemEl.style.transform = 'translateX(2.5rem)';
         // 依次触发动画
         setTimeout(() => {
+          console.log(`触发第 ${index} 个小字动画`);
           itemEl.style.opacity = '1';
           itemEl.style.transform = 'translateX(0)';
         }, 400 + index * 200); // 400ms 后开始，每个间隔 200ms
       });
       animationTimerRef.current = null;
-    }, 100);
+    }, 200); // 增加延迟时间，确保页面完全渲染
 
     return () => {
       if (animationTimerRef.current) {
         clearTimeout(animationTimerRef.current);
       }
     };
-  }, [isActive]); // 监听isActive变化，页面切换时重新触发
+  }, [isActive, pageIndex]); // 监听isActive和pageIndex变化，页面切换时重新触发
 
   // 计算滑动淡入效果 - 小字随滑动产生淡入动画
   const getSlideFadeOpacity = (itemIndex: number) => {
@@ -251,6 +257,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
                           key={`${index}-${i}`}
                           className="flex items-start space-x-2 sm:space-x-3 transition-all duration-700 ease-out"
                           data-small-text
+                          data-page-index={pageIndex}
                           style={{
                             opacity: 0,
                             transform: 'translateX(2.5rem)',
