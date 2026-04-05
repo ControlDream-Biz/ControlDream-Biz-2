@@ -96,13 +96,14 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Mobile Menu Button - 变成两条垂直并排线条 */}
+        {/* Mobile Menu Button - 顶级炫酷动画 */}
         <button
           onClick={(e) => {
             e.stopPropagation();
             setMobileMenuOpen(!mobileMenuOpen);
           }}
-          className="lg:hidden liquid-glass-menu-btn w-12 h-12 sm:w-12 sm:h-12"
+          className="lg:hidden liquid-glass-menu-btn w-12 h-12 sm:w-12 sm:h-12 overflow-visible"
+          style={{ perspective: '1000px' }}
         >
           <svg
             width="24"
@@ -116,40 +117,83 @@ export function Navbar() {
             className="text-white"
             style={{ width: '20px', height: '20px' }}
           >
-            {/* 上横杠 - 变成左边竖线 */}
+            <defs>
+              <linearGradient id="menuGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
+                <stop offset="100%" stopColor="#a855f7" stopOpacity={mobileMenuOpen ? 1 : 0} />
+              </linearGradient>
+            </defs>
+
+            {/* 上横杠 - 变成左边竖线（带旋转和缩放） */}
             <line
               x1={mobileMenuOpen ? 6 : 4}
               y1={mobileMenuOpen ? 6 : 6}
               x2={mobileMenuOpen ? 6 : 20}
               y2={mobileMenuOpen ? 18 : 6}
+              stroke={mobileMenuOpen ? 'url(#menuGradient)' : 'currentColor'}
               style={{
-                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                transition: 'all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                transform: mobileMenuOpen
+                  ? 'rotate(-15deg) scale(1.1)'
+                  : 'rotate(0deg) scale(1)',
+                transformOrigin: '6px 12px',
+                filter: mobileMenuOpen
+                  ? 'drop-shadow(0 0 8px rgba(168, 85, 247, 0.8))'
+                  : 'none',
               }}
             />
 
-            {/* 中横杠 - 变成右边竖线 */}
+            {/* 中横杠 - 变成右边竖线（带反向旋转） */}
             <line
               x1={mobileMenuOpen ? 18 : 4}
               y1={mobileMenuOpen ? 6 : 12}
               x2={mobileMenuOpen ? 18 : 20}
               y2={mobileMenuOpen ? 18 : 12}
+              stroke={mobileMenuOpen ? 'url(#menuGradient)' : 'currentColor'}
               style={{
-                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.05s',
+                transition: 'all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.08s',
+                transform: mobileMenuOpen
+                  ? 'rotate(15deg) scale(1.1)'
+                  : 'rotate(0deg) scale(1)',
+                transformOrigin: '18px 12px',
+                filter: mobileMenuOpen
+                  ? 'drop-shadow(0 0 8px rgba(168, 85, 247, 0.8))'
+                  : 'none',
               }}
             />
 
-            {/* 下横杠 - 变成第二条竖线的一部分（或消失） */}
+            {/* 下横杠 - 螺旋消失动画 */}
             <line
-              x1={mobileMenuOpen ? 6 : 4}
-              y1={mobileMenuOpen ? 12 : 18}
-              x2={mobileMenuOpen ? 6 : 20}
-              y2={mobileMenuOpen ? 12 : 18}
+              x1="4"
+              y1="18"
+              x2="20"
+              y2="18"
+              stroke={mobileMenuOpen ? 'url(#menuGradient)' : 'currentColor'}
               style={{
-                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1) 0.1s',
+                transition: 'all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.16s',
                 opacity: mobileMenuOpen ? 0 : 1,
-                transform: mobileMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
+                transform: mobileMenuOpen
+                  ? 'scaleX(0.3) translateY(-6px) rotate(45deg)'
+                  : 'scaleX(1) translateY(0) rotate(0deg)',
+                transformOrigin: '12px 18px',
+                filter: mobileMenuOpen
+                  ? 'drop-shadow(0 0 8px rgba(168, 85, 247, 0.8))'
+                  : 'none',
               }}
             />
+
+            {/* 添加光晕圆环效果 */}
+            {mobileMenuOpen && (
+              <circle
+                cx="12"
+                cy="12"
+                r="20"
+                fill="none"
+                stroke="url(#menuGradient)"
+                strokeWidth="1"
+                className="menu-pulse-ring"
+              />
+            )}
           </svg>
         </button>
       </nav>
