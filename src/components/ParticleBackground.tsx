@@ -139,7 +139,7 @@ export function ParticleBackground() {
     const height = window.innerHeight;
 
     const isMobile = width < 768;
-    const particleCount = isMobile ? 50 : 100; // 第一版
+    const particleCount = isMobile ? 40 : 80; // 减少粒子数量，线条更少
 
     const newParticles: Particle[] = [];
 
@@ -193,9 +193,9 @@ export function ParticleBackground() {
           particle
         );
 
-        // 应用加速度（增强动态变换）
-        particle.ax = fx * 0.5; // 增大加速度，变换更明显
-        particle.ay = fy * 0.5;
+        // 应用加速度（速度0.5倍）
+        particle.ax = fx * 0.25; // 减小加速度，速度0.5倍
+        particle.ay = fy * 0.25;
 
         // 更新速度
         particle.vx += particle.ax;
@@ -205,8 +205,8 @@ export function ParticleBackground() {
         particle.vx *= 0.99; // 减小阻尼，保持动态变换
         particle.vy *= 0.99;
 
-        // 速度限制（保持动态变换）
-        const maxSpeed = isMobile ? 0.5 : 1.0; // 适中速度，保持持续变换
+        // 速度限制（速度0.5倍）
+        const maxSpeed = isMobile ? 0.25 : 0.5; // 降低最大速度，速度0.5倍
         const speed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
         if (speed > maxSpeed) {
           particle.vx = (particle.vx / speed) * maxSpeed;
@@ -227,8 +227,8 @@ export function ParticleBackground() {
           particle.cy = Math.max(0, Math.min(height, particle.cy));
         }
 
-        // 确保持续动态变换（最小速度）
-        const minSpeed = isMobile ? 0.1 : 0.2;
+        // 确保持续动态变换（最小速度0.5倍）
+        const minSpeed = isMobile ? 0.05 : 0.1; // 降低最小速度，速度0.5倍
         const currentSpeed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
         if (currentSpeed < minSpeed && currentSpeed > 0) {
           // 速度太小，按原方向加速到最小速度
@@ -249,8 +249,8 @@ export function ParticleBackground() {
         particle.opacity = Math.max(isMobile ? 0.3 : 0.4, Math.min(isMobile ? 0.8 : 0.9, particle.opacity));
       });
 
-      // 第一版连接距离
-      const connectionDistance = isMobile ? 150 : 200;
+      // 增大连线距离，线条更少
+      const connectionDistance = isMobile ? 180 : 230;
 
       const connectionElements: JSX.Element[] = [];
       // 移除移动端粒子数量限制，所有设备都显示线条
