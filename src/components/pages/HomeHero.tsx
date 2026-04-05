@@ -41,7 +41,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
                 display: 'inline-block',
-                filter: 'drop-shadow(0 0 20px rgba(239, 68, 68, 0.4)) drop-shadow(0 2px 12px rgba(220, 38, 38, 0.25))',
+                textShadow: '0 0 1px rgba(239, 68, 68, 0.1), 0 0 2px rgba(239, 68, 68, 0.15), 0 0 3px rgba(239, 68, 68, 0.15), 0 0 5px rgba(239, 68, 68, 0.2), 0 0 8px rgba(239, 68, 68, 0.2), 0 0 12px rgba(239, 68, 68, 0.2), 0 0 18px rgba(239, 68, 68, 0.15), 0 0 25px rgba(239, 68, 68, 0.1)',
                 letterSpacing: '-0.02em',
                 // 优化渐变文字渲染
                 textRendering: 'geometricPrecision',
@@ -75,7 +75,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
                 display: 'inline-block',
-                filter: 'drop-shadow(0 0 20px rgba(99, 102, 241, 0.4)) drop-shadow(0 2px 12px rgba(139, 92, 246, 0.25))',
+                textShadow: '0 0 1px rgba(99, 102, 241, 0.1), 0 0 2px rgba(99, 102, 241, 0.15), 0 0 3px rgba(99, 102, 241, 0.15), 0 0 5px rgba(99, 102, 241, 0.2), 0 0 8px rgba(99, 102, 241, 0.2), 0 0 12px rgba(139, 92, 246, 0.2), 0 0 18px rgba(139, 92, 246, 0.15), 0 0 25px rgba(139, 92, 246, 0.1)',
                 letterSpacing: '-0.02em',
                 // 优化渐变文字渲染
                 textRendering: 'geometricPrecision',
@@ -109,7 +109,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
                 display: 'inline-block',
-                filter: 'drop-shadow(0 0 20px rgba(6, 182, 212, 0.4)) drop-shadow(0 2px 12px rgba(59, 130, 246, 0.25))',
+                textShadow: '0 0 1px rgba(6, 182, 212, 0.1), 0 0 2px rgba(6, 182, 212, 0.15), 0 0 3px rgba(6, 182, 212, 0.15), 0 0 5px rgba(6, 182, 212, 0.2), 0 0 8px rgba(6, 182, 212, 0.2), 0 0 12px rgba(59, 130, 246, 0.2), 0 0 18px rgba(59, 130, 246, 0.15), 0 0 25px rgba(59, 130, 246, 0.1)',
                 letterSpacing: '-0.02em',
                 // 优化渐变文字渲染
                 textRendering: 'geometricPrecision',
