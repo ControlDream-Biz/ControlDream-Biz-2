@@ -703,3 +703,25 @@ input, textarea {
   animation: pulse-dot 1s ease-in-out infinite;
 }
 
+/* 背景脉冲动画 */
+@keyframes bg-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.15;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.25;
+  }
+}
+
+/* 轨道旋转动画 */
+@keyframes orbit-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
