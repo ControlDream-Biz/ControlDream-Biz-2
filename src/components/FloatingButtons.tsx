@@ -24,8 +24,8 @@ export function BackgroundMusic() {
   const volumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const hasAttemptedAutoPlay = useRef(false);
 
-  // 只在合作应聘页面（index 6）显示播放按钮和播放音乐
-  const isMusicPage = currentPage === 6;
+  // 只在首页（index 0）显示播放按钮和播放音乐
+  const isMusicPage = currentPage === 0;
 
   const startVolumeHideTimer = () => {
     if (volumeTimeoutRef.current) {
@@ -51,9 +51,9 @@ export function BackgroundMusic() {
     const handlePageChange = (e: CustomEvent<{ pageIndex: number }>) => {
       setCurrentPage(e.detail.pageIndex);
 
-      // 如果离开合作应聘页面，停止播放
+      // 如果离开首页，停止播放
       const audio = audioRef.current;
-      if (audio && e.detail.pageIndex !== 6) {
+      if (audio && e.detail.pageIndex !== 0) {
         audio.pause();
         audio.currentTime = 0;
         setIsPlaying(false);

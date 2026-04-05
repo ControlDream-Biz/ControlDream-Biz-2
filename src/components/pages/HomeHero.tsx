@@ -6,6 +6,17 @@ interface HomeHeroProps {
   isActive?: boolean;
 }
 
+// 手机震动工具函数
+function triggerVibration() {
+  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    try {
+      navigator.vibrate(50);
+    } catch (error) {
+      // 忽略错误
+    }
+  }
+}
+
 // 使用React.memo优化性能，避免不必要的重渲染
 export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProps) {
   const [mounted, setMounted] = useState(false);
@@ -14,6 +25,14 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // 处理合作应聘按钮点击
+  const handleCareersClick = () => {
+    triggerVibration();
+    // 可以跳转到联系我们页面或弹出一个模态框
+    const event = new CustomEvent('jump-to-page', { detail: { pageIndex: 5 } });
+    window.dispatchEvent(event);
+  };
 
   return (
     <>
@@ -179,6 +198,77 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
               </p>
             </div>
           ))}
+        </div>
+
+        {/* 合作应聘按钮 */}
+        <div
+          className="mt-8 sm:mt-10 md:mt-12 lg:mt-16"
+          style={{
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+            transition: 'all 1000ms ease-out 0.6s',
+          }}
+        >
+          <button
+            onClick={handleCareersClick}
+            className="relative px-6 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5 rounded-2xl overflow-hidden group cursor-pointer liquid-glass-button"
+            style={{
+              background: 'rgba(255, 255, 255, 0.05)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(255, 255, 255, 0.15)',
+              boxShadow: '0 4px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+              transition: 'all 0.3s ease',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.25)';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+              e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.15)';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)';
+            }}
+          >
+            <div className="relative z-10 flex items-center gap-2 sm:gap-3">
+              <span
+                className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-white"
+                style={{
+                  letterSpacing: '0.15em',
+                  textShadow: '0 0 20px rgba(255, 255, 255, 0.3)',
+                }}
+              >
+                合作应聘
+              </span>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="text-white group-hover:translate-x-1 transition-transform duration-300"
+                style={{
+                  filter: 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.5))',
+                }}
+              >
+                <path d="M5 12h14" />
+                <path d="M12 5l7 7-7 7" />
+              </svg>
+            </div>
+            {/* 按钮光晕效果 */}
+            <div
+              className="absolute inset-0 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+              style={{
+                filter: 'blur(20px)',
+              }}
+            />
+          </button>
         </div>
       </div>
       </div>

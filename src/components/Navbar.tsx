@@ -26,7 +26,6 @@ export function Navbar() {
     { label: '关于我们', href: '#about', index: 3 },
     { label: '企业文化', href: '#culture', index: 4 },
     { label: '联系我们', href: '#contact', index: 5 },
-    { label: '合作应聘', href: '#careers', index: 6 },
   ];
 
   useEffect(() => {
