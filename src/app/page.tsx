@@ -6,7 +6,6 @@ import { BusinessShowcase } from '@/components/pages/BusinessShowcase';
 import { EnvironmentShowcase } from '@/components/pages/EnvironmentShowcase';
 import { ContactShowcase } from '@/components/pages/ContactShowcase';
 import { Navbar } from '@/components/Navbar';
-import { ParticleBackground } from '@/components/ParticleBackground';
 
 export default function Page() {
   const pages = [
@@ -18,7 +17,6 @@ export default function Page() {
 
   return (
     <>
-      <ParticleBackground />
       <Navbar />
       <ScrollContainer>{pages}</ScrollContainer>
     </>
