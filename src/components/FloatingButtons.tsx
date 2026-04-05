@@ -14,6 +14,120 @@ function triggerVibration() {
   }
 }
 
+// 背景音乐组件
+export function BackgroundMusic() {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(0.3);
+
+  useEffect(() => {
+    // 页面加载后尝试自动播放
+    const audio = audioRef.current;
+    if (audio) {
+      // 尝试自动播放
+      const attemptPlay = async () => {
+        try {
+          await audio.play();
+          setIsPlaying(true);
+        } catch (error) {
+          // 自动播放被阻止，等待用户交互
+          console.log('自动播放被阻止，等待用户交互');
+        }
+      };
+
+      attemptPlay();
+
+      // 监听播放状态
+      const handlePlay = () => setIsPlaying(true);
+      const handlePause = () => setIsPlaying(false);
+
+      audio.addEventListener('play', handlePlay);
+      audio.addEventListener('pause', handlePause);
+
+      return () => {
+        audio.removeEventListener('play', handlePlay);
+        audio.removeEventListener('pause', handlePause);
+      };
+    }
+  }, []);
+
+  const togglePlay = () => {
+    const audio = audioRef.current;
+    if (audio) {
+      triggerVibration();
+      if (isPlaying) {
+        audio.pause();
+      } else {
+        audio.play();
+      }
+    }
+  };
+
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const audio = audioRef.current;
+    if (audio) {
+      const newVolume = parseFloat(e.target.value);
+      audio.volume = newVolume;
+      setVolume(newVolume);
+    }
+  };
+
+  return (
+    <>
+      <audio
+        ref={audioRef}
+        loop
+        style={{ display: 'none' }}
+      >
+        <source src="/music/forever-friends.mp3" type="audio/mpeg" />
+      </audio>
+
+      {/* 音乐控制按钮 */}
+      <button
+        onClick={togglePlay}
+        className="fixed top-24 right-4 z-50 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-all duration-300"
+        style={{
+          pointerEvents: 'auto',
+        }}
+      >
+        {isPlaying ? (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <rect x="6" y="4" width="4" height="16" rx="1" />
+            <rect x="14" y="4" width="4" height="16" rx="1" />
+          </svg>
+        ) : (
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5v14l11-7z" />
+          </svg>
+        )}
+      </button>
+
+      {/* 音量控制（悬停显示） */}
+      <div
+        className="fixed top-36 right-4 z-50 flex flex-col items-center gap-2 transition-all duration-300"
+        style={{
+          opacity: isPlaying ? 1 : 0,
+          pointerEvents: isPlaying ? 'auto' : 'none',
+        }}
+      >
+        <input
+          type="range"
+          min="0"
+          max="1"
+          step="0.1"
+          value={volume}
+          onChange={handleVolumeChange}
+          className="w-1 h-20 appearance-none bg-white/20 rounded-full cursor-pointer hover:bg-white/30 transition-all"
+          style={{
+            writingMode: 'vertical-lr',
+            direction: 'rtl',
+          }}
+        />
+      </div>
+    </>
+  );
+}
+
 export default function FloatingButtons() {
   const [isCustomerServiceOpen, setIsCustomerServiceOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
