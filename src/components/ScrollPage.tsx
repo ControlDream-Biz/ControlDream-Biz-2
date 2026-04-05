@@ -73,6 +73,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     touchStartTime: 0,
     velocity: 0,
     lastScrollY: 0,
+    isTouchActive: false,  // 标记触摸是否活跃
+    hasSwitchedInThisTouch: false,  // 标记本次触摸是否已经翻页
   });
 
   const handlePageChange = useCallback((newPage: number) => {
@@ -116,12 +118,14 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    // 苹果官网式的触摸处理逻辑 - 灵敏度优化
+    // 苹果官网式的触摸处理逻辑 - 防止连续多次翻页
     const handleTouchStart = (e: TouchEvent) => {
       state.touchStartY = e.touches[0].clientY;
       state.touchStartTime = performance.now();
       state.velocity = 0;
       state.isScrolling = false;
+      state.isTouchActive = true;
+      state.hasSwitchedInThisTouch = false;  // 重置翻页标志
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -138,8 +142,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.velocity = velocity;
       }
 
-      // 优化：在明显的快速滑动时阻止默认行为（速度 > 0.5 且 距离 > 40px）
-      // 让快速滑动更容易被识别
+      // 在明显的快速滑动时阻止默认行为（速度 > 0.5 且 距离 > 40px）
       if (absDeltaY > 40 && velocity > 0.5 && e.cancelable) {
         e.preventDefault();
         e.stopPropagation();
@@ -161,26 +164,25 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 使用最大速度和最终速度的较大值
       const effectiveVelocity = Math.max(velocity, state.velocity);
 
-      // 优化翻页条件，降低阈值让翻页更灵敏：
-      // 1. 滑动时间：100ms-1200ms（扩大范围）
-      // 2. 滑动距离：>= 60px（降低）
-      // 3. 速度：>= 0.5px/ms（降低）
+      // 翻页条件
       const minSwipeTime = 100;
       const maxSwipeTime = 1200;
       const swipeThreshold = 60;
       const velocityThreshold = 0.5;
 
-      // 只在条件满足时才翻页
+      // 只在条件满足且本次触摸未翻页时才翻页
       const shouldSwitchPage =
+        !state.hasSwitchedInThisTouch &&  // 本次触摸未翻页
         deltaTime >= minSwipeTime &&
         deltaTime <= maxSwipeTime &&
         absDeltaY >= swipeThreshold &&
         effectiveVelocity >= velocityThreshold;
 
       if (shouldSwitchPage) {
-        // 节流时间保持600ms，防止连续翻页
-        if (touchEndTime - state.lastWheelTime < 600) return;
+        // 节流检查：距离上次翻页至少800ms
+        if (touchEndTime - state.lastWheelTime < 800) return;
         state.lastWheelTime = touchEndTime;
+        state.hasSwitchedInThisTouch = true;  // 标记已翻页
 
         // 检查是否可以翻页
         if (deltaY > 0) {
@@ -201,6 +203,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.touchStartY = 0;
       state.touchStartTime = 0;
       state.velocity = 0;
+      state.isTouchActive = false;
     };
 
     // 苹果官网式的键盘导航
