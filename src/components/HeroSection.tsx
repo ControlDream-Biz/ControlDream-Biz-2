@@ -53,7 +53,8 @@ export default function HeroSection() {
             background: `radial-gradient(
               circle at ${50 + mousePosition.x * 20}% ${50 + mousePosition.y * 20}%,
               rgba(220, 38, 38, 0.12) 0%,
-              rgba(30, 58, 138, 0.08) 30%,
+              rgba(99, 102, 241, 0.1) 30%,
+              rgba(139, 92, 246, 0.08) 45%,
               transparent 60%
             )`,
             transition: 'background 0.3s ease-out',
@@ -115,7 +116,7 @@ export default function HeroSection() {
                 <Button
                   className="h-12 px-8 text-sm font-bold rounded-lg hover:shadow-lg transition-all duration-200 ripple-effect magnetic-btn"
                   style={{
-                    background: "linear-gradient(135deg, #DC2626 0%, #EF4444 100%)",
+                    background: "linear-gradient(135deg, #DC2626 0%, #EF4444 50%, #8B5CF6 100%)",
                     border: "2px solid rgba(255, 255, 255, 0.3)",
                     color: "white",
                     minWidth: "120px",
@@ -178,10 +179,10 @@ export default function HeroSection() {
               <div
                 className="relative rounded-2xl overflow-hidden shadow-2xl transition-all duration-700 ease-out"
                 style={{
-                  background: "linear-gradient(135deg, rgba(220, 38, 38, 0.95) 0%, rgba(239, 68, 68, 0.85) 100%)",
+                  background: "linear-gradient(135deg, rgba(220, 38, 38, 0.95) 0%, rgba(139, 92, 246, 0.85) 50%, rgba(99, 102, 241, 0.95) 100%)",
                   aspectRatio: "4/3",
                   transform: `perspective(1000px) rotateY(${mousePosition.x * 2}deg) rotateX(${mousePosition.y * -2}deg)`,
-                  boxShadow: "0 20px 60px rgba(220, 38, 38, 0.4)",
+                  boxShadow: "0 20px 60px rgba(139, 92, 246, 0.4)",
                 }}
               >
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -194,7 +195,7 @@ export default function HeroSection() {
               </div>
 
               <div
-                className="absolute -top-8 -left-8 bg-black/90 border-2 border-red-600 rounded-xl shadow-2xl p-4 transition-all duration-500 ease-out"
+                className="absolute -top-8 -left-8 bg-black/90 border-2 border-red-500 rounded-xl shadow-2xl p-4 transition-all duration-500 ease-out"
                 style={{
                   transform: `translate(${mousePosition.x * -20}px, ${mousePosition.y * -20}px)`,
                   boxShadow: "0 10px 40px rgba(220, 38, 38, 0.3)",
@@ -212,14 +213,14 @@ export default function HeroSection() {
               </div>
 
               <div
-                className="absolute -bottom-8 -right-8 bg-black/90 border-2 border-red-600 rounded-xl shadow-2xl p-4 transition-all duration-500 ease-out"
+                className="absolute -bottom-8 -right-8 bg-black/90 border-2 border-purple-500 rounded-xl shadow-2xl p-4 transition-all duration-500 ease-out"
                 style={{
                   transform: `translate(${mousePosition.x * 20}px, ${mousePosition.y * 20}px)`,
-                  boxShadow: "0 10px 40px rgba(220, 38, 38, 0.3)",
+                  boxShadow: "0 10px 40px rgba(139, 92, 246, 0.3)",
                 }}
               >
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-lg bg-red-600 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-purple-600 flex items-center justify-center">
                     <span className="text-xl">🎯</span>
                   </div>
                   <div>
@@ -236,36 +237,34 @@ export default function HeroSection() {
       <style jsx global>{`
         .gradient-text-1 {
           background-image: linear-gradient(90deg, 
-            #1F1F1F 0%, 
-            #3D0A0A 20%, 
-            #DC2626 35%, 
-            #EF4444 50%, 
-            #DC2626 65%, 
-            #3D0A0A 80%, 
-            #1F1F1F 100%
+            #3D0A0A 0%, 
+            #DC2626 25%, 
+            #8B5CF6 50%, 
+            #3B82F6 75%, 
+            #1E3A5F 100%
           );
-          background-size: 150% auto;
+          background-size: 200% auto;
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
           animation: gradientPulse 8s ease-in-out infinite;
-          filter: drop-shadow(0 0 20px rgba(220, 38, 38, 0.8));
+          filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.7));
         }
 
         .gradient-text-2 {
           background-image: linear-gradient(90deg, 
             #1E3A5F 0%, 
-            #1E40AF 25%, 
-            #3B82F6 50%, 
-            #1E40AF 75%, 
-            #1E3A5F 100%
+            #3B82F6 25%, 
+            #8B5CF6 50%, 
+            #DC2626 75%, 
+            #3D0A0A 100%
           );
-          background-size: 150% auto;
+          background-size: 200% auto;
           -webkit-background-clip: text;
           background-clip: text;
           -webkit-text-fill-color: transparent;
           animation: gradientPulse 10s ease-in-out infinite reverse;
-          filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8));
+          filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.7));
         }
 
         @keyframes gradientPulse {
