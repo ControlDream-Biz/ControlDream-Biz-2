@@ -139,13 +139,14 @@ export function ParticleBackground() {
     const height = window.innerHeight;
 
     const isMobile = width < 768;
-    const particleCount = isMobile ? 50 : 100; // 第一版粒子数量
+    const particleCount = isMobile ? 50 : 100; // 原有粒子数量
+    const fillBlankCount = 6; // 填补空白区域的粒子数
 
     const newParticles: Particle[] = [];
 
     // 优先在四个角落分配粒子，确保上下左右角始终有粒子
-    // 移动端50个粒子：左上、右上、左下、右下各8个，中间18个
-    // 电脑端100个粒子：左上、右上、左下、右下各16个，中间36个
+    // 移动端56个粒子：左上、右上、左下、右下各8个，中间24个
+    // 电脑端106个粒子：左上、右上、左下、右下各16个，中间42个
     const particlesPerCorner = isMobile ? 8 : 16;
     const cornerParticles = particlesPerCorner * 4; // 4个角落
     const middleParticles = particleCount - cornerParticles;
@@ -193,6 +194,48 @@ export function ParticleBackground() {
 
       newParticles.push({
         id: i,
+        cx: x,
+        cy: y,
+        vx,
+        vy,
+        ax: 0,
+        ay: 0,
+        r,
+        opacity,
+        phase,
+        frequency,
+        amplitude,
+        driftX,
+        driftY,
+      });
+    }
+
+    // 额外生成6个粒子填补空白区域（屏幕四边中点）
+    const edgeAreas = [
+      { xMin: width * 0.4, xMax: width * 0.6, yMin: 0, yMax: height * 0.15 }, // 上边中点
+      { xMin: width * 0.4, xMax: width * 0.6, yMin: height * 0.85, yMax: height }, // 下边中点
+      { xMin: 0, xMax: width * 0.15, yMin: height * 0.4, yMax: height * 0.6 }, // 左边中点
+      { xMin: width * 0.85, xMax: width, yMin: height * 0.4, yMax: height * 0.6 }, // 右边中点
+      { xMin: width * 0.25, xMax: width * 0.4, yMin: height * 0.25, yMax: height * 0.4 }, // 左上边缘
+      { xMin: width * 0.6, xMax: width * 0.75, yMin: height * 0.6, yMax: height * 0.75 }, // 右下边缘
+    ];
+
+    for (let i = 0; i < fillBlankCount; i++) {
+      const edgeArea = edgeAreas[i % edgeAreas.length];
+      const x = edgeArea.xMin + Math.random() * (edgeArea.xMax - edgeArea.xMin);
+      const y = edgeArea.yMin + Math.random() * (edgeArea.yMax - edgeArea.yMin);
+      const vx = (Math.random() - 0.5) * 0.3; // 初始速度很慢
+      const vy = (Math.random() - 0.5) * 0.3;
+      const r = isMobile ? Math.random() * 1 + 1 : Math.random() * 1.5 + 1.5; // 粒子更小
+      const opacity = isMobile ? Math.random() * 0.4 + 0.4 : Math.random() * 0.5 + 0.5;
+      const phase = Math.random() * Math.PI * 2; // 随机相位
+      const frequency = 0.5 + Math.random() * 1.5; // 随机频率
+      const amplitude = 0.5 + Math.random() * 1.5; // 随机振幅
+      const driftX = (Math.random() - 0.5) * 2; // 随机漂移方向X
+      const driftY = (Math.random() - 0.5) * 2; // 随机漂移方向Y
+
+      newParticles.push({
+        id: particleCount + i,
         cx: x,
         cy: y,
         vx,
