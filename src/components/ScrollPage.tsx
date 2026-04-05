@@ -156,13 +156,41 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
   const handlePageChange = useCallback((newPage: number) => {
     if (newPage >= 0 && newPage < totalPages && newPage !== currentPage) {
+      // 重置状态
+      scrollStateRef.current.accumulatedDelta = 0;
+      scrollStateRef.current.wheelConsistency = 0;
+      scrollStateRef.current.lastWheelTime = 0;
+
       setCurrentPage(newPage);
       onPageChange?.(newPage);
+
+      // 翻页后，将新页面的滚动位置重置到顶部
+      setTimeout(() => {
+        const pageElement = document.querySelector(`[data-page-index="${newPage}"]`);
+        const scrollContainer = pageElement?.querySelector('.scroll-content') as HTMLDivElement;
+        if (scrollContainer) {
+          scrollContainer.scrollTop = 0;
+        }
+      }, 50);
     }
   }, [currentPage, totalPages, onPageChange]);
 
   useEffect(() => {
     const state = scrollStateRef.current;
+
+    // 初始化：重置所有页面的滚动位置到顶部
+    const resetAllScrollPositions = () => {
+      const allPages = document.querySelectorAll('[data-page-index]');
+      allPages.forEach(page => {
+        const scrollContainer = page.querySelector('.scroll-content') as HTMLDivElement;
+        if (scrollContainer) {
+          scrollContainer.scrollTop = 0;
+        }
+      });
+    };
+
+    // 初始化时重置所有滚动位置
+    resetAllScrollPositions();
 
     // 智能翻页逻辑 - 简化逻辑，优先保证内容可以滚动
     const handleWheel = (e: WheelEvent) => {
