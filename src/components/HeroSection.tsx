@@ -18,19 +18,68 @@ export default function HeroSection() {
       className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center overflow-hidden"
       style={{ minHeight: 'calc(100vh - 60px)' }}
     >
-      {/* 游戏展示背景图 */}
+      {/* 游戏展示背景 */}
       <div className="absolute inset-0 -z-10">
+        {/* 主背景图 */}
         <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: "url('/hero-bg.jpg')",
-            filter: 'brightness(0.85) saturate(1.1)',
+            filter: 'brightness(0.7)',
           }}
         />
 
-        {/* 轻微底部渐变，确保文字可读 */}
+        {/* 文字背后的游戏展示区域 */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/50 to-transparent"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[120%] h-[150%]"
+          style={{
+            opacity: 0.4,
+          }}
+        >
+          {/* 游戏场景1 */}
+          <div
+            className="absolute top-[10%] left-[5%] w-[25%] h-[30%] rounded-2xl overflow-hidden shadow-2xl"
+            style={{
+              backgroundImage: "url('/hero-bg.jpg')",
+              backgroundPosition: '10% 20%',
+              backgroundSize: 'cover',
+            }}
+          />
+
+          {/* 游戏场景2 */}
+          <div
+            className="absolute top-[15%] right-[8%] w-[30%] h-[35%] rounded-2xl overflow-hidden shadow-2xl"
+            style={{
+              backgroundImage: "url('/hero-bg.jpg')",
+              backgroundPosition: '50% 30%',
+              backgroundSize: 'cover',
+            }}
+          />
+
+          {/* 游戏场景3 */}
+          <div
+            className="absolute bottom-[20%] left-[10%] w-[28%] h-[32%] rounded-2xl overflow-hidden shadow-2xl"
+            style={{
+              backgroundImage: "url('/hero-bg.jpg')",
+              backgroundPosition: '80% 60%',
+              backgroundSize: 'cover',
+            }}
+          />
+
+          {/* 游戏场景4 */}
+          <div
+            className="absolute bottom-[15%] right-[5%] w-[26%] h-[28%] rounded-2xl overflow-hidden shadow-2xl"
+            style={{
+              backgroundImage: "url('/hero-bg.jpg')",
+              backgroundPosition: '30% 70%',
+              backgroundSize: 'cover',
+            }}
+          />
+        </div>
+
+        {/* 底部渐变确保文字可读 */}
+        <div
+          className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 via-black/40 to-transparent"
         />
       </div>
 
@@ -84,7 +133,7 @@ export default function HeroSection() {
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.2s",
                 minHeight: "60px",
-                textShadow: "0 2px 8px rgba(0,0,0,0.8)",
+                textShadow: "0 2px 12px rgba(0,0,0,0.9)",
               }}
             >
               我们专注于自主研发，在游戏、软件、硬件领域持续投入，
