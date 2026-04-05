@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { SiteFooter } from '@/components/SiteFooter';
 
@@ -8,7 +8,8 @@ interface ContactShowcaseProps {
   isActive?: boolean;
 }
 
-export function ContactShowcase({ isActive }: ContactShowcaseProps) {
+// 使用React.memo优化性能
+export const ContactShowcase = memo(function ContactShowcase({ isActive }: ContactShowcaseProps) {
   const [mounted, setMounted] = useState(false);
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -228,4 +229,4 @@ export function ContactShowcase({ isActive }: ContactShowcaseProps) {
       </div>
     </div>
   );
-}
+});

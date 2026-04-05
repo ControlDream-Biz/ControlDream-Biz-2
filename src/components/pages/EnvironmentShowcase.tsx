@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import Image from 'next/image';
 import { Mail, Coffee, Users, Monitor, Zap, Wifi } from 'lucide-react';
 
 interface EnvironmentShowcaseProps {
   isActive?: boolean;
 }
+
+// 使用React.memo优化性能
+export const EnvironmentShowcase = memo(function EnvironmentShowcase({ isActive }: EnvironmentShowcaseProps) {
 
 const areas = [
   {
@@ -77,7 +80,7 @@ const areas = [
   },
 ];
 
-export function EnvironmentShowcase({ isActive }: EnvironmentShowcaseProps) {
+function EnvironmentShowcase({ isActive }: EnvironmentShowcaseProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -214,4 +217,4 @@ export function EnvironmentShowcase({ isActive }: EnvironmentShowcaseProps) {
       </div>
     </div>
   );
-}
+}););

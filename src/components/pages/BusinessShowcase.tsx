@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import Image from 'next/image';
 import { Gamepad2, Cpu, HardDrive } from 'lucide-react';
 
 interface BusinessShowcaseProps {
   isActive?: boolean;
 }
+
+// 使用React.memo优化性能
+export const BusinessShowcase = memo(function BusinessShowcase({ isActive }: BusinessShowcaseProps) {
 
 const businesses = [
   {
@@ -59,7 +62,7 @@ const businesses = [
   },
 ];
 
-export function BusinessShowcase({ isActive }: BusinessShowcaseProps) {
+function BusinessShowcase({ isActive }: BusinessShowcaseProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -216,4 +219,4 @@ export function BusinessShowcase({ isActive }: BusinessShowcaseProps) {
       </div>
     </div>
   );
-}
+});

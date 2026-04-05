@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 
 interface HomeHeroProps {
   isActive?: boolean;
 }
 
-export function HomeHero({ isActive }: HomeHeroProps) {
+// 使用React.memo优化性能，避免不必要的重渲染
+export const HomeHero = memo(function HomeHero({ isActive }: HomeHeroProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -143,4 +144,4 @@ export function HomeHero({ isActive }: HomeHeroProps) {
       </div>
     </div>
   );
-}
+});

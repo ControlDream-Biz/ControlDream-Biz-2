@@ -17,46 +17,48 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
   const isPrev = index < currentPage;
   const isNext = index > currentPage;
 
-  // 苹果官网式的页面切换动画 - 支持触摸跟随
+  // 苹果官网式的页面切换动画 - 流畅层叠效果
   let transform = '';
   let opacity = 1;
   const scale = 1;
 
   // 如果正在触摸滑动，使用实时偏移量
   if (isDragging && dragOffset !== 0) {
-    // 当前页面跟随手指移动
+    const progress = Math.abs(dragOffset) / window.innerHeight;
+    
+    // 当前页面跟随手指移动 - 层叠效果
     if (isActive) {
-      transform = `translate3d(0, ${dragOffset}px, 0) scale(${scale})`;
-      opacity = 1 - Math.abs(dragOffset) / window.innerHeight;
+      transform = `translate3d(0, ${dragOffset * 0.5}px, 0) scale(${scale})`;
+      opacity = 1 - progress * 0.5;  // 当前页面半透明，保留部分可见
     }
-    // 下一页跟随手指移动（向上滑动，显示下一页）
+    // 下一页跟随手指移动（向上滑动，显示下一页）- 从下方半透明渐入
     else if (isNext && dragOffset < 0) {
       transform = `translate3d(0, ${100 * window.innerHeight + dragOffset}px, 0) scale(${scale})`;
-      opacity = Math.abs(dragOffset) / window.innerHeight;
+      opacity = progress * 0.8;  // 下一页半透明渐入
     }
-    // 上一页跟随手指移动（向下滑动，显示上一页）
+    // 上一页跟随手指移动（向下滑动，显示上一页）- 从上方半透明渐入
     else if (isPrev && dragOffset > 0) {
       transform = `translate3d(0, ${-100 * window.innerHeight + dragOffset}px, 0) scale(${scale})`;
-      opacity = Math.abs(dragOffset) / window.innerHeight;
+      opacity = progress * 0.8;  // 上一页半透明渐入
     }
     // 其他页面保持原位
     else if (isPrev) {
-      transform = `translate3d(0, -100vh, 0) scale(${scale})`;
+      transform = `translate3d(0, -50vh, 0) scale(${scale})`;
       opacity = 0;
     } else if (isNext) {
-      transform = `translate3d(0, 100vh, 0) scale(${scale})`;
+      transform = `translate3d(0, 50vh, 0) scale(${scale})`;
       opacity = 0;
     }
   } else {
-    // 没有触摸滑动，使用标准动画
+    // 没有触摸滑动，使用标准动画 - 层叠效果
     if (isActive) {
       transform = `translate3d(0, 0, 0) scale(${scale})`;
       opacity = 1;
     } else if (isPrev) {
-      transform = `translate3d(0, -100vh, 0) scale(${scale})`;
+      transform = `translate3d(0, -50vh, 0) scale(${scale})`;
       opacity = 0;
     } else if (isNext) {
-      transform = `translate3d(0, 100vh, 0) scale(${scale})`;
+      transform = `translate3d(0, 50vh, 0) scale(${scale})`;
       opacity = 0;
     }
   }
@@ -68,12 +70,14 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
         transform,
-        transition: isDragging ? 'none' : 'transform 0.9s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.7s cubic-bezier(0.32, 0.72, 0, 1)',
+        transition: isDragging ? 'none' : 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
         zIndex: isActive ? 10 : 1,
-        willChange: isDragging ? 'transform, opacity, content' : 'transform, opacity',
+        willChange: isDragging ? 'transform, opacity' : 'transform, opacity',
         // 添加GPU加速提示
         backfaceVisibility: 'hidden' as const,
         perspective: 1000,
+        // 使用content-visibility优化渲染
+        contentVisibility: isActive ? 'visible' : 'auto' as const,
       }}
     >
       <div className="w-full min-h-full px-4 py-8">
