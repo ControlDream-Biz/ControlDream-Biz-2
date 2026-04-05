@@ -18,83 +18,118 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
 
   return (
     <>
-      <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-12 pb-8">
+      <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-8 pb-8">
 
         {/* 粒子背景 - 只在首页显示，叠加在彩色光晕背景上 */}
         <ParticleBackground />
 
-      <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto flex flex-col items-center justify-center translate-y-8">
-        {/* 主标题 - 波浪抖动动画 */}
-        <div
-          className="mb-2 sm:mb-3 md:mb-4 lg:mb-6"
-          style={{
-            opacity: mounted ? 1 : 0,
-            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'all 1000ms ease-out',
-          }}
-        >
-          <h2
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-1 inline-block"
+      <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto flex flex-col items-center justify-center">
+        {/* 顶级彩字排版 - 三行分离，增加视觉冲击力 */}
+        <div className="flex flex-col items-center justify-center space-y-4 sm:space-y-6 md:space-y-8 lg:space-y-12 mb-6 sm:mb-8 md:mb-10 lg:mb-12">
+          {/* 第一行：游戏创新 - 橙红色渐变 */}
+          <div
+            className="w-full flex justify-center"
             style={{
-              backgroundImage: 'linear-gradient(135deg, #FB923C 0%, #F87171 15%, #F43F5E 35%, #E11D48 55%, #DC2626 75%, #B91C1C 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              display: 'inline-block',
-              filter: 'drop-shadow(0 0 20px rgba(239, 68, 68, 0.3))',
+              opacity: mounted ? 1 : 0,
+              transform: mounted ? 'translateY(0)' : 'translateY(40px)',
+              transition: 'all 1000ms ease-out',
             }}
           >
-            游戏创新
-          </h2>
-          <h2
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-2 inline-block"
+            <h1
+              className="font-black leading-none tracking-tight animate-wave-1"
+              style={{
+                fontSize: 'clamp(2rem, 6vw, 5rem)',
+                lineHeight: '1.1',
+                backgroundImage: 'linear-gradient(135deg, #FB923C 0%, #F87171 15%, #F43F5E 35%, #E11D48 55%, #DC2626 75%, #B91C1C 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                display: 'inline-block',
+                filter: 'drop-shadow(0 0 30px rgba(239, 68, 68, 0.5)) drop-shadow(0 4px 20px rgba(220, 38, 38, 0.3))',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              游戏创新
+            </h1>
+          </div>
+
+          {/* 第二行：软件赋能 - 蓝紫色渐变 */}
+          <div
+            className="w-full flex justify-center"
             style={{
-              backgroundImage: 'linear-gradient(135deg, #60A5FA 0%, #3B82F6 15%, #6366F1 35%, #8B5CF6 55%, #A855F7 75%, #7C3AED 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              display: 'inline-block',
-              filter: 'drop-shadow(0 0 20px rgba(99, 102, 241, 0.3))',
+              opacity: mounted ? 1 : 0,
+              transform: mounted ? 'translateY(0)' : 'translateY(40px)',
+              transitionDelay: '0.1s',
+              transition: 'all 1000ms ease-out',
             }}
           >
-            软件赋能
-          </h2>
-          <h2
-            className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-3 inline-block"
+            <h1
+              className="font-black leading-none tracking-tight animate-wave-2"
+              style={{
+                fontSize: 'clamp(2rem, 6vw, 5rem)',
+                lineHeight: '1.1',
+                backgroundImage: 'linear-gradient(135deg, #60A5FA 0%, #3B82F6 15%, #6366F1 35%, #8B5CF6 55%, #A855F7 75%, #7C3AED 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                display: 'inline-block',
+                filter: 'drop-shadow(0 0 30px rgba(99, 102, 241, 0.5)) drop-shadow(0 4px 20px rgba(139, 92, 246, 0.3))',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              软件赋能
+            </h1>
+          </div>
+
+          {/* 第三行：硬件智造 - 青蓝色渐变 */}
+          <div
+            className="w-full flex justify-center"
             style={{
-              backgroundImage: 'linear-gradient(135deg, #22D3EE 0%, #06B6D4 15%, #0EA5E9 35%, #3B82F6 55%, #6366F1 75%, #4F46E5 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              display: 'inline-block',
-              filter: 'drop-shadow(0 0 20px rgba(6, 182, 212, 0.3))',
+              opacity: mounted ? 1 : 0,
+              transform: mounted ? 'translateY(0)' : 'translateY(40px)',
+              transitionDelay: '0.2s',
+              transition: 'all 1000ms ease-out',
             }}
           >
-            硬件智造
-          </h2>
+            <h1
+              className="font-black leading-none tracking-tight animate-wave-3"
+              style={{
+                fontSize: 'clamp(2rem, 6vw, 5rem)',
+                lineHeight: '1.1',
+                backgroundImage: 'linear-gradient(135deg, #22D3EE 0%, #06B6D4 15%, #0EA5E9 35%, #3B82F6 55%, #6366F1 75%, #4F46E5 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                display: 'inline-block',
+                filter: 'drop-shadow(0 0 30px rgba(6, 182, 212, 0.5)) drop-shadow(0 4px 20px rgba(59, 130, 246, 0.3))',
+                letterSpacing: '-0.02em',
+              }}
+            >
+              硬件智造
+            </h1>
+          </div>
         </div>
 
-        {/* 描述文字 - 不抖动 */}
+        {/* 描述文字 - 精致排版 */}
         <p
-          className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/70 font-light max-w-4xl mx-auto mb-4 sm:mb-6 md:mb-8 lg:mb-10 leading-relaxed"
+          className="text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl text-white/70 font-light max-w-3xl mx-auto mb-8 sm:mb-10 md:mb-12 lg:mb-16 leading-relaxed tracking-wide"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-            transitionDelay: '0.2s',
-            transition: 'all 1000ms ease-out',
+            transition: 'all 1000ms ease-out 0.3s',
+            letterSpacing: '0.1em',
           }}
         >
           三驾马车驱动自主创新
         </p>
 
-        {/* 核心理念 */}
+        {/* 核心理念 - 三列布局 */}
         <div
-          className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 max-w-5xl mx-auto"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 md:gap-12 lg:gap-16 max-w-4xl mx-auto w-full px-4"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-            transitionDelay: '0.4s',
-            transition: 'all 1000ms ease-out',
+            transition: 'all 1000ms ease-out 0.5s',
           }}
         >
           {[
@@ -104,18 +139,27 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
           ].map((item, index) => (
             <div
               key={index}
-              className="text-center group cursor-pointer"
+              className="text-center group cursor-pointer flex flex-col items-center justify-center py-6 sm:py-8 md:py-10"
             >
               <div
-                className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black mb-2 sm:mb-3 transition-all duration-300 group-hover:scale-110 ${
+                className={`font-black mb-3 sm:mb-4 transition-all duration-500 group-hover:scale-110 ${
                   index === 1
-                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400'
+                    ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400'
                     : 'text-white'
                 }`}
+                style={{
+                  fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+                  lineHeight: '1',
+                  filter: index === 1
+                    ? 'drop-shadow(0 0 20px rgba(139, 92, 246, 0.4))'
+                    : 'drop-shadow(0 0 15px rgba(255, 255, 255, 0.3))',
+                  letterSpacing: '-0.03em',
+                }}
               >
                 {item.value}
               </div>
-              <p className="text-xs sm:text-sm md:text-base lg:text-base text-white/50 font-medium group-hover:text-white/70 transition-colors">
+              <div className="h-px w-12 sm:w-16 bg-white/20 group-hover:bg-white/40 transition-all duration-300 mb-3 sm:mb-4"></div>
+              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-white/50 font-medium group-hover:text-white/80 transition-colors tracking-widest uppercase">
                 {item.label}
               </p>
             </div>
