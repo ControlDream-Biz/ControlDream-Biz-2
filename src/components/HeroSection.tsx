@@ -31,7 +31,7 @@ export default function HeroSection() {
           <div
             className="absolute inset-0 transform"
             style={{
-              transform: 'rotateX(15deg) scale(1.1)',
+              transform: 'rotateX(5deg) scale(1.05)',
               transformOrigin: 'center center',
             }}
           >
@@ -39,18 +39,15 @@ export default function HeroSection() {
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{
                 backgroundImage: "url('/hero-bg.jpg')",
-                filter: 'brightness(0.4) contrast(1.2)',
+                filter: 'brightness(0.6) contrast(1.1)',
               }}
             />
           </div>
         </div>
 
-        {/* 渐变叠加层 */}
+        {/* 轻微渐变叠加层 */}
         <div
-          className="absolute inset-0 bg-gradient-to-b from-blue-900/30 via-purple-900/20 to-gray-900/60"
-        />
-        <div
-          className="absolute inset-0 bg-gradient-to-r from-blue-900/20 via-transparent to-purple-900/20"
+          className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40"
         />
       </div>
 
