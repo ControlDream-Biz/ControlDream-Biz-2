@@ -21,7 +21,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
       <div
         className="fixed inset-0 transition-opacity duration-1000 ease-out pointer-events-none"
         style={{
-          zIndex: 0,
+          zIndex: -10, // 在粒子背景下方
           opacity: mounted ? 1 : 1, // 始终显示，避免初始黑屏
           background: `
             radial-gradient(circle at 25% 35%, rgba(139, 92, 246, 0.45) 0%, rgba(124, 58, 237, 0.35) 15%, rgba(109, 40, 217, 0.25) 30%, rgba(99, 102, 241, 0.15) 45%, rgba(99, 102, 241, 0.08) 60%, rgba(99, 102, 241, 0.04) 75%, transparent 90%),
