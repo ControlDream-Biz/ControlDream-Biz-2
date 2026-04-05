@@ -143,6 +143,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   const scrollStateRef = useRef({
     accumulatedDelta: 0,
     lastWheelTime: 0,
+    lastWheelDirection: 0,
+    wheelConsistency: 0,
     isTouchActive: false,
     hasSwitchedInThisTouch: false,
     touchStartY: 0,
@@ -161,25 +163,40 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   useEffect(() => {
     const state = scrollStateRef.current;
 
-    // 简化的滚轮处理逻辑 - 降低阈值，提高灵敏度
+    // 优化的滚轮处理逻辑 - 降低灵敏度
     const handleWheel = (e: WheelEvent) => {
       const now = performance.now();
       const delta = e.deltaY;
 
-      // 降低节流时间，提高响应速度
-      const throttleTime = 300;
-      const scrollThreshold = 40; // 降低阈值
+      // 检查滚轮方向一致性
+      const currentDirection = delta > 0 ? 1 : -1;
+      if (currentDirection === state.lastWheelDirection) {
+        state.wheelConsistency++;
+      } else {
+        state.wheelConsistency = 0;
+        state.lastWheelDirection = currentDirection;
+      }
+
+      // 增加阈值和节流时间，降低灵敏度
+      const throttleTime = 800; // 增加节流时间
+      const scrollThreshold = 100; // 增加阈值
+      const consistencyThreshold = 3; // 需要连续3次同方向滚动
 
       // 累积滚动量
       state.accumulatedDelta += delta;
 
-      // 超过阈值且超过节流时间就触发翻页
-      if (Math.abs(state.accumulatedDelta) >= scrollThreshold) {
+      // 必须满足所有条件才触发翻页：
+      // 1. 超过阈值
+      // 2. 方向一致且连续
+      // 3. 超过节流时间
+      if (Math.abs(state.accumulatedDelta) >= scrollThreshold &&
+          state.wheelConsistency >= consistencyThreshold) {
         if (now - state.lastWheelTime < throttleTime) return;
         state.lastWheelTime = now;
 
         // 重置累积值
         state.accumulatedDelta = 0;
+        state.wheelConsistency = 0;
 
         if (delta > 0 && currentPage < totalPages - 1) {
           handlePageChange(currentPage + 1);
@@ -235,12 +252,12 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       // 当垂直移动量显著大于水平移动量时，才触发翻页
       const isVerticalSwipe = deltaY > deltaX * 1.5;
-      const isSignificantMove = deltaY > 30;
+      const isSignificantMove = deltaY > 50; // 增加最小移动距离
 
       if (isVerticalSwipe && isSignificantMove && !state.hasSwitchedInThisTouch) {
         const lastOffset = Math.abs(dragOffsetRef.current);
 
-        if (lastOffset > window.innerHeight * 0.2) {
+        if (lastOffset > window.innerHeight * 0.25) { // 增加阈值到 25%
           state.hasSwitchedInThisTouch = true;
 
           if (dragOffsetRef.current > 0 && currentPage > 0) {
@@ -264,7 +281,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     // 键盘导航
     const handleKeyDown = (e: KeyboardEvent) => {
       const now = performance.now();
-      if (now - state.lastWheelTime < 500) return;
+      if (now - state.lastWheelTime < 1000) return;
 
       const keyMap: Record<string, number> = {
         'ArrowDown': 1,
@@ -283,12 +300,20 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
+    // 防止图片拖拽影响滑动
+    const preventImageDrag = (e: DragEvent) => {
+      e.preventDefault();
+    };
+
     // 事件监听
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
     window.addEventListener('touchend', handleTouchEnd, { passive: false });
     window.addEventListener('keydown', handleKeyDown);
+
+    // 防止图片拖拽
+    document.addEventListener('dragstart', preventImageDrag);
 
     // 清理函数
     return () => {
@@ -297,6 +322,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('dragstart', preventImageDrag);
     };
   }, [currentPage, handlePageChange, totalPages]);
 
