@@ -74,12 +74,16 @@ export default function FloatingButtons() {
     backToTopBtn.style.willChange = 'transform, box-shadow, background-color';
     backToTopBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg>';
 
-    backToTopBtn.addEventListener('click', scrollToTop);
+    backToTopBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      scrollToTop();
+    });
 
     // 悬停效果
     backToTopBtn.addEventListener('mouseenter', () => {
-      backToTopBtn.style.transition = 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)';
-      backToTopBtn.style.transform = 'scale(1.1) translateZ(0)';
+      backToTopBtn.style.transition = 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
+      backToTopBtn.style.transform = 'scale(1.08) translateZ(0)';
       backToTopBtn.style.boxShadow = `
         0 12px 40px rgba(14, 165, 233, 0.3),
         inset 0 1px 2px rgba(255, 255, 255, 0.3)
@@ -88,17 +92,17 @@ export default function FloatingButtons() {
       backToTopBtn.style.borderColor = 'rgba(14, 165, 233, 0.5)';
     });
 
-    // 点击弹性动画效果
+    // 点击弹性动画效果 - iOS风格
     backToTopBtn.addEventListener('mousedown', () => {
-      backToTopBtn.style.transition = 'transform 0.1s cubic-bezier(0.34, 1.56, 0.64, 1)';
-      backToTopBtn.style.transform = 'scale(1.15) translateZ(0)';
+      backToTopBtn.style.transition = 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)';
+      backToTopBtn.style.transform = 'scale(1.12) translateZ(0)';
     });
 
     backToTopBtn.addEventListener('mouseup', () => {
       setTimeout(() => {
-        backToTopBtn.style.transition = 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        backToTopBtn.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
         backToTopBtn.style.transform = 'scale(1) translateZ(0)';
-      }, 50);
+      }, 30);
     });
 
     backToTopBtn.addEventListener('mouseleave', () => {
@@ -147,12 +151,16 @@ export default function FloatingButtons() {
     customerServiceBtn.style.willChange = 'transform, box-shadow, background-color';
     customerServiceBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
 
-    customerServiceBtn.addEventListener('click', (e) => toggleCustomerService(e));
+    customerServiceBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      e.preventDefault();
+      toggleCustomerService(e);
+    });
 
     // 悬停效果
     customerServiceBtn.addEventListener('mouseenter', () => {
-      customerServiceBtn.style.transition = 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)';
-      customerServiceBtn.style.transform = 'scale(1.1) translateZ(0)';
+      customerServiceBtn.style.transition = 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)';
+      customerServiceBtn.style.transform = 'scale(1.08) translateZ(0)';
       customerServiceBtn.style.boxShadow = `
         0 12px 40px rgba(239, 68, 68, 0.3),
         inset 0 1px 2px rgba(255, 255, 255, 0.3)
@@ -161,17 +169,17 @@ export default function FloatingButtons() {
       customerServiceBtn.style.borderColor = 'rgba(239, 68, 68, 0.5)';
     });
 
-    // 点击弹性动画效果
+    // 点击弹性动画效果 - iOS风格
     customerServiceBtn.addEventListener('mousedown', () => {
-      customerServiceBtn.style.transition = 'transform 0.1s cubic-bezier(0.34, 1.56, 0.64, 1)';
-      customerServiceBtn.style.transform = 'scale(1.15) translateZ(0)';
+      customerServiceBtn.style.transition = 'transform 0.15s cubic-bezier(0.4, 0, 0.2, 1)';
+      customerServiceBtn.style.transform = 'scale(1.12) translateZ(0)';
     });
 
     customerServiceBtn.addEventListener('mouseup', () => {
       setTimeout(() => {
-        customerServiceBtn.style.transition = 'transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        customerServiceBtn.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
         customerServiceBtn.style.transform = 'scale(1) translateZ(0)';
-      }, 50);
+      }, 30);
     });
 
     customerServiceBtn.addEventListener('mouseleave', () => {
