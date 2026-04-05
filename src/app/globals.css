@@ -91,20 +91,6 @@ html, body {
   }
 }
 
-/* 小字淡入动画 */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
-}
-
 .animate-gradient {
   animation: gradient 15s ease-in-out infinite;
   background-size: 400% auto;

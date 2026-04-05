@@ -90,12 +90,27 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
   currentPage = 0
 }: EnvironmentShowcaseProps) {
   const [mounted, setMounted] = useState(false);
+  const [visibleIndices, setVisibleIndices] = useState<Set<number>>(new Set());
 
   // 页面激活时触发动画
   useEffect(() => {
-    console.log(`EnvironmentShowcase useEffect 触发: isActive=${isActive}, pageIndex=${pageIndex}`);
+    console.log(`EnvironmentShowcase 触发动画: pageIndex=${pageIndex}`);
     setMounted(true);
-  }, [isActive, pageIndex]);
+
+    // 清空可见索引
+    setVisibleIndices(new Set());
+
+    // 计算总小字数
+    const totalItems = areas.reduce((sum, a) => sum + a.items.length, 0);
+
+    // 依次显示每个小字
+    for (let i = 0; i < totalItems; i++) {
+      setTimeout(() => {
+        setVisibleIndices(prev => new Set([...prev, i]));
+        console.log(`显示第 ${i} 个小字`);
+      }, 400 + i * 200);
+    }
+  }, [pageIndex]); // 只监听 pageIndex
 
   return (
     <div className="relative w-full bg-black overflow-hidden">
@@ -173,21 +188,21 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                   {area.description}
                 </p>
 
-                {/* 小字列表 - 依次淡入 */}
+                {/* 小字列表 - 依次从右向左滚入淡入 */}
                 <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
                   {area.items.map((item, i) => {
-                    // 计算全局索引：前面所有 area 的 items 数量 + 当前索引
+                    // 计算全局索引
                     const globalIndex = areas.slice(0, areaIndex).reduce((sum, a) => sum + a.items.length, 0) + i;
-                    const delay = 0.4 + globalIndex * 0.2;
+                    const isVisible = visibleIndices.has(globalIndex);
 
                     return (
                       <div
-                        key={`small-${pageIndex}-${areaIndex}-${i}`}
-                        className="flex items-start space-x-2 sm:space-x-3 animate-fade-in"
-                        data-small-text
-                        data-page-index={pageIndex}
+                        key={`${pageIndex}-${areaIndex}-${i}`}
+                        className="flex items-start space-x-2 sm:space-x-3"
                         style={{
-                          animationDelay: `${delay}s`,
+                          opacity: isVisible ? 1 : 0,
+                          transform: isVisible ? 'translateX(0)' : 'translateX(20px)',
+                          transition: 'all 0.5s ease-out',
                         }}
                       >
                         <div className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 bg-gradient-to-br ${area.color}`}></div>
