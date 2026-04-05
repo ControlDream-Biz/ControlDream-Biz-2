@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const pages = [
   { label: '首页', id: 'home' },
@@ -13,17 +13,33 @@ const pages = [
 
 export function ScrollProgress() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [showLabel, setShowLabel] = useState(false);
   const totalPages = pages.length;
+  const stayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScrollToSection = (e: CustomEvent<{ sectionIndex: number }>) => {
       const newPage = e.detail.sectionIndex;
       setCurrentPage(newPage);
+      setShowLabel(true); // 显示当前页面标签
+
+      // 清除之前的定时器
+      if (stayTimerRef.current) {
+        clearTimeout(stayTimerRef.current);
+      }
+
+      // 2秒后隐藏标签
+      stayTimerRef.current = setTimeout(() => {
+        setShowLabel(false);
+      }, 2000);
     };
 
     window.addEventListener('scrollToSection', handleScrollToSection as EventListener);
     return () => {
       window.removeEventListener('scrollToSection', handleScrollToSection as EventListener);
+      if (stayTimerRef.current) {
+        clearTimeout(stayTimerRef.current);
+      }
     };
   }, []);
 
@@ -38,28 +54,14 @@ export function ScrollProgress() {
     >
       {/* 导航内容 */}
       <div className="flex items-center gap-4">
-        {/* 页面名称列表（左侧，一直显示） */}
-        <div className="flex flex-col items-end gap-4">
-          {pages.map((page, index) => {
-            const isCurrent = index === currentPage;
-            return (
-              <button
-                key={page.id}
-                onClick={() => scrollToSection(index)}
-                className={`
-                  font-medium transition-all duration-300 whitespace-nowrap
-                  ${isCurrent
-                    ? 'text-base text-white font-bold'
-                    : 'text-xs text-white/50 hover:text-white/70'
-                  }
-                `}
-                aria-label={`跳转到${page.label}`}
-              >
-                {page.label}
-              </button>
-            );
-          })}
-        </div>
+        {/* 当前页面名称（只在showLabel为true时显示） */}
+        {showLabel && (
+          <div className="flex flex-col items-end transition-all duration-500 opacity-100">
+            <span className="text-base text-white font-bold whitespace-nowrap">
+              {pages[currentPage].label}
+            </span>
+          </div>
+        )}
 
         {/* 进度指示器（右侧，紧靠右边） */}
         <div className="flex flex-col items-center gap-3">
@@ -71,7 +73,7 @@ export function ScrollProgress() {
                 key={index}
                 onClick={() => scrollToSection(index)}
                 className={`
-                  w-1 h-1 rounded-full transition-all duration-300
+                  w-0.5 h-0.5 rounded-full transition-all duration-300
                   ${isCurrent ? 'bg-white' : 'bg-white/30'}
                 `}
                 aria-label={`跳转到第${index + 1}页`}
