@@ -77,7 +77,7 @@ export function Navbar() {
       </div>
 
       {/* 导航菜单 - 右上角 - 液态玻璃设计系统 */}
-      <nav className="fixed right-4 z-50 select-none sm:right-4 lg:right-6" style={{ bottom: '80px' }}>
+      <nav className="fixed top-4 right-4 z-50 select-none sm:top-4 sm:right-4 lg:top-6 lg:right-6">
         {/* Desktop Navigation - 液态玻璃导航栏 */}
         <div className="hidden lg:flex items-center gap-1 liquid-glass-nav px-2 py-2">
           {navItems.map((item) => (
