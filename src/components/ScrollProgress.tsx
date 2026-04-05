@@ -52,7 +52,7 @@ export function ScrollProgress() {
       className="fixed right-0 top-0 bottom-0 z-50 pr-4"
     >
       {/* 圆点列表（垂直分布） */}
-      <div className="absolute right-0 top-0 bottom-0 w-6 flex flex-col items-center justify-between py-6">
+      <div className="absolute right-0 top-0 bottom-0 w-6 flex flex-col items-center justify-between pt-16 pb-6">
         {pages.map((page, index) => {
           const isCurrent = index === currentPage;
 
