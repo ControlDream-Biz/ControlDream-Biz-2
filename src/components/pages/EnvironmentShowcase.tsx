@@ -178,17 +178,18 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                   {area.items.map((item, i) => {
                     // 计算全局索引：前面所有 area 的 items 数量 + 当前索引
                     const globalIndex = areas.slice(0, areaIndex).reduce((sum, a) => sum + a.items.length, 0) + i;
+                    const delay = 0.4 + globalIndex * 0.2;
 
                     return (
                       <div
-                        key={`${areaIndex}-${i}`}
+                        key={`small-${pageIndex}-${areaIndex}-${i}`}
                         className="flex items-start space-x-2 sm:space-x-3"
                         data-small-text
                         data-page-index={pageIndex}
                         style={{
-                          opacity: 0,
-                          animation: `fadeIn 0.5s ease-out ${0.4 + globalIndex * 0.2}s forwards`,
-                        }}
+                          opacity: '0 !important',
+                          animation: `fadeIn 0.5s ease-out ${delay}s forwards !important`,
+                        } as React.CSSProperties}
                       >
                         <div className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 bg-gradient-to-br ${area.color}`}></div>
                         <div className="flex-1">
