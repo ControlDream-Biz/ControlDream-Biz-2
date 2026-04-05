@@ -51,7 +51,7 @@ export function ScrollProgress() {
     <div
       className="fixed right-0 top-0 bottom-0 z-50 pr-4"
     >
-      {/* 圆点列表（集中显示在屏幕中央） */}
+      {/* 圆点列表（居中显示） */}
       <div className="absolute right-0 top-0 bottom-0 w-6 flex flex-col items-center gap-5 py-6">
         {pages.map((page, index) => {
           const isCurrent = index === currentPage;
