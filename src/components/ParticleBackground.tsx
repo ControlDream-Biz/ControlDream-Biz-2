@@ -71,8 +71,8 @@ export function ParticleBackground() {
         hasChanges = true;
       });
 
-      // 只在移动端减少连线，避免太花
-      const connectionDistance = isMobile ? 120 : 160;
+      // 线条更明显，连线距离增加
+      const connectionDistance = isMobile ? 140 : 180;
 
       // 计算连线
       const connectionElements: JSX.Element[] = [];
@@ -84,7 +84,8 @@ export function ParticleBackground() {
             const distance = Math.sqrt(dx * dx + dy * dy);
 
             if (distance < connectionDistance) {
-              const lineOpacity = (isMobile ? 0.08 : 0.15) * (1 - distance / connectionDistance);
+              // 线条不透明度提高，让线条更明显
+              const lineOpacity = (isMobile ? 0.12 : 0.25) * (1 - distance / connectionDistance);
               connectionElements.push(
                 <line
                   key={`line-${i}-${j}`}
@@ -93,7 +94,7 @@ export function ParticleBackground() {
                   x2={currentParticles[j].cx}
                   y2={currentParticles[j].cy}
                   stroke={`rgba(255, 255, 255, ${lineOpacity})`}
-                  strokeWidth={isMobile ? 0.8 : 1}
+                  strokeWidth={isMobile ? 1 : 1.2}
                   strokeLinecap="round"
                 />
               );
