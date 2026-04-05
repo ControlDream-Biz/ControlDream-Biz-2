@@ -9,7 +9,7 @@ interface ContactShowcaseProps {
 }
 
 // 使用React.memo优化性能
-export const ContactShowcase = memo(function ContactShowcase({ isActive }: ContactShowcaseProps) {
+export const ContactShowcase = memo(function ContactShowcase({ isActive = true }: ContactShowcaseProps) {
   const [mounted, setMounted] = useState(false);
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -49,7 +49,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive }: Conta
       <div
         className="absolute inset-0 transition-opacity duration-1000 ease-out"
         style={{
-          opacity: mounted ? 0.2 : 0,
+          opacity: mounted ? 0.2 : 0.2, // 始终显示，避免初始黑屏
           background: 'radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.1) 0%, transparent 60%)',
         }}
       />

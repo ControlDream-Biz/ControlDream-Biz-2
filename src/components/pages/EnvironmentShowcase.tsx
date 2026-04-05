@@ -145,7 +145,7 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
       <div
         className="absolute inset-0 transition-opacity duration-1000 ease-out"
         style={{
-          opacity: mounted ? 0.2 : 0,
+          opacity: mounted ? 0.2 : 0.2, // 始终显示，避免初始黑屏
           background: 'radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 60%)',
         }}
       />
