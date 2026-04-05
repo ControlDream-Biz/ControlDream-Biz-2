@@ -792,18 +792,34 @@ div[data-scroll-animate] {
 /* 三行波浪动画 - 第一行：延迟 0s，周期 10s */
 .animate-wave-1 {
   animation: waveBounce 10s ease-in-out infinite;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* 三行波浪动画 - 第二行：延迟 1.2s，周期 10s */
 .animate-wave-2 {
   animation: waveBounce 10s ease-in-out infinite;
   animation-delay: 1.2s;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* 三行波浪动画 - 第三行：延迟 2.4s，周期 10s */
 .animate-wave-3 {
   animation: waveBounce 10s ease-in-out infinite;
   animation-delay: 2.4s;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* 渐变文字优化 */
+.text-gradient {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 /* 分字符动画 */

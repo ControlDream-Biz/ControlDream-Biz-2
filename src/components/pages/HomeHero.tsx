@@ -2,13 +2,6 @@
 
 import { useEffect, useState } from 'react';
 
-const textStyle = {
-  fontSmooth: 'always' as const,
-  WebkitFontSmoothing: 'antialiased' as const,
-  MozOsxFontSmoothing: 'grayscale' as const,
-  textRendering: 'geometricPrecision' as const,
-};
-
 export function HomeHero() {
   const [mounted, setMounted] = useState(false);
 
@@ -35,16 +28,42 @@ export function HomeHero() {
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transition: 'all 1000ms ease-out',
-            ...textStyle,
           }}
         >
-          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-red-500 to-rose-500 leading-tight mb-2 sm:mb-3 md:mb-4 animate-wave-1" style={textStyle}>
+          <h2
+            className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-2 sm:mb-3 md:mb-4 animate-wave-1 inline-block"
+            style={{
+              background: 'linear-gradient(90deg, #FB923C 0%, #F87171 25%, #F43F5E 50%, #E11D48 75%, #BE123C 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              display: 'inline-block',
+            }}
+          >
             自主游戏产品
           </h2>
-          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 leading-tight mb-2 sm:mb-3 md:mb-4 animate-wave-2" style={textStyle}>
+          <h2
+            className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-2 sm:mb-3 md:mb-4 animate-wave-2 inline-block"
+            style={{
+              background: 'linear-gradient(90deg, #60A5FA 0%, #A78BFA 25%, #EC4899 50%, #F43F5E 75%, #E11D48 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              display: 'inline-block',
+            }}
+          >
             自主软件产品
           </h2>
-          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 leading-tight mb-2 sm:mb-3 md:mb-4 animate-wave-3" style={textStyle}>
+          <h2
+            className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-2 sm:mb-3 md:mb-4 animate-wave-3 inline-block"
+            style={{
+              background: 'linear-gradient(90deg, #22D3EE 0%, #3B82F6 25%, #6366F1 50%, #8B5CF6 75%, #A855F7 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              display: 'inline-block',
+            }}
+          >
             自主硬件产品
           </h2>
         </div>
@@ -57,7 +76,6 @@ export function HomeHero() {
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transitionDelay: '0.2s',
             transition: 'all 1000ms ease-out',
-            ...textStyle,
           }}
         >
           专注自主产品研发与运营，打造完整的自主产品生态体系
@@ -71,7 +89,6 @@ export function HomeHero() {
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transitionDelay: '0.4s',
             transition: 'all 1000ms ease-out',
-            ...textStyle,
           }}
         >
           {[
@@ -89,11 +106,10 @@ export function HomeHero() {
                     ? 'text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400'
                     : 'text-white'
                 }`}
-                style={textStyle}
               >
                 {item.value}
               </div>
-              <p className="text-xs sm:text-sm md:text-base lg:text-base text-white/50 font-medium group-hover:text-white/70 transition-colors" style={textStyle}>
+              <p className="text-xs sm:text-sm md:text-base lg:text-base text-white/50 font-medium group-hover:text-white/70 transition-colors">
                 {item.label}
               </p>
             </div>
