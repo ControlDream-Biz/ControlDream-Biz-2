@@ -183,7 +183,7 @@ export function ParticleBackground() {
       }
       const vx = (Math.random() - 0.5) * 0.3; // 初始速度很慢
       const vy = (Math.random() - 0.5) * 0.3;
-      const r = isMobile ? Math.random() * 2 + 1.5 : Math.random() * 4 + 2; // 第一版粒子大小
+      const r = isMobile ? Math.random() * 1 + 1 : Math.random() * 1.5 + 1.5; // 粒子更小
       const opacity = isMobile ? Math.random() * 0.4 + 0.4 : Math.random() * 0.5 + 0.5;
       const phase = Math.random() * Math.PI * 2; // 随机相位
       const frequency = 0.5 + Math.random() * 1.5; // 随机频率
