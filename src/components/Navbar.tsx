@@ -96,13 +96,13 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Mobile Menu Button - 顶级炫酷动画 */}
+        {/* Mobile Menu Button - 顶级复杂炫酷动画 */}
         <button
           onClick={(e) => {
             e.stopPropagation();
             setMobileMenuOpen(!mobileMenuOpen);
           }}
-          className="lg:hidden liquid-glass-menu-btn w-12 h-12 sm:w-12 sm:h-12 overflow-visible"
+          className="lg:hidden liquid-glass-menu-btn w-12 h-12 sm:w-12 sm:h-12 overflow-visible relative"
           style={{ perspective: '1000px' }}
         >
           <svg
@@ -118,80 +118,105 @@ export function Navbar() {
             style={{ width: '20px', height: '20px' }}
           >
             <defs>
-              <linearGradient id="menuGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient id="menuGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
                 <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
                 <stop offset="100%" stopColor="#a855f7" stopOpacity={mobileMenuOpen ? 1 : 0} />
               </linearGradient>
+              <linearGradient id="menuGradient2" x1="100%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
+                <stop offset="100%" stopColor="#3b82f6" stopOpacity={mobileMenuOpen ? 1 : 0} />
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
             </defs>
 
-            {/* 上横杠 - 变成左边竖线（带旋转和缩放） */}
+            {/* 第一条横杠 → 左竖线（外旋） */}
             <line
               x1={mobileMenuOpen ? 6 : 4}
               y1={mobileMenuOpen ? 6 : 6}
               x2={mobileMenuOpen ? 6 : 20}
               y2={mobileMenuOpen ? 18 : 6}
-              stroke={mobileMenuOpen ? 'url(#menuGradient)' : 'currentColor'}
+              stroke={mobileMenuOpen ? 'url(#menuGradient1)' : 'currentColor'}
               style={{
-                transition: 'all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
                 transform: mobileMenuOpen
-                  ? 'rotate(-15deg) scale(1.1)'
+                  ? 'rotate(-20deg) scale(1.15) translateY(0)'
                   : 'rotate(0deg) scale(1)',
                 transformOrigin: '6px 12px',
-                filter: mobileMenuOpen
-                  ? 'drop-shadow(0 0 8px rgba(168, 85, 247, 0.8))'
-                  : 'none',
+                filter: mobileMenuOpen ? 'url(#glow)' : 'none',
               }}
             />
 
-            {/* 中横杠 - 变成右边竖线（带反向旋转） */}
+            {/* 第二条横杠 → 右竖线（外旋） */}
             <line
               x1={mobileMenuOpen ? 18 : 4}
               y1={mobileMenuOpen ? 6 : 12}
               x2={mobileMenuOpen ? 18 : 20}
               y2={mobileMenuOpen ? 18 : 12}
-              stroke={mobileMenuOpen ? 'url(#menuGradient)' : 'currentColor'}
+              stroke={mobileMenuOpen ? 'url(#menuGradient2)' : 'currentColor'}
               style={{
-                transition: 'all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.08s',
+                transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s',
                 transform: mobileMenuOpen
-                  ? 'rotate(15deg) scale(1.1)'
+                  ? 'rotate(20deg) scale(1.15) translateY(0)'
                   : 'rotate(0deg) scale(1)',
                 transformOrigin: '18px 12px',
-                filter: mobileMenuOpen
-                  ? 'drop-shadow(0 0 8px rgba(168, 85, 247, 0.8))'
-                  : 'none',
+                filter: mobileMenuOpen ? 'url(#glow)' : 'none',
               }}
             />
 
-            {/* 下横杠 - 螺旋消失动画 */}
+            {/* 第三条横杠 → 中间竖线（收缩变细） */}
             <line
-              x1="4"
-              y1="18"
-              x2="20"
-              y2="18"
-              stroke={mobileMenuOpen ? 'url(#menuGradient)' : 'currentColor'}
+              x1={mobileMenuOpen ? 12 : 4}
+              y1={mobileMenuOpen ? 6 : 18}
+              x2={mobileMenuOpen ? 12 : 20}
+              y2={mobileMenuOpen ? 18 : 18}
+              stroke={mobileMenuOpen ? 'url(#menuGradient1)' : 'currentColor'}
+              strokeWidth={mobileMenuOpen ? 1.5 : 2.5}
               style={{
-                transition: 'all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55) 0.16s',
-                opacity: mobileMenuOpen ? 0 : 1,
+                transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s',
                 transform: mobileMenuOpen
-                  ? 'scaleX(0.3) translateY(-6px) rotate(45deg)'
-                  : 'scaleX(1) translateY(0) rotate(0deg)',
+                  ? 'scaleY(1.1) rotate(0deg) opacity(0.7)'
+                  : 'scaleY(1) rotate(0deg)',
                 transformOrigin: '12px 18px',
-                filter: mobileMenuOpen
-                  ? 'drop-shadow(0 0 8px rgba(168, 85, 247, 0.8))'
-                  : 'none',
+                filter: mobileMenuOpen ? 'url(#glow)' : 'none',
               }}
             />
 
-            {/* 添加光晕圆环效果 */}
+            {/* 内圈脉冲 */}
             {mobileMenuOpen && (
               <circle
                 cx="12"
                 cy="12"
-                r="20"
+                r="8"
                 fill="none"
-                stroke="url(#menuGradient)"
-                strokeWidth="1"
+                stroke="url(#menuGradient1)"
+                strokeWidth="1.5"
                 className="menu-pulse-ring"
+                style={{
+                  opacity: 0.8,
+                }}
+              />
+            )}
+
+            {/* 外圈光晕 */}
+            {mobileMenuOpen && (
+              <circle
+                cx="12"
+                cy="12"
+                r="12"
+                fill="none"
+                stroke="url(#menuGradient2)"
+                strokeWidth="0.5"
+                className="menu-pulse-ring"
+                style={{
+                  opacity: 0.5,
+                  animationDelay: '0.5s',
+                }}
               />
             )}
           </svg>
