@@ -4,7 +4,7 @@ import { Inter, Noto_Sans_SC, Noto_Serif_SC } from 'next/font/google';
 import './globals.css';
 import './fonts.css';
 import FloatingButtons from '@/components/FloatingButtons';
-
+import { GlobalBackground } from '@/components/GlobalBackground';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const notoSansSC = Noto_Sans_SC({
@@ -83,6 +83,7 @@ export default function RootLayout({
     <html lang="zh-CN" className={`${inter.variable} ${notoSansSC.variable} ${notoSerifSC.variable}`}>
       <body className={`antialiased font-sans`}>
         {isDev && <Inspector />}
+        <GlobalBackground />
         {children}
         <FloatingButtons />
       </body>
