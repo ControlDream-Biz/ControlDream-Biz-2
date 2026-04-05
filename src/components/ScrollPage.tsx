@@ -21,38 +21,61 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
 
   let transform = '';
   let opacity = 1;
+  let scale = 1;
+  let blur = 0;
 
   if (isDragging && dragOffset !== 0) {
     const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
 
     if (isActive) {
-      transform = `translateY(${dragOffset * 0.4}px)`;
-      opacity = 1 - progress * 0.1;
+      // 当前页面：随拖拽移动，轻微缩放，使用阻尼效果
+      const dampedOffset = dragOffset * 0.6;
+      const scaleProgress = Math.min(progress * 0.03, 0.02);
+      scale = 1 - scaleProgress;
+      transform = `translateY(${dampedOffset}px) scale(${scale})`;
+      opacity = Math.max(1 - progress * 0.15, 0.85);
+      blur = Math.min(progress * 3, 2);
     } else if (isNext && dragOffset < 0) {
-      const startOffset = 30;
-      transform = `translateY(${startOffset * window.innerHeight * 0.01 + dragOffset * 0.4}px)`;
-      opacity = progress * 0.7;
+      // 下一页：从下方进入
+      const startOffset = 100;
+      const dampedOffset = dragOffset * 0.4;
+      const incomingProgress = 1 - progress;
+      scale = 0.97 + (incomingProgress * 0.03);
+      transform = `translateY(${startOffset + dampedOffset}px) scale(${scale})`;
+      opacity = 0.2 + progress * 0.8;
+      blur = Math.min((1 - progress) * 4, 3);
     } else if (isPrev && dragOffset > 0) {
-      const startOffset = -30;
-      transform = `translateY(${startOffset * window.innerHeight * 0.01 + dragOffset * 0.4}px)`;
-      opacity = progress * 0.7;
+      // 上一页：从上方进入
+      const startOffset = -100;
+      const dampedOffset = dragOffset * 0.4;
+      const incomingProgress = 1 - progress;
+      scale = 0.97 + (incomingProgress * 0.03);
+      transform = `translateY(${startOffset + dampedOffset}px) scale(${scale})`;
+      opacity = 0.2 + progress * 0.8;
+      blur = Math.min((1 - progress) * 4, 3);
     } else if (isPrev) {
-      transform = `translateY(-50vh)`;
+      transform = `translateY(-100vh) scale(0.97)`;
       opacity = 0;
+      scale = 0.97;
     } else if (isNext) {
-      transform = `translateY(50vh)`;
+      transform = `translateY(100vh) scale(0.97)`;
       opacity = 0;
+      scale = 0.97;
     }
   } else {
     if (isActive) {
-      transform = 'translateY(0)';
+      transform = 'translateY(0) scale(1)';
       opacity = 1;
+      scale = 1;
+      blur = 0;
     } else if (isPrev) {
-      transform = `translateY(-50vh)`;
+      transform = `translateY(-100%) scale(0.95)`;
       opacity = 0;
+      scale = 0.95;
     } else if (isNext) {
-      transform = `translateY(50vh)`;
+      transform = `translateY(100%) scale(0.95)`;
       opacity = 0;
+      scale = 0.95;
     }
   }
 
@@ -72,9 +95,10 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
           style={{
             opacity,
             transform,
+            filter: `blur(${blur}px)`,
             transition: isDragging
               ? 'none'
-              : 'transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)',
+              : 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
             position: 'absolute',
             inset: 0,
             zIndex: 1,
@@ -85,6 +109,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
               radial-gradient(circle at 20% 75%, rgba(6, 182, 212, 0.4) 0%, rgba(14, 165, 233, 0.3) 15%, rgba(56, 189, 248, 0.2) 30%, rgba(56, 189, 248, 0.12) 45%, rgba(56, 189, 248, 0.06) 60%, transparent 85%),
               radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.35) 0%, rgba(147, 51, 234, 0.25) 15%, rgba(126, 34, 206, 0.18) 25%, rgba(126, 34, 206, 0.1) 35%, rgba(126, 34, 206, 0.05) 50%, transparent 85%)
             `,
+            willChange: 'transform, opacity, filter',
           }}
         >
           <ParticleBackground />
@@ -97,12 +122,14 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
           opacity,
           pointerEvents: isActive ? 'auto' : 'none',
           transform,
+          filter: `blur(${blur}px)`,
           transition: isDragging
             ? 'none'
-            : 'transform 0.25s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.2s cubic-bezier(0.25, 0.1, 0.25, 1)',
+            : 'transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
           position: 'absolute',
           inset: 0,
           zIndex: 10,
+          willChange: 'transform, opacity, filter',
         }}
       >
         <div className="w-full min-h-full px-4 py-8">
