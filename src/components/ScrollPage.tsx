@@ -116,11 +116,12 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    // 苹果官网式的触摸处理逻辑 - 优化阈值，避免误触
+    // 苹果官网式的触摸处理逻辑 - 极度严格阈值，杜绝误触
     const handleTouchStart = (e: TouchEvent) => {
       state.touchStartY = e.touches[0].clientY;
       state.touchStartTime = performance.now();
       state.velocity = 0;
+      state.isScrolling = false;
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -132,11 +133,17 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const deltaTime = currentTime - state.touchStartTime;
       const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
 
-      // 只在快速滑动时阻止默认行为（velocity >= 0.6），慢速滑动允许滚动内容
-      // 同时需要滑动超过40px，避免轻微抖动触发
-      if (absDeltaY > 40 && velocity >= 0.6 && e.cancelable) {
+      // 记录最大速度
+      if (velocity > state.velocity) {
+        state.velocity = velocity;
+      }
+
+      // 只在明显快速滑动时才阻止默认行为（速度 > 0.8 且 距离 > 60px）
+      // 慢速滑动和轻微抖动都允许正常滚动内容
+      if (absDeltaY > 60 && velocity > 0.8 && e.cancelable) {
         e.preventDefault();
         e.stopPropagation();
+        state.isScrolling = true;
       }
     };
 
@@ -146,24 +153,33 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       const deltaY = state.touchStartY - touchEndY;
       const deltaTime = touchEndTime - state.touchStartTime;
+      const absDeltaY = Math.abs(deltaY);
 
       // 计算滑动速度 (px/ms)
       const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
 
-      // 判断翻页条件（更严格的条件）：
-      // 1. 滑动距离超过80px 且 速度快于0.7px/ms（快速滑动）
-      // 2. 或者 滑动距离超过120px（大幅度滑动）
-      const swipeThreshold = 80;
-      const largeSwipeThreshold = 120;
-      const velocityThreshold = 0.7;
-      const absDeltaY = Math.abs(deltaY);
+      // 使用最大速度和最终速度的较大值
+      const effectiveVelocity = Math.max(velocity, state.velocity);
 
-      const shouldSwitchPage = (absDeltaY >= swipeThreshold && velocity >= velocityThreshold) ||
-                               absDeltaY >= largeSwipeThreshold;
+      // 极度严格的翻页条件：
+      // 1. 滑动时间必须在150ms-1000ms之间（太快或太慢都不翻页）
+      // 2. 滑动距离必须超过100px
+      // 3. 速度必须超过0.8px/ms
+      const minSwipeTime = 150;
+      const maxSwipeTime = 1000;
+      const swipeThreshold = 100;
+      const velocityThreshold = 0.8;
+
+      // 只在所有条件都满足时才翻页
+      const shouldSwitchPage = 
+        deltaTime >= minSwipeTime && 
+        deltaTime <= maxSwipeTime &&
+        absDeltaY >= swipeThreshold && 
+        effectiveVelocity >= velocityThreshold;
 
       if (shouldSwitchPage) {
         // 增加节流时间，避免频繁翻页
-        if (touchEndTime - state.lastWheelTime < 500) return;
+        if (touchEndTime - state.lastWheelTime < 600) return;
         state.lastWheelTime = touchEndTime;
 
         // 检查是否可以翻页
@@ -184,6 +200,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.isScrolling = false;
       state.touchStartY = 0;
       state.touchStartTime = 0;
+      state.velocity = 0;
     };
 
     // 苹果官网式的键盘导航
