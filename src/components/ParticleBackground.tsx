@@ -148,7 +148,7 @@ export function ParticleBackground() {
       const y = Math.random() * height;
       const vx = (Math.random() - 0.5) * 0.3; // 初始速度很慢
       const vy = (Math.random() - 0.5) * 0.3;
-      const r = isMobile ? Math.random() * 2 + 1.5 : Math.random() * 4 + 2;
+      const r = isMobile ? Math.random() * 1 + 1 : Math.random() * 2 + 1.5; // 粒子更小
       const opacity = isMobile ? Math.random() * 0.4 + 0.4 : Math.random() * 0.5 + 0.5;
       const phase = Math.random() * Math.PI * 2; // 随机相位
       const frequency = 0.5 + Math.random() * 1.5; // 随机频率
@@ -201,12 +201,12 @@ export function ParticleBackground() {
         particle.vx += particle.ax;
         particle.vy += particle.ay;
 
-        // 速度阻尼（第一版）
-        particle.vx *= 0.98; // 第一版阻尼
-        particle.vy *= 0.98;
+        // 速度阻尼（更大的阻尼，变换更慢）
+        particle.vx *= 0.96; // 增加阻尼，变换更慢
+        particle.vy *= 0.96;
 
-        // 速度限制（第一版）
-        const maxSpeed = isMobile ? 0.5 : 1.0; // 第一版最大速度
+        // 速度限制（更慢的变换）
+        const maxSpeed = isMobile ? 0.3 : 0.6; // 降低最大速度，变换更慢
         const speed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
         if (speed > maxSpeed) {
           particle.vx = (particle.vx / speed) * maxSpeed;
