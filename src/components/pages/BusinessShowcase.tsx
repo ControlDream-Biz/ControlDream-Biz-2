@@ -72,7 +72,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
   currentPage = 0
 }: BusinessShowcaseProps) {
   const [mounted, setMounted] = useState(false);
-  const [pageMounted, setPageMounted] = useState(false);
+  const [shouldAnimate, setShouldAnimate] = useState(false); // 控制是否应该播放滚入动画
   const initializedRef = useRef(false);
 
   useEffect(() => {
@@ -80,20 +80,29 @@ export const BusinessShowcase = memo(function BusinessShowcase({
     if (!initializedRef.current) {
       initializedRef.current = true;
       setMounted(true);
+      // 首次加载也触发小字滚入动画
+      setShouldAnimate(true);
     }
   }, []);
 
   // 监听页面切换，重新触发小字滚入动画
   useEffect(() => {
     if (isActive) {
-      // 页面进入时，先重置动画状态，然后触发动画
-      setPageMounted(false);
+      // 页面进入时，先停止动画，然后触发动画
+      setShouldAnimate(false);
       const timer = setTimeout(() => {
-        setPageMounted(true);
-      }, 50); // 小延迟确保重置生效
+        setShouldAnimate(true);
+      }, 50); // 短暂延迟确保状态重置生效
       return () => clearTimeout(timer);
     }
   }, [isActive]);
+
+  // 计算滚入动画的opacity（基于shouldAnimate状态）
+  const getScrollInOpacity = () => {
+    // 如果shouldAnimate为true，opacity为1（由CSS transition控制）
+    // 如果shouldAnimate为false，opacity为0
+    return shouldAnimate ? 1 : 0;
+  };
 
   // 计算滑动淡入效果 - 小字随滑动产生淡入动画
   const getSlideFadeOpacity = (itemIndex: number) => {
@@ -238,18 +247,27 @@ export const BusinessShowcase = memo(function BusinessShowcase({
                   </div>
 
                   {/* 小字列表 - 腾讯式从右向左滚动淡入 + 滑动淡入 */}
-                  <div key={`items-${pageMounted}`} className="space-y-2 sm:space-y-3 mt-4 sm:mt-6">
+                  <div className="space-y-2 sm:space-y-3 mt-4 sm:mt-6">
                     {business.items.map((item, i) => {
+                      const scrollInOpacity = getScrollInOpacity();
                       const slideFadeOpacity = getSlideFadeOpacity(i);
+
+                      // 综合计算最终opacity：
+                      // 如果正在拖拽，使用slideFadeOpacity
+                      // 如果不在拖拽，使用scrollInOpacity（由shouldAnimate控制）
+                      const finalOpacity = isDragging ? slideFadeOpacity : scrollInOpacity;
+
                       return (
                         <div
                           key={i}
-                          className="flex items-start space-x-2 sm:space-x-3 transition-all duration-800 ease-out"
+                          className="flex items-start space-x-2 sm:space-x-3"
                           style={{
-                            transform: pageMounted ? 'translateX(0)' : 'translateX(4rem)',
-                            opacity: pageMounted ? slideFadeOpacity : 0,
-                            transitionDelay: `${pageMounted ? (0.6 + i * 0.12) : 0}s`,
+                            transform: shouldAnimate ? 'translateX(0)' : 'translateX(4rem)',
+                            opacity: finalOpacity,
+                            transitionDelay: shouldAnimate ? `${0.6 + i * 0.12}s` : '0s',
                             transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                            transitionDuration: isDragging ? '0s' : '800ms', // 拖拽时禁用transition
+                            transitionProperty: 'transform, opacity',
                           }}
                         >
                           <div className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 bg-gradient-to-br ${business.color}`}></div>
