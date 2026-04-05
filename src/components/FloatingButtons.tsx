@@ -19,27 +19,99 @@ export function BackgroundMusic() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.3);
+  const [showVolume, setShowVolume] = useState(false);
+  const volumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const hasAttemptedAutoPlay = useRef(false);
 
   useEffect(() => {
-    // 页面加载后尝试自动播放
+    // 从 localStorage 读取之前的音量设置
+    const savedVolume = localStorage.getItem('music-volume');
+    if (savedVolume) {
+      const vol = parseFloat(savedVolume);
+      setVolume(vol);
+      if (audioRef.current) {
+        audioRef.current.volume = vol;
+      }
+    }
+
+    // 页面加载后尝试自动播放（先静音播放，然后取消静音）
     const audio = audioRef.current;
-    if (audio) {
-      // 尝试自动播放
+    if (audio && !hasAttemptedAutoPlay.current) {
+      hasAttemptedAutoPlay.current = true;
+
+      // 先设置为静音
+      audio.muted = true;
+      audio.volume = volume;
+
       const attemptPlay = async () => {
         try {
+          // 尝试静音播放
           await audio.play();
           setIsPlaying(true);
+          // 播放成功后取消静音
+          setTimeout(() => {
+            audio.muted = false;
+            setShowVolume(true);
+            startVolumeHideTimer();
+          }, 100);
         } catch (error) {
-          // 自动播放被阻止，等待用户交互
-          console.log('自动播放被阻止，等待用户交互');
+          console.log('自动播放被阻止，尝试静音播放', error);
+          // 如果静音播放也失败，提示用户点击
+          // 创建一个提示覆盖层
+          const prompt = document.createElement('div');
+          prompt.id = 'music-prompt';
+          prompt.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 16px;
+            font-size: 14px;
+            z-index: 99999;
+            cursor: pointer;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.3s ease-out;
+          `;
+          prompt.innerHTML = '🎵 点击播放背景音乐';
+          prompt.addEventListener('click', async () => {
+            try {
+              audio.muted = false;
+              await audio.play();
+              setIsPlaying(true);
+              document.body.removeChild(prompt);
+            } catch (e) {
+              console.error('播放失败', e);
+            }
+          });
+          document.body.appendChild(prompt);
+
+          // 5秒后自动消失
+          setTimeout(() => {
+            if (document.body.contains(prompt)) {
+              document.body.removeChild(prompt);
+            }
+          }, 5000);
         }
       };
 
-      attemptPlay();
+      // 延迟一点尝试播放，确保页面加载完成
+      setTimeout(attemptPlay, 500);
 
       // 监听播放状态
-      const handlePlay = () => setIsPlaying(true);
-      const handlePause = () => setIsPlaying(false);
+      const handlePlay = () => {
+        setIsPlaying(true);
+        setShowVolume(true);
+        startVolumeHideTimer();
+      };
+      const handlePause = () => {
+        setIsPlaying(false);
+        setShowVolume(false);
+      };
 
       audio.addEventListener('play', handlePlay);
       audio.addEventListener('pause', handlePause);
@@ -47,9 +119,21 @@ export function BackgroundMusic() {
       return () => {
         audio.removeEventListener('play', handlePlay);
         audio.removeEventListener('pause', handlePause);
+        if (volumeTimeoutRef.current) {
+          clearTimeout(volumeTimeoutRef.current);
+        }
       };
     }
   }, []);
+
+  const startVolumeHideTimer = () => {
+    if (volumeTimeoutRef.current) {
+      clearTimeout(volumeTimeoutRef.current);
+    }
+    volumeTimeoutRef.current = setTimeout(() => {
+      setShowVolume(false);
+    }, 3000); // 3秒后自动隐藏
+  };
 
   const togglePlay = () => {
     const audio = audioRef.current;
@@ -58,6 +142,7 @@ export function BackgroundMusic() {
       if (isPlaying) {
         audio.pause();
       } else {
+        audio.muted = false;
         audio.play();
       }
     }
@@ -69,7 +154,22 @@ export function BackgroundMusic() {
       const newVolume = parseFloat(e.target.value);
       audio.volume = newVolume;
       setVolume(newVolume);
+      localStorage.setItem('music-volume', newVolume.toString());
+      startVolumeHideTimer(); // 重置隐藏计时器
     }
+  };
+
+  const handleVolumeMouseEnter = () => {
+    if (isPlaying) {
+      setShowVolume(true);
+      if (volumeTimeoutRef.current) {
+        clearTimeout(volumeTimeoutRef.current);
+      }
+    }
+  };
+
+  const handleVolumeMouseLeave = () => {
+    startVolumeHideTimer();
   };
 
   return (
@@ -85,6 +185,10 @@ export function BackgroundMusic() {
       {/* 音乐控制按钮 */}
       <button
         onClick={togglePlay}
+        onMouseEnter={() => {
+          if (isPlaying) setShowVolume(true);
+          if (volumeTimeoutRef.current) clearTimeout(volumeTimeoutRef.current);
+        }}
         className="fixed top-24 right-4 z-50 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-all duration-300"
         style={{
           pointerEvents: 'auto',
@@ -102,27 +206,79 @@ export function BackgroundMusic() {
         )}
       </button>
 
-      {/* 音量控制（悬停显示） */}
+      {/* 音量控制（自动隐藏） */}
       <div
-        className="fixed top-36 right-4 z-50 flex flex-col items-center gap-2 transition-all duration-300"
+        className="fixed top-36 right-4 z-50 flex flex-col items-center gap-2"
         style={{
-          opacity: isPlaying ? 1 : 0,
-          pointerEvents: isPlaying ? 'auto' : 'none',
+          opacity: showVolume && isPlaying ? 1 : 0,
+          pointerEvents: showVolume && isPlaying ? 'auto' : 'none',
+          transition: 'opacity 0.3s ease-out',
         }}
+        onMouseEnter={handleVolumeMouseEnter}
+        onMouseLeave={handleVolumeMouseLeave}
       >
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.1"
-          value={volume}
-          onChange={handleVolumeChange}
-          className="w-1 h-20 appearance-none bg-white/20 rounded-full cursor-pointer hover:bg-white/30 transition-all"
-          style={{
-            writingMode: 'vertical-lr',
-            direction: 'rtl',
-          }}
-        />
+        <div className="flex flex-col items-center gap-1.5">
+          {/* 音量图标 */}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="text-white/80"
+          >
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z" />
+          </svg>
+
+          {/* 音量滑块 */}
+          <div
+            className="relative w-2.5 h-28 rounded-full bg-black/40 backdrop-blur-sm border border-white/10"
+            style={{
+              writingMode: 'vertical-lr',
+              direction: 'rtl',
+            }}
+          >
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value={volume}
+              onChange={handleVolumeChange}
+              className="absolute inset-0 w-full h-full appearance-none cursor-pointer opacity-0"
+              style={{
+                writingMode: 'vertical-lr',
+                direction: 'rtl',
+              }}
+            />
+            {/* 进度条背景 */}
+            <div
+              className="absolute right-0 top-0 w-full rounded-full bg-white/20"
+              style={{
+                height: `${(1 - volume) * 100}%`,
+              }}
+            />
+            {/* 进度条 */}
+            <div
+              className="absolute right-0 bottom-0 w-full rounded-full bg-gradient-to-t from-purple-500 to-blue-500"
+              style={{
+                height: `${volume * 100}%`,
+              }}
+            />
+            {/* 滑块圆点 */}
+            <div
+              className="absolute left-1/2 w-4 h-4 -translate-x-1/2 rounded-full bg-white shadow-lg border-2 border-purple-500 transition-all"
+              style={{
+                bottom: `${volume * 100}%`,
+                transform: `translate(-50%, 50%)`,
+              }}
+            />
+          </div>
+
+          {/* 音量数值 */}
+          <div className="text-white/70 text-xs font-medium min-w-[28px] text-center">
+            {Math.round(volume * 100)}%
+          </div>
+        </div>
       </div>
     </>
   );
