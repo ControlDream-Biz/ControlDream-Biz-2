@@ -6,6 +6,7 @@ import { BusinessShowcase } from '@/components/pages/BusinessShowcase';
 import { EnvironmentShowcase } from '@/components/pages/EnvironmentShowcase';
 import { ContactShowcase } from '@/components/pages/ContactShowcase';
 import { Navbar } from '@/components/Navbar';
+import { ScrollProgress } from '@/components/ScrollProgress';
 
 export default function Page() {
   const pages = [
@@ -19,6 +20,7 @@ export default function Page() {
     <>
       <Navbar />
       <ScrollContainer>{pages}</ScrollContainer>
+      <ScrollProgress />
     </>
   );
 }

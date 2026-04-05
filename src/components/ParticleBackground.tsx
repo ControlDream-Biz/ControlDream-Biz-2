@@ -125,7 +125,7 @@ function ultraRandomForceField(
 
 export function ParticleBackground() {
   const [particles, setParticles] = useState<Particle[]>([]);
-  const [connections, setConnections] = useState<JSX.Element[]>([]);
+  const [connections, setConnections] = useState<React.JSX.Element[]>([]);
   const svgRef = useRef<SVGSVGElement>(null);
   const rafRef = useRef<number | null>(null);
   const particlesRef = useRef<Particle[]>([]);
@@ -330,7 +330,7 @@ export function ParticleBackground() {
       // 最初连线距离
       const connectionDistance = isMobile ? 150 : 200;
 
-      const connectionElements: JSX.Element[] = [];
+      const connectionElements: React.JSX.Element[] = [];
       // 移除移动端粒子数量限制，所有设备都显示线条
       for (let i = 0; i < currentParticles.length; i++) {
         for (let j = i + 1; j < currentParticles.length; j++) {
