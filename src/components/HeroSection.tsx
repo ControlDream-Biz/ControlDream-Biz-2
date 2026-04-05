@@ -18,68 +18,69 @@ export default function HeroSection() {
       className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center overflow-hidden"
       style={{ minHeight: 'calc(100vh - 60px)' }}
     >
-      {/* 游戏展示背景 - 直接显示大图 */}
+      {/* 游戏展示背景 - 清晰显示 */}
       <div className="absolute inset-0 -z-10">
+        {/* 主背景图 - 提高亮度 */}
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
             backgroundImage: "url('/hero-bg.jpg')",
-            filter: 'brightness(0.6)',
+            filter: 'brightness(1.0) saturate(1.0)',
           }}
         />
 
-        {/* 文字背后突出显示游戏元素 - 使用边框和阴影 */}
+        {/* 文字背后突出显示游戏元素 */}
         <div
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] h-[80%]"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full h-full"
         >
           {/* 左上游戏框 */}
           <div
-            className="absolute top-[5%] left-[5%] w-[25%] h-[35%] rounded-xl overflow-hidden border-4 border-white/20 shadow-2xl"
+            className="absolute top-[8%] left-[3%] w-[28%] h-[40%] rounded-2xl overflow-hidden border-2 border-white/30 shadow-2xl"
             style={{
               backgroundImage: "url('/hero-bg.jpg')",
-              backgroundPosition: '15% 20%',
+              backgroundPosition: '10% 15%',
               backgroundSize: 'cover',
-              opacity: 0.9,
+              opacity: 1.0,
             }}
           />
 
           {/* 右上游戏框 */}
           <div
-            className="absolute top-[10%] right-[5%] w-[30%] h-[40%] rounded-xl overflow-hidden border-4 border-white/20 shadow-2xl"
+            className="absolute top-[5%] right-[3%] w-[32%] h-[45%] rounded-2xl overflow-hidden border-2 border-white/30 shadow-2xl"
             style={{
               backgroundImage: "url('/hero-bg.jpg')",
-              backgroundPosition: '55% 25%',
+              backgroundPosition: '60% 20%',
               backgroundSize: 'cover',
-              opacity: 0.9,
+              opacity: 1.0,
             }}
           />
 
           {/* 左下游戏框 */}
           <div
-            className="absolute bottom-[10%] left-[8%] w-[28%] h-[38%] rounded-xl overflow-hidden border-4 border-white/20 shadow-2xl"
+            className="absolute bottom-[5%] left-[5%] w-[30%] h-[42%] rounded-2xl overflow-hidden border-2 border-white/30 shadow-2xl"
             style={{
               backgroundImage: "url('/hero-bg.jpg')",
-              backgroundPosition: '85% 65%',
+              backgroundPosition: '90% 70%',
               backgroundSize: 'cover',
-              opacity: 0.9,
+              opacity: 1.0,
             }}
           />
 
           {/* 右下游戏框 */}
           <div
-            className="absolute bottom-[5%] right-[8%] w-[26%] h-[33%] rounded-xl overflow-hidden border-4 border-white/20 shadow-2xl"
+            className="absolute bottom-[8%] right-[5%] w-[28%] h-[38%] rounded-2xl overflow-hidden border-2 border-white/30 shadow-2xl"
             style={{
               backgroundImage: "url('/hero-bg.jpg')",
-              backgroundPosition: '35% 75%',
+              backgroundPosition: '40% 80%',
               backgroundSize: 'cover',
-              opacity: 0.9,
+              opacity: 1.0,
             }}
           />
         </div>
 
-        {/* 底部渐变确保文字可读 */}
+        {/* 仅在底部添加轻微渐变，确保文字可读 */}
         <div
-          className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/80 via-black/50 to-transparent"
+          className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/40 via-transparent to-transparent"
         />
       </div>
 
