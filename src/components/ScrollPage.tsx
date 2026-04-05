@@ -155,10 +155,13 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     const handleWheel = (e: WheelEvent) => {
       const now = performance.now();
       const delta = e.deltaY;
+      const deltaAbs = Math.abs(delta);
 
       // 获取当前页面的滚动容器
       const activePage = document.querySelector(`[data-page-index="${currentPage}"]`);
       const scrollContainer = activePage?.querySelector('.scroll-content') as HTMLDivElement;
+
+      let shouldAllowPageChange = true;
 
       // 如果有滚动容器，检查是否可以滚动
       if (scrollContainer) {
@@ -166,24 +169,35 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
 
-        // 内容可以滚动，检查是否到达边界
-        if (scrollHeight > clientHeight) {
-          const isAtTop = scrollTop <= 1;
-          const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 1;
+        // 检查内容是否可以滚动（至少比屏幕高50px）
+        const isScrollable = scrollHeight > clientHeight + 50;
 
-          // 在边界，检查翻页方向
+        if (isScrollable) {
+          // 计算到顶部和底部的距离
+          const distanceFromTop = scrollTop;
+          const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+
+          // 只有在非常接近边界（<30px）时才允许翻页
+          const isAtTop = distanceFromTop < 30;
+          const isAtBottom = distanceFromBottom < 30;
+
+          // 检查翻页方向
           const shouldPageDown = delta > 0 && isAtBottom;
           const shouldPageUp = delta < 0 && isAtTop;
 
-          // 不在边界，让内容滚动
+          // 如果在中间或方向不对，不允许翻页
           if (!shouldPageDown && !shouldPageUp) {
-            return;
+            shouldAllowPageChange = false;
           }
         }
       }
 
+      if (!shouldAllowPageChange) {
+        return;
+      }
+
       // 节流
-      if (now - state.lastWheelTime < 300) return;
+      if (now - state.lastWheelTime < 200) return;
       state.lastWheelTime = now;
 
       // 翻页
@@ -220,9 +234,14 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
 
-        if (scrollHeight > clientHeight) {
-          const isAtTop = scrollTop <= 1;
-          const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 1;
+        const isScrollable = scrollHeight > clientHeight + 50;
+
+        if (isScrollable) {
+          const distanceFromTop = scrollTop;
+          const distanceFromBottom = scrollHeight - (scrollTop + clientHeight);
+
+          const isAtTop = distanceFromTop < 30;
+          const isAtBottom = distanceFromBottom < 30;
 
           const shouldPageDown = deltaY > 0 && isAtBottom;
           const shouldPageUp = deltaY < 0 && isAtTop;
