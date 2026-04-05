@@ -92,7 +92,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
       setShouldAnimate(false);
       const timer = setTimeout(() => {
         setShouldAnimate(true);
-      }, 50); // 短暂延迟确保状态重置生效
+      }, 100); // 增加延迟确保状态重置生效
       return () => clearTimeout(timer);
     }
   }, [isActive]);
@@ -140,14 +140,6 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
     return 1;
   };
-
-  useEffect(() => {
-    // 只在首次加载时执行淡入动画
-    if (!initializedRef.current) {
-      initializedRef.current = true;
-      setMounted(true);
-    }
-  }, []);
 
   return (
     <div className="relative w-full bg-black overflow-hidden">
@@ -255,18 +247,21 @@ export const BusinessShowcase = memo(function BusinessShowcase({
                       // 综合计算最终opacity：
                       // 如果正在拖拽，使用slideFadeOpacity
                       // 如果不在拖拽，使用scrollInOpacity（由shouldAnimate控制）
-                      const finalOpacity = isDragging ? slideFadeOpacity : scrollInOpacity;
+                      // 如果shouldAnimate为false，opacity始终为0
+                      const finalOpacity = isDragging
+                        ? slideFadeOpacity
+                        : (shouldAnimate ? scrollInOpacity : 0);
 
                       return (
                         <div
-                          key={i}
+                          key={`item-${index}-${i}-${shouldAnimate}`}
                           className="flex items-start space-x-2 sm:space-x-3"
                           style={{
                             transform: shouldAnimate ? 'translateX(0)' : 'translateX(4rem)',
                             opacity: finalOpacity,
-                            transitionDelay: shouldAnimate ? `${0.6 + i * 0.12}s` : '0s',
+                            transitionDelay: shouldAnimate ? `${i * 0.15}s` : '0s',
                             transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                            transitionDuration: isDragging ? '0s' : '800ms', // 拖拽时禁用transition
+                            transitionDuration: isDragging ? '0s' : '800ms',
                             transitionProperty: 'transform, opacity',
                           }}
                         >
