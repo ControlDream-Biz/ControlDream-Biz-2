@@ -126,7 +126,7 @@ export function Navbar() {
                 transformOrigin: '12px 12px',
                 transition: 'all 0.2s linear',
                 transform: mobileMenuOpen
-                  ? 'rotate(90deg) translateX(-6px)'
+                  ? 'rotate(90deg) translateX(-12px)'
                   : 'rotate(0deg)',
               }}
             />
@@ -141,7 +141,7 @@ export function Navbar() {
                 transformOrigin: '12px 12px',
                 transition: 'all 0.2s linear',
                 transform: mobileMenuOpen
-                  ? 'rotate(90deg) translateX(6px)'
+                  ? 'translateX(6px) rotate(90deg)'
                   : 'rotate(0deg)',
               }}
             />
