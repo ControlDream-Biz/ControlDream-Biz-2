@@ -78,13 +78,11 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
   // 页面激活时触发动画
   useEffect(() => {
-    console.log(`BusinessShowcase 触发动画: pageIndex=${pageIndex}, isActive=${isActive}, mounted=${mounted}, previousActive=${previousIsActiveRef.current}, initialized=${initializedRef.current}`);
-    
     // 在页面激活时触发动画（包括初始化和页面切换）
     if (isActive) {
       // 检查是否需要触发动画（第一次激活或从非激活变为激活）
       const shouldTrigger = !initializedRef.current || !previousIsActiveRef.current;
-      
+
       if (shouldTrigger) {
         initializedRef.current = true;
         previousIsActiveRef.current = true;
@@ -98,16 +96,11 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
           // 计算总小字数
           const totalItems = businesses.reduce((sum, b) => sum + b.items.length, 0);
-          console.log(`总共有 ${totalItems} 个小字，准备执行动画`);
 
           // 依次显示每个小字
           for (let i = 0; i < totalItems; i++) {
             setTimeout(() => {
-              setVisibleIndices(prev => {
-                const newSet = new Set([...prev, i]);
-                console.log(`显示第 ${i} 个小字，当前可见: ${Array.from(newSet).join(', ')}`);
-                return newSet;
-              });
+              setVisibleIndices(prev => new Set([...prev, i]));
             }, 400 + i * 200);
           }
         }, 300); // 延迟300ms
@@ -118,7 +111,6 @@ export const BusinessShowcase = memo(function BusinessShowcase({
       // 页面变为非激活时，重置状态
       previousIsActiveRef.current = false;
       setVisibleIndices(new Set());
-      console.log(`BusinessShowcase 页面变为非激活，清空小字显示`);
     }
   }, [isActive]); // 只监听 isActive
 
