@@ -140,6 +140,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     lastScrollPosition: 0,
     wheelAccumulator: 0,
     isProcessingScroll: false,
+    touchStartY: 0,
+    touchStartTime: 0,
   });
 
   const handlePageChange = useCallback((newPage: number) => {
@@ -216,20 +218,112 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
     const handleTouchStart = (e: TouchEvent) => {
       const touch = e.touches[0];
+      state.touchStartY = touch.clientY;
+      state.touchStartTime = performance.now();
       dragOffsetRef.current = 0;
-      setIsDragging(true);
+      setIsDragging(false);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       const touch = e.touches[0];
-      const deltaY = touch.clientY - dragOffsetRef.current;
-      dragOffsetRef.current = touch.clientY;
-      setIsDragging(true);
+      const deltaY = touch.clientY - state.touchStartY;
+
+      // 获取当前页面的滚动容器
+      const activePage = document.querySelector(`[data-page-index="${currentPage}"]`);
+      const scrollContainer = activePage?.querySelector('.scroll-content') as HTMLDivElement;
+
+      let shouldPreventDefault = false;
+
+      if (scrollContainer) {
+        const scrollTop = scrollContainer.scrollTop;
+        const scrollHeight = scrollContainer.scrollHeight;
+        const clientHeight = scrollContainer.clientHeight;
+
+        const remainingScroll = scrollHeight - (scrollTop + clientHeight);
+
+        // 首页：向上滑动可以翻页
+        if (currentPage === 0 && deltaY < 0) {
+          shouldPreventDefault = true;
+        }
+        // 向下滑动：必须到底部才能翻页
+        else if (deltaY < 0 && remainingScroll <= 50) {
+          shouldPreventDefault = true;
+        }
+        // 向上滑动：必须到顶部才能翻页
+        else if (deltaY > 0 && scrollTop <= 50) {
+          shouldPreventDefault = true;
+        }
+      } else {
+        // 没有滚动容器，允许所有方向
+        shouldPreventDefault = true;
+      }
+
+      if (shouldPreventDefault && Math.abs(deltaY) > 10) {
+        e.preventDefault();
+        dragOffsetRef.current = deltaY;
+        setIsDragging(true);
+      }
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
       setIsDragging(false);
+
+      const deltaY = Math.abs(dragOffsetRef.current);
+      const direction = dragOffsetRef.current > 0 ? 1 : -1;
       dragOffsetRef.current = 0;
+
+      const threshold = window.innerHeight * 0.15; // 15%屏幕高度
+
+      if (deltaY > threshold && !state.isProcessingScroll) {
+        state.isProcessingScroll = true;
+
+        // 获取当前页面的滚动容器
+        const activePage = document.querySelector(`[data-page-index="${currentPage}"]`);
+        const scrollContainer = activePage?.querySelector('.scroll-content') as HTMLDivElement;
+
+        let shouldChangePage = false;
+
+        if (scrollContainer) {
+          const scrollTop = scrollContainer.scrollTop;
+          const scrollHeight = scrollContainer.scrollHeight;
+          const clientHeight = scrollContainer.clientHeight;
+
+          const remainingScroll = scrollHeight - (scrollTop + clientHeight);
+
+          // 向下滑动（deltaY > 0，direction = 1）
+          if (direction === 1) {
+            if (scrollTop <= 50 && currentPage > 0) {
+              shouldChangePage = true;
+            }
+          }
+          // 向上滑动（deltaY < 0，direction = -1）
+          else {
+            // 首页：直接允许翻页
+            if (currentPage === 0) {
+              shouldChangePage = true;
+            }
+            // 其他页面：必须到底部
+            else if (remainingScroll <= 50 && currentPage < totalPages - 1) {
+              shouldChangePage = true;
+            }
+          }
+        } else {
+          // 没有滚动容器，直接翻页
+          shouldChangePage = true;
+        }
+
+        if (shouldChangePage) {
+          if (direction === 1 && currentPage > 0) {
+            handlePageChange(currentPage - 1);
+          } else if (direction === -1 && currentPage < totalPages - 1) {
+            handlePageChange(currentPage + 1);
+          } else {
+            state.isProcessingScroll = false;
+          }
+        } else {
+          state.isProcessingScroll = false;
+        }
+      }
     };
 
     const handleKeyDown = (e: KeyboardEvent) => {
