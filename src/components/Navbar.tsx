@@ -96,7 +96,7 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Mobile Menu Button - 液态玻璃动画 */}
+        {/* Mobile Menu Button - 苹果风格汉堡菜单动画 */}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -104,7 +104,6 @@ export function Navbar() {
           }}
           className="lg:hidden liquid-glass-menu-btn w-11 h-11 sm:w-12 sm:h-12"
         >
-          {/* 炫酷的汉堡菜单动画 - 三个横杠旋转变为X */}
           <svg
             width="24"
             height="24"
@@ -114,48 +113,50 @@ export function Navbar() {
             strokeWidth={2.5}
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-white overflow-visible"
-            style={{ width: '20px', height: '20px' }}
+            className="text-white"
+            style={{ width: '22px', height: '22px' }}
           >
-            {/* 上横杠 - 旋转45度形成X的上半部分 */}
+            {/* 上横杠 - 旋转成X的上半部分 */}
             <line
-              x1="3"
+              x1="4"
               y1="6"
-              x2="21"
+              x2="20"
               y2="6"
               style={{
                 transformOrigin: '12px 12px',
-                transition: 'transform 0.3s linear, opacity 0.3s linear',
-                transform: mobileMenuOpen ? 'rotate(45deg) scale(1.1)' : 'rotate(0deg) scale(1)',
-                opacity: mobileMenuOpen ? 1 : 1
+                transition: 'all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                transform: mobileMenuOpen
+                  ? 'rotate(45deg)'
+                  : 'rotate(0deg)',
               }}
             />
 
-            {/* 中横杠 - 渐变消失 */}
+            {/* 中横杠 - 缩小消失 */}
             <line
-              x1="3"
+              x1="4"
               y1="12"
-              x2="21"
+              x2="20"
               y2="12"
               style={{
                 transformOrigin: '12px 12px',
-                transition: 'opacity 0.2s linear, transform 0.2s linear',
+                transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1) 0.05s',
                 opacity: mobileMenuOpen ? 0 : 1,
-                transform: mobileMenuOpen ? 'scaleX(0)' : 'scaleX(1)'
+                transform: mobileMenuOpen ? 'scale(0)' : 'scale(1)',
               }}
             />
 
-            {/* 下横杠 - 旋转-45度形成X的下半部分 */}
+            {/* 下横杠 - 旋转成X的下半部分 */}
             <line
-              x1="3"
+              x1="4"
               y1="18"
-              x2="21"
+              x2="20"
               y2="18"
               style={{
                 transformOrigin: '12px 12px',
-                transition: 'transform 0.3s linear, opacity 0.3s linear',
-                transform: mobileMenuOpen ? 'rotate(-45deg) scale(1.1)' : 'rotate(0deg) scale(1)',
-                opacity: mobileMenuOpen ? 1 : 1
+                transition: 'all 0.35s cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+                transform: mobileMenuOpen
+                  ? 'rotate(-45deg)'
+                  : 'rotate(0deg)',
               }}
             />
           </svg>
