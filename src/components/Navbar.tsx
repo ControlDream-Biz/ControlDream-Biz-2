@@ -43,36 +43,41 @@ export function Navbar() {
       {/* 左上角 Logo + 公司名称 - 苹果官网式布局 */}
       <div
         onClick={() => scrollToSection('#home', 0)}
-        className="fixed top-6 left-6 z-50 flex items-center gap-4 hover:opacity-90 transition-opacity cursor-pointer group select-none"
+        className="fixed top-6 left-6 z-50 flex items-center gap-2 sm:gap-3 hover:opacity-90 transition-opacity cursor-pointer group select-none"
       >
-        {/* LOGO - 透明背景，白色线条，增大尺寸 */}
-        <div className="relative w-16 h-16 flex-shrink-0">
+        {/* LOGO - 透明背景，白色线条，响应式尺寸 */}
+        <div className="relative w-8 h-8 flex-shrink-0 sm:w-14 sm:h-14">
           <Image
             src="/logo-cm-transparent.png"
             alt="创梦计算机系统有限公司"
             fill
             className="object-contain"
-            sizes="(max-width: 768px) 64px, 64px"
+            sizes="(max-width: 640px) 32px, 56px"
             priority
           />
         </div>
 
-        {/* 公司名称 - 紧贴LOGO，确保中文清晰可见 */}
-        <div className="hidden md:flex flex-col justify-center">
-          {/* 中文公司名 - 确保清晰可见 */}
-          <div className="text-xl font-bold text-white tracking-tight leading-tight mb-1 select-none" style={fontStyles}>
+        {/* 公司名称 - 移动端和桌面端都显示，响应式字体大小 */}
+        <div className="flex flex-col justify-center">
+          {/* 中文公司名 - 响应式字体大小 */}
+          <div className="text-sm font-bold text-white tracking-tight leading-tight mb-1 sm:text-lg select-none" style={fontStyles}>
             创梦计算机系统有限公司
           </div>
 
-          {/* 英文副标题 - 宽度与中文对齐 */}
+          {/* 英文副标题 - 宽度与中文对齐，响应式字体大小 */}
           <div
-            className="text-xs text-white/70 font-medium uppercase select-none"
+            className="text-[9px] sm:text-[11px] text-white/70 font-medium uppercase select-none"
             style={{
               ...fontStyles,
-              letterSpacing: '0.18em'
+              letterSpacing: '0.15em'
             }}
           >
-            CHUANGMENG COMPUTER SYSTEM
+            <span className="hidden sm:inline" style={{ letterSpacing: '0.18em' }}>
+              CHUANGMENG COMPUTER SYSTEM
+            </span>
+            <span className="sm:hidden">
+              CHUANGMENG COMPUTER SYSTEM
+            </span>
           </div>
         </div>
       </div>
