@@ -28,22 +28,23 @@ export function HomeHero() {
       />
 
       <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto">
-        {/* 主标题 - 完全照搬苹果官网移动端字体大小 */}
+        {/* 主标题 - 波浪抖动动画 */}
         <div
-          className="mb-4 sm:mb-6 md:mb-8 transition-all duration-1000 ease-out"
+          className="mb-4 sm:mb-6 md:mb-8"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+            transition: 'all 1000ms ease-out',
             ...textStyle,
           }}
         >
-          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-red-500 to-rose-500 leading-tight mb-2 sm:mb-3 md:mb-4 animate-breathing" style={textStyle}>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-red-500 to-rose-500 leading-tight mb-2 sm:mb-3 md:mb-4 animate-wave-1" style={textStyle}>
             游戏创作
           </h2>
-          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 leading-tight mb-2 sm:mb-3 md:mb-4 animate-breathing" style={textStyle}>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 leading-tight mb-2 sm:mb-3 md:mb-4 animate-wave-2" style={textStyle}>
             软件创新
           </h2>
-          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 leading-tight animate-breathing" style={textStyle}>
+          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 leading-tight animate-wave-3" style={textStyle}>
             智能硬件
           </h2>
         </div>

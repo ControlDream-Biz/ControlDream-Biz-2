@@ -777,6 +777,42 @@ div[data-scroll-animate] {
   animation: breathing 4s ease-in-out infinite;
 }
 
+/* 波浪抖动动画 - 不规则上下抖动 */
+@keyframes waveBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  20% {
+    transform: translateY(-8px);
+  }
+  40% {
+    transform: translateY(4px);
+  }
+  60% {
+    transform: translateY(-6px);
+  }
+  80% {
+    transform: translateY(3px);
+  }
+}
+
+/* 三行波浪动画 - 第一行：延迟 0s */
+.animate-wave-1 {
+  animation: waveBounce 3.5s ease-in-out infinite;
+}
+
+/* 三行波浪动画 - 第二行：延迟 0.4s */
+.animate-wave-2 {
+  animation: waveBounce 3.5s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
+
+/* 三行波浪动画 - 第三行：延迟 0.8s */
+.animate-wave-3 {
+  animation: waveBounce 3.5s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
 /* 分字符动画 */
 .char-animate {
   display: inline-block;
