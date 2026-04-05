@@ -191,11 +191,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
 
       state.stableDeltaHistory.push(delta);
-      if (state.stableDeltaHistory.length > 8) {
+      if (state.stableDeltaHistory.length > 5) {
         state.stableDeltaHistory.shift();
       }
 
-      const recentDeltas = state.stableDeltaHistory.slice(-8);
+      const recentDeltas = state.stableDeltaHistory.slice(-5);
       const allPositive = recentDeltas.every(d => d > 0);
       const allNegative = recentDeltas.every(d => d < 0);
       const isDirectionStable = allPositive || allNegative;
@@ -210,16 +210,16 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.lastWheelDirection = currentDirection;
 
       const isTouchpad = state.isTouchpad;
-      const scrollThreshold = isTouchpad ? 110 : 90;
-      const consistencyThreshold = isTouchpad ? 5 : 4;
-      const throttleTime = isTouchpad ? 900 : 700;
+      const scrollThreshold = isTouchpad ? 80 : 70;
+      const consistencyThreshold = isTouchpad ? 4 : 3;
+      const throttleTime = isTouchpad ? 600 : 500;
 
       const absAccumulatedDelta = Math.abs(state.accumulatedDelta);
 
       if (absAccumulatedDelta >= scrollThreshold &&
           state.wheelConsistency >= consistencyThreshold &&
           isDirectionStable &&
-          state.consecutiveScrolls >= 2) {
+          state.consecutiveScrolls >= 1) {
 
         if (now - state.lastWheelTime < throttleTime) return;
         state.lastWheelTime = now;
@@ -228,7 +228,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.lockTimeout = window.setTimeout(() => {
           state.directionLocked = false;
           state.lockTimeout = null;
-        }, 600);
+        }, 500);
 
         if (state.accumulatedDelta > 0) {
           handlePageChange(currentPageRef.current + 1);
@@ -273,7 +273,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.velocity = velocity;
       }
 
-      const isVerticalSwipe = absDeltaY > absDeltaX * 2.2 && absDeltaY > 70;
+      const isVerticalSwipe = absDeltaY > absDeltaX * 2 && absDeltaY > 50;
 
       if (isVerticalSwipe) {
         state.hasMovedVertically = true;
@@ -304,10 +304,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
       const effectiveVelocity = Math.max(velocity, state.velocity);
 
-      const minSwipeTime = 180;
-      const maxSwipeTime = 700;
-      const swipeThreshold = 75;
-      const velocityThreshold = 0.6;
+      const minSwipeTime = 150;
+      const maxSwipeTime = 800;
+      const swipeThreshold = 60;
+      const velocityThreshold = 0.5;
 
       const shouldSwitchPage =
         state.hasMovedVertically &&
@@ -319,7 +319,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         effectiveVelocity >= velocityThreshold;
 
       if (shouldSwitchPage) {
-        if (touchEndTime - state.lastWheelTime < 900) return;
+        if (touchEndTime - state.lastWheelTime < 600) return;
         state.lastWheelTime = touchEndTime;
         state.hasSwitchedInThisTouch = true;
 
@@ -327,7 +327,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.lockTimeout = window.setTimeout(() => {
           state.directionLocked = false;
           state.lockTimeout = null;
-        }, 650);
+        }, 400);
 
         if (deltaY > 0) {
           if (currentPageRef.current < totalPages - 1) {
@@ -355,7 +355,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
     const handleKeyDown = (e: KeyboardEvent) => {
       const now = performance.now();
-      if (now - state.lastWheelTime < 900) return;
+      if (now - state.lastWheelTime < 600) return;
 
       const keyMap: Record<string, number> = {
         'ArrowDown': 1,
