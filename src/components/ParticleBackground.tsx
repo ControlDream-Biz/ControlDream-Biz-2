@@ -8,59 +8,57 @@ interface Particle {
   cy: number;
   vx: number;
   vy: number;
-  ax: number;  // 加速度
+  ax: number;
   ay: number;
   r: number;
   opacity: number;
-  angle: number;  // 旋转角度
-  angularVelocity: number;  // 角速度
-  life: number;  // 生命周期
-  maxLife: number;  // 最大生命周期
+  angle: number;
+  angularVelocity: number;
+  life: number;
+  maxLife: number;
 }
 
-// 简化的噪声函数
 function noise(x: number, y: number, t: number): number {
   const noiseX = Math.sin(x * 0.1 + t * 0.5) * Math.cos(y * 0.1 + t * 0.3);
   const noiseY = Math.cos(x * 0.08 + t * 0.4) * Math.sin(y * 0.12 + t * 0.6);
   return noiseX + noiseY;
 }
 
-// 复杂的力场函数（调整后，减少旋转力场，增强随机性）
 function forceField(x: number, y: number, width: number, height: number, time: number): [number, number] {
   const centerX = width / 2;
   const centerY = height / 2;
 
-  // 1. 极弱的旋转力场（大幅减弱）
+  // 1. 极弱的旋转力场
   const dx = x - centerX;
   const dy = y - centerY;
-  const rotationForce = 0.00002; // 原来是 0.0002，减弱 10 倍
+  const rotationForce = 0.00002;
   const fx1 = -dy * rotationForce;
   const fy1 = dx * rotationForce;
 
-  // 2. 极弱的引力场（减弱）
-  const gravityForce = 0.00001; // 原来是 0.00003，减弱 3 倍
+  // 2. 适度的引力场（增强，让粒子倾向于在屏幕中心附近）
+  const gravityForce = 0.00005;
   const fx2 = -dx * gravityForce;
   const fy2 = -dy * gravityForce;
 
-  // 3. 斥力场（平衡斥力，让粒子分散但不聚集）
+  // 3. 斥力场（减弱，防止聚集但不要推到边缘）
   const distance = Math.sqrt(dx * dx + dy * dy);
-  const repulsionForce = distance < 300 ? 0.00025 * (300 - distance) / 300 : 0; // 增强斥力，距离和力度都提升
+  const repulsionForce = distance < 200 ? 0.00012 * (200 - distance) / 200 : 0;
   const fx3 = dx * repulsionForce;
   const fy3 = dy * repulsionForce;
 
-  // 4. 增强的随机扰动场（增强 3 倍）
-  const noiseForce = 0.0009; // 原来是 0.0003，增强 3 倍
+  // 4. 增强的随机扰动场
+  const noiseForce = 0.0008;
   const n = noise(x, y, time);
   const fx4 = Math.cos(n * Math.PI * 2) * noiseForce;
   const fy4 = Math.sin(n * Math.PI * 2) * noiseForce;
 
-  // 5. 波动场（增强 2 倍）
-  const waveForce = 0.0003; // 原来是 0.00015，增强 2 倍
+  // 5. 波动场
+  const waveForce = 0.00025;
   const fx5 = Math.sin(y * 0.02 + time * 2) * waveForce;
   const fy5 = Math.cos(x * 0.02 + time * 2) * waveForce;
 
-  // 6. 漩涡场（减弱，使其更局部化）
-  const vortexForce = 0.00015; // 原来是 0.0004，减弱约 2.7 倍
+  // 6. 漩涡场（减弱）
+  const vortexForce = 0.00012;
   const vortex1X = width * 0.25;
   const vortex1Y = height * 0.35;
   const vortex2X = width * 0.75;
@@ -96,9 +94,8 @@ export function ParticleBackground() {
     const width = window.innerWidth;
     const height = window.innerHeight;
 
-    // 增加粒子数量
     const isMobile = width < 768;
-    const particleCount = isMobile ? 45 : 90; // 移动端 45，电脑端 90
+    const particleCount = isMobile ? 45 : 90;
 
     const newParticles: Particle[] = [];
 
@@ -130,14 +127,11 @@ export function ParticleBackground() {
     particlesRef.current = newParticles;
     setParticles(newParticles);
 
-    // 动画循环
     const animate = () => {
       const currentParticles = particlesRef.current;
-      timeRef.current += 0.016; // 约 60fps
+      timeRef.current += 0.016;
 
-      // 更新粒子位置和速度
       currentParticles.forEach((particle) => {
-        // 计算力场
         const [fx, fy] = forceField(
           particle.cx,
           particle.cy,
@@ -146,36 +140,29 @@ export function ParticleBackground() {
           timeRef.current
         );
 
-        // 应用加速度（增强随机扰动）
-        particle.ax = fx * 0.5 + (Math.random() - 0.5) * 0.0003; // 增加随机扰动
+        particle.ax = fx * 0.5 + (Math.random() - 0.5) * 0.0003;
         particle.ay = fy * 0.5 + (Math.random() - 0.5) * 0.0003;
 
-        // 更新速度
         particle.vx += particle.ax;
         particle.vy += particle.ay;
 
-        // 速度阻尼（减弱，让粒子运动更自由）
-        particle.vx *= 0.998; // 原来是 0.995
+        particle.vx *= 0.998;
         particle.vy *= 0.998;
 
-        // 速度限制（提高最大速度）
-        const maxSpeed = isMobile ? 1.8 : 3; // 提高速度限制
+        const maxSpeed = isMobile ? 1.8 : 3;
         const speed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
         if (speed > maxSpeed) {
           particle.vx = (particle.vx / speed) * maxSpeed;
           particle.vy = (particle.vy / speed) * maxSpeed;
         }
 
-        // 更新位置
         particle.cx += particle.vx;
         particle.cy += particle.vy;
 
-        // 更新角度
         particle.angle += particle.angularVelocity;
-        particle.angularVelocity += (Math.random() - 0.5) * 0.002; // 增加角速度随机性
+        particle.angularVelocity += (Math.random() - 0.5) * 0.002;
         particle.angularVelocity *= 0.98;
 
-        // 生命周期更新
         particle.life -= 1;
         if (particle.life <= 0) {
           particle.life = particle.maxLife;
@@ -185,9 +172,8 @@ export function ParticleBackground() {
           particle.vy = (Math.random() - 0.5) * (isMobile ? 0.4 : 0.8);
         }
 
-        // 复杂边界反弹
         if (particle.cx < 0 || particle.cx > width) {
-          particle.vx *= -0.85; // 增加能量损失
+          particle.vx *= -0.85;
           particle.cx = Math.max(0, Math.min(width, particle.cx));
           particle.angularVelocity += (Math.random() - 0.5) * 0.08;
         }
@@ -197,15 +183,12 @@ export function ParticleBackground() {
           particle.angularVelocity += (Math.random() - 0.5) * 0.08;
         }
 
-        // 闪烁效果（增强）
-        particle.opacity += (Math.random() - 0.5) * 0.03; // 增强闪烁
+        particle.opacity += (Math.random() - 0.5) * 0.03;
         particle.opacity = Math.max(isMobile ? 0.1 : 0.2, Math.min(isMobile ? 0.5 : 0.8, particle.opacity));
       });
 
-      // 线条参数
       const connectionDistance = isMobile ? 140 : 180;
 
-      // 计算连线
       const connectionElements: JSX.Element[] = [];
       if (!isMobile || isMobile && particleCount <= 45) {
         for (let i = 0; i < currentParticles.length; i++) {
