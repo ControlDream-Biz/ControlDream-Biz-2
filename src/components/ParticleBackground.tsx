@@ -139,13 +139,33 @@ export function ParticleBackground() {
     const height = window.innerHeight;
 
     const isMobile = width < 768;
-    const particleCount = isMobile ? 15 : 30; // 极少粒子，线条精简
+    const particleCount = isMobile ? 10 : 20; // 极少粒子，线条减少一半
 
     const newParticles: Particle[] = [];
 
+    // 定义9个区域（3x3网格），确保粒子分散到上下左右角
+    const regions = [
+      { xMin: 0, xMax: width * 0.33, yMin: 0, yMax: height * 0.33 },           // 左上
+      { xMin: width * 0.33, xMax: width * 0.67, yMin: 0, yMax: height * 0.33 }, // 中上
+      { xMin: width * 0.67, xMax: width, yMin: 0, yMax: height * 0.33 },       // 右上
+      { xMin: 0, xMax: width * 0.33, yMin: height * 0.33, yMax: height * 0.67 }, // 左中
+      { xMin: width * 0.33, xMax: width * 0.67, yMin: height * 0.33, yMax: height * 0.67 }, // 中中
+      { xMin: width * 0.67, xMax: width, yMin: height * 0.33, yMax: height * 0.67 },       // 右中
+      { xMin: 0, xMax: width * 0.33, yMin: height * 0.67, yMax: height },       // 左下
+      { xMin: width * 0.33, xMax: width * 0.67, yMin: height * 0.67, yMax: height }, // 中下
+      { xMin: width * 0.67, xMax: width, yMin: height * 0.67, yMax: height },       // 右下
+    ];
+
+    const particlesPerRegion = Math.ceil(particleCount / 9);
+
     for (let i = 0; i < particleCount; i++) {
-      const x = Math.random() * width;
-      const y = Math.random() * height;
+      // 每个粒子分配到不同的区域
+      const regionIndex = i % 9;
+      const region = regions[regionIndex];
+
+      // 在区域内随机分布
+      const x = region.xMin + Math.random() * (region.xMax - region.xMin);
+      const y = region.yMin + Math.random() * (region.yMax - region.yMin);
       const vx = (Math.random() - 0.5) * 0.3; // 初始速度很慢
       const vy = (Math.random() - 0.5) * 0.3;
       const r = isMobile ? Math.random() * 1 + 1 : Math.random() * 2 + 1.5; // 粒子更小
@@ -249,8 +269,8 @@ export function ParticleBackground() {
         particle.opacity = Math.max(isMobile ? 0.3 : 0.4, Math.min(isMobile ? 0.8 : 0.9, particle.opacity));
       });
 
-      // 最大限度分散，线条精简
-      const connectionDistance = isMobile ? 600 : 700;
+      // 连线距离极大增加，线条减少一半
+      const connectionDistance = isMobile ? 800 : 900;
 
       const connectionElements: JSX.Element[] = [];
       // 移除移动端粒子数量限制，所有设备都显示线条
