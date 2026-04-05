@@ -39,13 +39,13 @@ export function HomeHero() {
           }}
         >
           <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-red-500 to-rose-500 leading-tight mb-2 sm:mb-3 md:mb-4 animate-wave-1" style={textStyle}>
-            游戏创作
+            自主游戏产品
           </h2>
           <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 leading-tight mb-2 sm:mb-3 md:mb-4 animate-wave-2" style={textStyle}>
-            软件创新
+            自主软件产品
           </h2>
           <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-500 leading-tight animate-wave-3" style={textStyle}>
-            智能硬件
+            自主硬件产品
           </h2>
         </div>
 
@@ -60,7 +60,7 @@ export function HomeHero() {
             ...textStyle,
           }}
         >
-          在游戏、软件、硬件领域持续投入，用心做好每一款产品
+          专注自主产品研发与运营，打造完整的自主产品生态体系
         </p>
 
         {/* 核心理念 - 完全照搬苹果官网移动端布局 */}

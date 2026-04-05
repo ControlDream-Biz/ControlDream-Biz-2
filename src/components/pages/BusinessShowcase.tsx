@@ -6,14 +6,14 @@ import { Gamepad2, Cpu, HardDrive } from 'lucide-react';
 
 const businesses = [
   {
-    title: '游戏产品',
-    subtitle: 'Gaming Products',
+    title: '自主游戏产品',
+    subtitle: 'Original Gaming Products',
     icon: Gamepad2,
-    description: '自主研发精品移动端和网页游戏，打造独特的游戏体验与IP品牌。',
-    features: ['原创IP', '独立游戏', '跨平台', '精品内容'],
+    description: '拥有完全自主知识产权的游戏产品，包括原创IP游戏、独立游戏，提供完整的游戏体验与长期运营服务。',
+    features: ['原创游戏IP', '自主发行', '游戏运营', '玩家社区'],
     color: 'from-blue-400 to-blue-600',
     stat: '10+',
-    statLabel: '原创游戏',
+    statLabel: '自主游戏',
     image: '/business-game.jpg',
   },
   {
