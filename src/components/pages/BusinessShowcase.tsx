@@ -73,6 +73,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 }: BusinessShowcaseProps) {
   const [mounted, setMounted] = useState(false);
   const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const smallTextRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // 首次加载和页面切换时触发小字动画
   useEffect(() => {
@@ -88,25 +89,23 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
     // 延迟后触发小字动画（等待页面完全渲染）
     animationTimerRef.current = setTimeout(() => {
-      // 查找当前页面的小字元素（使用 data-page-index 过滤）
-      const selector = `[data-small-text][data-page-index="${pageIndex}"]`;
-      const smallTextItems = document.querySelectorAll(selector);
-      console.log(`找到 ${smallTextItems.length} 个小字元素 (pageIndex=${pageIndex}, selector=${selector})`);
-      smallTextItems.forEach((item, index) => {
-        const itemEl = item as HTMLElement;
-        console.log(`处理第 ${index} 个小字元素`);
-        // 重置初始状态
-        itemEl.style.opacity = '0';
-        itemEl.style.transform = 'translateX(2.5rem)';
-        // 依次触发动画
-        setTimeout(() => {
-          console.log(`触发第 ${index} 个小字动画`);
-          itemEl.style.opacity = '1';
-          itemEl.style.transform = 'translateX(0)';
-        }, 400 + index * 200); // 400ms 后开始，每个间隔 200ms
+      console.log(`开始触发小字动画，共 ${smallTextRefs.current.length} 个元素`);
+      smallTextRefs.current.forEach((element, index) => {
+        if (element) {
+          console.log(`处理第 ${index} 个小字元素`);
+          // 重置初始状态
+          element.style.opacity = '0';
+          element.style.transform = 'translateX(2.5rem)';
+          // 依次触发动画
+          setTimeout(() => {
+            console.log(`触发第 ${index} 个小字动画`);
+            element.style.opacity = '1';
+            element.style.transform = 'translateX(0)';
+          }, 400 + index * 200); // 400ms 后开始，每个间隔 200ms
+        }
       });
       animationTimerRef.current = null;
-    }, 200); // 增加延迟时间，确保页面完全渲染
+    }, 300); // 增加延迟时间，确保页面完全渲染
 
     return () => {
       if (animationTimerRef.current) {
@@ -183,22 +182,22 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
         {/* 业务内容 - 纯文字布局，去除方框，添加AI图片 */}
         <div className="w-full max-w-6xl space-y-12 sm:space-y-20 md:space-y-32 lg:space-y-40">
-          {businesses.map((business, index) => {
+          {businesses.map((business, businessIndex) => {
             const Icon = business.icon;
             return (
               <div
-                key={`${index}-${isActive}`}
+                key={`${businessIndex}-${isActive}`}
                 className="group relative grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center"
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(40px)',
-                  transitionDelay: `${0.3 + index * 0.2}s`,
+                  transitionDelay: `${0.3 + businessIndex * 0.2}s`,
                   transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
                 }}
               >
                 {/* 图片区域 */}
                 <div
-                  className={`order-1 ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'} relative overflow-hidden`}
+                  className={`order-1 ${businessIndex % 2 === 0 ? 'lg:order-1' : 'lg:order-2'} relative overflow-hidden`}
                 >
                   <div className="w-full h-48 sm:h-64 md:h-80 lg:h-96 relative rounded-lg overflow-hidden">
                     <Image
@@ -215,7 +214,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
                 {/* 文字内容 */}
                 <div
-                  className={`order-2 ${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'} space-y-4 sm:space-y-6 md:space-y-8`}
+                  className={`order-2 ${businessIndex % 2 === 0 ? 'lg:order-2' : 'lg:order-1'} space-y-4 sm:space-y-6 md:space-y-8`}
                 >
                   {/* 图标 */}
                   <div
@@ -252,9 +251,13 @@ export const BusinessShowcase = memo(function BusinessShowcase({
                   {/* 小字列表 - 腾讯式从右向左滚动淡入 */}
                   <div className="space-y-2 sm:space-y-3 mt-4 sm:mt-6">
                     {business.items.map((item, i) => {
+                      // 计算全局索引：前面所有 business 的 items 数量 + 当前索引
+                      const globalIndex = businesses.slice(0, businessIndex).reduce((sum, b) => sum + b.items.length, 0) + i;
+                      
                       return (
                         <div
-                          key={`${index}-${i}`}
+                          key={`${businessIndex}-${i}`}
+                          ref={(el) => { smallTextRefs.current[globalIndex] = el; }}
                           className="flex items-start space-x-2 sm:space-x-3 transition-all duration-700 ease-out"
                           data-small-text
                           data-page-index={pageIndex}

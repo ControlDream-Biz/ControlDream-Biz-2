@@ -91,9 +91,12 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
 }: EnvironmentShowcaseProps) {
   const [mounted, setMounted] = useState(false);
   const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const smallTextRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   // 首次加载和页面切换时触发小字动画
   useEffect(() => {
+    console.log(`EnvironmentShowcase useEffect 触发: isActive=${isActive}, pageIndex=${pageIndex}`);
+
     // 清除之前的动画定时器
     if (animationTimerRef.current) {
       clearTimeout(animationTimerRef.current);
@@ -104,22 +107,23 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
 
     // 延迟后触发小字动画（等待页面完全渲染）
     animationTimerRef.current = setTimeout(() => {
-      // 查找当前页面的小字元素（使用 data-page-index 过滤）
-      const smallTextItems = document.querySelectorAll(`[data-small-text][data-page-index="${pageIndex}"]`);
-      console.log(`找到 ${smallTextItems.length} 个小字元素 (pageIndex=${pageIndex})`);
-      smallTextItems.forEach((item, index) => {
-        const itemEl = item as HTMLElement;
-        // 重置初始状态
-        itemEl.style.opacity = '0';
-        itemEl.style.transform = 'translateX(2.5rem)';
-        // 依次触发动画
-        setTimeout(() => {
-          itemEl.style.opacity = '1';
-          itemEl.style.transform = 'translateX(0)';
-        }, 400 + index * 200); // 400ms 后开始，每个间隔 200ms
+      console.log(`开始触发小字动画，共 ${smallTextRefs.current.length} 个元素`);
+      smallTextRefs.current.forEach((element, index) => {
+        if (element) {
+          console.log(`处理第 ${index} 个小字元素`);
+          // 重置初始状态
+          element.style.opacity = '0';
+          element.style.transform = 'translateX(2.5rem)';
+          // 依次触发动画
+          setTimeout(() => {
+            console.log(`触发第 ${index} 个小字动画`);
+            element.style.opacity = '1';
+            element.style.transform = 'translateX(0)';
+          }, 400 + index * 200); // 400ms 后开始，每个间隔 200ms
+        }
       });
       animationTimerRef.current = null;
-    }, 200); // 增加延迟时间，确保页面完全渲染
+    }, 300); // 增加延迟时间，确保页面完全渲染
 
     return () => {
       if (animationTimerRef.current) {
@@ -159,16 +163,16 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
 
         {/* 办公区域网格 - 纯文字布局，去除方框，添加AI图片 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 lg:gap-12 w-full max-w-6xl">
-          {areas.map((area, index) => {
+          {areas.map((area, areaIndex) => {
             const Icon = area.icon;
             return (
               <div
-                key={`${index}-${isActive}`}
+                key={`${areaIndex}-${isActive}`}
                 className="group relative flex flex-col"
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(40px)',
-                  transitionDelay: `${0.3 + index * 0.1}s`,
+                  transitionDelay: `${0.3 + areaIndex * 0.1}s`,
                   transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
                 }}
               >
@@ -207,9 +211,13 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                 {/* 小字列表 - 腾讯式从右向左滚动淡入 */}
                 <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
                   {area.items.map((item, i) => {
+                    // 计算全局索引：前面所有 area 的 items 数量 + 当前索引
+                    const globalIndex = areas.slice(0, areaIndex).reduce((sum, a) => sum + a.items.length, 0) + i;
+                    
                     return (
                       <div
-                        key={`${index}-${i}`}
+                        key={`${areaIndex}-${i}`}
+                        ref={(el) => { smallTextRefs.current[globalIndex] = el; }}
                         className="flex items-start space-x-2 sm:space-x-3 transition-all duration-700 ease-out"
                         data-small-text
                         data-page-index={pageIndex}
