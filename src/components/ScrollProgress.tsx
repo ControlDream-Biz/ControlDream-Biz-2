@@ -57,7 +57,7 @@ export function ScrollProgress() {
           const isCurrent = index === currentPage;
 
           return (
-            <div key={page.id} className="relative w-full h-0 flex items-center justify-center">
+            <div key={page.id} className="relative w-full h-1 flex items-center justify-center">
               {/* 当前页面的中文标签（从圆点弹出） */}
               <div
                 className={`
