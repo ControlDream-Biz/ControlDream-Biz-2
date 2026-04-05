@@ -9,7 +9,6 @@ import { CultureShowcase } from '@/components/pages/CultureShowcase';
 import { ContactShowcase } from '@/components/pages/ContactShowcase';
 import { Navbar } from '@/components/Navbar';
 import { ScrollProgress } from '@/components/ScrollProgress';
-import { ScrollDiagnostics } from '@/components/ScrollDiagnostics';
 
 export default function Page() {
   const pages = [
@@ -32,7 +31,6 @@ export default function Page() {
       <Navbar />
       <ScrollContainer onPageChange={handlePageChange}>{pages}</ScrollContainer>
       <ScrollProgress />
-      <ScrollDiagnostics />
     </>
   );
 }
