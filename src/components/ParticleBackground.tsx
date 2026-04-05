@@ -140,7 +140,7 @@ export function ParticleBackground() {
 
     const isMobile = width < 768;
     const particleCount = isMobile ? 50 : 100;
-    const fillBlankCount = 4; // 填补空白区域的粒子数
+    const fillBlankCount = 6; // 填补空白区域的粒子数
 
     const newParticles: Particle[] = [];
 
@@ -210,12 +210,14 @@ export function ParticleBackground() {
       });
     }
 
-    // 额外生成4个粒子填补空白区域（屏幕四边中点）
+    // 额外生成6个粒子填补空白区域（屏幕四边中点及边缘）
     const edgeAreas = [
       { xMin: width * 0.4, xMax: width * 0.6, yMin: 0, yMax: height * 0.15 }, // 中上
       { xMin: width * 0.4, xMax: width * 0.6, yMin: height * 0.85, yMax: height }, // 中下
       { xMin: 0, xMax: width * 0.15, yMin: height * 0.4, yMax: height * 0.6 }, // 中左
       { xMin: width * 0.85, xMax: width, yMin: height * 0.4, yMax: height * 0.6 }, // 中右
+      { xMin: width * 0.25, xMax: width * 0.4, yMin: height * 0.25, yMax: height * 0.4 }, // 左上边缘
+      { xMin: width * 0.6, xMax: width * 0.75, yMin: height * 0.6, yMax: height * 0.75 }, // 右下边缘
     ];
 
     for (let i = 0; i < fillBlankCount; i++) {
