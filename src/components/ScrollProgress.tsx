@@ -21,40 +21,38 @@ export function ScrollProgress() {
   };
 
   return (
-    <div className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center gap-3">
-      {/* 进度点 */}
-      {Array.from({ length: totalPages }).map((_, index) => (
-        <button
-          key={index}
-          onClick={() => scrollToSection(index)}
-          className="group relative flex items-center justify-center"
-          aria-label={`跳转到第${index + 1}页`}
-        >
-          {/* 进度点圆形 */}
-          <div
-            className={`
-              w-3 h-3 rounded-full transition-all duration-300
-              ${currentPage === index
-                ? 'bg-white scale-125 shadow-lg shadow-white/30'
-                : 'bg-white/30 hover:bg-white/60 hover:scale-110'
-              }
-            `}
-          />
+    <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 flex flex-col items-center">
+      {Array.from({ length: totalPages }).map((_, index) => {
+        const isCurrent = index === currentPage;
+        const distance = Math.abs(index - currentPage);
 
-          {/* Tooltip */}
-          <div className="
-            absolute right-8 opacity-0 group-hover:opacity-100
-            transition-opacity duration-300 pointer-events-none
-          ">
-            <span className="
-              text-xs text-white bg-black/70 backdrop-blur-sm
-              px-2 py-1 rounded whitespace-nowrap
-            ">
-              {['首页', '业务', '环境', '联系'][index]}
-            </span>
-          </div>
-        </button>
-      ))}
+        // 根据距离计算样式
+        let sizeClass = 'w-2 h-2';
+        let colorClass = 'bg-white/20';
+
+        if (isCurrent) {
+          sizeClass = 'w-3 h-3';
+          colorClass = 'bg-white shadow-lg shadow-white/30';
+        } else if (distance === 1) {
+          sizeClass = 'w-2.5 h-2.5';
+          colorClass = 'bg-white/50';
+        } else {
+          sizeClass = 'w-2 h-2';
+          colorClass = 'bg-white/30';
+        }
+
+        return (
+          <button
+            key={index}
+            onClick={() => scrollToSection(index)}
+            className={`
+              ${sizeClass} rounded-full transition-all duration-300
+              ${colorClass} hover:opacity-80
+            `}
+            aria-label={`跳转到第${index + 1}页`}
+          />
+        );
+      })}
     </div>
   );
 }
