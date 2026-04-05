@@ -2,12 +2,27 @@
 
 import { useEffect, useState } from 'react';
 
-export function HomeHero() {
+interface HomeHeroProps {
+  isActive?: boolean;
+}
+
+export function HomeHero({ isActive }: HomeHeroProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // 当页面切换回来时重新触发动画，和其他页面保持一致
+  useEffect(() => {
+    if (isActive) {
+      setMounted(false);
+      const timer = setTimeout(() => {
+        setMounted(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isActive]);
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center bg-black overflow-hidden pt-12 pb-8">

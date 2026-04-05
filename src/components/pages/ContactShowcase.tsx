@@ -4,7 +4,11 @@ import { useEffect, useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
 import { SiteFooter } from '@/components/SiteFooter';
 
-export function ContactShowcase() {
+interface ContactShowcaseProps {
+  isActive?: boolean;
+}
+
+export function ContactShowcase({ isActive }: ContactShowcaseProps) {
   const [mounted, setMounted] = useState(false);
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
@@ -13,6 +17,17 @@ export function ContactShowcase() {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // 当页面切换回来时重新触发动画，和其他页面保持一致
+  useEffect(() => {
+    if (isActive) {
+      setMounted(false);
+      const timer = setTimeout(() => {
+        setMounted(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isActive]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
