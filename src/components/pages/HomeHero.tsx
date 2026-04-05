@@ -23,7 +23,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
         {/* 粒子背景 - 只在首页显示，叠加在彩色光晕背景上 */}
         <ParticleBackground />
 
-      <div className="relative z-20 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto flex flex-col items-center justify-center translate-y-8">
+      <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto flex flex-col items-center justify-center translate-y-8">
         {/* 主标题 - 波浪抖动动画 */}
         <div
           className="mb-2 sm:mb-3 md:mb-4 lg:mb-6"
