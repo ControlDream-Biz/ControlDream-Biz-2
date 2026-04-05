@@ -26,7 +26,8 @@ export function Navbar() {
   }, []);
 
   const scrollToSection = (sectionId: string, index: number) => {
-    const event = new CustomEvent('scrollToSection', { detail: { sectionIndex: index } });
+    // 0延迟响应：立即触发翻页
+    const event = new CustomEvent('jump-to-page', { detail: { pageIndex: index } });
     window.dispatchEvent(event);
     setMobileMenuOpen(false);
   };
@@ -103,32 +104,60 @@ export function Navbar() {
           }}
           className="lg:hidden liquid-glass-menu-btn w-11 h-11 sm:w-12 sm:h-12"
         >
-          {/* 自定义SVG动画：三个横杠 ↔ 两个竖杠（X） */}
+          {/* 炫酷的汉堡菜单动画 - 三个横杠旋转变为X */}
           <svg
             width="24"
             height="24"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth={2}
+            strokeWidth={2.5}
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="text-white"
+            className="text-white overflow-visible"
+            style={{ width: '20px', height: '20px' }}
           >
-            {mobileMenuOpen ? (
-              <>
-                {/* X 图标 */}
-                <line x1="4" y1="4" x2="20" y2="20" style={{ transformOrigin: 'center', transition: 'transform 0.2s linear' }} />
-                <line x1="20" y1="4" x2="4" y2="20" style={{ transformOrigin: 'center', transition: 'transform 0.2s linear' }} />
-              </>
-            ) : (
-              <>
-                {/* 三个横杠 */}
-                <line x1="4" y1="6" x2="20" y2="6" />
-                <line x1="4" y1="12" x2="20" y2="12" />
-                <line x1="4" y1="18" x2="20" y2="18" />
-              </>
-            )}
+            {/* 上横杠 - 旋转45度形成X的上半部分 */}
+            <line
+              x1="3"
+              y1="6"
+              x2="21"
+              y2="6"
+              style={{
+                transformOrigin: '12px 12px',
+                transition: 'transform 0.3s linear, opacity 0.3s linear',
+                transform: mobileMenuOpen ? 'rotate(45deg) scale(1.1)' : 'rotate(0deg) scale(1)',
+                opacity: mobileMenuOpen ? 1 : 1
+              }}
+            />
+
+            {/* 中横杠 - 渐变消失 */}
+            <line
+              x1="3"
+              y1="12"
+              x2="21"
+              y2="12"
+              style={{
+                transformOrigin: '12px 12px',
+                transition: 'opacity 0.2s linear, transform 0.2s linear',
+                opacity: mobileMenuOpen ? 0 : 1,
+                transform: mobileMenuOpen ? 'scaleX(0)' : 'scaleX(1)'
+              }}
+            />
+
+            {/* 下横杠 - 旋转-45度形成X的下半部分 */}
+            <line
+              x1="3"
+              y1="18"
+              x2="21"
+              y2="18"
+              style={{
+                transformOrigin: '12px 12px',
+                transition: 'transform 0.3s linear, opacity 0.3s linear',
+                transform: mobileMenuOpen ? 'rotate(-45deg) scale(1.1)' : 'rotate(0deg) scale(1)',
+                opacity: mobileMenuOpen ? 1 : 1
+              }}
+            />
           </svg>
         </button>
       </nav>

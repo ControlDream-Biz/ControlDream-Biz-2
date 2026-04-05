@@ -7,26 +7,40 @@ export default function FloatingButtons() {
   const [currentPage, setCurrentPage] = useState(0);
   const isInitialized = useRef(false);
   const shouldHidePopup = useRef(false);
-  const backToTopTimeout = useRef<NodeJS.Timeout | null>(null);
+  const backToTopClickCount = useRef(0);
+  const backToTopTimer = useRef<NodeJS.Timeout | null>(null);
 
   const scrollToTop = () => {
-    // 如果已有定时器，说明这是双击
-    if (backToTopTimeout.current) {
-      // 清除定时器，执行双击逻辑（回到首页）
-      clearTimeout(backToTopTimeout.current);
-      backToTopTimeout.current = null;
+    // 增加点击计数
+    backToTopClickCount.current += 1;
 
-      const event = new CustomEvent('jump-to-page', { detail: { pageIndex: 0 } });
-      window.dispatchEvent(event);
-    } else {
-      // 第一次点击，等待300ms看是否有第二次点击
-      backToTopTimeout.current = setTimeout(() => {
-        // 300ms内没有第二次点击，执行单击逻辑（往上翻一页）
-        const targetPage = Math.max(0, currentPage - 1);
-        const event = new CustomEvent('jump-to-page', { detail: { pageIndex: targetPage } });
-        window.dispatchEvent(event);
-        backToTopTimeout.current = null;
-      }, 300);
+    // 清除之前的定时器
+    if (backToTopTimer.current) {
+      clearTimeout(backToTopTimer.current);
+    }
+
+    // 立即执行单击逻辑（往上翻一页）
+    const targetPage = Math.max(0, currentPage - 1);
+    const event = new CustomEvent('jump-to-page', { detail: { pageIndex: targetPage } });
+    window.dispatchEvent(event);
+
+    // 设置定时器重置计数
+    backToTopTimer.current = setTimeout(() => {
+      // 300ms后重置计数
+      backToTopClickCount.current = 0;
+      backToTopTimer.current = null;
+    }, 300);
+
+    // 检查是否是双击（第2次点击）
+    if (backToTopClickCount.current === 2) {
+      // 双击：回到首页
+      const homeEvent = new CustomEvent('jump-to-page', { detail: { pageIndex: 0 } });
+      window.dispatchEvent(homeEvent);
+      backToTopClickCount.current = 0;
+      if (backToTopTimer.current) {
+        clearTimeout(backToTopTimer.current);
+        backToTopTimer.current = null;
+      }
     }
   };
 
@@ -559,8 +573,8 @@ export default function FloatingButtons() {
       window.removeEventListener('page-changed', handlePageChange as EventListener);
 
       // 清除定时器
-      if (backToTopTimeout.current) {
-        clearTimeout(backToTopTimeout.current);
+      if (backToTopTimer.current) {
+        clearTimeout(backToTopTimer.current);
       }
 
       if (document.body.contains(buttonGroup)) {
