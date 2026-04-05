@@ -10,36 +10,46 @@ interface ScrollPageProps {
   isDragging?: boolean;  // 是否正在触摸滑动
 }
 
-type ChildWithProps = React.ReactElement<{ isActive?: boolean }>;
+type ChildWithProps = React.ReactElement<{ isActive?: boolean; dragOffset?: number; isDragging?: boolean; pageIndex?: number; currentPage?: number }>;
 
 export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDragging = false }: ScrollPageProps) {
   const isActive = index === currentPage;
   const isPrev = index < currentPage;
   const isNext = index > currentPage;
 
-  // 苹果官网式的页面切换动画 - 流畅层叠效果
+  // 行业顶级过渡动画 - 柔和层叠效果
   let transform = '';
   let opacity = 1;
   const scale = 1;
 
   // 如果正在触摸滑动，使用实时偏移量
   if (isDragging && dragOffset !== 0) {
-    const progress = Math.abs(dragOffset) / window.innerHeight;
-    
-    // 当前页面跟随手指移动 - 层叠效果
+    const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
+    const progressCubic = progress * progress * (3 - 2 * progress); // smoothstep 缓动
+
+    // 当前页面跟随手指移动 - 柔和层叠效果
     if (isActive) {
-      transform = `translate3d(0, ${dragOffset * 0.5}px, 0) scale(${scale})`;
-      opacity = 1 - progress * 0.5;  // 当前页面半透明，保留部分可见
+      if (dragOffset < 0) {
+        // 向上滑动，当前页面上移
+        transform = `translate3d(0, ${dragOffset * 0.4}px, 0) scale(${1 - progress * 0.02})`;
+        opacity = 1 - progressCubic * 0.3;
+      } else {
+        // 向下滑动，当前页面向下移
+        transform = `translate3d(0, ${dragOffset * 0.4}px, 0) scale(${1 - progress * 0.02})`;
+        opacity = 1 - progressCubic * 0.3;
+      }
     }
     // 下一页跟随手指移动（向上滑动，显示下一页）- 从下方半透明渐入
     else if (isNext && dragOffset < 0) {
-      transform = `translate3d(0, ${100 * window.innerHeight + dragOffset}px, 0) scale(${scale})`;
-      opacity = progress * 0.8;  // 下一页半透明渐入
+      const startOffset = 50; // vh
+      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.6}px, 0) scale(${1 - progress * 0.02})`;
+      opacity = progressCubic * 0.7;
     }
     // 上一页跟随手指移动（向下滑动，显示上一页）- 从上方半透明渐入
     else if (isPrev && dragOffset > 0) {
-      transform = `translate3d(0, ${-100 * window.innerHeight + dragOffset}px, 0) scale(${scale})`;
-      opacity = progress * 0.8;  // 上一页半透明渐入
+      const startOffset = -50; // vh
+      transform = `translate3d(0, ${startOffset * window.innerHeight * 0.01 + dragOffset * 0.6}px, 0) scale(${1 - progress * 0.02})`;
+      opacity = progressCubic * 0.7;
     }
     // 其他页面保持原位
     else if (isPrev) {
@@ -70,7 +80,9 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
         transform,
-        transition: isDragging ? 'none' : 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
+        transition: isDragging
+          ? 'none'
+          : 'transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
         zIndex: isActive ? 10 : 1,
         willChange: isDragging ? 'transform, opacity' : 'transform, opacity',
         // 添加GPU加速提示
@@ -83,7 +95,13 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
       <div className="w-full min-h-full px-4 py-8">
         {React.isValidElement(children)
           ? (children as React.ReactElement<Record<string, unknown>>).props.isActive !== undefined
-            ? React.cloneElement(children as ChildWithProps, { isActive })
+            ? React.cloneElement(children as ChildWithProps, {
+                isActive,
+                dragOffset,
+                isDragging,
+                pageIndex: index,
+                currentPage
+              })
             : children
           : children}
       </div>
