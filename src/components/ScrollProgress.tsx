@@ -52,7 +52,7 @@ export function ScrollProgress() {
       className="fixed right-0 top-0 bottom-0 z-50 pr-1 flex items-center"
     >
       {/* 圆点列表（极限紧靠，极限紧凑） */}
-      <div className="w-3 flex flex-col items-center gap-0">
+      <div className="w-2 flex flex-col items-center gap-0">
         {pages.map((page, index) => {
           const isCurrent = index === currentPage;
 
@@ -82,8 +82,8 @@ export function ScrollProgress() {
               <button
                 onClick={() => scrollToSection(index)}
                 style={{
-                  width: '3px',
-                  height: '3px',
+                  width: '2px',
+                  height: '2px',
                 }}
                 className={`
                   rounded-full transition-all duration-300
