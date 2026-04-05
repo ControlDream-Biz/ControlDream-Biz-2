@@ -18,36 +18,19 @@ export default function HeroSection() {
       className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center overflow-hidden"
       style={{ minHeight: 'calc(100vh - 60px)' }}
     >
-      {/* 透视背景图 */}
+      {/* 游戏展示背景图 */}
       <div className="absolute inset-0 -z-10">
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
             backgroundImage: "url('/hero-bg.jpg')",
-            perspective: '1000px',
+            filter: 'brightness(0.85) saturate(1.1)',
           }}
-        >
-          {/* 3D透视变换 */}
-          <div
-            className="absolute inset-0 transform"
-            style={{
-              transform: 'rotateX(5deg) scale(1.05)',
-              transformOrigin: 'center center',
-            }}
-          >
-            <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: "url('/hero-bg.jpg')",
-                filter: 'brightness(0.6) contrast(1.1)',
-              }}
-            />
-          </div>
-        </div>
+        />
 
-        {/* 轻微渐变叠加层 */}
+        {/* 轻微底部渐变，确保文字可读 */}
         <div
-          className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40"
+          className="absolute bottom-0 left-0 right-0 h-1/3 bg-gradient-to-t from-black/50 to-transparent"
         />
       </div>
 
@@ -101,7 +84,7 @@ export default function HeroSection() {
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
                 transition: "all 0.6s ease-out 0.2s",
                 minHeight: "60px",
-                textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+                textShadow: "0 2px 8px rgba(0,0,0,0.8)",
               }}
             >
               我们专注于自主研发，在游戏、软件、硬件领域持续投入，
@@ -121,10 +104,10 @@ export default function HeroSection() {
                 <Button
                   className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200 ripple-effect magnetic-btn"
                   style={{
-                    background: "rgba(99, 102, 241, 0.9)",
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
-                    border: "1px solid rgba(255, 255, 255, 0.4)",
+                    background: "rgba(99, 102, 241, 0.95)",
+                    backdropFilter: "blur(10px)",
+                    WebkitBackdropFilter: "blur(10px)",
+                    border: "2px solid rgba(255, 255, 255, 0.5)",
                     color: "white",
                     minWidth: "120px",
                   }}
@@ -137,10 +120,10 @@ export default function HeroSection() {
                 <Button
                   className="h-12 px-8 text-sm font-medium rounded-lg hover:shadow-lg transition-all duration-200 ripple-effect magnetic-btn"
                   style={{
-                    background: "rgba(255, 255, 255, 0.9)",
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
-                    border: "1px solid rgba(255, 255, 255, 0.6)",
+                    background: "rgba(255, 255, 255, 0.95)",
+                    backdropFilter: "blur(10px)",
+                    WebkitBackdropFilter: "blur(10px)",
+                    border: "2px solid rgba(255, 255, 255, 0.7)",
                     color: "#333",
                     minWidth: "120px",
                   }}
@@ -151,7 +134,7 @@ export default function HeroSection() {
             </div>
 
             <div
-              className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/20"
+              className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/30"
               style={{
                 opacity: mounted ? 1 : 0,
                 transform: mounted ? "translateY(0)" : "translateY(20px)",
@@ -160,16 +143,16 @@ export default function HeroSection() {
               }}
             >
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>8+</div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide">年持续投入</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}>8+</div>
+                <div className="text-xs text-gray-300 uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>年持续投入</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>30+</div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide">自研产品</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}>30+</div>
+                <div className="text-xs text-gray-300 uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>自研产品</div>
               </div>
               <div>
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 8px rgba(0,0,0,0.5)" }}>20+</div>
-                <div className="text-xs text-gray-300 uppercase tracking-wide">核心团队</div>
+                <div className="text-2xl md:text-3xl font-bold text-white mb-1" style={{ textShadow: "0 2px 12px rgba(0,0,0,0.9)" }}>20+</div>
+                <div className="text-xs text-gray-300 uppercase tracking-wide" style={{ textShadow: "0 1px 4px rgba(0,0,0,0.8)" }}>核心团队</div>
               </div>
             </div>
           </div>
@@ -194,9 +177,9 @@ export default function HeroSection() {
               >
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
-                    <div className="text-6xl mb-4">🚀</div>
-                    <div className="text-white text-xl font-semibold">科技创新</div>
-                    <div className="text-white/80 text-sm mt-2">驱动未来发展</div>
+                    <div className="text-6xl mb-4">🎮</div>
+                    <div className="text-white text-xl font-semibold">游戏开发</div>
+                    <div className="text-white/80 text-sm mt-2">打造精品游戏体验</div>
                   </div>
                 </div>
               </div>
