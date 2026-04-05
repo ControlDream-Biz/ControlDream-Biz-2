@@ -17,7 +17,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
   const isActive = index === currentPage;
   const isPrev = index < currentPage;
   const isNext = index > currentPage;
-  const isAdjacent = Math.abs(index - currentPage) === 1; // 是否为相邻页面
+  const isAdjacent = Math.abs(index - currentPage) === 1;
 
   let transform = '';
   let opacity = 1;
@@ -56,7 +56,6 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
     }
   }
 
-  // 判断是否为首页
   const isHome = index === 0;
 
   return (
@@ -65,11 +64,9 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
       data-page-index={index}
       style={{
         zIndex: isActive ? 10 : 0,
-        // 激活页面可见，相邻页面在拖拽时可见，其他页面完全隐藏
         visibility: (isActive || (isDragging && isAdjacent)) ? 'visible' : 'hidden',
       }}
     >
-      {/* 背景层 - 只有首页有彩色光晕背景和粒子效果，参与滑动 */}
       {isHome && (
         <div
           style={{
@@ -90,12 +87,10 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
             `,
           }}
         >
-          {/* 首页粒子背景 - 从 HomeHero 移到这里，避免被内容层裁剪 */}
           <ParticleBackground />
         </div>
       )}
 
-      {/* 内容层 - 所有页面都参与滑动 */}
       <div
         className="w-full h-full overflow-y-auto scrollbar-hide scroll-content"
         style={{
@@ -136,15 +131,13 @@ interface ScrollContainerProps {
 export function ScrollContainer({ children, onPageChange }: ScrollContainerProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const dragOffsetRef = useRef(0); // 使用 ref 而不是 state 来避免无限循环
-  const forceUpdateRef = useRef(0); // 用于强制重新渲染
+  const dragOffsetRef = useRef(0);
+  const forceUpdateRef = useRef(0);
   const totalPages = children.length;
 
-  // 滚动状态管理
   const scrollStateRef = useRef({
     accumulatedDelta: 0,
     lastWheelTime: 0,
-    lastWheelDirection: 0,
     wheelConsistency: 0,
     isTouchActive: false,
     hasSwitchedInThisTouch: false,
@@ -156,219 +149,106 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
   const handlePageChange = useCallback((newPage: number) => {
     if (newPage >= 0 && newPage < totalPages && newPage !== currentPage) {
-      // 重置状态
-      scrollStateRef.current.accumulatedDelta = 0;
-      scrollStateRef.current.wheelConsistency = 0;
-      scrollStateRef.current.lastWheelTime = 0;
-
       setCurrentPage(newPage);
       onPageChange?.(newPage);
-
-      // 翻页后，将新页面的滚动位置重置到顶部
-      setTimeout(() => {
-        const pageElement = document.querySelector(`[data-page-index="${newPage}"]`);
-        const scrollContainer = pageElement?.querySelector('.scroll-content') as HTMLDivElement;
-        if (scrollContainer) {
-          scrollContainer.scrollTop = 0;
-        }
-      }, 50);
     }
   }, [currentPage, totalPages, onPageChange]);
 
   useEffect(() => {
     const state = scrollStateRef.current;
 
-    // 初始化：重置所有页面的滚动位置到顶部
-    const resetAllScrollPositions = () => {
-      const allPages = document.querySelectorAll('[data-page-index]');
-      allPages.forEach(page => {
-        const scrollContainer = page.querySelector('.scroll-content') as HTMLDivElement;
-        if (scrollContainer) {
-          scrollContainer.scrollTop = 0;
-        }
-      });
-    };
-
-    // 初始化时重置所有滚动位置
-    resetAllScrollPositions();
-
-    // 智能翻页逻辑 - 简化逻辑，优先保证内容可以滚动
     const handleWheel = (e: WheelEvent) => {
       const now = performance.now();
       const delta = e.deltaY;
       const deltaAbs = Math.abs(delta);
 
-      // 获取当前激活页面的滚动容器
+      // 获取当前页面的滚动容器
       const activePage = document.querySelector(`[data-page-index="${currentPage}"]`);
       const scrollContainer = activePage?.querySelector('.scroll-content') as HTMLDivElement;
 
       // 检查滚动状态
-      let isScrollable = false;
-      let isAtTop = false;
-      let isAtBottom = false;
-
       if (scrollContainer) {
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
+        const isScrollable = scrollHeight > clientHeight + 20;
+        const isAtTop = scrollTop <= 10;
+        const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 10;
 
-        // 宽松的可滚动判断 - 适用于所有页面
-        isScrollable = scrollHeight > clientHeight + 15;
-
-        // 更宽松的边界判断 - 适用于所有页面
-        isAtTop = scrollTop <= 15;
-        isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 15;
-      }
-
-      // 如果内容可滚动且不在边界，让内容正常滚动
-      if (isScrollable && !isAtTop && !isAtBottom) {
-        return; // 让内容滚动，不触发翻页
-      }
-
-      // 边界附近的快速翻页 - 适用于所有页面
-      if (isScrollable && (isAtTop || isAtBottom) && deltaAbs > 40) {
-        if (now - state.lastWheelTime < 150) return;
-        state.lastWheelTime = now;
-
-        // 翻页逻辑 - 适用于所有页面
-        if (delta > 0 && currentPage < totalPages - 1) {
-          handlePageChange(currentPage + 1);
-        } else if (delta < 0 && currentPage > 0) {
-          handlePageChange(currentPage - 1);
+        // 内容可滚动且不在边界，让内容滚动
+        if (isScrollable && !isAtTop && !isAtBottom) {
+          return;
         }
-        return;
-      }
 
-      // 备用大力度翻页 - 适用于所有页面
-      if (deltaAbs > 70) {
-        if (now - state.lastWheelTime < 150) return;
-        state.lastWheelTime = now;
+        // 检查翻页方向和边界
+        const shouldPageDown = delta > 0 && (!isScrollable || isAtBottom);
+        const shouldPageUp = delta < 0 && (!isScrollable || isAtTop);
 
-        // 翻页逻辑 - 适用于所有页面
-        if (delta > 0 && currentPage < totalPages - 1) {
-          handlePageChange(currentPage + 1);
-        } else if (delta < 0 && currentPage > 0) {
-          handlePageChange(currentPage - 1);
+        if (!shouldPageDown && !shouldPageUp) {
+          return;
         }
-        return;
       }
 
-      // 检查滚轮方向一致性
-      const currentDirection = delta > 0 ? 1 : -1;
-      if (currentDirection === state.lastWheelDirection) {
-        state.wheelConsistency++;
-      } else {
-        state.wheelConsistency = 0;
-        state.lastWheelDirection = currentDirection;
-      }
+      // 节流
+      if (now - state.lastWheelTime < 200) return;
+      state.lastWheelTime = now;
 
-      // 累积滚动量
-      state.accumulatedDelta += delta;
-
-      // 核心参数 - 降低阈值，适用于所有页面
-      const throttleTime = 150;
-      const fastScrollThreshold = 25;
-      const cumulativeThreshold = 35;
-      const consistencyThreshold = 1;
-
-      // 快速翻页条件 - 适用于所有页面
-      if (deltaAbs >= fastScrollThreshold && state.wheelConsistency >= consistencyThreshold) {
-        if (now - state.lastWheelTime < throttleTime) return;
-        state.lastWheelTime = now;
-
-        state.accumulatedDelta = 0;
-        state.wheelConsistency = 0;
-
-        // 翻页逻辑 - 适用于所有页面
-        if (delta > 0 && currentPage < totalPages - 1) {
-          handlePageChange(currentPage + 1);
-        } else if (delta < 0 && currentPage > 0) {
-          handlePageChange(currentPage - 1);
-        }
-        return;
-      }
-
-      // 慢速翻页条件 - 适用于所有页面
-      if (Math.abs(state.accumulatedDelta) >= cumulativeThreshold &&
-          state.wheelConsistency >= consistencyThreshold) {
-        if (now - state.lastWheelTime < throttleTime) return;
-        state.lastWheelTime = now;
-
-        state.accumulatedDelta = 0;
-        state.wheelConsistency = 0;
-
-        // 翻页逻辑 - 适用于所有页面
-        if (delta > 0 && currentPage < totalPages - 1) {
-          handlePageChange(currentPage + 1);
-        } else if (delta < 0 && currentPage > 0) {
-          handlePageChange(currentPage - 1);
-        }
+      // 翻页
+      if (delta > 0 && currentPage < totalPages - 1) {
+        handlePageChange(currentPage + 1);
+      } else if (delta < 0 && currentPage > 0) {
+        handlePageChange(currentPage - 1);
       }
     };
 
-    // 触摸事件处理
     const handleTouchStart = (e: TouchEvent) => {
       const touch = e.touches[0];
-      state.accumulatedDelta = 0;
-      state.touchStartY = touch.clientY;
-      state.touchStartX = touch.clientX;
       state.isTouchActive = true;
       state.hasSwitchedInThisTouch = false;
+      state.touchStartY = touch.clientY;
+      state.touchStartX = touch.clientX;
       state.horizontalMovement = 0;
       state.verticalMovement = 0;
-
       dragOffsetRef.current = 0;
       setIsDragging(true);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (!state.isTouchActive) return;
-      if (state.hasSwitchedInThisTouch) return;
+      if (!state.isTouchActive || state.hasSwitchedInThisTouch) return;
 
       const touch = e.touches[0];
       const deltaY = touch.clientY - state.touchStartY;
       const deltaX = touch.clientX - state.touchStartX;
 
-      // 记录移动量
       state.horizontalMovement = Math.abs(deltaX);
       state.verticalMovement = Math.abs(deltaY);
 
-      // 获取当前激活页面的滚动容器
       const activePage = document.querySelector(`[data-page-index="${currentPage}"]`);
       const scrollContainer = activePage?.querySelector('.scroll-content') as HTMLDivElement;
 
-      // 检查滚动状态
       let shouldPreventDefault = false;
       if (scrollContainer) {
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
+        const isScrollable = scrollHeight > clientHeight + 20;
+        const isAtTop = scrollTop <= 10;
+        const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 10;
 
-        // 宽松的可滚动判断 - 适用于所有页面
-        const isScrollable = scrollHeight > clientHeight + 15;
-        const isAtTop = scrollTop <= 15;
-        const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 15;
-
-        // 如果内容可滚动且不在边界，允许内容滚动
         if (isScrollable && !isAtTop && !isAtBottom) {
-          // 让内容滚动，不阻止默认行为
           return;
         }
 
-        // 只有在边界或内容不可滚动时才阻止默认行为
-        if (deltaY < 0 && isAtTop) {
-          shouldPreventDefault = true;
-        } else if (deltaY > 0 && isAtBottom) {
-          shouldPreventDefault = true;
-        } else if (!isScrollable) {
+        const shouldPageDown = deltaY > 0 && (!isScrollable || isAtBottom);
+        const shouldPageUp = deltaY < 0 && (!isScrollable || isAtTop);
+
+        if (shouldPageDown || shouldPageUp) {
           shouldPreventDefault = true;
         }
       } else {
-        // 没有滚动容器，阻止默认行为
         shouldPreventDefault = true;
       }
 
-      // 检测是否有明确的垂直滑动意图
       if (Math.abs(deltaY) > 10 && shouldPreventDefault) {
         e.preventDefault();
         dragOffsetRef.current = deltaY;
@@ -383,44 +263,12 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const deltaY = state.verticalMovement;
       const deltaX = state.horizontalMovement;
 
-      // 当垂直移动量显著大于水平移动量时，才触发翻页
       const isVerticalSwipe = deltaY > deltaX * 1.5;
 
       if (isVerticalSwipe && !state.hasSwitchedInThisTouch) {
         const lastOffset = Math.abs(dragOffsetRef.current);
 
-        // 获取当前激活页面的滚动容器
-        const activePage = document.querySelector(`[data-page-index="${currentPage}"]`);
-        const scrollContainer = activePage?.querySelector('.scroll-content') as HTMLDivElement;
-
-        // 检查滚动状态
-        let shouldTriggerPageChange = false;
-        if (scrollContainer) {
-          const scrollTop = scrollContainer.scrollTop;
-          const scrollHeight = scrollContainer.scrollHeight;
-          const clientHeight = scrollContainer.clientHeight;
-
-          // 宽松的可滚动判断 - 适用于所有页面
-          const isScrollable = scrollHeight > clientHeight + 15;
-          const isAtTop = scrollTop <= 15;
-          const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 15;
-
-          if (isScrollable) {
-            // 内容可滚动，需要在边界 - 适用于所有页面
-            if ((isAtTop && dragOffsetRef.current > 0) ||
-                (isAtBottom && dragOffsetRef.current < 0)) {
-              shouldTriggerPageChange = true;
-            }
-          } else {
-            // 内容不可滚动，可以翻页 - 适用于所有页面
-            shouldTriggerPageChange = true;
-          }
-        } else {
-          // 没有滚动容器，可以翻页 - 适用于所有页面
-          shouldTriggerPageChange = true;
-        }
-
-        if (shouldTriggerPageChange && lastOffset > window.innerHeight * 0.15) {
+        if (lastOffset > window.innerHeight * 0.15) {
           state.hasSwitchedInThisTouch = true;
 
           if (dragOffsetRef.current > 0 && currentPage > 0) {
@@ -431,20 +279,16 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         }
       }
 
-      // 重置状态
       state.isTouchActive = false;
       state.horizontalMovement = 0;
       state.verticalMovement = 0;
-
-      // 回弹动画
       dragOffsetRef.current = 0;
       setIsDragging(false);
     };
 
-    // 键盘导航
     const handleKeyDown = (e: KeyboardEvent) => {
       const now = performance.now();
-      if (now - state.lastWheelTime < 500) return; // 降低节流时间
+      if (now - state.lastWheelTime < 500) return;
 
       const keyMap: Record<string, number> = {
         'ArrowDown': 1,
@@ -463,12 +307,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    // 防止图片拖拽影响滑动
     const preventImageDrag = (e: DragEvent) => {
       e.preventDefault();
     };
 
-    // 事件监听
     window.addEventListener('wheel', handleWheel, { passive: false });
     window.addEventListener('touchstart', handleTouchStart, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
