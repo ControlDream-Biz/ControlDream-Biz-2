@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, useRef } from 'react';
 import Image from 'next/image';
 import { Mail, Coffee, Users, Monitor, Zap, Wifi } from 'lucide-react';
 
@@ -91,38 +91,54 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
 }: EnvironmentShowcaseProps) {
   const [mounted, setMounted] = useState(false);
   const [visibleIndices, setVisibleIndices] = useState<Set<number>>(new Set());
+  const previousIsActiveRef = useRef(isActive);
+  const initializedRef = useRef(false);
 
   // 页面激活时触发动画
   useEffect(() => {
-    console.log(`EnvironmentShowcase 触发动画: pageIndex=${pageIndex}, isActive=${isActive}, mounted=${mounted}`);
+    console.log(`EnvironmentShowcase 触发动画: pageIndex=${pageIndex}, isActive=${isActive}, mounted=${mounted}, previousActive=${previousIsActiveRef.current}, initialized=${initializedRef.current}`);
     
+    // 在页面激活时触发动画（包括初始化和页面切换）
     if (isActive) {
-      // 延迟触发，确保页面完全渲染
-      const timer = setTimeout(() => {
-        setMounted(true);
+      // 检查是否需要触发动画（第一次激活或从非激活变为激活）
+      const shouldTrigger = !initializedRef.current || !previousIsActiveRef.current;
+      
+      if (shouldTrigger) {
+        initializedRef.current = true;
+        previousIsActiveRef.current = true;
 
-        // 清空可见索引
-        setVisibleIndices(new Set());
+        // 延迟触发，确保页面完全渲染
+        const timer = setTimeout(() => {
+          setMounted(true);
 
-        // 计算总小字数
-        const totalItems = areas.reduce((sum, a) => sum + a.items.length, 0);
-        console.log(`总共有 ${totalItems} 个小字，准备执行动画`);
+          // 清空可见索引
+          setVisibleIndices(new Set());
 
-        // 依次显示每个小字
-        for (let i = 0; i < totalItems; i++) {
-          setTimeout(() => {
-            setVisibleIndices(prev => {
-              const newSet = new Set([...prev, i]);
-              console.log(`显示第 ${i} 个小字，当前可见: ${Array.from(newSet).join(', ')}`);
-              return newSet;
-            });
-          }, 400 + i * 200);
-        }
-      }, 300); // 延迟300ms
+          // 计算总小字数
+          const totalItems = areas.reduce((sum, a) => sum + a.items.length, 0);
+          console.log(`总共有 ${totalItems} 个小字，准备执行动画`);
 
-      return () => clearTimeout(timer);
+          // 依次显示每个小字
+          for (let i = 0; i < totalItems; i++) {
+            setTimeout(() => {
+              setVisibleIndices(prev => {
+                const newSet = new Set([...prev, i]);
+                console.log(`显示第 ${i} 个小字，当前可见: ${Array.from(newSet).join(', ')}`);
+                return newSet;
+              });
+            }, 400 + i * 200);
+          }
+        }, 300); // 延迟300ms
+
+        return () => clearTimeout(timer);
+      }
+    } else if (previousIsActiveRef.current) {
+      // 页面变为非激活时，重置状态
+      previousIsActiveRef.current = false;
+      setVisibleIndices(new Set());
+      console.log(`EnvironmentShowcase 页面变为非激活，清空小字显示`);
     }
-  }, [pageIndex]); // 只监听 pageIndex，避免依赖数组变化导致重复执行
+  }, [isActive]); // 只监听 isActive
 
   return (
     <div className="relative w-full bg-black overflow-hidden">
@@ -210,7 +226,7 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                     return (
                       <div
                         key={`${pageIndex}-${areaIndex}-${i}`}
-                        className={`flex items-start space-x-2 sm:space-x-3 ${isVisible ? '' : 'invisible'}`}
+                        className="flex items-start space-x-2 sm:space-x-3"
                         style={{
                           opacity: isVisible ? 1 : 0,
                           transform: isVisible ? 'translateX(0)' : 'translateX(20px)',
