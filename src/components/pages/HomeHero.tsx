@@ -10,7 +10,7 @@ export function HomeHero() {
   }, []);
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center bg-black overflow-hidden">
+    <div className="relative w-full h-full flex items-start justify-center bg-black overflow-hidden">
       {/* 动态背景光晕 */}
       <div
         className="absolute inset-0 transition-opacity duration-1000 ease-out"
@@ -20,10 +20,10 @@ export function HomeHero() {
         }}
       />
 
-      <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto">
+      <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto pt-4">
         {/* 主标题 - 波浪抖动动画 */}
         <div
-          className="mb-4 sm:mb-6 md:mb-8"
+          className="mb-2 sm:mb-3 md:mb-4 lg:mb-6"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
@@ -31,7 +31,7 @@ export function HomeHero() {
           }}
         >
           <h2
-            className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-2 sm:mb-3 md:mb-4 animate-wave-1 inline-block"
+            className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-1 inline-block"
             style={{
               background: 'linear-gradient(90deg, #FB923C 0%, #F87171 25%, #F43F5E 50%, #E11D48 75%, #BE123C 100%)',
               WebkitBackgroundClip: 'text',
@@ -43,7 +43,7 @@ export function HomeHero() {
             自主游戏产品
           </h2>
           <h2
-            className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-2 sm:mb-3 md:mb-4 animate-wave-2 inline-block"
+            className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-2 inline-block"
             style={{
               background: 'linear-gradient(90deg, #60A5FA 0%, #A78BFA 25%, #EC4899 50%, #F43F5E 75%, #E11D48 100%)',
               WebkitBackgroundClip: 'text',
@@ -55,7 +55,7 @@ export function HomeHero() {
             自主软件产品
           </h2>
           <h2
-            className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-2 sm:mb-3 md:mb-4 animate-wave-3 inline-block"
+            className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-3 inline-block"
             style={{
               background: 'linear-gradient(90deg, #22D3EE 0%, #3B82F6 25%, #6366F1 50%, #8B5CF6 75%, #A855F7 100%)',
               WebkitBackgroundClip: 'text',
@@ -70,7 +70,7 @@ export function HomeHero() {
 
         {/* 描述文字 - 不抖动 */}
         <p
-          className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/70 font-light max-w-4xl mx-auto mb-8 sm:mb-10 md:mb-12 lg:mb-16 leading-relaxed"
+          className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/70 font-light max-w-4xl mx-auto mb-4 sm:mb-6 md:mb-8 lg:mb-10 leading-relaxed"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
@@ -83,7 +83,7 @@ export function HomeHero() {
 
         {/* 核心理念 */}
         <div
-          className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 md:gap-8 lg:gap-12 max-w-5xl mx-auto"
+          className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 md:gap-6 lg:gap-8 max-w-5xl mx-auto"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',

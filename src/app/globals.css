@@ -3,15 +3,31 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* ========== 全局性能优化 - 强制120Hz ========== */
+/* ========== 全局性能优化 - 强制高刷新率 ========== */
+
+/* 手机端 120HZ 优化 */
+@media (hover: none) and (pointer: coarse) {
+  * {
+    animation-duration: 8.333ms !important; /* 1/120秒 */
+  }
+}
+
+/* 电脑端 240HZ 优化 */
+@media (hover: hover) and (pointer: fine) {
+  * {
+    animation-duration: 4.167ms !important; /* 1/240秒 */
+  }
+}
+
+/* 向下兼容：默认 60HZ */
+@supports not (animation-duration: 8.333ms) {
+  * {
+    animation-duration: 16.667ms !important; /* 1/60秒 */
+  }
+}
 
 /* 移除强制GPU加速，因为会破坏 fixed 定位 */
 /* 注意：transform 会创建新的包含块，导致 position: fixed 失效 */
-
-/* 高刷新率优化 - 移除 transform */
-@media (min-width: 1024px) {
-  /* 不再给所有元素添加 transform */
-}
 
 /* 优化渲染性能 */
 html {
@@ -24,13 +40,25 @@ html {
 }
 
 /* 优化滚动容器 */
-body {
+html, body {
   /* 优化滚动 */
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: none; /* 禁止浏览器的下拉刷新和过度滚动 */
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: none;
 
   /* 防止滚动闪烁 */
   scrollbar-width: thin;
+
+  /* 禁用默认的触摸行为 */
+  touch-action: pan-y;
+}
+
+/* 防止iOS Safari的下拉刷新 */
+#root, #__next {
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: none;
 }
 
 @theme inline {
@@ -566,10 +594,10 @@ body {
   animation: scalePulse 2s ease-in-out infinite;
 }
 
-/* 性能优化 - 移除强制120Hz动画，避免掉帧 */
+/* 性能优化 - 移除强制120HZ动画，避免掉帧 */
 /* 浏览器会自动根据显示器刷新率渲染，无需强制动画 */
 
-/* 平滑动画优化 */
+/* 平滑动画优化 - 高刷新率支持 */
 .smooth-animation {
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   animation-fill-mode: both;
@@ -577,6 +605,24 @@ body {
   -webkit-backface-visibility: hidden;
   perspective: 1000px;
   -webkit-perspective: 1000px;
+  /* 启用硬件加速 */
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+/* 高刷新率优化 */
+@media (hover: none) and (pointer: coarse) {
+  /* 手机 120HZ */
+  .smooth-animation {
+    animation-duration: 8.333ms;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  /* 电脑 240HZ */
+  .smooth-animation {
+    animation-duration: 4.167ms;
+  }
 }
 
 /* 减少 repaint 和 reflow */
@@ -794,6 +840,8 @@ div[data-scroll-animate] {
   animation: waveBounce 10s ease-in-out infinite;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* 三行波浪动画 - 第二行：延迟 1.2s，周期 10s */
@@ -802,6 +850,8 @@ div[data-scroll-animate] {
   animation-delay: 1.2s;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* 三行波浪动画 - 第三行：延迟 2.4s，周期 10s */
@@ -810,6 +860,8 @@ div[data-scroll-animate] {
   animation-delay: 2.4s;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 /* 渐变文字优化 */
@@ -820,6 +872,21 @@ div[data-scroll-animate] {
   -webkit-text-fill-color: transparent;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  will-change: background-position;
+}
+
+/* 高刷新率优化 */
+@media (hover: none) and (pointer: coarse) {
+  .text-gradient {
+    animation-duration: 8.333ms;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .text-gradient {
+    animation-duration: 4.167ms;
+  }
 }
 
 /* 分字符动画 */
@@ -1297,4 +1364,21 @@ html {
   -webkit-backface-visibility: hidden;
   perspective: 1000px;
   -webkit-perspective: 1000px;
+  transform: translateZ(0);
+  /* 高刷新率优化 */
+  animation-duration: 4.167ms;
+}
+
+/* 高刷新率优化 - 手机端 */
+@media (hover: none) and (pointer: coarse) {
+  .texas-slide-in {
+    animation-duration: 8.333ms;
+  }
+}
+
+/* 高刷新率优化 - 电脑端 */
+@media (hover: hover) and (pointer: fine) {
+  .texas-slide-in {
+    animation-duration: 4.167ms;
+  }
 }

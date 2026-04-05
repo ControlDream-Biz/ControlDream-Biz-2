@@ -38,14 +38,16 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
         transform,
-        transition: 'transform 1.1s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.9s cubic-bezier(0.32, 0.72, 0, 1)',
+        transition: 'transform 0.9s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.7s cubic-bezier(0.32, 0.72, 0, 1)',
         zIndex: isActive ? 10 : 1,
         willChange: 'transform, opacity',
       }}
     >
-      <div className="w-full pt-12 pb-32 px-4">
-        {React.isValidElement(children) && 'isActive' in children.props
-          ? React.cloneElement(children as ChildWithProps, { isActive })
+      <div className="w-full pt-8 pb-32 px-4">
+        {React.isValidElement(children)
+          ? (children as React.ReactElement<Record<string, unknown>>).props.isActive !== undefined
+            ? React.cloneElement(children as ChildWithProps, { isActive })
+            : children
           : children}
       </div>
     </div>
@@ -114,7 +116,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    // 苹果官网式的触摸处理逻辑 - 改为随滑随停
+    // 苹果官网式的触摸处理逻辑 - 极致跟手优化
     const handleTouchStart = (e: TouchEvent) => {
       state.touchStartY = e.touches[0].clientY;
       state.touchStartTime = performance.now();
@@ -125,11 +127,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const deltaY = e.touches[0].clientY - state.touchStartY;
       const absDeltaY = Math.abs(deltaY);
 
-      // 随滑随停：滑动超过20px就立即响应
-      if (absDeltaY > 20) {
-        if (e.cancelable) {
-          e.preventDefault();
-        }
+      // 极致跟手：滑动超过10px就立即响应
+      // 彻底阻止默认行为，防止下拉刷新
+      if (absDeltaY > 10 && e.cancelable) {
+        e.preventDefault();
+        e.stopPropagation();
       }
     };
 
@@ -139,13 +141,13 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       const deltaY = state.touchStartY - touchEndY;
 
-      // 随滑随停：滑动距离超过30px就切换页面
-      const swipeThreshold = 30;
+      // 极致跟手：滑动距离超过20px就切换页面
+      const swipeThreshold = 20;
       const absDeltaY = Math.abs(deltaY);
 
       if (absDeltaY >= swipeThreshold) {
-        // 降低节流时间，实现快速响应
-        if (touchEndTime - state.lastWheelTime < 300) return;
+        // 极致跟手：降低节流时间到200ms
+        if (touchEndTime - state.lastWheelTime < 200) return;
         state.lastWheelTime = touchEndTime;
 
         if (deltaY > 0) {
@@ -178,11 +180,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    // 苹果官网式的事件监听
+    // 苹果官网式的事件监听 - 使用passive: false以支持preventDefault
     window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchstart', handleTouchStart, { passive: false });
     window.addEventListener('touchmove', handleTouchMove, { passive: false });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: false });
     window.addEventListener('keydown', handleKeyDown);
 
     // 清理函数
