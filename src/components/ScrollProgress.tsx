@@ -49,7 +49,7 @@ export function ScrollProgress() {
 
   return (
     <div
-      className="fixed right-0 top-0 bottom-0 z-50 pr-1 flex items-center"
+      className="fixed right-0 top-0 bottom-0 z-50 pr-3 flex items-center"
     >
       {/* 圆点列表（极限紧靠，极限紧凑） */}
       <div className="w-2 flex flex-col items-center gap-0">
@@ -57,11 +57,11 @@ export function ScrollProgress() {
           const isCurrent = index === currentPage;
 
           return (
-            <div key={page.id} className="relative w-full h-4 flex items-center justify-center">
+            <div key={page.id} className="relative w-full h-0 flex items-center justify-center">
               {/* 当前页面的中文标签（从圆点弹出） */}
               <div
                 className={`
-                  absolute right-6 whitespace-nowrap px-3 py-1.5 rounded
+                  absolute right-4 whitespace-nowrap px-3 py-1.5 rounded
                   transition-all duration-700 ease-out
                   ${showLabel && isCurrent
                     ? 'opacity-100 translate-x-0'
