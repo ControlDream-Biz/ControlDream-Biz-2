@@ -30,7 +30,7 @@ export function ScrollProgress() {
   return (
     <div className="fixed right-0 top-1/2 -translate-y-1/2 z-50 flex items-center gap-8 pr-8">
       {/* 页面名称列表（左侧） */}
-      <div className="flex flex-col items-end gap-6">
+      <div className="flex flex-col items-end gap-8">
         {pages.map((page, index) => {
           const isCurrent = index === currentPage;
           return (
@@ -38,8 +38,11 @@ export function ScrollProgress() {
               key={page.id}
               onClick={() => scrollToSection(index)}
               className={`
-                text-xl font-medium transition-all duration-300
-                ${isCurrent ? 'text-white' : 'text-white/40 hover:text-white/60'}
+                font-medium transition-all duration-300
+                ${isCurrent
+                  ? 'text-3xl text-white font-bold'
+                  : 'text-lg text-white/50 hover:text-white/70'
+                }
               `}
               aria-label={`跳转到${page.label}`}
             >
@@ -50,33 +53,17 @@ export function ScrollProgress() {
       </div>
 
       {/* 进度指示器（右侧） */}
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center gap-6">
         {Array.from({ length: totalPages }).map((_, index) => {
           const isCurrent = index === currentPage;
-          const distance = Math.abs(index - currentPage);
-
-          // 根据距离计算样式
-          let sizeClass = 'w-2 h-2';
-          let colorClass = 'bg-white/30';
-
-          if (isCurrent) {
-            sizeClass = 'w-3 h-3';
-            colorClass = 'bg-white';
-          } else if (distance === 1) {
-            sizeClass = 'w-2.5 h-2.5';
-            colorClass = 'bg-white/50';
-          } else {
-            sizeClass = 'w-2 h-2';
-            colorClass = 'bg-white/30';
-          }
 
           return (
             <button
               key={index}
               onClick={() => scrollToSection(index)}
               className={`
-                ${sizeClass} rounded-full transition-all duration-300
-                ${colorClass} hover:opacity-80
+                w-3 h-3 rounded-full transition-all duration-300
+                ${isCurrent ? 'bg-white' : 'bg-white/30'}
               `}
               aria-label={`跳转到第${index + 1}页`}
             />
