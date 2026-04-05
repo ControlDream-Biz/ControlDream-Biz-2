@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, useRef } from 'react';
 import Image from 'next/image';
 import { Gamepad2, Cpu, HardDrive } from 'lucide-react';
 
@@ -65,13 +65,14 @@ const businesses = [
 ];
 
 export const BusinessShowcase = memo(function BusinessShowcase({
-  isActive = false,
+  isActive = true,
   dragOffset = 0,
   isDragging = false,
   pageIndex = 0,
   currentPage = 0
 }: BusinessShowcaseProps) {
   const [mounted, setMounted] = useState(false);
+  const initializedRef = useRef(false);
 
   // 计算滑动淡入效果 - 小字随滑动产生淡入动画
   const getSlideFadeOpacity = (itemIndex: number) => {
@@ -110,16 +111,13 @@ export const BusinessShowcase = memo(function BusinessShowcase({
     return 1;
   };
 
-  // 当页面切换回来时重新触发小字动画
   useEffect(() => {
-    if (isActive) {
-      setMounted(false);
-      const timer = setTimeout(() => {
-        setMounted(true);
-      }, 50);
-      return () => clearTimeout(timer);
+    // 只在首次加载时执行淡入动画
+    if (!initializedRef.current) {
+      initializedRef.current = true;
+      setMounted(true);
     }
-  }, [isActive]);
+  }, []);
 
   return (
     <div className="relative w-full bg-black overflow-hidden">

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, useRef } from 'react';
 import Image from 'next/image';
 import { Mail, Coffee, Users, Monitor, Zap, Wifi } from 'lucide-react';
 
@@ -83,13 +83,14 @@ const areas = [
 ];
 
 export const EnvironmentShowcase = memo(function EnvironmentShowcase({
-  isActive = false,
+  isActive = true,
   dragOffset = 0,
   isDragging = false,
   pageIndex = 0,
   currentPage = 0
 }: EnvironmentShowcaseProps) {
   const [mounted, setMounted] = useState(false);
+  const initializedRef = useRef(false);
 
   // 计算滑动淡入效果 - 小字随滑动产生淡入动画
   const getSlideFadeOpacity = (itemIndex: number) => {
@@ -128,16 +129,16 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
     return 1;
   };
 
-  // 当页面切换回来时重新触发小字动画
   useEffect(() => {
-    if (isActive) {
-      setMounted(false);
-      const timer = setTimeout(() => {
-        setMounted(true);
-      }, 50);
-      return () => clearTimeout(timer);
+    // 只在首次加载时执行淡入动画
+    if (!initializedRef.current) {
+      initializedRef.current = true;
+      setMounted(true);
     }
-  }, [isActive]);
+  }, []);
+
+  // 不在页面切换时重置mounted，避免页面闪烁
+  // 小字动画使用slideFadeOpacity计算，不依赖mounted重置
 
   return (
     <div className="relative w-full bg-black overflow-hidden">
