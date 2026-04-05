@@ -90,62 +90,33 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
   currentPage = 0
 }: EnvironmentShowcaseProps) {
   const [mounted, setMounted] = useState(false);
-  const [shouldAnimate, setShouldAnimate] = useState(false); // 控制小字滚入动画
   const animationTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // 计算滑动淡入效果 - 小字随滑动产生淡入动画
-  const getSlideFadeOpacity = (itemIndex: number) => {
-    if (!isDragging || dragOffset === 0) return 1;
-
-    // 判断是向上滑动还是向下滑动
-    const isSlidingUp = dragOffset < 0;
-
-    // 如果当前页面是活跃的，且正在向上滑动（显示下一页）
-    if (isActive && isSlidingUp) {
-      // 当前页面的小字随滑动淡出
-      const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
-      const progressCubic = progress * progress * (3 - 2 * progress);
-      return 1 - progressCubic * 0.5;
-    }
-
-    // 如果这是下一页，且正在向上滑动
-    if (!isActive && pageIndex === currentPage + 1 && isSlidingUp) {
-      // 下一页的小字随滑动淡入
-      const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
-      const progressCubic = progress * progress * (3 - 2 * progress);
-      // 每个小字依次淡入，基于 itemIndex
-      const itemProgress = Math.max(0, (progress - itemIndex * 0.05) / (1 - itemIndex * 0.05));
-      return Math.min(progressCubic * 0.8 * itemProgress, 1);
-    }
-
-    // 如果这是上一页，且正在向下滑动
-    if (!isActive && pageIndex === currentPage - 1 && !isSlidingUp) {
-      // 上一页的小字随滑动淡入
-      const progress = Math.min(Math.abs(dragOffset) / window.innerHeight, 1);
-      const progressCubic = progress * progress * (3 - 2 * progress);
-      const itemProgress = Math.max(0, (progress - itemIndex * 0.05) / (1 - itemIndex * 0.05));
-      return Math.min(progressCubic * 0.8 * itemProgress, 1);
-    }
-
-    return 1;
-  };
-
-  // 首次加载和页面切换时触发动画
+  // 首次加载和页面切换时触发小字动画
   useEffect(() => {
     // 清除之前的动画定时器
     if (animationTimerRef.current) {
       clearTimeout(animationTimerRef.current);
     }
 
-    // 步骤1: 确保mounted为true
+    // 确保mounted为true
     setMounted(true);
 
-    // 步骤2: 重置小字动画状态
-    setShouldAnimate(false);
-
-    // 步骤3: 延迟后触发小字动画（确保两次渲染之间有时间差）
+    // 延迟后触发小字动画（等待页面完全渲染）
     animationTimerRef.current = setTimeout(() => {
-      setShouldAnimate(true);
+      // 查找所有小字元素
+      const smallTextItems = document.querySelectorAll('[data-small-text]');
+      smallTextItems.forEach((item, index) => {
+        const itemEl = item as HTMLElement;
+        // 重置初始状态
+        itemEl.style.opacity = '0';
+        itemEl.style.transform = 'translateX(2.5rem)';
+        // 依次触发动画
+        setTimeout(() => {
+          itemEl.style.opacity = '1';
+          itemEl.style.transform = 'translateX(0)';
+        }, 400 + index * 200); // 400ms 后开始，每个间隔 200ms
+      });
       animationTimerRef.current = null;
     }, 100);
 
@@ -232,27 +203,17 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                   {area.description}
                 </p>
 
-                {/* 小字列表 - 腾讯式从右向左滚动淡入 + 滑动淡入 */}
+                {/* 小字列表 - 腾讯式从右向左滚动淡入 */}
                 <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
                   {area.items.map((item, i) => {
-                    const slideFadeOpacity = getSlideFadeOpacity(i);
-
-                    // 综合计算最终opacity：
-                    // 如果正在拖拽，使用slideFadeOpacity
-                    // 如果不在拖拽，opacity由shouldAnimate控制（通过transition过渡）
-                    const finalOpacity = isDragging ? slideFadeOpacity : (shouldAnimate ? 1 : 0);
-
                     return (
                       <div
-                        key={`${index}-${i}-${shouldAnimate}`}
-                        className="flex items-start space-x-2 sm:space-x-3"
+                        key={`${index}-${i}`}
+                        className="flex items-start space-x-2 sm:space-x-3 transition-all duration-700 ease-out"
+                        data-small-text
                         style={{
-                          transform: shouldAnimate ? 'translateX(0)' : 'translateX(4rem)',
-                          opacity: finalOpacity,
-                          transitionDelay: shouldAnimate ? `${i * 0.2}s` : '0s',
-                          transitionTimingFunction: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-                          transitionDuration: shouldAnimate ? '800ms' : '0s',
-                          transitionProperty: 'transform, opacity',
+                          opacity: 0,
+                          transform: 'translateX(2.5rem)',
                         }}
                       >
                         <div className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 bg-gradient-to-br ${area.color}`}></div>
