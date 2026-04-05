@@ -17,13 +17,13 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
   }, []);
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-12 pb-8 bg-black">
-      {/* 动态背景光晕 - 相对定位，只在首页显示 */}
+    <>
+      {/* 动态背景光晕 - fixed定位，覆盖整个首页 */}
       <div
-        className="absolute inset-0 transition-opacity duration-1000 ease-out pointer-events-none"
+        className="fixed inset-0 transition-opacity duration-1000 ease-out pointer-events-none"
         style={{
-          zIndex: -10, // 在粒子背景下方
-          opacity: mounted ? 0.6 : 0.6, // 降低整体不透明度到 0.6，让粒子更明显
+          zIndex: 1, // 在背景之上，粒子之下
+          opacity: mounted ? 0.8 : 0.8,
           background: `
             radial-gradient(circle at 25% 35%, rgba(139, 92, 246, 0.45) 0%, rgba(124, 58, 237, 0.35) 15%, rgba(109, 40, 217, 0.25) 30%, rgba(99, 102, 241, 0.15) 45%, rgba(99, 102, 241, 0.08) 60%, rgba(99, 102, 241, 0.04) 75%, transparent 90%),
             radial-gradient(circle at 75% 45%, rgba(59, 130, 246, 0.45) 0%, rgba(37, 99, 235, 0.35) 15%, rgba(29, 78, 216, 0.25) 30%, rgba(99, 102, 241, 0.15) 45%, rgba(99, 102, 241, 0.08) 60%, rgba(99, 102, 241, 0.04) 75%, transparent 90%),
@@ -36,6 +36,8 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
 
       {/* 粒子背景 - 只在首页显示 */}
       <ParticleBackground />
+
+      <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-12 pb-8 bg-black">
 
       <div className="relative z-20 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto flex flex-col items-center justify-center translate-y-8">
         {/* 主标题 - 波浪抖动动画 */}
@@ -136,6 +138,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
           ))}
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 });

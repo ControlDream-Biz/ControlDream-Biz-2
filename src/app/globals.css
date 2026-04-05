@@ -263,39 +263,17 @@ body {
   position: relative;
 }
 
+body {
+  position: relative;
+  background: #000000;
+}
+
 body::before {
-  content: '';
-  position: fixed;
-  inset: -10%; /* 扩大10%防止露白 */
-  background:
-    /* 简洁渐变 - 只保留核心色彩 */
-    radial-gradient(circle at 50% -20%, rgba(99, 102, 241, 0.08) 0%, transparent 60%),
-    radial-gradient(circle at 80% 90%, rgba(139, 92, 246, 0.06) 0%, transparent 60%),
-    radial-gradient(circle at -10% 50%, rgba(236, 72, 153, 0.05) 0%, transparent 60%),
-    /* 底层黑色背景 - 修改为纯黑 */
-    linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 100%);
-  backdrop-filter: blur(40px) saturate(150%);
-  -webkit-backdrop-filter: blur(40px) saturate(150%);
-  z-index: -2;
-  pointer-events: none;
-  min-width: 120vw;
-  min-height: 120vh;
+  display: none;
 }
 
 body::after {
-  content: '';
-  position: fixed;
-  inset: -10%;
-  background:
-    /* 简洁装饰渐变 */
-    radial-gradient(circle at 30% 30%, rgba(167, 139, 250, 0.04) 0%, transparent 60%),
-    radial-gradient(circle at 70% 70%, rgba(251, 113, 133, 0.03) 0%, transparent 60%);
-  backdrop-filter: blur(50px) saturate(150%);
-  -webkit-backdrop-filter: blur(50px) saturate(150%);
-  z-index: -2;
-  pointer-events: none;
-  min-width: 120vw;
-  min-height: 120vh;
+  display: none;
 }
 
 body {
