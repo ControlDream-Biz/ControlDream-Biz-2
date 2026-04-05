@@ -37,7 +37,8 @@ export default function FloatingButtons() {
     buttonGroup.style.flexDirection = 'column';
     buttonGroup.style.gap = '16px';
     buttonGroup.style.zIndex = '2147483647';
-    buttonGroup.style.pointerEvents = 'auto';
+    buttonGroup.style.pointerEvents = 'none'; // 容器不接收事件，避免影响按钮
+    buttonGroup.style.willChange = 'auto'; // 禁用容器的 will-change
 
     // 创建返回顶部按钮 - 现代玻璃效果
     const backToTopBtn = document.createElement('button');
@@ -221,16 +222,26 @@ export default function FloatingButtons() {
     customerServicePopup.style.willChange = 'opacity, transform';
 
     customerServicePopup.innerHTML = `
-      <!-- 顶部红色标题栏 -->
-      <div style="background: linear-gradient(135deg, rgba(239, 68, 68, 0.95) 0%, rgba(220, 38, 38, 0.95) 100%); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 16px 20px; color: white; position: relative;">
+      <!-- 顶部红色标题栏 - 玻璃效果 -->
+      <div style="
+        background: rgba(239, 68, 68, 0.25);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1.5px solid rgba(239, 68, 68, 0.3);
+        border-radius: 20px 20px 0 0;
+        padding: 16px 20px;
+        color: white;
+        position: relative;
+        box-shadow: 0 8px 32px rgba(239, 68, 68, 0.15), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+      ">
         <div style="display: flex; align-items: center; justify-content: space-between;">
           <div>
             <h3 style="font-size: 18px; font-weight: 600; margin: 0; letter-spacing: 0.3px;">在线客服</h3>
             <p style="font-size: 13px; opacity: 0.95; margin: 3px 0 0 0; font-weight: 400;">我们随时为您服务</p>
           </div>
           <button id="close-popup-btn" type="button" style="
-            width: 28px;
-            height: 28px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.2);
             border: 1.5px solid rgba(255, 255, 255, 0.3);
@@ -242,14 +253,29 @@ export default function FloatingButtons() {
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateZ(0);
-          ">✕</button>
+          ">
+            <span style="
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 100%;
+              height: 100%;
+            ">✕</span>
+          </button>
         </div>
       </div>
 
-      <!-- 主体选项区域 - 白色卡片样式 -->
-      <div style="background: rgba(255, 255, 255, 0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);">
+      <!-- 主体选项区域 - 白色玻璃效果 -->
+      <div style="
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1.5px solid rgba(255, 255, 255, 0.5);
+        border-radius: 0 0 20px 20px;
+        border-top: none;
+      ">
         <!-- 在线咨询 -->
         <div class="service-item" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; transition: all 0.12s cubic-bezier(0.4, 0, 0.2, 1); border-bottom: 1px solid rgba(0, 0, 0, 0.08); transform: translateZ(0);">
           <div style="
@@ -313,8 +339,19 @@ export default function FloatingButtons() {
         </div>
       </div>
 
-      <!-- 底部工作时间栏 -->
-      <div style="background: rgba(243, 244, 246, 0.9); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); padding: 12px 20px; text-align: center; font-size: 12px; color: #9ca3af; font-weight: 500;">
+      <!-- 底部工作时间栏 - 玻璃效果 -->
+      <div style="
+        background: rgba(249, 250, 251, 0.6);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        border-radius: 0 0 20px 20px;
+        padding: 12px 20px;
+        text-align: center;
+        font-size: 12px;
+        color: #9ca3af;
+        font-weight: 500;
+      ">
         工作时间：周一至周五 9:00-18:00
       </div>
     `;
@@ -387,21 +424,32 @@ export default function FloatingButtons() {
 
       // 使用 transform 和 opacity 进行动画（GPU加速）
       requestAnimationFrame(() => {
-        popup.style.transition = 'opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)';
+        popup.style.transition = 'opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
         popup.style.opacity = '1';
         popup.style.transform = 'scale(1) translateY(0)';
-      });
 
-      // 改变按钮图标和颜色 - 平滑过渡
-      requestAnimationFrame(() => {
-        btn.style.transition = 'background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
-        btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>';
+        // 平滑改变按钮状态 - 使用 transform 代替直接修改 DOM
+        btn.style.transition = 'background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
         btn.style.backgroundColor = 'rgba(239, 68, 68, 0.25)';
       });
+
+      // 延迟更改图标，避免与背景色变化同时触发
+      setTimeout(() => {
+        btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg>';
+      }, 150);
       shouldHidePopup.current = false;
     } else {
+      // 先恢复图标，然后隐藏弹窗
+      btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+
+      // 延迟改变背景色，避免与图标变化同时触发
+      setTimeout(() => {
+        btn.style.transition = 'background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+        btn.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
+      }, 100);
+
       // 隐藏弹窗
-      popup.style.transition = 'opacity 0.15s cubic-bezier(0.4, 0, 1, 1), transform 0.15s cubic-bezier(0.4, 0, 1, 1)';
+      popup.style.transition = 'opacity 0.2s cubic-bezier(0.4, 0, 1, 1), transform 0.2s cubic-bezier(0.4, 0, 1, 1)';
       popup.style.opacity = '0';
       popup.style.transform = 'scale(0.92) translateY(15px)';
 
@@ -411,14 +459,7 @@ export default function FloatingButtons() {
         if (shouldHidePopup.current) {
           popup.style.display = 'none';
         }
-      }, 150);
-
-      // 恢复按钮图标和颜色 - 平滑过渡
-      requestAnimationFrame(() => {
-        btn.style.transition = 'background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1)';
-        btn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
-        btn.style.backgroundColor = 'rgba(239, 68, 68, 0.15)';
-      });
+      }, 200);
     }
   }, [isCustomerServiceOpen]);
 

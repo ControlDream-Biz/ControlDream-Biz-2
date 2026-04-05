@@ -11,12 +11,12 @@ export function HomeHero() {
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center bg-black overflow-hidden">
-      {/* 动态背景光晕 */}
+      {/* 动态背景光晕 - 固定定位，不随内容滚动 */}
       <div
-        className="absolute inset-0 transition-opacity duration-1000 ease-out"
+        className="fixed inset-0 transition-opacity duration-1000 ease-out pointer-events-none"
         style={{
           opacity: mounted ? 1 : 0,
-          background: 'radial-gradient(circle at 30% 40%, rgba(139, 92, 246, 0.15) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(59, 130, 246, 0.15) 0%, transparent 50%)',
+          background: 'radial-gradient(circle at 30% 40%, rgba(139, 92, 246, 0.25) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(59, 130, 246, 0.25) 0%, transparent 50%)',
         }}
       />
 
@@ -33,11 +33,12 @@ export function HomeHero() {
           <h2
             className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-1 inline-block"
             style={{
-              background: 'linear-gradient(90deg, #FB923C 0%, #F87171 25%, #F43F5E 50%, #E11D48 75%, #BE123C 100%)',
+              backgroundImage: 'linear-gradient(135deg, #FB923C 0%, #F87171 15%, #F43F5E 35%, #E11D48 55%, #DC2626 75%, #B91C1C 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
               display: 'inline-block',
+              filter: 'drop-shadow(0 0 20px rgba(239, 68, 68, 0.3))',
             }}
           >
             自主游戏产品
@@ -45,11 +46,12 @@ export function HomeHero() {
           <h2
             className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-2 inline-block"
             style={{
-              background: 'linear-gradient(90deg, #60A5FA 0%, #A78BFA 25%, #EC4899 50%, #F43F5E 75%, #E11D48 100%)',
+              backgroundImage: 'linear-gradient(135deg, #60A5FA 0%, #3B82F6 15%, #6366F1 35%, #8B5CF6 55%, #A855F7 75%, #7C3AED 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
               display: 'inline-block',
+              filter: 'drop-shadow(0 0 20px rgba(99, 102, 241, 0.3))',
             }}
           >
             自主软件产品
@@ -57,11 +59,12 @@ export function HomeHero() {
           <h2
             className="text-2xl sm:text-3xl md:text-5xl lg:text-7xl xl:text-8xl font-black leading-tight mb-1 sm:mb-2 md:mb-3 lg:mb-4 animate-wave-3 inline-block"
             style={{
-              background: 'linear-gradient(90deg, #22D3EE 0%, #3B82F6 25%, #6366F1 50%, #8B5CF6 75%, #A855F7 100%)',
+              backgroundImage: 'linear-gradient(135deg, #22D3EE 0%, #06B6D4 15%, #0EA5E9 35%, #3B82F6 55%, #6366F1 75%, #4F46E5 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
               display: 'inline-block',
+              filter: 'drop-shadow(0 0 20px rgba(6, 182, 212, 0.3))',
             }}
           >
             自主硬件产品
