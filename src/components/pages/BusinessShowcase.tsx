@@ -76,7 +76,13 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
   // 首次加载和页面切换时触发小字动画
   useEffect(() => {
-    console.log(`BusinessShowcase useEffect 触发: isActive=${isActive}, pageIndex=${pageIndex}`);
+    console.log(`BusinessShowcase useEffect 触发: isActive=${isActive}, pageIndex=${pageIndex}, currentPage=${currentPage}`);
+
+    // 只有当前页面是活跃页面时才触发动画
+    if (!isActive) {
+      console.log('当前页面不是活跃页面，不触发动画');
+      return;
+    }
 
     // 确保mounted为true
     setMounted(true);
@@ -100,7 +106,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
         }, 400 + globalIndex * 200);
       });
     });
-  }, [isActive, pageIndex]); // 监听isActive和pageIndex变化，页面切换时重新触发
+  }, [pageIndex, isActive]); // 监听pageIndex和isActive变化
 
   // 计算滑动淡入效果 - 小字随滑动产生淡入动画
   const getSlideFadeOpacity = (itemIndex: number) => {
@@ -236,7 +242,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
                     ))}
                   </div>
 
-                  {/* 小字列表 - 腾讯式从右向左滚动淡入 */}
+                  {/* 小字列表 - 依次淡入 */}
                   <div className="space-y-2 sm:space-y-3 mt-4 sm:mt-6">
                     {business.items.map((item, i) => {
                       // 计算全局索引：前面所有 business 的 items 数量 + 当前索引

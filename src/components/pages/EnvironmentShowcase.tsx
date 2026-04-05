@@ -94,7 +94,13 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
 
   // 首次加载和页面切换时触发小字动画
   useEffect(() => {
-    console.log(`EnvironmentShowcase useEffect 触发: isActive=${isActive}, pageIndex=${pageIndex}`);
+    console.log(`EnvironmentShowcase useEffect 触发: isActive=${isActive}, pageIndex=${pageIndex}, currentPage=${currentPage}`);
+
+    // 只有当前页面是活跃页面时才触发动画
+    if (!isActive) {
+      console.log('当前页面不是活跃页面，不触发动画');
+      return;
+    }
 
     // 确保mounted为true
     setMounted(true);
@@ -118,7 +124,7 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
         }, 400 + globalIndex * 200);
       });
     });
-  }, [isActive, pageIndex]); // 监听isActive和pageIndex变化，页面切换时重新触发
+  }, [pageIndex, isActive]); // 监听pageIndex和isActive变化
 
   // 计算滑动淡入效果 - 小字随滑动产生淡入动画
   const getSlideFadeOpacity = (itemIndex: number) => {
