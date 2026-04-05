@@ -4,13 +4,28 @@ import { useState, useEffect, useRef } from 'react';
 
 export default function FloatingButtons() {
   const [isCustomerServiceOpen, setIsCustomerServiceOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
   const isInitialized = useRef(false);
   const shouldHidePopup = useRef(false);
+  const lastBackToTopClick = useRef(0); // 记录上次点击时间戳
 
   const scrollToTop = () => {
-    // 触发自定义事件，让ScrollPage组件处理翻页到第一页
-    const event = new CustomEvent('jump-to-page', { detail: { pageIndex: 0 } });
-    window.dispatchEvent(event);
+    const now = Date.now();
+    const timeDiff = now - lastBackToTopClick.current;
+    const isDoubleClick = timeDiff < 500; // 500ms内视为双击
+
+    if (isDoubleClick) {
+      // 双击：回到首页
+      const event = new CustomEvent('jump-to-page', { detail: { pageIndex: 0 } });
+      window.dispatchEvent(event);
+    } else {
+      // 单击：往上翻一页
+      const targetPage = Math.max(0, currentPage - 1);
+      const event = new CustomEvent('jump-to-page', { detail: { pageIndex: targetPage } });
+      window.dispatchEvent(event);
+    }
+
+    lastBackToTopClick.current = now;
   };
 
   const toggleCustomerService = (e?: MouseEvent) => {
@@ -487,6 +502,15 @@ export default function FloatingButtons() {
 
     document.addEventListener('click', handleOutsideClick);
 
+    // 监听页面变化事件，更新当前页码
+    const handlePageChange = (e: CustomEvent) => {
+      const newPage = e.detail.pageIndex;
+      if (newPage !== undefined) {
+        setCurrentPage(newPage);
+      }
+    };
+    window.addEventListener('page-changed', handlePageChange as EventListener);
+
     // 添加弹窗内部元素的悬停效果
     const addHoverEffects = () => {
       const closeBtn = customerServicePopup.querySelector('#close-popup-btn') as HTMLButtonElement;
@@ -530,6 +554,7 @@ export default function FloatingButtons() {
     // 清理函数
     return () => {
       document.removeEventListener('click', handleOutsideClick);
+      window.removeEventListener('page-changed', handlePageChange as EventListener);
       if (document.body.contains(buttonGroup)) {
         document.body.removeChild(buttonGroup);
       }

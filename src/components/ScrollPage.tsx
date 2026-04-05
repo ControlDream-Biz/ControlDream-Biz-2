@@ -174,6 +174,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       onPageChange?.(newPage);
       scrollStateRef.current.isProcessingScroll = false;
       scrollStateRef.current.wheelAccumulator = 0;
+
+      // 触发页面变化事件，通知其他组件当前页码
+      const pageChangeEvent = new CustomEvent('page-changed', { detail: { pageIndex: newPage } });
+      window.dispatchEvent(pageChangeEvent);
     }
   }, [currentPage, totalPages, onPageChange]);
 
