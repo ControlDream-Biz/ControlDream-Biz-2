@@ -16,6 +16,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
   const isActive = index === currentPage;
   const isPrev = index < currentPage;
   const isNext = index > currentPage;
+  const isAdjacent = Math.abs(index - currentPage) === 1; // 是否为相邻页面
 
   let transform = '';
   let opacity = 1;
@@ -46,10 +47,10 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
       transform = 'translateY(0)';
       opacity = 1;
     } else if (isPrev) {
-      transform = 'translateY(-50vh)';
+      transform = `translateY(-50vh)`;
       opacity = 0;
     } else if (isNext) {
-      transform = 'translateY(50vh)';
+      transform = `translateY(50vh)`;
       opacity = 0;
     }
   }
@@ -62,6 +63,8 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
       className="fixed inset-0 overflow-hidden"
       style={{
         zIndex: isActive ? 10 : 0,
+        // 激活页面可见，相邻页面在拖拽时可见，其他页面完全隐藏
+        visibility: (isActive || (isDragging && isAdjacent)) ? 'visible' : 'hidden',
       }}
     >
       {/* 背景层 - 只有首页有深紫蓝调渐变背景，参与滑动 */}
@@ -213,121 +216,82 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         if (now - state.lastWheelTime < throttleTime) return;
         state.lastWheelTime = now;
 
-        // 判断滚动方向
-        if (state.accumulatedDelta > 0) {
-          handlePageChange(currentPage + 1);
-        } else {
-          handlePageChange(currentPage - 1);
-        }
-
-        // 重置累积量
+        // 重置累积值
         state.accumulatedDelta = 0;
         state.wheelConsistency = 0;
+
+        if (delta > 0 && currentPage < totalPages - 1) {
+          handlePageChange(currentPage + 1);
+        } else if (delta < 0 && currentPage > 0) {
+          handlePageChange(currentPage - 1);
+        }
       }
     };
 
-    // 改进的触摸处理逻辑 - 防止误触
+    // 触摸事件处理
     const handleTouchStart = (e: TouchEvent) => {
-      state.touchStartY = e.touches[0].clientY;
-      state.touchStartX = e.touches[0].clientX;
+      const touch = e.touches[0];
+      state.touchStartY = touch.clientY;
+      state.touchStartX = touch.clientX;
       state.touchStartTime = performance.now();
-      state.velocity = 0;
-      state.isScrolling = false;
       state.isTouchActive = true;
       state.hasSwitchedInThisTouch = false;
       state.hasMovedVertically = false;
       state.horizontalMovement = 0;
       state.verticalMovement = 0;
+
+      setIsDragging(true);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      const deltaY = e.touches[0].clientY - state.touchStartY;
-      const deltaX = e.touches[0].clientX - state.touchStartX;
-      const absDeltaY = Math.abs(deltaY);
-      const absDeltaX = Math.abs(deltaX);
+      if (!state.isTouchActive) return;
+      if (state.hasSwitchedInThisTouch) return;
 
-      // 更新移动量
-      state.horizontalMovement = absDeltaX;
-      state.verticalMovement = absDeltaY;
+      const touch = e.touches[0];
+      const deltaY = touch.clientY - state.touchStartY;
+      const deltaX = touch.clientX - state.touchStartX;
 
-      // 检测滑动意图：必须是明确的垂直滑动
-      // 垂直移动量必须大于水平移动量的1.5倍，且垂直移动至少50px
-      const isVerticalSwipe = absDeltaY > absDeltaX * 1.5 && absDeltaY > 50;
+      // 记录移动量
+      state.horizontalMovement = Math.abs(deltaX);
+      state.verticalMovement = Math.abs(deltaY);
 
-      if (isVerticalSwipe) {
+      // 检测是否有明确的垂直滑动意图
+      if (Math.abs(deltaY) > 10 && !state.hasMovedVertically) {
         state.hasMovedVertically = true;
-
-        const currentTime = performance.now();
-        const deltaTime = currentTime - state.touchStartTime;
-        const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
-
-        if (velocity > state.velocity) {
-          state.velocity = velocity;
-        }
-
-        // 阻止默认行为：只有明确的垂直滑动才阻止
-        if (absDeltaY > 50 && e.cancelable) {
-          e.preventDefault();
-          e.stopPropagation();
-          state.isScrolling = true;
-        }
-
-        // 直接设置拖动偏移，保证跟手
-        setDragOffset(deltaY);
-        setIsDragging(true);
-      } else {
-        // 水平滑动或滑动距离不够，不阻止默认行为
-        // 允许页面内的水平滚动
       }
+
+      // 只有当有明确的垂直滑动意图时，才允许页面切换
+      if (!state.hasMovedVertically) return;
+
+      e.preventDefault();
+
+      // 更新拖拽偏移量
+      setDragOffset(deltaY);
     };
 
     const handleTouchEnd = (e: TouchEvent) => {
-      const touchEndY = e.changedTouches[0].clientY;
+      if (!state.isTouchActive) return;
+
       const touchEndTime = performance.now();
+      const touchDuration = touchEndTime - state.touchStartTime;
+      const deltaY = state.verticalMovement;
 
-      const deltaY = state.touchStartY - touchEndY;
-      const deltaTime = touchEndTime - state.touchStartTime;
-      const absDeltaY = Math.abs(deltaY);
+      // 只有当垂直移动量显著大于水平移动量时，才触发翻页
+      // 并且需要有一定的最小移动距离和最大持续时间
+      const isVerticalSwipe = deltaY > state.horizontalMovement * 1.5;
+      const isSignificantMove = deltaY > 30; // 最小移动距离
+      const isReasonableDuration = touchDuration < 500; // 最大持续时间
 
-      // 计算滑动速度
-      const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
-      const effectiveVelocity = Math.max(velocity, state.velocity);
+      if (isVerticalSwipe && isSignificantMove && isReasonableDuration && !state.hasSwitchedInThisTouch) {
+        const lastOffset = Math.abs(dragOffset);
 
-      // 改进的翻页条件：更流畅
-      const minSwipeTime = 100;    // 降低到100ms
-      const maxSwipeTime = 800;   // 降低到800ms
-      const swipeThreshold = 60;  // 降低到60px
-      const velocityThreshold = 0.5; // 降低到0.5 px/ms
+        if (lastOffset > window.innerHeight * 0.25) {
+          state.hasSwitchedInThisTouch = true;
 
-      // 只有满足所有条件才翻页：
-      // 1. 有明确的垂直滑动意图
-      // 2. 滑动距离足够
-      // 3. 速度足够快
-      // 4. 时间在合理范围内
-      // 5. 本次触摸未翻页
-      const shouldSwitchPage =
-        state.hasMovedVertically &&
-        !state.hasSwitchedInThisTouch &&
-        deltaTime >= minSwipeTime &&
-        deltaTime <= maxSwipeTime &&
-        absDeltaY >= swipeThreshold &&
-        effectiveVelocity >= velocityThreshold;
-
-      if (shouldSwitchPage) {
-        // 节流检查
-        if (touchEndTime - state.lastWheelTime < 1000) return;
-        state.lastWheelTime = touchEndTime;
-        state.hasSwitchedInThisTouch = true;
-
-        if (deltaY > 0) {
-          // 上滑，向下翻页
-          if (currentPage < totalPages - 1) {
-            handlePageChange(currentPage + 1);
-          }
-        } else {
-          // 下滑，向上翻页
-          if (currentPage > 0) {
+          if (dragOffset > 0 && currentPage > 0) {
             handlePageChange(currentPage - 1);
+          } else if (dragOffset < 0 && currentPage < totalPages - 1) {
+            handlePageChange(currentPage + 1);
           }
         }
       }
@@ -447,23 +411,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           <span className="text-xs font-medium tracking-wider">
             向下滚动
           </span>
-          <svg
-            className="w-5 h-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            style={{
-              animation: 'scrollBounce 2s infinite',
-              animationTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)',
-            }}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 14l-7 7m0 0l-7-7m7 7V3"
-            />
-          </svg>
+          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
+            <div className="w-1 h-2 bg-white/50 rounded-full animate-bounce" />
+          </div>
         </div>
       )}
     </div>
