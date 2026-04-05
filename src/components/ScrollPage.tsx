@@ -132,19 +132,14 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   const [currentPage, setCurrentPage] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const dragOffsetRef = useRef(0);
-  const forceUpdateRef = useRef(0);
   const totalPages = children.length;
 
   const scrollStateRef = useRef({
-    accumulatedDelta: 0,
     lastWheelTime: 0,
-    wheelConsistency: 0,
     isTouchActive: false,
     hasSwitchedInThisTouch: false,
     touchStartY: 0,
     touchStartX: 0,
-    horizontalMovement: 0,
-    verticalMovement: 0,
   });
 
   const handlePageChange = useCallback((newPage: number) => {
@@ -160,37 +155,35 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     const handleWheel = (e: WheelEvent) => {
       const now = performance.now();
       const delta = e.deltaY;
-      const deltaAbs = Math.abs(delta);
 
       // 获取当前页面的滚动容器
       const activePage = document.querySelector(`[data-page-index="${currentPage}"]`);
       const scrollContainer = activePage?.querySelector('.scroll-content') as HTMLDivElement;
 
-      // 检查滚动状态
+      // 如果有滚动容器，检查是否可以滚动
       if (scrollContainer) {
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
-        const isScrollable = scrollHeight > clientHeight + 20;
-        const isAtTop = scrollTop <= 10;
-        const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 10;
 
-        // 内容可滚动且不在边界，让内容滚动
-        if (isScrollable && !isAtTop && !isAtBottom) {
-          return;
-        }
+        // 内容可以滚动，检查是否到达边界
+        if (scrollHeight > clientHeight) {
+          const isAtTop = scrollTop <= 1;
+          const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 1;
 
-        // 检查翻页方向和边界
-        const shouldPageDown = delta > 0 && (!isScrollable || isAtBottom);
-        const shouldPageUp = delta < 0 && (!isScrollable || isAtTop);
+          // 在边界，检查翻页方向
+          const shouldPageDown = delta > 0 && isAtBottom;
+          const shouldPageUp = delta < 0 && isAtTop;
 
-        if (!shouldPageDown && !shouldPageUp) {
-          return;
+          // 不在边界，让内容滚动
+          if (!shouldPageDown && !shouldPageUp) {
+            return;
+          }
         }
       }
 
       // 节流
-      if (now - state.lastWheelTime < 200) return;
+      if (now - state.lastWheelTime < 300) return;
       state.lastWheelTime = now;
 
       // 翻页
@@ -207,8 +200,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.hasSwitchedInThisTouch = false;
       state.touchStartY = touch.clientY;
       state.touchStartX = touch.clientX;
-      state.horizontalMovement = 0;
-      state.verticalMovement = 0;
       dragOffsetRef.current = 0;
       setIsDragging(true);
     };
@@ -220,9 +211,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const deltaY = touch.clientY - state.touchStartY;
       const deltaX = touch.clientX - state.touchStartX;
 
-      state.horizontalMovement = Math.abs(deltaX);
-      state.verticalMovement = Math.abs(deltaY);
-
       const activePage = document.querySelector(`[data-page-index="${currentPage}"]`);
       const scrollContainer = activePage?.querySelector('.scroll-content') as HTMLDivElement;
 
@@ -231,18 +219,22 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
-        const isScrollable = scrollHeight > clientHeight + 20;
-        const isAtTop = scrollTop <= 10;
-        const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 10;
 
-        if (isScrollable && !isAtTop && !isAtBottom) {
-          return;
-        }
+        if (scrollHeight > clientHeight) {
+          const isAtTop = scrollTop <= 1;
+          const isAtBottom = scrollHeight - (scrollTop + clientHeight) <= 1;
 
-        const shouldPageDown = deltaY > 0 && (!isScrollable || isAtBottom);
-        const shouldPageUp = deltaY < 0 && (!isScrollable || isAtTop);
+          const shouldPageDown = deltaY > 0 && isAtBottom;
+          const shouldPageUp = deltaY < 0 && isAtTop;
 
-        if (shouldPageDown || shouldPageUp) {
+          if (!shouldPageDown && !shouldPageUp) {
+            return;
+          }
+
+          if (shouldPageDown || shouldPageUp) {
+            shouldPreventDefault = true;
+          }
+        } else {
           shouldPreventDefault = true;
         }
       } else {
@@ -252,7 +244,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       if (Math.abs(deltaY) > 10 && shouldPreventDefault) {
         e.preventDefault();
         dragOffsetRef.current = deltaY;
-        forceUpdateRef.current++;
         setIsDragging(true);
       }
     };
@@ -260,15 +251,13 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     const handleTouchEnd = (e: TouchEvent) => {
       if (!state.isTouchActive) return;
 
-      const deltaY = state.verticalMovement;
-      const deltaX = state.horizontalMovement;
+      const deltaY = Math.abs(dragOffsetRef.current);
+      const deltaX = Math.abs(state.touchStartX - (e.changedTouches?.[0]?.clientX || state.touchStartX));
 
       const isVerticalSwipe = deltaY > deltaX * 1.5;
 
       if (isVerticalSwipe && !state.hasSwitchedInThisTouch) {
-        const lastOffset = Math.abs(dragOffsetRef.current);
-
-        if (lastOffset > window.innerHeight * 0.15) {
+        if (deltaY > window.innerHeight * 0.15) {
           state.hasSwitchedInThisTouch = true;
 
           if (dragOffsetRef.current > 0 && currentPage > 0) {
@@ -280,8 +269,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
 
       state.isTouchActive = false;
-      state.horizontalMovement = 0;
-      state.verticalMovement = 0;
       dragOffsetRef.current = 0;
       setIsDragging(false);
     };
