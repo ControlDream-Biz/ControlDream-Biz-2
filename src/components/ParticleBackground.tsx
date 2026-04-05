@@ -139,14 +139,14 @@ export function ParticleBackground() {
     const height = window.innerHeight;
 
     const isMobile = width < 768;
-    const particleCount = isMobile ? 10 : 20; // 极少粒子，线条减少一半
+    const particleCount = isMobile ? 50 : 100; // 第一版粒子数量
 
     const newParticles: Particle[] = [];
 
     // 优先在四个角落分配粒子，确保上下左右角始终有粒子
-    // 移动端10个粒子：左上、右上、左下、右下各1个，中间6个
-    // 电脑端20个粒子：左上、右上、左下、右下各2个，中间12个
-    const particlesPerCorner = isMobile ? 1 : 2;
+    // 移动端50个粒子：左上、右上、左下、右下各6个，中间26个
+    // 电脑端100个粒子：左上、右上、左下、右下各12个，中间52个
+    const particlesPerCorner = isMobile ? 6 : 12;
     const cornerParticles = particlesPerCorner * 4; // 4个角落
     const middleParticles = particleCount - cornerParticles;
 
@@ -183,7 +183,7 @@ export function ParticleBackground() {
       }
       const vx = (Math.random() - 0.5) * 0.3; // 初始速度很慢
       const vy = (Math.random() - 0.5) * 0.3;
-      const r = isMobile ? Math.random() * 1 + 1 : Math.random() * 2 + 1.5; // 粒子更小
+      const r = isMobile ? Math.random() * 2 + 1.5 : Math.random() * 4 + 2; // 第一版粒子大小
       const opacity = isMobile ? Math.random() * 0.4 + 0.4 : Math.random() * 0.5 + 0.5;
       const phase = Math.random() * Math.PI * 2; // 随机相位
       const frequency = 0.5 + Math.random() * 1.5; // 随机频率
@@ -284,8 +284,8 @@ export function ParticleBackground() {
         particle.opacity = Math.max(isMobile ? 0.3 : 0.4, Math.min(isMobile ? 0.8 : 0.9, particle.opacity));
       });
 
-      // 连线距离极大增加，线条减少一半
-      const connectionDistance = isMobile ? 800 : 900;
+      // 第一版连线距离
+      const connectionDistance = isMobile ? 150 : 200;
 
       const connectionElements: JSX.Element[] = [];
       // 移除移动端粒子数量限制，所有设备都显示线条
