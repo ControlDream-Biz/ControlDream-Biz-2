@@ -3,27 +3,60 @@
 import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function HeroSection() {
   const [mounted, setMounted] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const sectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // 鼠标移动时的视差效果
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!sectionRef.current) return;
+      
+      const rect = sectionRef.current.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
+      const y = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+      
+      setMousePosition({ x, y });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
     <section
       id="home"
-      className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center"
+      ref={sectionRef}
+      className="relative pt-[100px] pb-[80px] min-h-[600px] flex items-center overflow-hidden"
       style={{ minHeight: 'calc(100vh - 60px)' }}
     >
-      {/* 背景图 - 完全移除遮罩 */}
+      {/* 背景图 - 添加动画效果 */}
       <div className="absolute inset-0 -z-10">
         <div
-          className="absolute inset-0 bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out"
           style={{
             backgroundImage: "url('/hero-bg.jpg')",
+            transform: `scale(1.1) translate(${mousePosition.x * -10}px, ${mousePosition.y * -10}px)`,
+          }}
+        />
+        {/* 动态光效层 */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            background: `radial-gradient(
+              circle at ${50 + mousePosition.x * 20}% ${50 + mousePosition.y * 20}%,
+              rgba(139, 92, 246, 0.15) 0%,
+              rgba(59, 130, 246, 0.1) 30%,
+              transparent 60%
+            )`,
+            transition: 'background 0.3s ease-out',
           }}
         />
       </div>
@@ -162,12 +195,13 @@ export default function HeroSection() {
           >
             <div className="relative">
               <div
-                className="relative rounded-2xl overflow-hidden shadow-2xl"
+                className="relative rounded-2xl overflow-hidden shadow-2xl transition-all duration-700 ease-out"
                 style={{
                   background: "linear-gradient(135deg, rgba(0, 82, 217, 0.9) 0%, rgba(0, 102, 255, 0.9) 100%)",
                   backdropFilter: "blur(10px)",
                   WebkitBackdropFilter: "blur(10px)",
                   aspectRatio: "4/3",
+                  transform: `perspective(1000px) rotateY(${mousePosition.x * 2}deg) rotateX(${mousePosition.y * -2}deg)`,
                 }}
               >
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -180,7 +214,10 @@ export default function HeroSection() {
               </div>
 
               <div
-                className="absolute -top-8 -left-8 bg-white/95 rounded-xl shadow-lg p-4 backdrop-blur-lg"
+                className="absolute -top-8 -left-8 bg-white/95 rounded-xl shadow-lg p-4 backdrop-blur-lg transition-all duration-500 ease-out"
+                style={{
+                  transform: `translate(${mousePosition.x * -20}px, ${mousePosition.y * -20}px)`,
+                }}
               >
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
@@ -194,7 +231,10 @@ export default function HeroSection() {
               </div>
 
               <div
-                className="absolute -bottom-8 -right-8 bg-white/95 rounded-xl shadow-lg p-4 backdrop-blur-lg"
+                className="absolute -bottom-8 -right-8 bg-white/95 rounded-xl shadow-lg p-4 backdrop-blur-lg transition-all duration-500 ease-out"
+                style={{
+                  transform: `translate(${mousePosition.x * 20}px, ${mousePosition.y * 20}px)`,
+                }}
               >
                 <div className="flex items-center space-x-3">
                   <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
