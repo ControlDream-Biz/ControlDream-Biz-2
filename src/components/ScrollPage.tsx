@@ -180,11 +180,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
 
       state.stableDeltaHistory.push(delta);
-      if (state.stableDeltaHistory.length > 8) {
+      if (state.stableDeltaHistory.length > 6) {
         state.stableDeltaHistory.shift();
       }
 
-      const recentDeltas = state.stableDeltaHistory.slice(-8);
+      const recentDeltas = state.stableDeltaHistory.slice(-6);
       const allPositive = recentDeltas.every(d => d > 0);
       const allNegative = recentDeltas.every(d => d < 0);
       const isDirectionStable = allPositive || allNegative;
@@ -199,9 +199,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.lastWheelDirection = currentDirection;
 
       const isTouchpad = state.isTouchpad;
-      const scrollThreshold = isTouchpad ? 120 : 100;
-      const consistencyThreshold = isTouchpad ? 4 : 4;
-      const throttleTime = isTouchpad ? 1000 : 800;
+      const scrollThreshold = isTouchpad ? 95 : 75;
+      const consistencyThreshold = isTouchpad ? 3 : 3;
+      const throttleTime = isTouchpad ? 850 : 650;
 
       const absAccumulatedDelta = Math.abs(state.accumulatedDelta);
 
@@ -216,7 +216,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.lockTimeout = window.setTimeout(() => {
           state.directionLocked = false;
           state.lockTimeout = null;
-        }, 500);
+        }, 400);
 
         if (state.accumulatedDelta > 0) {
           handlePageChange(currentPage + 1);
@@ -260,12 +260,12 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.velocity = velocity;
       }
 
-      const isVerticalSwipe = absDeltaY > absDeltaX * 2 && absDeltaY > 80;
+      const isVerticalSwipe = absDeltaY > absDeltaX * 2 && absDeltaY > 60;
 
       if (isVerticalSwipe) {
         state.hasMovedVertically = true;
 
-        if (absDeltaY > 80 && e.cancelable) {
+        if (absDeltaY > 60 && e.cancelable) {
           e.preventDefault();
           e.stopPropagation();
         }
@@ -291,10 +291,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
       const effectiveVelocity = Math.max(velocity, state.velocity);
 
-      const minSwipeTime = 200;
-      const maxSwipeTime = 750;
-      const swipeThreshold = 90;
-      const velocityThreshold = 0.7;
+      const minSwipeTime = 150;
+      const maxSwipeTime = 700;
+      const swipeThreshold = 65;
+      const velocityThreshold = 0.55;
 
       const shouldSwitchPage =
         state.hasMovedVertically &&
@@ -306,7 +306,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         effectiveVelocity >= velocityThreshold;
 
       if (shouldSwitchPage) {
-        if (touchEndTime - state.lastWheelTime < 1000) return;
+        if (touchEndTime - state.lastWheelTime < 800) return;
         state.lastWheelTime = touchEndTime;
         state.hasSwitchedInThisTouch = true;
 
@@ -314,7 +314,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.lockTimeout = window.setTimeout(() => {
           state.directionLocked = false;
           state.lockTimeout = null;
-        }, 600);
+        }, 500);
 
         if (deltaY > 0) {
           if (currentPage < totalPages - 1) {
