@@ -109,6 +109,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     hasSwitchedInThisTouch: false,  // 标记本次触摸是否已经翻页
   });
 
+  // 使用ref存储RAF回调，避免频繁创建
+  const rafRef = useRef<number | null>(null);
+
   const handlePageChange = useCallback((newPage: number) => {
     if (newPage >= 0 && newPage < totalPages && newPage !== currentPage) {
       setCurrentPage(newPage);
@@ -174,16 +177,21 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.velocity = velocity;
       }
 
-      // 实时更新拖动偏移量，实现触摸跟随效果
-      setDragOffset(deltaY);
-      setIsDragging(true);
-
       // 苹果官网式的阻止默认行为
       // 距离 > 60px 且 速度 > 0.5 才阻止默认行为
       if (absDeltaY > 60 && velocity > 0.5 && e.cancelable) {
         e.preventDefault();
         e.stopPropagation();
         state.isScrolling = true;
+      }
+
+      // 使用requestAnimationFrame节流状态更新，避免频繁重渲染
+      if (rafRef.current === null) {
+        rafRef.current = requestAnimationFrame(() => {
+          setDragOffset(deltaY);
+          setIsDragging(true);
+          rafRef.current = null;
+        });
       }
     };
 
@@ -242,6 +250,12 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.velocity = 0;
       state.isTouchActive = false;
 
+      // 清理RAF
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+
       // 回弹动画：重置拖动偏移量
       setIsDragging(false);
       setDragOffset(0);
@@ -286,6 +300,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const currentRef = animationRef.current;
       if (currentRef) {
         cancelAnimationFrame(currentRef);
+      }
+      // 清理RAF
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
       }
     };
   }, [currentPage, handlePageChange, totalPages]);
