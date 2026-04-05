@@ -186,13 +186,12 @@ export const BusinessShowcase = memo(function BusinessShowcase({
                       return (
                         <div
                           key={`small-${pageIndex}-${businessIndex}-${i}`}
-                          className="flex items-start space-x-2 sm:space-x-3"
+                          className="flex items-start space-x-2 sm:space-x-3 animate-fade-in"
                           data-small-text
                           data-page-index={pageIndex}
                           style={{
-                            opacity: '0 !important',
-                            animation: `fadeIn 0.5s ease-out ${delay}s forwards !important`,
-                          } as React.CSSProperties}
+                            animationDelay: `${delay}s`,
+                          }}
                         >
                           <div className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 bg-gradient-to-br ${business.color}`}></div>
                           <div className="flex-1">
