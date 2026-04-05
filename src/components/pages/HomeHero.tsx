@@ -28,14 +28,17 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
     setMounted(true);
   }, []);
 
-  // 监听页面变化，离开首页时停止播放
+  // 监听页面变化，离开首页时不停止音乐（保留给联系我们页面控制）
   useEffect(() => {
     const handlePageChange = (e: CustomEvent<{ pageIndex: number }>) => {
       const audio = audioRef.current;
-      if (audio && e.detail.pageIndex !== 0) {
+      // 如果离开首页且不是去联系我们页面，才停止音乐
+      if (audio && e.detail.pageIndex !== 0 && e.detail.pageIndex !== 5) {
         audio.pause();
         audio.currentTime = 0;
         setIsPlaying(false);
+        const event = new CustomEvent('music-state-changed', { detail: { isPlaying: false } });
+        window.dispatchEvent(event);
       }
     };
 
@@ -54,6 +57,9 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
         try {
           await audio.play();
           setIsPlaying(true);
+          // 通知其他组件音乐状态
+          const event = new CustomEvent('music-state-changed', { detail: { isPlaying: true } });
+          window.dispatchEvent(event);
           setTimeout(() => {
             audio.muted = false;
           }, 100);
@@ -64,22 +70,46 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
 
       setTimeout(attemptPlay, 500);
     }
-  }, [isActive]);
+  }, [isActive, isPlaying]);
 
-  // 切换播放状态
-  const togglePlay = () => {
-    const audio = audioRef.current;
-    if (audio) {
-      triggerVibration();
-      if (isPlaying) {
-        audio.pause();
-        setIsPlaying(false);
-      } else {
-        audio.muted = false;
-        audio.play();
-        setIsPlaying(true);
+  // 监听音乐切换事件
+  useEffect(() => {
+    const handleToggleMusic = () => {
+      const audio = audioRef.current;
+      if (audio) {
+        if (isPlaying) {
+          audio.pause();
+          setIsPlaying(false);
+          const event = new CustomEvent('music-state-changed', { detail: { isPlaying: false } });
+          window.dispatchEvent(event);
+        } else {
+          audio.muted = false;
+          audio.play();
+          setIsPlaying(true);
+          const event = new CustomEvent('music-state-changed', { detail: { isPlaying: true } });
+          window.dispatchEvent(event);
+        }
       }
+    };
+
+    window.addEventListener('toggle-music', handleToggleMusic);
+    return () => window.removeEventListener('toggle-music', handleToggleMusic);
+  }, [isPlaying]);
+
+  // 合作应聘按钮点击：跳转并播放音乐
+  const handleCareersClick = () => {
+    triggerVibration();
+    const audio = audioRef.current;
+    if (audio && !isPlaying) {
+      audio.muted = false;
+      audio.play();
+      setIsPlaying(true);
+      const event = new CustomEvent('music-state-changed', { detail: { isPlaying: true } });
+      window.dispatchEvent(event);
     }
+    // 跳转到联系我们页面
+    const jumpEvent = new CustomEvent('jump-to-page', { detail: { pageIndex: 5 } });
+    window.dispatchEvent(jumpEvent);
   };
 
   return (
@@ -110,11 +140,9 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 display: 'inline-block',
                 textShadow: '0 0 1px rgba(239, 68, 68, 0.1), 0 0 2px rgba(239, 68, 68, 0.15), 0 0 3px rgba(239, 68, 68, 0.15), 0 0 5px rgba(239, 68, 68, 0.2), 0 0 8px rgba(239, 68, 68, 0.2), 0 0 12px rgba(239, 68, 68, 0.2), 0 0 18px rgba(239, 68, 68, 0.15), 0 0 25px rgba(239, 68, 68, 0.1)',
                 letterSpacing: '-0.02em',
-                // 优化渐变文字渲染
                 textRendering: 'geometricPrecision',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
-                // 强制GPU渲染
                 transform: 'translateZ(0)',
                 willChange: 'transform',
               }}
@@ -144,11 +172,9 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 display: 'inline-block',
                 textShadow: '0 0 1px rgba(99, 102, 241, 0.1), 0 0 2px rgba(99, 102, 241, 0.15), 0 0 3px rgba(99, 102, 241, 0.15), 0 0 5px rgba(99, 102, 241, 0.2), 0 0 8px rgba(99, 102, 241, 0.2), 0 0 12px rgba(139, 92, 246, 0.2), 0 0 18px rgba(139, 92, 246, 0.15), 0 0 25px rgba(139, 92, 246, 0.1)',
                 letterSpacing: '-0.02em',
-                // 优化渐变文字渲染
                 textRendering: 'geometricPrecision',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
-                // 强制GPU渲染
                 transform: 'translateZ(0)',
                 willChange: 'transform',
               }}
@@ -178,11 +204,9 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 display: 'inline-block',
                 textShadow: '0 0 1px rgba(6, 182, 212, 0.1), 0 0 2px rgba(6, 182, 212, 0.15), 0 0 3px rgba(6, 182, 212, 0.15), 0 0 5px rgba(6, 182, 212, 0.2), 0 0 8px rgba(6, 182, 212, 0.2), 0 0 12px rgba(59, 130, 246, 0.2), 0 0 18px rgba(59, 130, 246, 0.15), 0 0 25px rgba(59, 130, 246, 0.1)',
                 letterSpacing: '-0.02em',
-                // 优化渐变文字渲染
                 textRendering: 'geometricPrecision',
                 WebkitFontSmoothing: 'antialiased',
                 MozOsxFontSmoothing: 'grayscale',
-                // 强制GPU渲染
                 transform: 'translateZ(0)',
                 willChange: 'transform',
               }}
@@ -248,9 +272,9 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
           ))}
         </div>
 
-        {/* 音乐播放按钮 - 合作应聘 */}
+        {/* 合作应聘按钮 - 跳转并播放音乐 */}
         <div
-          className="mt-8 sm:mt-10 md:mt-12 lg:mt-16"
+          className="mt-6 sm:mt-8 md:mt-10 lg:mt-12"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
@@ -258,25 +282,24 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
           }}
         >
           <button
-            onClick={togglePlay}
+            onClick={handleCareersClick}
             className="relative cursor-pointer transition-all duration-300 hover:scale-110"
           >
             <span
               className="text-sm sm:text-base md:text-lg lg:text-xl font-medium text-white/80 hover:text-white transition-colors"
               style={{
                 letterSpacing: '0.2em',
-                textShadow: isPlaying ? '0 0 30px rgba(139, 92, 246, 0.5)' : '0 0 20px rgba(255, 255, 255, 0.3)',
+                textShadow: '0 0 20px rgba(255, 255, 255, 0.3)',
               }}
             >
               合作应聘
-              {isPlaying ? ' 🎵' : ''}
             </span>
           </button>
         </div>
 
         {/* 往下滑动指示器 */}
         <div
-          className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
+          className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer"
           style={{
             opacity: mounted ? 1 : 0,
             transition: 'all 1000ms ease-out 0.8s',
@@ -287,14 +310,38 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
             window.dispatchEvent(event);
           }}
         >
-          <span className="text-white/50 text-xs tracking-widest">下滑</span>
-          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
-            <div
-              className="w-1 h-3 bg-white/50 rounded-full animate-bounce"
-              style={{
-                animation: 'scroll-indicator 1.5s ease-in-out infinite',
-              }}
-            />
+          {/* 手机端：简单箭头 */}
+          <div className="flex flex-col items-center gap-1 sm:hidden">
+            <span className="text-white/50 text-xs tracking-widest">下滑</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50 animate-bounce">
+              <path d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </div>
+
+          {/* 平板端：圆形边框 */}
+          <div className="hidden sm:flex md:hidden flex-col items-center gap-2">
+            <span className="text-white/50 text-xs tracking-widest">下滑</span>
+            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
+              <div
+                className="w-1 h-3 bg-white/50 rounded-full animate-bounce"
+                style={{
+                  animation: 'scroll-indicator 1.5s ease-in-out infinite',
+                }}
+              />
+            </div>
+          </div>
+
+          {/* 桌面端：大号圆形边框 */}
+          <div className="hidden md:flex flex-col items-center gap-2">
+            <span className="text-white/50 text-xs tracking-widest">下滑</span>
+            <div className="w-8 h-12 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
+              <div
+                className="w-1.5 h-4 bg-white/50 rounded-full animate-bounce"
+                style={{
+                  animation: 'scroll-indicator 1.5s ease-in-out infinite',
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>

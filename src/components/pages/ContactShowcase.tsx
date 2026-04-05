@@ -22,6 +22,17 @@ interface FormErrors {
   message?: string;
 }
 
+// 手机震动工具函数
+function triggerVibration() {
+  if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+    try {
+      navigator.vibrate(50);
+    } catch (error) {
+      // 忽略错误
+    }
+  }
+}
+
 // 使用React.memo优化性能
 export const ContactShowcase = memo(function ContactShowcase({ isActive = true }: ContactShowcaseProps) {
   const [mounted, setMounted] = useState(false);
@@ -34,11 +45,43 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
 
   // 首次加载时触发动画
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // 监听音乐播放状态
+  useEffect(() => {
+    const handleMusicStateChange = (e: CustomEvent<{ isPlaying: boolean }>) => {
+      setIsMusicPlaying(e.detail.isPlaying);
+    };
+
+    window.addEventListener('music-state-changed', handleMusicStateChange as EventListener);
+    return () => window.removeEventListener('music-state-changed', handleMusicStateChange as EventListener);
+  }, []);
+
+  // 监听页面变化，离开联系我们页面时停止音乐
+  useEffect(() => {
+    const handlePageChange = (e: CustomEvent<{ pageIndex: number }>) => {
+      if (e.detail.pageIndex !== 5) {
+        // 离开联系我们页面，停止音乐
+        const event = new CustomEvent('toggle-music');
+        window.dispatchEvent(event);
+      }
+    };
+
+    window.addEventListener('page-changed', handlePageChange as EventListener);
+    return () => window.removeEventListener('page-changed', handlePageChange as EventListener);
+  }, []);
+
+  // 控制音乐播放
+  const toggleMusic = () => {
+    triggerVibration();
+    const event = new CustomEvent('toggle-music');
+    window.dispatchEvent(event);
+  };
 
   // 表单验证
   const validateForm = (): boolean => {
@@ -140,7 +183,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
       <div className="relative z-10 flex flex-col items-center justify-start px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
         {/* 标题 */}
         <div
-          className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16"
+          className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16 relative"
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
@@ -153,6 +196,20 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
           <p className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/60 font-light leading-relaxed">
             探索合作机会，共创产品生态
           </p>
+
+          {/* 音乐控制按钮 - 仅在联系我们页面显示 */}
+          {isMusicPlaying && (
+            <button
+              onClick={toggleMusic}
+              className="fixed top-24 right-4 z-50 w-10 h-10 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-all duration-300"
+              title="暂停音乐"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16" rx="1" />
+                <rect x="14" y="4" width="4" height="16" rx="1" />
+              </svg>
+            </button>
+          )}
         </div>
 
         {/* 提交状态提示 */}
