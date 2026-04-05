@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Gamepad2, Cpu, HardDrive } from 'lucide-react';
 
@@ -57,21 +57,9 @@ const businesses = [
 
 export function BusinessShowcase() {
   const [mounted, setMounted] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  // 监听滚动页面切换
-  useEffect(() => {
-    const handlePageChange = (e: Event) => {
-      const customEvent = e as CustomEvent<{ page: number }>;
-      setCurrentPage(customEvent.detail.page);
-    };
-
-    window.addEventListener('pageChange', handlePageChange);
-    return () => window.removeEventListener('pageChange', handlePageChange);
   }, []);
 
   return (
@@ -91,9 +79,8 @@ export function BusinessShowcase() {
           className="text-center mb-12 sm:mb-16 md:mb-20 lg:mb-24"
           style={{
             opacity: mounted ? 1 : 0,
-            filter: mounted ? 'blur(0)' : 'blur(8px)',
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-            
           }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-3 sm:mb-4 md:mb-6 tracking-tight leading-tight">
@@ -114,10 +101,9 @@ export function BusinessShowcase() {
                 className="group relative grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 items-center"
                 style={{
                   opacity: mounted ? 1 : 0,
-                  filter: mounted ? 'blur(0)' : 'blur(8px)',
+                  transform: mounted ? 'translateY(0)' : 'translateY(40px)',
                   transitionDelay: `${0.3 + index * 0.2}s`,
                   transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-                  
                 }}
               >
                 {/* 图片区域 */}

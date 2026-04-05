@@ -5,7 +5,6 @@ import './globals.css';
 import './fonts.css';
 import FloatingButtons from '@/components/FloatingButtons';
 import { GlobalBackground } from '@/components/GlobalBackground';
-import { SiteFooter } from '@/components/SiteFooter';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const notoSansSC = Noto_Sans_SC({
@@ -81,7 +80,6 @@ export default function RootLayout({
         {isDev && <Inspector />}
         <GlobalBackground />
         {children}
-        <SiteFooter />
         <FloatingButtons />
       </body>
     </html>

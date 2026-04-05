@@ -97,9 +97,8 @@ export function EnvironmentShowcase() {
           className="text-center mb-12 sm:mb-16 md:mb-20 lg:mb-24"
           style={{
             opacity: mounted ? 1 : 0,
-            filter: mounted ? 'blur(0)' : 'blur(8px)',
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-            
           }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-3 sm:mb-4 md:mb-6 tracking-tight leading-tight">
@@ -120,10 +119,9 @@ export function EnvironmentShowcase() {
                 className="group relative flex flex-col"
                 style={{
                   opacity: mounted ? 1 : 0,
-                  filter: mounted ? 'blur(0)' : 'blur(8px)',
+                  transform: mounted ? 'translateY(0)' : 'translateY(40px)',
                   transitionDelay: `${0.3 + index * 0.1}s`,
                   transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-                  
                 }}
               >
                 {/* 图片区域 */}
@@ -188,10 +186,9 @@ export function EnvironmentShowcase() {
           className="mt-12 sm:mt-16 md:mt-20 lg:mt-24 text-center"
           style={{
             opacity: mounted ? 1 : 0,
-            filter: mounted ? 'blur(0)' : 'blur(8px)',
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transitionDelay: '0.8s',
             transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-            
           }}
         >
           <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white/40 font-light">

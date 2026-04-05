@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { SiteFooter } from '@/components/SiteFooter';
 
 export function ContactShowcase() {
   const [mounted, setMounted] = useState(false);
@@ -27,7 +28,7 @@ export function ContactShowcase() {
   };
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center bg-black overflow-hidden">
+    <div className="relative w-full h-full flex flex-col bg-black overflow-hidden">
       {/* 背景光晕 */}
       <div
         className="absolute inset-0 transition-opacity duration-1000 ease-out"
@@ -37,15 +38,14 @@ export function ContactShowcase() {
         }}
       />
 
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-12 sm:py-16 md:py-20">
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-12 sm:py-16 md:py-20">
         {/* 标题 */}
         <div
           className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16"
           style={{
             opacity: mounted ? 1 : 0,
-            filter: mounted ? 'blur(0)' : 'blur(8px)',
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-            
           }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-3 sm:mb-4 md:mb-6 tracking-tight leading-tight">
@@ -62,10 +62,9 @@ export function ContactShowcase() {
             className="space-y-12 sm:space-y-16 md:space-y-20"
             style={{
               opacity: mounted ? 1 : 0,
-              filter: mounted ? 'blur(0)' : 'blur(8px)',
+              transform: mounted ? 'translateY(0)' : 'translateY(40px)',
               transitionDelay: '0.3s',
               transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-              
             }}
           >
             {/* 邮箱 */}
@@ -119,10 +118,9 @@ export function ContactShowcase() {
             className="space-y-6 sm:space-y-8"
             style={{
               opacity: mounted ? 1 : 0,
-              filter: mounted ? 'blur(0)' : 'blur(8px)',
+              transform: mounted ? 'translateY(0)' : 'translateY(40px)',
               transitionDelay: '0.4s',
               transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-              
             }}
           >
             <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-8 sm:mb-10">
@@ -198,16 +196,20 @@ export function ContactShowcase() {
           className="mt-10 sm:mt-12 md:mt-16 lg:mt-20 text-center"
           style={{
             opacity: mounted ? 1 : 0,
-            filter: mounted ? 'blur(0)' : 'blur(8px)',
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
             transitionDelay: '0.5s',
             transition: 'all 1.2s cubic-bezier(0.32, 0.72, 0, 1)',
-            
           }}
         >
           <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white/40 font-light">
             感谢关注，期待与您共同打造行业领先的自主产品
           </p>
         </div>
+      </div>
+
+      {/* Footer */}
+      <div className="relative z-10">
+        <SiteFooter />
       </div>
     </div>
   );

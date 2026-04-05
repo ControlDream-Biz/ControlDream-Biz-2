@@ -17,20 +17,16 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
   let transform = '';
   let opacity = 1;
   const scale = 1;
-  let filter = 'none';
 
   if (isActive) {
     transform = `translate3d(0, 0, 0) scale(${scale})`;
     opacity = 1;
-    filter = 'none';
   } else if (isPrev) {
     transform = `translate3d(0, -100vh, 0) scale(${scale})`;
     opacity = 0;
-    filter = 'blur(10px)';
   } else if (isNext) {
     transform = `translate3d(0, 100vh, 0) scale(${scale})`;
     opacity = 0;
-    filter = 'blur(10px)';
   }
 
   return (
@@ -40,10 +36,9 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
         transform,
-        filter,
-        transition: 'transform 1.1s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.9s cubic-bezier(0.32, 0.72, 0, 1), filter 0.9s cubic-bezier(0.32, 0.72, 0, 1)',
+        transition: 'transform 1.1s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.9s cubic-bezier(0.32, 0.72, 0, 1)',
         zIndex: isActive ? 10 : 1,
-        willChange: 'transform, opacity, filter',
+        willChange: 'transform, opacity',
       }}
     >
       {children}
