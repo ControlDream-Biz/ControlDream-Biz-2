@@ -144,10 +144,10 @@ export function ParticleBackground() {
 
     const newParticles: Particle[] = [];
 
-    // 优先在四个角落分配粒子，确保上下左右角始终有粒子
-    // 移动端50个粒子：左上、右上、左下、右下各8个，中间18个
-    // 电脑端100个粒子：左上、右上、左下、右下各16个，中间36个
-    const particlesPerCorner = isMobile ? 8 : 16;
+    // 基于黄金比例分配粒子数量（φ ≈ 1.618，黄金分割点 ≈ 0.618）
+    // 移动端56个粒子：角落28个（每角7个），边缘6个，中间22个
+    // 电脑端106个粒子：角落60个（每角15个），边缘6个，中间40个
+    const particlesPerCorner = isMobile ? 7 : 15; // 基于黄金比例调整
     const cornerParticles = particlesPerCorner * 4; // 4个角落
     const middleParticles = particleCount - cornerParticles;
 
@@ -182,8 +182,8 @@ export function ParticleBackground() {
         x = middleArea.xMin + Math.random() * (middleArea.xMax - middleArea.xMin);
         y = middleArea.yMin + Math.random() * (middleArea.yMax - middleArea.yMin);
       }
-      const vx = (Math.random() - 0.5) * 0.3; // 初始速度很慢
-      const vy = (Math.random() - 0.5) * 0.3;
+      const vx = (Math.random() - 0.5) * 0.6; // 初始速度（速度1.0倍）
+      const vy = (Math.random() - 0.5) * 0.6;
       const r = isMobile ? Math.random() * 1 + 1 : Math.random() * 1.5 + 1.5; // 粒子更小
       const opacity = isMobile ? Math.random() * 0.4 + 0.4 : Math.random() * 0.5 + 0.5;
       const phase = Math.random() * Math.PI * 2; // 随机相位
@@ -224,8 +224,8 @@ export function ParticleBackground() {
       const edgeArea = edgeAreas[i];
       const x = edgeArea.xMin + Math.random() * (edgeArea.xMax - edgeArea.xMin);
       const y = edgeArea.yMin + Math.random() * (edgeArea.yMax - edgeArea.yMin);
-      const vx = (Math.random() - 0.5) * 0.3; // 初始速度很慢
-      const vy = (Math.random() - 0.5) * 0.3;
+      const vx = (Math.random() - 0.5) * 0.6; // 初始速度（速度1.0倍）
+      const vy = (Math.random() - 0.5) * 0.6;
       const r = isMobile ? Math.random() * 1 + 1 : Math.random() * 1.5 + 1.5; // 粒子更小
       const opacity = isMobile ? Math.random() * 0.4 + 0.4 : Math.random() * 0.5 + 0.5;
       const phase = Math.random() * Math.PI * 2; // 随机相位
@@ -271,20 +271,20 @@ export function ParticleBackground() {
           particle
         );
 
-        // 应用加速度（速度0.5倍）
-        particle.ax = fx * 0.25; // 减小加速度，速度0.5倍
-        particle.ay = fy * 0.25;
+        // 应用加速度（速度1.0倍）
+        particle.ax = fx * 0.5; // 翻倍加速度，速度1.0倍
+        particle.ay = fy * 0.5;
 
         // 更新速度
         particle.vx += particle.ax;
         particle.vy += particle.ay;
 
         // 速度阻尼（保持持续变换）
-        particle.vx *= 0.99; // 减小阻尼，保持动态变换
-        particle.vy *= 0.99;
+        particle.vx *= 0.98; // 减小阻尼，保持动态变换
+        particle.vy *= 0.98;
 
-        // 速度限制（速度0.5倍）
-        const maxSpeed = isMobile ? 0.25 : 0.5; // 降低最大速度，速度0.5倍
+        // 速度限制（速度1.0倍）
+        const maxSpeed = isMobile ? 0.5 : 1.0; // 翻倍最大速度，速度1.0倍
         const speed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
         if (speed > maxSpeed) {
           particle.vx = (particle.vx / speed) * maxSpeed;
