@@ -64,8 +64,14 @@ export function Navbar() {
             创梦计算机系统有限公司
           </div>
 
-          {/* 英文副标题 - 和中文对齐，调小 */}
-          <div className="text-[9px] text-white/60 font-medium tracking-wide uppercase select-none" style={fontStyles}>
+          {/* 英文副标题 - 宽度与中文对齐 */}
+          <div
+            className="text-[9px] text-white/60 font-medium uppercase select-none"
+            style={{
+              ...fontStyles,
+              letterSpacing: '0.18em' // 增加字间距，使英文宽度与中文保持一致
+            }}
+          >
             CHUANGMENG COMPUTER SYSTEM
           </div>
         </div>
