@@ -118,31 +118,23 @@ export function Navbar() {
           >
             {/* 上横杠 - 变成左边竖线 */}
             <line
-              x1="4"
-              y1="6"
-              x2="20"
-              y2="6"
+              x1={mobileMenuOpen ? 6 : 4}
+              y1={mobileMenuOpen ? 8 : 6}
+              x2={mobileMenuOpen ? 6 : 20}
+              y2={mobileMenuOpen ? 16 : 6}
               style={{
-                transformOrigin: '12px 12px',
                 transition: 'all 0.2s linear',
-                transform: mobileMenuOpen
-                  ? 'rotate(90deg) translateX(-12px)'
-                  : 'rotate(0deg)',
               }}
             />
 
             {/* 中横杠 - 变成右边竖线 */}
             <line
-              x1="4"
-              y1="12"
-              x2="20"
-              y2="12"
+              x1={mobileMenuOpen ? 18 : 4}
+              y1={mobileMenuOpen ? 8 : 12}
+              x2={mobileMenuOpen ? 18 : 20}
+              y2={mobileMenuOpen ? 16 : 12}
               style={{
-                transformOrigin: '12px 12px',
                 transition: 'all 0.2s linear',
-                transform: mobileMenuOpen
-                  ? 'translateX(6px) rotate(90deg)'
-                  : 'rotate(0deg)',
               }}
             />
 
@@ -153,7 +145,6 @@ export function Navbar() {
               x2="20"
               y2="18"
               style={{
-                transformOrigin: '12px 12px',
                 transition: 'all 0.15s linear',
                 opacity: mobileMenuOpen ? 0 : 1,
                 transform: mobileMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
