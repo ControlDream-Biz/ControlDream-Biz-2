@@ -8,85 +8,9 @@ interface ScrollPageProps {
   currentPage: number;
   dragOffset?: number;
   isDragging?: boolean;
-  springValue?: number;
 }
 
-type ChildWithProps = React.ReactElement<{ isActive?: boolean; dragOffset?: number; isDragging?: boolean; pageIndex?: number; currentPage?: number; springValue?: number }>;
-
-interface IOSpringConfig {
-  stiffness: number;
-  damping: number;
-  mass: number;
-}
-
-class IOSpringAnimation {
-  private config: IOSpringConfig;
-  private currentValue: number = 0;
-  private targetValue: number = 0;
-  private currentVelocity: number = 0;
-  private animationFrame: number | null = null;
-  private resolveCallback: (() => void) | null = null;
-
-  constructor(config: IOSpringConfig) {
-    this.config = config;
-  }
-
-  setValue(value: number) {
-    this.currentValue = value;
-    this.currentVelocity = 0;
-  }
-
-  setTarget(target: number, callback?: () => void) {
-    this.targetValue = target;
-    this.resolveCallback = callback || null;
-    this.startAnimation();
-  }
-
-  private startAnimation() {
-    if (this.animationFrame) {
-      cancelAnimationFrame(this.animationFrame);
-    }
-
-    const animate = () => {
-      const displacement = this.targetValue - this.currentValue;
-      const springForce = this.config.stiffness * displacement;
-      const dampingForce = this.config.damping * this.currentVelocity;
-      const totalForce = springForce - dampingForce;
-      const acceleration = totalForce / this.config.mass;
-      
-      this.currentVelocity += acceleration * 0.016;
-      this.currentValue += this.currentVelocity * 0.016;
-      
-      const isSettled = 
-        Math.abs(displacement) < 0.1 && 
-        Math.abs(this.currentVelocity) < 0.1;
-      
-      if (isSettled) {
-        this.currentValue = this.targetValue;
-        this.currentVelocity = 0;
-        if (this.resolveCallback) {
-          this.resolveCallback();
-          this.resolveCallback = null;
-        }
-      } else {
-        this.animationFrame = requestAnimationFrame(animate);
-      }
-    };
-    
-    animate();
-  }
-
-  getValue(): number {
-    return this.currentValue;
-  }
-
-  stop() {
-    if (this.animationFrame) {
-      cancelAnimationFrame(this.animationFrame);
-      this.animationFrame = null;
-    }
-  }
-}
+type ChildWithProps = React.ReactElement<{ isActive?: boolean; dragOffset?: number; isDragging?: boolean; pageIndex?: number; currentPage?: number }>;
 
 const EASE_IOS_SPRING = 'cubic-bezier(0.25, 0.46, 0.45, 0.94)';
 const EASE_IOS_EASE = 'cubic-bezier(0.25, 1, 0.5, 1)';
@@ -95,7 +19,7 @@ function smooth(t: number): number {
   return t * t * (3 - 2 * t);
 }
 
-export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDragging = false, springValue = 0 }: ScrollPageProps) {
+export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDragging = false }: ScrollPageProps) {
   const isActive = index === currentPage;
   const isPrev = index < currentPage;
   const isNext = index > currentPage;
@@ -105,29 +29,27 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
   const scale = 1;
   let blur = 0;
 
-  const effectiveOffset = isDragging ? dragOffset : springValue;
-  
-  if (Math.abs(effectiveOffset) > 0.1) {
+  if (Math.abs(dragOffset) > 0.1) {
     const viewportHeight = window.innerHeight;
-    const rawProgress = Math.min(Math.abs(effectiveOffset) / viewportHeight, 1);
+    const rawProgress = Math.min(Math.abs(dragOffset) / viewportHeight, 1);
     const smoothProgress = smooth(rawProgress);
 
     if (isActive) {
       const scaleEffect = 1 - smoothProgress * 0.008;
-      const dragFeedback = effectiveOffset * 0.22;
+      const dragFeedback = dragOffset * 0.22;
       blur = smoothProgress * 1.2;
       transform = `translate3d(0, ${dragFeedback}px, 0) scale(${scaleEffect})`;
       opacity = 1 - smoothProgress * 0.03;
-    } else if (isNext && effectiveOffset < 0) {
+    } else if (isNext && dragOffset < 0) {
       const startOffset = 10;
-      const entryOffset = startOffset + effectiveOffset * 0.22;
+      const entryOffset = startOffset + dragOffset * 0.22;
       const scaleEffect = 1 - (1 - smoothProgress) * 0.01;
       blur = (1 - smoothProgress) * 1.5;
       transform = `translate3d(0, ${entryOffset}px, 0) scale(${scaleEffect})`;
       opacity = Math.max(0.7, smoothProgress * 0.98);
-    } else if (isPrev && effectiveOffset > 0) {
+    } else if (isPrev && dragOffset > 0) {
       const startOffset = -10;
-      const entryOffset = startOffset + effectiveOffset * 0.22;
+      const entryOffset = startOffset + dragOffset * 0.22;
       const scaleEffect = 1 - (1 - smoothProgress) * 0.01;
       blur = (1 - smoothProgress) * 1.5;
       transform = `translate3d(0, ${entryOffset}px, 0) scale(${scaleEffect})`;
@@ -172,8 +94,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
                   dragOffset,
                   isDragging,
                   pageIndex: index,
-                  currentPage,
-                  springValue
+                  currentPage
                 })
               : children
             : children}
@@ -192,19 +113,13 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   const [currentPage, setCurrentPage] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const [springOffset, setSpringOffset] = useState(0);
+  const [isBouncing, setIsBouncing] = useState(false);
   const totalPages = children.length;
 
-  const springRef = useRef<IOSpringAnimation | null>(null);
   const rafRef = useRef<number | null>(null);
-  const springOffsetRef = useRef(0);
-  const dragOffsetRef = useRef(0);
   const currentPageRef = useRef(0);
-  const isDraggingRef = useRef(false);
   
   currentPageRef.current = currentPage;
-  dragOffsetRef.current = dragOffset;
-  isDraggingRef.current = isDragging;
 
   const scrollStateRef = useRef({
     accumulatedDelta: 0,
@@ -236,36 +151,14 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   }, [totalPages, onPageChange]);
 
   const triggerSpringBounce = useCallback(() => {
-    const spring = springRef.current;
-    if (!spring) return;
-
-    spring.setValue(dragOffsetRef.current);
-    spring.setTarget(0, () => {
+    setIsBouncing(true);
+    setTimeout(() => {
+      setDragOffset(0);
       setIsDragging(false);
-    });
-
-    const animate = () => {
-      const value = spring.getValue();
-      springOffsetRef.current = value;
-      setSpringOffset(value);
-
-      if (Math.abs(value) > 0.1) {
-        requestAnimationFrame(animate);
-      } else {
-        springOffsetRef.current = 0;
-        setSpringOffset(0);
-      }
-    };
-
-    animate();
-  }, []);
-
-  useEffect(() => {
-    springRef.current = new IOSpringAnimation({
-      stiffness: 400,
-      damping: 20,
-      mass: 1,
-    });
+      setTimeout(() => {
+        setIsBouncing(false);
+      }, 550);
+    }, 50);
   }, []);
 
   useEffect(() => {
@@ -390,10 +283,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           e.stopPropagation();
         }
 
-        dragOffsetRef.current = deltaY;
         if (rafRef.current === null) {
           rafRef.current = requestAnimationFrame(() => {
-            setDragOffset(dragOffsetRef.current);
+            setDragOffset(deltaY);
             setIsDragging(true);
             rafRef.current = null;
           });
@@ -501,9 +393,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       if (state.lockTimeout !== null) {
         clearTimeout(state.lockTimeout);
       }
-      if (springRef.current) {
-        springRef.current.stop();
-      }
     };
   }, [totalPages, handlePageChange, triggerSpringBounce]);
 
@@ -538,7 +427,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           currentPage={currentPage}
           dragOffset={dragOffset}
           isDragging={isDragging}
-          springValue={springOffset}
         >
           {child}
         </ScrollPage>
