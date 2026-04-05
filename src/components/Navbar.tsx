@@ -96,7 +96,7 @@ export function Navbar() {
           ))}
         </div>
 
-        {/* Mobile Menu Button - 顶级复杂炫酷动画 */}
+        {/* Mobile Menu Button - 极致复杂动画 */}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -118,16 +118,20 @@ export function Navbar() {
             style={{ width: '20px', height: '20px' }}
           >
             <defs>
-              <linearGradient id="menuGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-                <stop offset="100%" stopColor="#a855f7" stopOpacity={mobileMenuOpen ? 1 : 0} />
+              <linearGradient id="menuGradientA" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#ffffff" />
+                <stop offset="100%" stopColor="#a855f7" />
               </linearGradient>
-              <linearGradient id="menuGradient2" x1="100%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#ffffff" stopOpacity="1" />
-                <stop offset="100%" stopColor="#3b82f6" stopOpacity={mobileMenuOpen ? 1 : 0} />
+              <linearGradient id="menuGradientB" x1="100%" y1="0%" x2="0%" y2="0%">
+                <stop offset="0%" stopColor="#ffffff" />
+                <stop offset="100%" stopColor="#3b82f6" />
               </linearGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+              <linearGradient id="menuGradientC" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#ffffff" />
+                <stop offset="100%" stopColor="#ec4899" />
+              </linearGradient>
+              <filter id="strongGlow">
+                <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
                 <feMerge>
                   <feMergeNode in="coloredBlur"/>
                   <feMergeNode in="SourceGraphic"/>
@@ -135,87 +139,109 @@ export function Navbar() {
               </filter>
             </defs>
 
-            {/* 第一条横杠 → 左竖线（外旋） */}
+            {/* 第一条横杠 → 左外旋竖线（复杂变换） */}
             <line
-              x1={mobileMenuOpen ? 6 : 4}
-              y1={mobileMenuOpen ? 6 : 6}
-              x2={mobileMenuOpen ? 6 : 20}
-              y2={mobileMenuOpen ? 18 : 6}
-              stroke={mobileMenuOpen ? 'url(#menuGradient1)' : 'currentColor'}
+              x1={mobileMenuOpen ? 5 : 4}
+              y1={mobileMenuOpen ? 5 : 6}
+              x2={mobileMenuOpen ? 5 : 20}
+              y2={mobileMenuOpen ? 19 : 6}
+              stroke={mobileMenuOpen ? 'url(#menuGradientA)' : 'currentColor'}
+              strokeWidth={mobileMenuOpen ? 3 : 2.5}
               style={{
-                transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                 transform: mobileMenuOpen
-                  ? 'rotate(-20deg) scale(1.15) translateY(0)'
-                  : 'rotate(0deg) scale(1)',
-                transformOrigin: '6px 12px',
-                filter: mobileMenuOpen ? 'url(#glow)' : 'none',
+                  ? 'rotate(-30deg) translateX(-2px) scale(1.2)'
+                  : 'rotate(0deg) translateX(0) scale(1)',
+                transformOrigin: '5px 12px',
+                filter: mobileMenuOpen ? 'url(#strongGlow)' : 'none',
+                opacity: mobileMenuOpen ? 1 : 1,
               }}
             />
 
-            {/* 第二条横杠 → 右竖线（外旋） */}
-            <line
-              x1={mobileMenuOpen ? 18 : 4}
-              y1={mobileMenuOpen ? 6 : 12}
-              x2={mobileMenuOpen ? 18 : 20}
-              y2={mobileMenuOpen ? 18 : 12}
-              stroke={mobileMenuOpen ? 'url(#menuGradient2)' : 'currentColor'}
-              style={{
-                transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s',
-                transform: mobileMenuOpen
-                  ? 'rotate(20deg) scale(1.15) translateY(0)'
-                  : 'rotate(0deg) scale(1)',
-                transformOrigin: '18px 12px',
-                filter: mobileMenuOpen ? 'url(#glow)' : 'none',
-              }}
-            />
-
-            {/* 第三条横杠 → 中间竖线（收缩变细） */}
+            {/* 第二条横杠 → 中间收缩竖线（多阶段变换） */}
             <line
               x1={mobileMenuOpen ? 12 : 4}
-              y1={mobileMenuOpen ? 6 : 18}
+              y1={mobileMenuOpen ? 5 : 12}
               x2={mobileMenuOpen ? 12 : 20}
-              y2={mobileMenuOpen ? 18 : 18}
-              stroke={mobileMenuOpen ? 'url(#menuGradient1)' : 'currentColor'}
-              strokeWidth={mobileMenuOpen ? 1.5 : 2.5}
+              y2={mobileMenuOpen ? 19 : 12}
+              stroke={mobileMenuOpen ? 'url(#menuGradientB)' : 'currentColor'}
+              strokeWidth={mobileMenuOpen ? 1.2 : 2.5}
               style={{
-                transition: 'all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s',
+                transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.12s',
                 transform: mobileMenuOpen
-                  ? 'scaleY(1.1) rotate(0deg) opacity(0.7)'
-                  : 'scaleY(1) rotate(0deg)',
-                transformOrigin: '12px 18px',
-                filter: mobileMenuOpen ? 'url(#glow)' : 'none',
+                  ? 'rotate(0deg) translateY(0) scale(1.15)'
+                  : 'rotate(0deg) translateY(0) scale(1)',
+                transformOrigin: '12px 12px',
+                filter: mobileMenuOpen ? 'url(#strongGlow)' : 'none',
+                opacity: mobileMenuOpen ? 0.6 : 1,
               }}
             />
 
-            {/* 内圈脉冲 */}
+            {/* 第三条横杠 → 右外旋竖线（反向复杂变换） */}
+            <line
+              x1={mobileMenuOpen ? 19 : 4}
+              y1={mobileMenuOpen ? 5 : 18}
+              x2={mobileMenuOpen ? 19 : 20}
+              y2={mobileMenuOpen ? 19 : 18}
+              stroke={mobileMenuOpen ? 'url(#menuGradientC)' : 'currentColor'}
+              strokeWidth={mobileMenuOpen ? 3 : 2.5}
+              style={{
+                transition: 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.24s',
+                transform: mobileMenuOpen
+                  ? 'rotate(30deg) translateX(2px) scale(1.2)'
+                  : 'rotate(0deg) translateX(0) scale(1)',
+                transformOrigin: '19px 12px',
+                filter: mobileMenuOpen ? 'url(#strongGlow)' : 'none',
+                opacity: mobileMenuOpen ? 1 : 1,
+              }}
+            />
+
+            {/* 内层光晕圆环（紫） */}
             {mobileMenuOpen && (
               <circle
                 cx="12"
                 cy="12"
-                r="8"
+                r="6"
                 fill="none"
-                stroke="url(#menuGradient1)"
-                strokeWidth="1.5"
+                stroke="url(#menuGradientA)"
+                strokeWidth="2"
                 className="menu-pulse-ring"
                 style={{
-                  opacity: 0.8,
+                  opacity: 0.9,
                 }}
               />
             )}
 
-            {/* 外圈光晕 */}
+            {/* 中层光晕圆环（蓝） */}
+            {mobileMenuOpen && (
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+                fill="none"
+                stroke="url(#menuGradientB)"
+                strokeWidth="1.2"
+                className="menu-pulse-ring"
+                style={{
+                  opacity: 0.7,
+                  animationDelay: '0.3s',
+                }}
+              />
+            )}
+
+            {/* 外层光晕圆环（粉） */}
             {mobileMenuOpen && (
               <circle
                 cx="12"
                 cy="12"
                 r="12"
                 fill="none"
-                stroke="url(#menuGradient2)"
-                strokeWidth="0.5"
+                stroke="url(#menuGradientC)"
+                strokeWidth="0.8"
                 className="menu-pulse-ring"
                 style={{
                   opacity: 0.5,
-                  animationDelay: '0.5s',
+                  animationDelay: '0.6s',
                 }}
               />
             )}
