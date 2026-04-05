@@ -25,40 +25,41 @@ function noise(x: number, y: number, t: number): number {
 }
 
 function forceField(x: number, y: number, width: number, height: number, time: number): [number, number] {
+  // 恢复到第一版的力场参数
   const centerX = width / 2;
   const centerY = height / 2;
 
-  // 1. 极弱的旋转力场
+  // 1. 旋转力场
   const dx = x - centerX;
   const dy = y - centerY;
-  const rotationForce = 0.00002;
+  const rotationForce = 0.0002; // 恢复第一版
   const fx1 = -dy * rotationForce;
   const fy1 = dx * rotationForce;
 
-  // 2. 适度的引力场（增强，让粒子倾向于在屏幕中心附近）
-  const gravityForce = 0.00005;
+  // 2. 引力场
+  const gravityForce = 0.00003; // 恢复第一版
   const fx2 = -dx * gravityForce;
   const fy2 = -dy * gravityForce;
 
-  // 3. 斥力场（减弱，防止聚集但不要推到边缘）
+  // 3. 斥力场
   const distance = Math.sqrt(dx * dx + dy * dy);
-  const repulsionForce = distance < 200 ? 0.00012 * (200 - distance) / 200 : 0;
+  const repulsionForce = distance < 200 ? 0.0002 * (200 - distance) / 200 : 0; // 恢复第一版
   const fx3 = dx * repulsionForce;
   const fy3 = dy * repulsionForce;
 
-  // 4. 增强的随机扰动场
-  const noiseForce = 0.0008;
+  // 4. 随机扰动场
+  const noiseForce = 0.0003; // 恢复第一版
   const n = noise(x, y, time);
   const fx4 = Math.cos(n * Math.PI * 2) * noiseForce;
   const fy4 = Math.sin(n * Math.PI * 2) * noiseForce;
 
   // 5. 波动场
-  const waveForce = 0.00025;
+  const waveForce = 0.00015; // 恢复第一版
   const fx5 = Math.sin(y * 0.02 + time * 2) * waveForce;
   const fy5 = Math.cos(x * 0.02 + time * 2) * waveForce;
 
-  // 6. 漩涡场（减弱）
-  const vortexForce = 0.00012;
+  // 6. 漩涡场
+  const vortexForce = 0.0004; // 恢复第一版
   const vortex1X = width * 0.25;
   const vortex1Y = height * 0.35;
   const vortex2X = width * 0.75;
@@ -102,8 +103,8 @@ export function ParticleBackground() {
     for (let i = 0; i < particleCount; i++) {
       const x = Math.random() * width;
       const y = Math.random() * height;
-      const vx = (Math.random() - 0.5) * (isMobile ? 0.4 : 0.8);
-      const vy = (Math.random() - 0.5) * (isMobile ? 0.4 : 0.8);
+      const vx = (Math.random() - 0.5) * (isMobile ? 0.6 : 1.2); // 恢复第一版速度
+      const vy = (Math.random() - 0.5) * (isMobile ? 0.6 : 1.2); // 恢复第一版速度
       const r = isMobile ? Math.random() * 1.5 + 1 : Math.random() * 3 + 1.5;
       const opacity = isMobile ? Math.random() * 0.3 + 0.2 : Math.random() * 0.5 + 0.3;
 
@@ -140,16 +141,17 @@ export function ParticleBackground() {
           timeRef.current
         );
 
-        particle.ax = fx * 0.5 + (Math.random() - 0.5) * 0.0003;
-        particle.ay = fy * 0.5 + (Math.random() - 0.5) * 0.0003;
+        particle.ax = fx * 0.5; // 恢复第一版，没有随机扰动
+        particle.ay = fy * 0.5; // 恢复第一版，没有随机扰动
 
         particle.vx += particle.ax;
         particle.vy += particle.ay;
 
-        particle.vx *= 0.998;
-        particle.vy *= 0.998;
+        particle.vx *= 0.995;
+        particle.vy *= 0.995;
 
-        const maxSpeed = isMobile ? 1.8 : 3;
+        // 速度限制（恢复到第一版的速度）
+        const maxSpeed = isMobile ? 1.2 : 2;
         const speed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
         if (speed > maxSpeed) {
           particle.vx = (particle.vx / speed) * maxSpeed;
@@ -160,34 +162,33 @@ export function ParticleBackground() {
         particle.cy += particle.vy;
 
         particle.angle += particle.angularVelocity;
-        particle.angularVelocity += (Math.random() - 0.5) * 0.002;
-        particle.angularVelocity *= 0.98;
+        particle.angularVelocity *= 0.98; // 恢复第一版，没有随机变化
 
         particle.life -= 1;
         if (particle.life <= 0) {
           particle.life = particle.maxLife;
           particle.cx = Math.random() * width;
           particle.cy = Math.random() * height;
-          particle.vx = (Math.random() - 0.5) * (isMobile ? 0.4 : 0.8);
-          particle.vy = (Math.random() - 0.5) * (isMobile ? 0.4 : 0.8);
+          particle.vx = (Math.random() - 0.5) * (isMobile ? 0.6 : 1.2); // 恢复第一版速度
+          particle.vy = (Math.random() - 0.5) * (isMobile ? 0.6 : 1.2); // 恢复第一版速度
         }
 
         if (particle.cx < 0 || particle.cx > width) {
-          particle.vx *= -0.85;
+          particle.vx *= -0.9; // 恢复第一版
           particle.cx = Math.max(0, Math.min(width, particle.cx));
-          particle.angularVelocity += (Math.random() - 0.5) * 0.08;
+          particle.angularVelocity += (Math.random() - 0.5) * 0.05; // 恢复第一版
         }
         if (particle.cy < 0 || particle.cy > height) {
-          particle.vy *= -0.85;
+          particle.vy *= -0.9; // 恢复第一版
           particle.cy = Math.max(0, Math.min(height, particle.cy));
-          particle.angularVelocity += (Math.random() - 0.5) * 0.08;
+          particle.angularVelocity += (Math.random() - 0.5) * 0.05; // 恢复第一版
         }
 
-        particle.opacity += (Math.random() - 0.5) * 0.03;
+        particle.opacity += (Math.random() - 0.5) * 0.02; // 恢复第一版
         particle.opacity = Math.max(isMobile ? 0.1 : 0.2, Math.min(isMobile ? 0.5 : 0.8, particle.opacity));
       });
 
-      const connectionDistance = isMobile ? 140 : 180;
+      const connectionDistance = isMobile ? 160 : 200; // 增加连线距离，让线条更多
 
       const connectionElements: JSX.Element[] = [];
       if (!isMobile || isMobile && particleCount <= 45) {
