@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Mail, Coffee, Users, Monitor, Zap, Wifi } from 'lucide-react';
 
+interface EnvironmentShowcaseProps {
+  isActive?: boolean;
+}
+
 const areas = [
   {
     title: '前台接待',
@@ -73,12 +77,23 @@ const areas = [
   },
 ];
 
-export function EnvironmentShowcase() {
+export function EnvironmentShowcase({ isActive }: EnvironmentShowcaseProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // 当页面切换回来时重新触发小字动画
+  useEffect(() => {
+    if (isActive) {
+      setMounted(false);
+      const timer = setTimeout(() => {
+        setMounted(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isActive]);
 
   return (
     <div className="relative w-full h-full flex items-center justify-center bg-black overflow-hidden">
@@ -110,7 +125,7 @@ export function EnvironmentShowcase() {
         </div>
 
         {/* 办公区域网格 - 纯文字布局，去除方框，添加AI图片 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 sm:gap-12 md:gap-16 w-full max-w-6xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10 lg:gap-12 w-full max-w-6xl">
           {areas.map((area, index) => {
             const Icon = area.icon;
             return (
@@ -125,8 +140,8 @@ export function EnvironmentShowcase() {
                 }}
               >
                 {/* 图片区域 */}
-                <div className="relative overflow-hidden rounded-lg mb-6 sm:mb-8">
-                  <div className="w-full h-48 sm:h-56 md:h-64 relative">
+                <div className="relative overflow-hidden rounded-lg mb-3 sm:mb-4 md:mb-5">
+                  <div className="w-full h-32 sm:h-40 md:h-48 lg:h-56 relative">
                     <Image
                       src={area.image}
                       alt={area.title}
@@ -141,37 +156,37 @@ export function EnvironmentShowcase() {
 
                 {/* 图标 */}
                 <div
-                  className={`w-14 h-14 sm:w-16 sm:h-16 md:w-20 md:h-24 bg-gradient-to-br ${area.color} flex items-center justify-center mb-4 sm:mb-5 md:mb-6 group-hover:scale-105 transition-transform duration-500`}
+                  className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-16 bg-gradient-to-br ${area.color} flex items-center justify-center mb-2 sm:mb-3 md:mb-4 group-hover:scale-105 transition-transform duration-500`}
                 >
-                  <Icon className="w-7 h-7 sm:w-8 sm:h-8 md:w-10 md:h-12 text-white" />
+                  <Icon className="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-8 text-white" />
                 </div>
 
                 {/* 标题 */}
-                <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-black text-white mb-3 sm:mb-4">
+                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-black text-white mb-2 sm:mb-3">
                   {area.title}
                 </h3>
 
                 {/* 描述 */}
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 leading-relaxed flex-grow">
+                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/70 leading-relaxed flex-grow">
                   {area.description}
                 </p>
 
                 {/* 小字列表 - 从右向左滚动淡入 */}
-                <div className="space-y-3 mt-4">
+                <div className="space-y-2 sm:space-y-3 mt-3 sm:mt-4">
                   {area.items.map((item, i) => (
                     <div
                       key={i}
-                      className="flex items-start space-x-3 opacity-0 transition-all duration-700 ease-out"
+                      className="flex items-start space-x-2 sm:space-x-3 opacity-0 transition-all duration-700 ease-out"
                       style={{
                         transform: mounted ? 'translateX(0)' : 'translateX(2.5rem)',
                         opacity: mounted ? 1 : 0,
                         transitionDelay: `${mounted ? (0.8 + i * 0.15) : 0}s`,
                       }}
                     >
-                      <div className={`w-1 h-1 rounded-full mt-2 flex-shrink-0 bg-gradient-to-br ${area.color}`}></div>
+                      <div className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 bg-gradient-to-br ${area.color}`}></div>
                       <div>
-                        <div className={`text-sm font-medium bg-gradient-to-r ${area.color} bg-clip-text text-transparent`}>{item.label}</div>
-                        <div className="text-xs text-gray-400">{item.desc}</div>
+                        <div className={`text-xs sm:text-sm font-medium bg-gradient-to-r ${area.color} bg-clip-text text-transparent`}>{item.label}</div>
+                        <div className="text-[10px] sm:text-xs text-gray-400">{item.desc}</div>
                       </div>
                     </div>
                   ))}

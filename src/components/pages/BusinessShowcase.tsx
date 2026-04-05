@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { Gamepad2, Cpu, HardDrive } from 'lucide-react';
 
+interface BusinessShowcaseProps {
+  isActive?: boolean;
+}
+
 const businesses = [
   {
     title: '自主游戏产品',
@@ -55,12 +59,23 @@ const businesses = [
   },
 ];
 
-export function BusinessShowcase() {
+export function BusinessShowcase({ isActive }: BusinessShowcaseProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // 当页面切换回来时重新触发小字动画
+  useEffect(() => {
+    if (isActive) {
+      setMounted(false);
+      const timer = setTimeout(() => {
+        setMounted(true);
+      }, 50);
+      return () => clearTimeout(timer);
+    }
+  }, [isActive]);
 
   return (
     <div className="relative w-full h-full flex items-center justify-center bg-black overflow-hidden">
@@ -92,13 +107,13 @@ export function BusinessShowcase() {
         </div>
 
         {/* 业务内容 - 纯文字布局，去除方框，添加AI图片 */}
-        <div className="w-full max-w-6xl space-y-24 sm:space-y-32 md:space-y-40">
+        <div className="w-full max-w-6xl space-y-12 sm:space-y-20 md:space-y-32 lg:space-y-40">
           {businesses.map((business, index) => {
             const Icon = business.icon;
             return (
               <div
                 key={index}
-                className="group relative grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 items-center"
+                className="group relative grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 items-center"
                 style={{
                   opacity: mounted ? 1 : 0,
                   transform: mounted ? 'translateY(0)' : 'translateY(40px)',
@@ -110,7 +125,7 @@ export function BusinessShowcase() {
                 <div
                   className={`order-1 ${index % 2 === 0 ? 'lg:order-1' : 'lg:order-2'} relative overflow-hidden`}
                 >
-                  <div className="w-full h-64 sm:h-80 md:h-96 relative rounded-lg overflow-hidden">
+                  <div className="w-full h-48 sm:h-64 md:h-80 lg:h-96 relative rounded-lg overflow-hidden">
                     <Image
                       src={business.image}
                       alt={business.title}
@@ -125,34 +140,34 @@ export function BusinessShowcase() {
 
                 {/* 文字内容 */}
                 <div
-                  className={`order-2 ${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'} space-y-6 sm:space-y-8`}
+                  className={`order-2 ${index % 2 === 0 ? 'lg:order-2' : 'lg:order-1'} space-y-4 sm:space-y-6 md:space-y-8`}
                 >
                   {/* 图标 */}
                   <div
-                    className={`w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-28 bg-gradient-to-br ${business.color} flex items-center justify-center group-hover:scale-105 transition-transform duration-500`}
+                    className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 lg:w-20 lg:h-20 bg-gradient-to-br ${business.color} flex items-center justify-center group-hover:scale-105 transition-transform duration-500`}
                   >
-                    <Icon className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-14 text-white" />
+                    <Icon className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 text-white" />
                   </div>
 
                   {/* 标题 */}
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black text-white">
+                  <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-black text-white">
                     {business.title}
                   </h3>
-                  <p className="text-sm sm:text-base md:text-lg text-white/50 font-medium tracking-wide">
+                  <p className="text-xs sm:text-sm md:text-base text-white/50 font-medium tracking-wide">
                     {business.subtitle}
                   </p>
 
                   {/* 描述 */}
-                  <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/70 leading-relaxed">
+                  <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/70 leading-relaxed">
                     {business.description}
                   </p>
 
                   {/* 特性列表 */}
-                  <div className="flex flex-wrap gap-3 sm:gap-4 md:gap-6">
+                  <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4">
                     {business.features.map((feature, i) => (
                       <span
                         key={i}
-                        className="text-sm sm:text-base md:text-lg text-white/60 px-4 py-2 border border-white/20 inline-block"
+                        className="text-xs sm:text-sm md:text-base text-white/60 px-2 sm:px-3 md:px-4 py-1 sm:py-2 border border-white/20 inline-block"
                       >
                         {feature}
                       </span>
@@ -160,35 +175,35 @@ export function BusinessShowcase() {
                   </div>
 
                   {/* 小字列表 - 从右向左滚动淡入 */}
-                  <div className="space-y-3 mt-6">
+                  <div className="space-y-2 sm:space-y-3 mt-4 sm:mt-6">
                     {business.items.map((item, i) => (
                       <div
                         key={i}
-                        className="flex items-start space-x-3 opacity-0 transition-all duration-700 ease-out"
+                        className="flex items-start space-x-2 sm:space-x-3 opacity-0 transition-all duration-700 ease-out"
                         style={{
                           transform: mounted ? 'translateX(0)' : 'translateX(2.5rem)',
                           opacity: mounted ? 1 : 0,
                           transitionDelay: `${mounted ? (0.8 + i * 0.15) : 0}s`,
                         }}
                       >
-                        <div className={`w-1 h-1 rounded-full mt-2 flex-shrink-0 bg-gradient-to-br ${business.color}`}></div>
+                        <div className={`w-0.5 h-0.5 sm:w-1 sm:h-1 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 bg-gradient-to-br ${business.color}`}></div>
                         <div>
-                          <div className={`text-sm font-medium bg-gradient-to-r ${business.color} bg-clip-text text-transparent`}>{item.label}</div>
-                          <div className="text-xs text-gray-400">{item.desc}</div>
+                          <div className={`text-xs sm:text-sm font-medium bg-gradient-to-r ${business.color} bg-clip-text text-transparent`}>{item.label}</div>
+                          <div className="text-[10px] sm:text-xs text-gray-400">{item.desc}</div>
                         </div>
                       </div>
                     ))}
                   </div>
 
                   {/* 统计 */}
-                  <div className="flex items-baseline space-x-3 sm:space-x-4 pt-4 sm:pt-6">
+                  <div className="flex items-baseline space-x-2 sm:space-x-3 md:space-x-4 pt-3 sm:pt-4 md:pt-6">
                     <span
-                      className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black bg-gradient-to-r ${business.color} bg-clip-text text-transparent`}
+                      className={`text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-7xl font-black bg-gradient-to-r ${business.color} bg-clip-text text-transparent`}
                      
                     >
                       {business.stat}
                     </span>
-                    <span className="text-sm sm:text-base md:text-lg lg:text-xl text-white/50 font-medium">
+                    <span className="text-xs sm:text-sm md:text-base lg:text-xl text-white/50 font-medium">
                       {business.statLabel}
                     </span>
                   </div>

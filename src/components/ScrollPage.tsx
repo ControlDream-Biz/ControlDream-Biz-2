@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 interface ScrollPageProps {
   children: React.ReactNode;
@@ -31,7 +31,7 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
 
   return (
     <div
-      className="fixed inset-0 flex items-center justify-center bg-black"
+      className="fixed inset-0 flex items-start justify-center bg-black overflow-y-auto scrollbar-hide"
       style={{
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
@@ -41,7 +41,11 @@ export function ScrollPage({ children, index, currentPage }: ScrollPageProps) {
         willChange: 'transform, opacity',
       }}
     >
-      {children}
+      <div className="w-full pt-12 pb-32 px-4">
+        {React.isValidElement(children)
+          ? React.cloneElement(children as any, { isActive })
+          : children}
+      </div>
     </div>
   );
 }
@@ -108,7 +112,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
     };
 
-    // 苹果官网式的触摸处理逻辑
+    // 苹果官网式的触摸处理逻辑 - 改为随滑随停
     const handleTouchStart = (e: TouchEvent) => {
       state.touchStartY = e.touches[0].clientY;
       state.touchStartTime = performance.now();
@@ -116,7 +120,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     };
 
     const handleTouchMove = (e: TouchEvent) => {
-      if (e.cancelable) {
+      const deltaY = e.touches[0].clientY - state.touchStartY;
+      const absDeltaY = Math.abs(deltaY);
+
+      // 随滑随停：滑动超过20px就立即响应
+      if (absDeltaY > 20) {
         e.preventDefault();
       }
     };
@@ -126,20 +134,14 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const touchEndTime = performance.now();
 
       const deltaY = state.touchStartY - touchEndY;
-      const deltaTime = touchEndTime - state.touchStartTime;
 
-      // 苹果官网的速度计算
-      if (deltaTime > 0) {
-        state.velocity = Math.abs(deltaY) / deltaTime;
-      }
-
-      // 苹果官网的触摸滑动阈值
-      const swipeThreshold = 40;
+      // 随滑随停：滑动距离超过30px就切换页面
+      const swipeThreshold = 30;
       const absDeltaY = Math.abs(deltaY);
 
       if (absDeltaY >= swipeThreshold) {
-        // 苹果官网的触摸节流时间
-        if (touchEndTime - state.lastWheelTime < 750) return;
+        // 降低节流时间，实现快速响应
+        if (touchEndTime - state.lastWheelTime < 300) return;
         state.lastWheelTime = touchEndTime;
 
         if (deltaY > 0) {
