@@ -164,7 +164,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
   useEffect(() => {
     const state = scrollStateRef.current;
 
-    // 智能翻页逻辑 - 内容可以滚动，快速大幅滚动才翻页
+    // 智能翻页逻辑 - 内容可以滚动，滚动到边界时才翻页
     const handleWheel = (e: WheelEvent) => {
       const now = performance.now();
       const delta = e.deltaY;
@@ -183,9 +183,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
-        isScrollable = scrollHeight > clientHeight + 10;
-        isAtTop = scrollTop <= 10;
-        isAtBottom = scrollTop + clientHeight >= scrollHeight - 10;
+        isScrollable = scrollHeight > clientHeight + 5;
+        isAtTop = scrollTop <= 5;
+        isAtBottom = scrollTop + clientHeight >= scrollHeight - 5;
       }
 
       // 如果内容可滚动且不在边界，让内容正常滚动，不触发翻页
@@ -193,6 +193,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         return; // 让内容滚动
       }
 
+      // 只有在边界或内容不可滚动时才检测翻页
       // 检查滚轮方向一致性
       const currentDirection = delta > 0 ? 1 : -1;
       if (currentDirection === state.lastWheelDirection) {
@@ -205,10 +206,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 累积滚动量
       state.accumulatedDelta += delta;
 
-      // 核心参数
-      const throttleTime = 100; // 极短节流，快速滚动立即响应
-      const fastScrollThreshold = 100; // 单次大幅快速滚动阈值（提高阈值）
-      const cumulativeThreshold = 80; // 累积滚动阈值
+      // 核心参数 - 降低阈值，更容易翻页
+      const throttleTime = 150; // 节流时间
+      const fastScrollThreshold = 50; // 单次快速滚动阈值
+      const cumulativeThreshold = 60; // 累积滚动阈值
       const consistencyThreshold = 1; // 只需1次同方向
 
       // 快速翻页条件（单次大幅滚动）
