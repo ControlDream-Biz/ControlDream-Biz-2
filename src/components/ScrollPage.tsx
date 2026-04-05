@@ -97,13 +97,13 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 苹果官网的动量滚动处理
       state.accumulatedDelta += delta;
 
-      // 苹果官网的滚动阈值：约35px（降低阈值更跟手）
-      const scrollThreshold = 35;
+      // 苹果官网的滚动阈值：约50px，匹配苹果官网的滚动距离
+      const scrollThreshold = 50;
       const absAccumulatedDelta = Math.abs(state.accumulatedDelta);
 
       if (absAccumulatedDelta >= scrollThreshold) {
-        // 苹果官网的节流时间：约600ms（优化后跟手性更好）
-        if (now - state.lastWheelTime < 600) return;
+        // 苹果官网的节流时间：约800ms，匹配苹果官网的冷却时间
+        if (now - state.lastWheelTime < 800) return;
         state.lastWheelTime = now;
 
         // 判断滚动方向
@@ -142,9 +142,9 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         state.velocity = velocity;
       }
 
-      // 更智能的阻止默认行为条件 - 更跟手
-      // 距离 > 50px 且 速度 > 0.4 就阻止默认行为
-      if (absDeltaY > 50 && velocity > 0.4 && e.cancelable) {
+      // 苹果官网式的阻止默认行为 - 严格防误触
+      // 距离 > 80px 且 速度 > 0.6 才阻止默认行为，确保用户明确想翻页
+      if (absDeltaY > 80 && velocity > 0.6 && e.cancelable) {
         e.preventDefault();
         e.stopPropagation();
         state.isScrolling = true;
@@ -165,11 +165,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       // 使用最大速度和最终速度的较大值
       const effectiveVelocity = Math.max(velocity, state.velocity);
 
-      // 翻页条件 - 优化后的平衡参数，既跟手又防误触
-      const minSwipeTime = 100;
-      const maxSwipeTime = 1200;
-      const swipeThreshold = 70;  // 从100降低到70，更容易触发翻页
-      const velocityThreshold = 0.6;  // 从0.75降低到0.6，对速度要求降低
+      // 苹果官网式的翻页条件 - 严格匹配苹果官网行为
+      const minSwipeTime = 150;    // 最短滑动时间150ms，防止误触
+      const maxSwipeTime = 1000;   // 最长滑动时间1000ms，超过则不触发
+      const swipeThreshold = 90;   // 滑动距离90px，需要较大距离才能翻页
+      const velocityThreshold = 0.8; // 速度阈值0.8 px/ms，需要有明确的速度
 
       // 只在条件满足且本次触摸未翻页时才翻页
       const shouldSwitchPage =
@@ -180,8 +180,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         effectiveVelocity >= velocityThreshold;
 
       if (shouldSwitchPage) {
-        // 节流检查：距离上次翻页至少800ms（优化后跟手性更好）
-        if (touchEndTime - state.lastWheelTime < 800) return;
+        // 苹果官网的节流检查：距离上次翻页至少900ms
+        if (touchEndTime - state.lastWheelTime < 900) return;
         state.lastWheelTime = touchEndTime;
         state.hasSwitchedInThisTouch = true;  // 标记已翻页
 
@@ -210,7 +210,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     // 苹果官网式的键盘导航
     const handleKeyDown = (e: KeyboardEvent) => {
       const now = performance.now();
-      if (now - state.lastWheelTime < 750) return;
+      if (now - state.lastWheelTime < 900) return;
 
       const keyMap: Record<string, number> = {
         'ArrowDown': 1,
