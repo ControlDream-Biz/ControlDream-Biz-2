@@ -67,7 +67,7 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
         visibility: (isActive || (isDragging && isAdjacent)) ? 'visible' : 'hidden',
       }}
     >
-      {/* 背景层 - 只有首页有深紫蓝调渐变背景，参与滑动 */}
+      {/* 背景层 - 只有首页有彩色光晕背景，参与滑动 */}
       {isHome && (
         <div
           style={{
@@ -79,22 +79,15 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
             position: 'absolute',
             inset: 0,
             zIndex: 1,
-            background: 'linear-gradient(135deg, #1a1d2e 0%, #2d2b4a 50%, #1f1a2e 100%)',
+            background: `
+              radial-gradient(circle at 25% 35%, rgba(139, 92, 246, 0.45) 0%, rgba(124, 58, 237, 0.35) 15%, rgba(109, 40, 217, 0.25) 30%, rgba(99, 102, 241, 0.15) 45%, rgba(99, 102, 241, 0.08) 60%, rgba(99, 102, 241, 0.04) 75%, transparent 90%),
+              radial-gradient(circle at 75% 45%, rgba(59, 130, 246, 0.45) 0%, rgba(37, 99, 235, 0.35) 15%, rgba(29, 78, 216, 0.25) 30%, rgba(99, 102, 241, 0.15) 45%, rgba(99, 102, 241, 0.08) 60%, rgba(99, 102, 241, 0.04) 75%, transparent 90%),
+              radial-gradient(circle at 50% 55%, rgba(236, 72, 153, 0.35) 0%, rgba(239, 68, 68, 0.25) 15%, rgba(220, 38, 38, 0.18) 25%, rgba(220, 38, 38, 0.1) 35%, rgba(220, 38, 38, 0.05) 50%, transparent 85%),
+              radial-gradient(circle at 20% 75%, rgba(6, 182, 212, 0.4) 0%, rgba(14, 165, 233, 0.3) 15%, rgba(56, 189, 248, 0.2) 30%, rgba(56, 189, 248, 0.12) 45%, rgba(56, 189, 248, 0.06) 60%, transparent 85%),
+              radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.35) 0%, rgba(147, 51, 234, 0.25) 15%, rgba(126, 34, 206, 0.18) 25%, rgba(126, 34, 206, 0.1) 35%, rgba(126, 34, 206, 0.05) 50%, transparent 85%)
+            `,
           }}
-        >
-          {/* 右下角纤细装饰线条 */}
-          <div
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              right: 0,
-              width: '30vw',
-              height: '1px',
-              background: 'linear-gradient(270deg, rgba(255,255,255,0.15) 0%, transparent 100%)',
-              transformOrigin: 'bottom right',
-            }}
-          />
-        </div>
+        />
       )}
 
       {/* 内容层 - 所有页面都参与滑动 */}

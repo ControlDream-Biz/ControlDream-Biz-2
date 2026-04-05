@@ -20,7 +20,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
     <>
       <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-12 pb-8">
 
-        {/* 粒子背景 - 只在首页显示，叠加在深紫蓝渐变背板上 */}
+        {/* 粒子背景 - 只在首页显示，叠加在彩色光晕背景上 */}
         <ParticleBackground />
 
       <div className="relative z-20 text-center px-4 sm:px-6 md:px-8 max-w-6xl mx-auto flex flex-col items-center justify-center translate-y-8">
