@@ -193,20 +193,20 @@ export function ParticleBackground() {
           particle
         );
 
-        // 应用加速度（非常慢的变换）
-        particle.ax = fx * 0.2;
-        particle.ay = fy * 0.2;
+        // 应用加速度（增强动态变换）
+        particle.ax = fx * 0.5; // 增大加速度，变换更明显
+        particle.ay = fy * 0.5;
 
         // 更新速度
         particle.vx += particle.ax;
         particle.vy += particle.ay;
 
-        // 速度阻尼（更大的阻尼，变换更慢）
-        particle.vx *= 0.96; // 增加阻尼，变换更慢
-        particle.vy *= 0.96;
+        // 速度阻尼（保持持续变换）
+        particle.vx *= 0.99; // 减小阻尼，保持动态变换
+        particle.vy *= 0.99;
 
-        // 速度限制（更慢的变换）
-        const maxSpeed = isMobile ? 0.3 : 0.6; // 降低最大速度，变换更慢
+        // 速度限制（保持动态变换）
+        const maxSpeed = isMobile ? 0.5 : 1.0; // 适中速度，保持持续变换
         const speed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
         if (speed > maxSpeed) {
           particle.vx = (particle.vx / speed) * maxSpeed;
@@ -225,6 +225,20 @@ export function ParticleBackground() {
         if (particle.cy < 0 || particle.cy > height) {
           particle.vy *= -0.8;
           particle.cy = Math.max(0, Math.min(height, particle.cy));
+        }
+
+        // 确保持续动态变换（最小速度）
+        const minSpeed = isMobile ? 0.1 : 0.2;
+        const currentSpeed = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
+        if (currentSpeed < minSpeed && currentSpeed > 0) {
+          // 速度太小，按原方向加速到最小速度
+          particle.vx = (particle.vx / currentSpeed) * minSpeed;
+          particle.vy = (particle.vy / currentSpeed) * minSpeed;
+        } else if (currentSpeed === 0) {
+          // 速度为0，赋予随机方向的最小速度
+          const angle = Math.random() * Math.PI * 2;
+          particle.vx = Math.cos(angle) * minSpeed;
+          particle.vy = Math.sin(angle) * minSpeed;
         }
 
         // 更新相位（用于相位力场）
