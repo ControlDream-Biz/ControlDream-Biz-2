@@ -12,16 +12,21 @@ interface ScrollPageProps {
 
 type ChildWithProps = React.ReactElement<{ isActive?: boolean; dragOffset?: number; isDragging?: boolean; pageIndex?: number; currentPage?: number }>;
 
-// 极致流畅的缓动曲线 - Apple iOS风格
-const EASE_IOS = 'cubic-bezier(0.25, 0.1, 0.25, 1)';
-// 弹性缓动曲线 - 用于拖动释放后的回弹
-const EASE_SPRING = 'cubic-bezier(0.33, 1, 0.68, 1)';
-// Material Design标准缓动
-const EASE_MD = 'cubic-bezier(0.4, 0, 0.2, 1)';
+// 极致丝滑的缓动曲线 - Airbnb移动端标准
+const EASE_AIRBNB = 'cubic-bezier(0.2, 0.8, 0.2, 1)';
+// 更加丝滑的缓动曲线 - iOS Spring
+const EASE_SPRING_SMOOTH = 'cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+// 平滑过渡曲线
+const EASE_SMOOTH = 'cubic-bezier(0.45, 0, 0.55, 1)';
 
-// 平滑进度映射函数 - smoothstep
-function smoothstep(t: number) {
-  return t * t * (3 - 2 * t);
+// 超级平滑的进度映射 - quintic easing
+function quintic(t: number) {
+  return t * t * t * t * t;
+}
+
+// 平滑缓动函数
+function easeOutCubic(t: number) {
+  return 1 - Math.pow(1 - t, 3);
 }
 
 export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDragging = false }: ScrollPageProps) {
@@ -36,28 +41,28 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
   if (isDragging && dragOffset !== 0) {
     const viewportHeight = window.innerHeight;
     const progress = Math.min(Math.abs(dragOffset) / viewportHeight, 1);
-    const progressCubic = smoothstep(progress); // 使用smoothstep获得更自然的曲线
+    const progressSmooth = easeOutCubic(progress); // 使用easeOutCubic获得更自然的曲线
 
     if (isActive) {
-      // 当前页面拖动时添加轻微缩放和位移反馈
-      const scaleEffect = 1 - progressCubic * 0.03;
-      const dragFeedback = dragOffset * 0.4; // 降低拖动跟随系数，更跟手
+      // 当前页面：极轻微的缩放反馈，几乎不移动
+      const scaleEffect = 1 - progressSmooth * 0.015; // 降低缩放效果
+      const dragFeedback = dragOffset * 0.3; // 进一步降低拖动跟随系数，更跟手
       transform = `translate3d(0, ${dragFeedback}px, 0) scale(${scaleEffect})`;
-      opacity = 1 - progressCubic * 0.15; // 降低透明度变化幅度
+      opacity = 1 - progressSmooth * 0.1; // 进一步降低透明度变化
     } else if (isNext && dragOffset < 0) {
-      // 下一页从底部进入
-      const startOffset = 30; // 降低起始偏移
-      const entryOffset = startOffset * viewportHeight * 0.01 + dragOffset * 0.4;
-      const scaleEffect = 1 - (1 - progressCubic) * 0.03;
+      // 下一页：从下方更自然地滑入
+      const startOffset = 20; // 进一步降低起始偏移
+      const entryOffset = startOffset + dragOffset * 0.3; // 调整进入速度
+      const scaleEffect = 1 - (1 - progressSmooth) * 0.02;
       transform = `translate3d(0, ${entryOffset}px, 0) scale(${scaleEffect})`;
-      opacity = Math.max(0.3, progressCubic * 0.8); // 提高最小透明度
+      opacity = Math.max(0.5, progressSmooth * 0.9); // 提高最小透明度，减少视觉跳跃
     } else if (isPrev && dragOffset > 0) {
-      // 上一页从顶部进入
-      const startOffset = -30;
-      const entryOffset = startOffset * viewportHeight * 0.01 + dragOffset * 0.4;
-      const scaleEffect = 1 - (1 - progressCubic) * 0.03;
+      // 上一页：从上方更自然地滑入
+      const startOffset = -20;
+      const entryOffset = startOffset + dragOffset * 0.3;
+      const scaleEffect = 1 - (1 - progressSmooth) * 0.02;
       transform = `translate3d(0, ${entryOffset}px, 0) scale(${scaleEffect})`;
-      opacity = Math.max(0.3, progressCubic * 0.8);
+      opacity = Math.max(0.5, progressSmooth * 0.9);
     } else if (isPrev) {
       transform = `translate3d(0, -50vh, 0) scale(${scale})`;
       opacity = 0;
@@ -86,18 +91,14 @@ export function ScrollPage({ children, index, currentPage, dragOffset = 0, isDra
         opacity,
         pointerEvents: isActive ? 'auto' : 'none',
         transform,
-        // 使用iOS风格缓动曲线，更流畅自然
+        // 使用Airbnb标准缓动曲线，更丝滑
         transition: isDragging
           ? 'none'
-          : `transform 0.5s ${EASE_IOS}, opacity 0.4s ${EASE_MD}`,
+          : `transform 0.55s ${EASE_AIRBNB}, opacity 0.45s ${EASE_SMOOTH}`,
         zIndex: isActive ? 10 : 1,
-        // 优化willChange策略：仅在拖动时启用
         willChange: isDragging ? 'transform, opacity' : 'auto',
-        // GPU硬件加速
         backfaceVisibility: 'hidden' as const,
-        // 优化渲染性能
         transformStyle: 'preserve-3d' as const,
-        // 防止重排
         contain: 'layout style paint' as const,
       }}
     >
@@ -149,6 +150,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     lastWheelDirection: 0,
     wheelConsistency: 0,
     isTouchpad: false,
+    stableDeltaHistory: [] as number[], // 记录最近的delta历史，用于判断稳定滚动
   });
 
   const rafRef = useRef<number | null>(null);
@@ -170,12 +172,24 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.isTouchpad = isFineDelta || isSmallDelta;
     };
 
-    // 极致流畅的滚轮处理逻辑
+    // 极致丝滑的滚轮处理逻辑 - 强化防误触
     const handleWheel = (e: WheelEvent) => {
       detectTouchpad(e);
 
       const now = performance.now();
       const delta = e.deltaY;
+
+      // 记录delta历史（保留最近5次）
+      state.stableDeltaHistory.push(delta);
+      if (state.stableDeltaHistory.length > 5) {
+        state.stableDeltaHistory.shift();
+      }
+
+      // 计算方向稳定性（检查最近5次delta的方向是否一致）
+      const recentDeltas = state.stableDeltaHistory.slice(-5);
+      const allPositive = recentDeltas.every(d => d > 0);
+      const allNegative = recentDeltas.every(d => d < 0);
+      const isDirectionStable = allPositive || allNegative;
 
       // 检查滚轮方向一致性
       const currentDirection = delta > 0 ? 1 : -1;
@@ -186,19 +200,22 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       }
       state.lastWheelDirection = currentDirection;
 
-      // 触控板和鼠标使用不同的阈值
+      // 触控板和鼠标使用不同的阈值（提高阈值，减少误翻）
       const isTouchpad = state.isTouchpad;
-      const scrollThreshold = isTouchpad ? 80 : 65; // 优化阈值
-      const consistencyThreshold = isTouchpad ? 2 : 2;
-      const throttleTime = isTouchpad ? 800 : 600; // 降低节流时间，提升跟手感
+      const scrollThreshold = isTouchpad ? 100 : 85; // 提高阈值
+      const consistencyThreshold = isTouchpad ? 3 : 3; // 提高一致性要求
+      const throttleTime = isTouchpad ? 900 : 700; // 提高节流时间
 
-      // 累积滚动量
-      state.accumulatedDelta += delta;
-
+      // 必须满足所有条件才触发翻页：
+      // 1. 超过阈值
+      // 2. 方向一致且连续（>=3次）
+      // 3. 历史方向稳定
+      // 4. 超过节流时间
       const absAccumulatedDelta = Math.abs(state.accumulatedDelta);
 
       if (absAccumulatedDelta >= scrollThreshold &&
-          state.wheelConsistency >= consistencyThreshold) {
+          state.wheelConsistency >= consistencyThreshold &&
+          isDirectionStable) {
 
         if (now - state.lastWheelTime < throttleTime) return;
         state.lastWheelTime = now;
@@ -209,13 +226,14 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           handlePageChange(currentPage - 1);
         }
 
-        // 重置累积量
+        // 重置状态
         state.accumulatedDelta = 0;
         state.wheelConsistency = 0;
+        state.stableDeltaHistory = [];
       }
     };
 
-    // 极致流畅的触摸处理逻辑
+    // 极致丝滑的触摸处理逻辑 - 强化防误触
     const handleTouchStart = (e: TouchEvent) => {
       state.touchStartY = e.touches[0].clientY;
       state.touchStartX = e.touches[0].clientX;
@@ -238,8 +256,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.horizontalMovement = absDeltaX;
       state.verticalMovement = absDeltaY;
 
-      // 优化滑动检测阈值
-      const isVerticalSwipe = absDeltaY > absDeltaX * 1.5 && absDeltaY > 50;
+      // 提高滑动检测阈值，减少误触
+      const isVerticalSwipe = absDeltaY > absDeltaX * 1.8 && absDeltaY > 70;
 
       if (isVerticalSwipe) {
         state.hasMovedVertically = true;
@@ -252,8 +270,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           state.velocity = velocity;
         }
 
-        // 优化阻止默认行为的阈值
-        if (absDeltaY > 50 && e.cancelable) {
+        // 提高阻止默认行为的阈值
+        if (absDeltaY > 70 && e.cancelable) {
           e.preventDefault();
           e.stopPropagation();
           state.isScrolling = true;
@@ -281,11 +299,11 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const velocity = Math.abs(deltaY) / (deltaTime > 0 ? deltaTime : 1);
       const effectiveVelocity = Math.max(velocity, state.velocity);
 
-      // 优化翻页条件 - 更流畅自然
-      const minSwipeTime = 100;    // 降低到100ms
-      const maxSwipeTime = 800;   // 降低到800ms
-      const swipeThreshold = 60;  // 降低到60px
-      const velocityThreshold = 0.5; // 降低到0.5 px/ms
+      // 提高翻页条件，减少误翻
+      const minSwipeTime = 150;    // 提高到150ms
+      const maxSwipeTime = 850;   // 保持850ms
+      const swipeThreshold = 80;  // 提高到80px
+      const velocityThreshold = 0.6; // 提高到0.6 px/ms
 
       const shouldSwitchPage =
         state.hasMovedVertically &&
@@ -297,7 +315,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       if (shouldSwitchPage) {
         // 节流检查
-        if (touchEndTime - state.lastWheelTime < 800) return;
+        if (touchEndTime - state.lastWheelTime < 900) return;
         state.lastWheelTime = touchEndTime;
         state.hasSwitchedInThisTouch = true;
 
@@ -336,7 +354,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     // 键盘导航
     const handleKeyDown = (e: KeyboardEvent) => {
       const now = performance.now();
-      if (now - state.lastWheelTime < 800) return;
+      if (now - state.lastWheelTime < 900) return;
 
       const keyMap: Record<string, number> = {
         'ArrowDown': 1,
@@ -434,7 +452,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
             viewBox="0 0 24 24"
             style={{
               animation: 'scrollBounce 2s infinite',
-              animationTimingFunction: EASE_IOS,
+              animationTimingFunction: EASE_AIRBNB,
             }}
           >
             <path

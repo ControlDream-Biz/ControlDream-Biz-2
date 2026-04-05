@@ -117,18 +117,17 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
   return (
     <div 
-      className="relative w-full overflow-hidden" 
+      className="relative w-full overflow-hidden bg-black" 
       style={{ 
         zIndex: 5,
-        background: `radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.12) 0%, rgba(59, 130, 246, 0.06) 30%, rgba(0, 0, 0, 1) 70%)`,
       }}
     >
-      {/* 背景光晕 */}
+      {/* 背景光晕 - 更柔和 */}
       <div
-        className="absolute inset-0 transition-opacity duration-1000 ease-out"
+        className="absolute inset-0 transition-opacity duration-1500 ease-out"
         style={{
-          opacity: mounted ? 0.3 : 0.3, // 增强背景光晕
-          background: 'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.2) 0%, transparent 60%)',
+          opacity: mounted ? 0.08 : 0, // 降低透明度，更柔和
+          background: 'radial-gradient(circle at 50% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 70%)',
         }}
       />
 
