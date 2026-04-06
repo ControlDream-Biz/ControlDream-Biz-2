@@ -185,8 +185,6 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
     const state = scrollStateRef.current;
 
     const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-
       const now = performance.now();
       const delta = e.deltaY;
 
@@ -199,47 +197,65 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const activePage = document.querySelector(`[data-page-index="${currentPage}"]`);
       const scrollContainer = activePage?.querySelector('.scroll-content') as HTMLDivElement;
 
-      let shouldChangePage = false;
-
       if (scrollContainer) {
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
-
         const remainingScroll = scrollHeight - (scrollTop + clientHeight);
+
+        // 检查是否在边界
+        const atTop = scrollTop <= 5;
+        const atBottom = remainingScroll <= 5;
+
+        let shouldPreventDefault = false;
+        let shouldChangePage = false;
 
         // 向下滚动
         if (delta > 0) {
-          // 首页直接允许翻页
-          if (currentPage === 0) {
-            shouldChangePage = true;
-          } else if (remainingScroll <= 1) {
-            // 其他页面：已经到底部
-            shouldChangePage = true;
+          if (atBottom) {
+            // 已经在底部，阻止滚动并准备翻页
+            shouldPreventDefault = true;
+            shouldChangePage = currentPage < totalPages - 1;
           }
         }
         // 向上滚动
         else if (delta < 0) {
-          if (scrollTop <= 1) {
-            // 已经到顶部
-            shouldChangePage = true;
+          if (atTop) {
+            // 已经在顶部，阻止滚动并准备翻页
+            shouldPreventDefault = true;
+            shouldChangePage = currentPage > 0;
+          }
+        }
+
+        if (shouldPreventDefault) {
+          e.preventDefault();
+        }
+
+        if (shouldChangePage && !state.isProcessingScroll) {
+          state.isProcessingScroll = true;
+          state.lastWheelTime = now;
+
+          if (delta > 0) {
+            handlePageChange(currentPage + 1);
+          } else {
+            handlePageChange(currentPage - 1);
           }
         }
       } else {
-        // 没有滚动容器，直接翻页
-        shouldChangePage = true;
-      }
+        // 没有滚动容器，直接处理翻页
+        e.preventDefault();
 
-      if (shouldChangePage && !state.isProcessingScroll) {
-        state.isProcessingScroll = true;
-        state.lastWheelTime = now;
+        if (!state.isProcessingScroll) {
+          state.isProcessingScroll = true;
+          state.lastWheelTime = now;
 
-        if (delta > 0 && currentPage < totalPages - 1) {
-          handlePageChange(currentPage + 1);
-        } else if (delta < 0 && currentPage > 0) {
-          handlePageChange(currentPage - 1);
-        } else {
-          state.isProcessingScroll = false;
+          if (delta > 0 && currentPage < totalPages - 1) {
+            handlePageChange(currentPage + 1);
+          } else if (delta < 0 && currentPage > 0) {
+            handlePageChange(currentPage - 1);
+          } else {
+            state.isProcessingScroll = false;
+          }
         }
       }
     };
@@ -266,20 +282,24 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const scrollTop = scrollContainer.scrollTop;
         const scrollHeight = scrollContainer.scrollHeight;
         const clientHeight = scrollContainer.clientHeight;
-
         const remainingScroll = scrollHeight - (scrollTop + clientHeight);
 
-        // 首页：向上滑动可以翻页
-        if (currentPage === 0 && deltaY < 0) {
-          shouldPreventDefault = true;
+        const atTop = scrollTop <= 5;
+        const atBottom = remainingScroll <= 5;
+
+        // 向下滑动手指（deltaY > 0）→ 页面应该向下滚动 → 检查是否在顶部
+        if (deltaY > 0) {
+          if (atTop) {
+            // 在顶部，阻止默认滚动并准备翻页
+            shouldPreventDefault = true;
+          }
         }
-        // 向下滑动：必须到底部才能翻页
-        else if (deltaY < 0 && remainingScroll <= 50) {
-          shouldPreventDefault = true;
-        }
-        // 向上滑动：必须到顶部才能翻页
-        else if (deltaY > 0 && scrollTop <= 50) {
-          shouldPreventDefault = true;
+        // 向上滑动手指（deltaY < 0）→ 页面应该向上滚动 → 检查是否在底部
+        else if (deltaY < 0) {
+          if (atBottom) {
+            // 在底部，阻止默认滚动并准备翻页
+            shouldPreventDefault = true;
+          }
         }
       } else {
         // 没有滚动容器，允许所有方向
@@ -315,23 +335,20 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           const scrollTop = scrollContainer.scrollTop;
           const scrollHeight = scrollContainer.scrollHeight;
           const clientHeight = scrollContainer.clientHeight;
-
           const remainingScroll = scrollHeight - (scrollTop + clientHeight);
 
-          // 向下滚动鼠标（deltaY > 0，direction = 1）→ 应该往下一页走 → 需要检查是否在页面底部
+          const atTop = scrollTop <= 5;
+          const atBottom = remainingScroll <= 5;
+
+          // 向下滑动手指（direction = 1）→ 应该往上翻页 → 检查是否在顶部
           if (direction === 1) {
-            if (remainingScroll <= 50 && currentPage < totalPages - 1) {
+            if (atTop && currentPage > 0) {
               shouldChangePage = true;
             }
           }
-          // 向上滚动鼠标（deltaY < 0，direction = -1）→ 应该往上一页走 → 需要检查是否在页面顶部
+          // 向上滑动手指（direction = -1）→ 应该往下翻页 → 检查是否在底部
           else {
-            // 首页：向上滚动直接允许翻页
-            if (currentPage === 0) {
-              shouldChangePage = true;
-            }
-            // 其他页面：必须到顶部才能往上翻
-            else if (scrollTop <= 50 && currentPage > 0) {
+            if (atBottom && currentPage < totalPages - 1) {
               shouldChangePage = true;
             }
           }
@@ -341,12 +358,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         }
 
         if (shouldChangePage) {
-          if (direction === 1 && currentPage < totalPages - 1) {
-            handlePageChange(currentPage + 1);
-          } else if (direction === -1 && currentPage > 0) {
+          if (direction === 1) {
             handlePageChange(currentPage - 1);
           } else {
-            state.isProcessingScroll = false;
+            handlePageChange(currentPage + 1);
           }
         } else {
           state.isProcessingScroll = false;
