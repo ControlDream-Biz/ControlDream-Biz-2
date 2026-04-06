@@ -3,15 +3,19 @@
 import { useMiniProgram } from './MiniProgramContext';
 
 /**
- * 页面内容容器
- * 负责处理页面的布局和滚动
+ * 页面内容容器 - 微信UI风格
  */
 interface PageContentProps {
   children: React.ReactNode;
   className?: string;
+  backgroundColor?: string;
 }
 
-export function PageContent({ children, className = '' }: PageContentProps) {
+export function PageContent({
+  children,
+  className = '',
+  backgroundColor = '#f5f5f5',
+}: PageContentProps) {
   const { state } = useMiniProgram();
   const { statusBarHeight, navigationBarHeight, tabBarHeight } = state;
 
@@ -22,17 +26,17 @@ export function PageContent({ children, className = '' }: PageContentProps) {
 
   return (
     <div
-      className={`overflow-y-auto bg-gray-50 ${className}`}
+      className={`overflow-y-auto ${className}`}
       style={{
         height: availableHeight,
         marginTop: `${topOffset}px`,
         marginBottom: `${bottomOffset}px`,
+        backgroundColor,
         // 隐藏滚动条但保留滚动功能
-        scrollbarWidth: 'none', // Firefox
-        msOverflowStyle: 'none', // IE/Edge
+        scrollbarWidth: 'none',
+        msOverflowStyle: 'none',
       }}
     >
-      {/* 自定义滚动条样式 */}
       <style jsx>{`
         div::-webkit-scrollbar {
           display: none;

@@ -3,8 +3,7 @@
 import { useMiniProgram } from './MiniProgramContext';
 
 /**
- * 导航栏组件
- * 模拟微信小程序的导航栏（标题、返回按钮等）
+ * 导航栏组件 - 微信UI风格
  */
 interface NavigationBarProps {
   title?: string;
@@ -41,7 +40,7 @@ export function NavigationBar({
 
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-4 border-b border-gray-100"
+      className="weui-navigation-bar fixed top-0 left-0 right-0 z-40 flex items-center"
       style={{
         height: `${navigationBarHeight}px`,
         marginTop: `${statusBarHeight}px`,
@@ -50,36 +49,29 @@ export function NavigationBar({
       }}
     >
       {/* 返回按钮 */}
-      <div className="flex items-center w-12">
-        {canGoBack && (
-          <button
-            onClick={handleBack}
-            className="flex items-center justify-center w-8 h-8 -ml-2 rounded-full hover:bg-gray-100 active:bg-gray-200 transition-colors"
-            aria-label="返回"
+      {canGoBack && (
+        <div className="weui-navigation-bar__back" onClick={handleBack}>
+          <svg
+            width="12"
+            height="24"
+            viewBox="0 0 12 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            <svg
-              className="w-5 h-5"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-        )}
-      </div>
+            <path d="M11 2L1 12l10 10" />
+          </svg>
+        </div>
+      )}
 
       {/* 标题 */}
-      <div className="flex-1 text-center font-medium text-sm">
+      <div
+        className={`weui-navigation-bar__title ${canGoBack ? '' : 'ml-4 mr-4'}`}
+        style={{ fontSize: '17px', fontWeight: 600 }}
+      >
         {pageTitle}
-      </div>
-
-      {/* 右侧占位 */}
-      <div className="flex items-center justify-end w-12">
-        {/* 可以放置菜单按钮等 */}
       </div>
     </div>
   );

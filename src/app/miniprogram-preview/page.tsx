@@ -13,10 +13,10 @@ import { BusinessPage } from '@/components/mini-program/pages/BusinessPage';
 import { EnvironmentPage } from '@/components/mini-program/pages/EnvironmentPage';
 import { AboutPage } from '@/components/mini-program/pages/AboutPage';
 import { CulturePage } from '@/components/mini-program/pages/CulturePage';
-import '@/styles/miniprogram.css';
+import '@/styles/weui.css';
 
 /**
- * 小程序预览主页面
+ * 小程序预览主页面 - 微信UI风格
  */
 function MiniProgramPreviewContent() {
   const { state } = useMiniProgram();
@@ -50,7 +50,7 @@ function MiniProgramPreviewContent() {
   };
 
   return (
-    <div className="w-full max-w-md mx-auto bg-gray-50 min-h-screen relative">
+    <div className="w-full max-w-md mx-auto bg-white min-h-screen relative">
       {/* 状态栏 */}
       <StatusBar />
 
@@ -58,7 +58,7 @@ function MiniProgramPreviewContent() {
       <NavigationBar title={pageTitleMap[currentPageId]} />
 
       {/* 页面内容 */}
-      <PageContent>{renderPage()}</PageContent>
+      <PageContent backgroundColor="#f5f5f5">{renderPage()}</PageContent>
 
       {/* 底部 TabBar */}
       <TabBar />
@@ -67,25 +67,28 @@ function MiniProgramPreviewContent() {
 }
 
 /**
- * 小程序预览页面
+ * 小程序预览页面 - 微信UI风格
  */
 export default function MiniProgramPreviewPage() {
   return (
     <MiniProgramProvider>
       <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
         {/* 手机外壳 */}
-        <div className="w-full max-w-md bg-black rounded-[3rem] p-3 shadow-2xl">
+        <div
+          className="w-full max-w-md bg-black rounded-[2.5rem] p-2 shadow-2xl"
+          style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}
+        >
           {/* 屏幕区域 */}
-          <div className="bg-black rounded-[2.5rem] overflow-hidden">
+          <div className="bg-black rounded-[2rem] overflow-hidden">
             {/* 小程序预览 */}
             <MiniProgramPreviewContent />
           </div>
         </div>
 
         {/* 说明文字 */}
-        <div className="fixed top-4 left-4 text-white text-xs opacity-75">
-          <p>微信小程序 H5 预览</p>
-          <p className="text-gray-400 mt-1">技术栈：React 18 + TypeScript + 复杂架构</p>
+        <div className="fixed top-4 left-4 text-white text-xs">
+          <p className="font-medium">微信小程序预览</p>
+          <p className="text-gray-400 mt-0.5">WeChat UI Style</p>
         </div>
       </div>
     </MiniProgramProvider>

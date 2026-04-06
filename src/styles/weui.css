@@ -1,0 +1,407 @@
+/* 微信小程序UI风格 */
+
+/* 微信官方颜色 */
+:root {
+  --weui-color-primary: #07c160;
+  --weui-color-primary-dark: #06ad56;
+  --weui-color-primary-light: #e6f7ef;
+  --weui-color-warning: #ffbe00;
+  --weui-color-error: #fa5151;
+  --weui-color-info: #10aeff;
+
+  /* 文字颜色 */
+  --weui-color-title: #1a1a1a;
+  --weui-color-text: #333333;
+  --weui-color-text-secondary: #666666;
+  --weui-color-text-tertiary: #999999;
+  --weui-color-text-placeholder: #cccccc;
+
+  /* 背景颜色 */
+  --weui-bg-primary: #ffffff;
+  --weui-bg-secondary: #f5f5f5;
+  --weui-bg-tertiary: #fafafa;
+
+  /* 边框颜色 */
+  --weui-color-border: #eeeeee;
+  --weui-color-border-dark: #e5e5e5;
+
+  /* 间距 */
+  --weui-spacing-xs: 4px;
+  --weui-spacing-sm: 8px;
+  --weui-spacing-md: 16px;
+  --weui-spacing-lg: 24px;
+  --weui-spacing-xl: 32px;
+
+  /* 圆角 */
+  --weui-radius-sm: 4px;
+  --weui-radius-md: 8px;
+  --weui-radius-lg: 12px;
+  --weui-radius-xl: 16px;
+
+  /* 字体大小 */
+  --weui-font-size-xs: 10px;
+  --weui-font-size-sm: 12px;
+  --weui-font-size-md: 14px;
+  --weui-font-size-lg: 16px;
+  --weui-font-size-xl: 18px;
+  --weui-font-size-xxl: 20px;
+}
+
+/* 状态栏 */
+.weui-status-bar {
+  background-color: #ffffff;
+  color: #000000;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* 导航栏 */
+.weui-navigation-bar {
+  background-color: #ffffff;
+  color: #000000;
+  border-bottom: 1px solid var(--weui-color-border);
+}
+
+.weui-navigation-bar__title {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--weui-color-title);
+}
+
+.weui-navigation-bar__back {
+  width: 40px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.weui-navigation-bar__back:active {
+  background-color: var(--weui-bg-secondary);
+}
+
+/* 底部TabBar */
+.weui-tab-bar {
+  background-color: #ffffff;
+  border-top: 1px solid var(--weui-color-border);
+  height: 56px;
+  display: flex;
+  align-items: center;
+}
+
+.weui-tab-bar__item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.weui-tab-bar__icon {
+  font-size: 24px;
+  margin-bottom: 2px;
+  transition: transform 0.2s;
+}
+
+.weui-tab-bar__label {
+  font-size: 10px;
+  line-height: 1.2;
+}
+
+.weui-tab-bar__item--active {
+  color: var(--weui-color-primary);
+}
+
+.weui-tab-bar__item--active .weui-tab-bar__icon {
+  transform: scale(1.1);
+}
+
+/* 卡片 */
+.weui-card {
+  background-color: var(--weui-bg-primary);
+  border-radius: var(--weui-radius-lg);
+  padding: var(--weui-spacing-md);
+  margin-bottom: var(--weui-spacing-md);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.weui-card__title {
+  font-size: var(--weui-font-size-lg);
+  font-weight: 600;
+  color: var(--weui-color-title);
+  margin-bottom: var(--weui-spacing-sm);
+}
+
+.weui-card__content {
+  font-size: var(--weui-font-size-md);
+  color: var(--weui-color-text-secondary);
+  line-height: 1.6;
+}
+
+/* 按钮 */
+.weui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-size: var(--weui-font-size-lg);
+  font-weight: 500;
+  border-radius: var(--weui-radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  outline: none;
+  user-select: none;
+}
+
+.weui-btn--primary {
+  background-color: var(--weui-color-primary);
+  color: #ffffff;
+}
+
+.weui-btn--primary:active {
+  background-color: var(--weui-color-primary-dark);
+}
+
+.weui-btn--default {
+  background-color: var(--weui-bg-primary);
+  color: var(--weui-color-text);
+  border: 1px solid var(--weui-color-border);
+}
+
+.weui-btn--default:active {
+  background-color: var(--weui-bg-secondary);
+}
+
+.weui-btn--block {
+  width: 100%;
+}
+
+/* 列表 */
+.weui-list {
+  background-color: var(--weui-bg-primary);
+  border-radius: var(--weui-radius-lg);
+  overflow: hidden;
+  margin-bottom: var(--weui-spacing-md);
+}
+
+.weui-list__item {
+  padding: var(--weui-spacing-md);
+  border-bottom: 1px solid var(--weui-color-border);
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.weui-list__item:last-child {
+  border-bottom: none;
+}
+
+.weui-list__item:active {
+  background-color: var(--weui-bg-secondary);
+}
+
+.weui-list__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--weui-radius-md);
+  background-color: var(--weui-bg-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin-right: var(--weui-spacing-md);
+  flex-shrink: 0;
+}
+
+.weui-list__content {
+  flex: 1;
+}
+
+.weui-list__title {
+  font-size: var(--weui-font-size-lg);
+  font-weight: 500;
+  color: var(--weui-color-title);
+  margin-bottom: 4px;
+}
+
+.weui-list__desc {
+  font-size: var(--weui-font-size-sm);
+  color: var(--weui-color-text-tertiary);
+}
+
+/* 徽标 */
+.weui-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  font-size: var(--weui-font-size-xs);
+  font-weight: 500;
+  border-radius: 10px;
+  background-color: var(--weui-color-error);
+  color: #ffffff;
+  min-width: 16px;
+  height: 16px;
+}
+
+/* 网格 */
+.weui-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--weui-spacing-sm);
+  padding: var(--weui-spacing-md);
+  background-color: var(--weui-bg-primary);
+  border-radius: var(--weui-radius-lg);
+  margin-bottom: var(--weui-spacing-md);
+}
+
+.weui-grid__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--weui-spacing-md) 0;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.weui-grid__item:active {
+  transform: scale(0.95);
+}
+
+.weui-grid__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--weui-radius-lg);
+  background-color: var(--weui-color-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin-bottom: var(--weui-spacing-sm);
+}
+
+.weui-grid__label {
+  font-size: var(--weui-font-size-sm);
+  color: var(--weui-color-text);
+  text-align: center;
+}
+
+/* 标签 */
+.weui-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  font-size: var(--weui-font-size-xs);
+  border-radius: 4px;
+  background-color: var(--weui-bg-secondary);
+  color: var(--weui-color-text-secondary);
+}
+
+.weui-tag--primary {
+  background-color: var(--weui-color-primary-light);
+  color: var(--weui-color-primary-dark);
+}
+
+.weui-tag--warning {
+  background-color: #fff7e6;
+  color: #fa8c16;
+}
+
+/* 分割线 */
+.weui-divider {
+  height: 1px;
+  background-color: var(--weui-color-border);
+  margin: var(--weui-spacing-md) 0;
+}
+
+/* 空状态 */
+.weui-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+}
+
+.weui-empty__icon {
+  font-size: 80px;
+  margin-bottom: var(--weui-spacing-md);
+  opacity: 0.3;
+}
+
+.weui-empty__text {
+  font-size: var(--weui-font-size-md);
+  color: var(--weui-color-text-tertiary);
+}
+
+/* 加载 */
+.weui-loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--weui-color-primary);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: weui-loading-rotate 0.6s linear infinite;
+}
+
+@keyframes weui-loading-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 消息提示 */
+.weui-toast {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  padding: 16px 24px;
+  border-radius: var(--weui-radius-md);
+  font-size: var(--weui-font-size-md);
+  z-index: 9999;
+  animation: weui-toast-fade-in 0.3s ease-out;
+}
+
+@keyframes weui-toast-fade-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+/* 搜索栏 */
+.weui-search-bar {
+  background-color: var(--weui-bg-secondary);
+  padding: var(--weui-spacing-sm) var(--weui-spacing-md);
+  display: flex;
+  align-items: center;
+}
+
+.weui-search-bar__input {
+  flex: 1;
+  background-color: var(--weui-bg-primary);
+  border-radius: var(--weui-radius-lg);
+  padding: 8px 12px;
+  font-size: var(--weui-font-size-md);
+  border: 1px solid var(--weui-color-border);
+  outline: none;
+}
+
+.weui-search-bar__input:focus {
+  border-color: var(--weui-color-primary);
+}
