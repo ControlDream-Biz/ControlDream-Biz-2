@@ -31,4 +31,11 @@ echo "Clearing port ${PORT} before start."
 kill_port_if_listening
 echo "Starting Next.js dev server on port ${PORT}..."
 
-PORT=$PORT pnpm next dev
+# Find and run next executable
+NEXT_BIN=$(find node_modules/.pnpm -name "next" -type f -path "*/bin/*" | head -1)
+if [ -z "$NEXT_BIN" ]; then
+  echo "Error: Could not find next executable"
+  exit 1
+fi
+
+PORT=$PORT node "$NEXT_BIN" dev
