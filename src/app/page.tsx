@@ -24,6 +24,7 @@ export default function Page() {
   const [currentPage, setCurrentPage] = useState(0);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
   const isInitialLoadRef = useRef(true);
+  const scrollHandlerRef = useRef<(() => void) | null>(null);
 
   const handlePageChange = (pageIndex: number) => {
     // 触发scrollToSection事件，通知ScrollProgress组件
@@ -54,20 +55,24 @@ export default function Page() {
           isInitialLoadRef.current = false;
         }
 
-        // 只有在初始加载完成，且滚动到距离底部小于 200px 时才显示指示器
-        if (!isInitialLoadRef.current && remainingScroll < 200) {
-          setShowScrollIndicator(true);
-        } else {
-          setShowScrollIndicator(false);
-        }
+        // 计算是否应该显示指示器
+        const shouldShow = !isInitialLoadRef.current && remainingScroll < 200;
+
+        // 使用 requestAnimationFrame 确保状态更新
+        requestAnimationFrame(() => {
+          setShowScrollIndicator(shouldShow);
+        });
       }
     };
+
+    // 存储处理函数的引用
+    scrollHandlerRef.current = checkScrollPosition;
 
     // 延迟一下再开始监听，确保 DOM 已完全渲染
     const initTimer = setTimeout(() => {
       const scrollContainer = document.querySelector('[data-page-index="0"] .scroll-content');
       if (scrollContainer) {
-        scrollContainer.addEventListener('scroll', checkScrollPosition);
+        scrollContainer.addEventListener('scroll', checkScrollPosition, { passive: true });
       }
     }, 100);
 
