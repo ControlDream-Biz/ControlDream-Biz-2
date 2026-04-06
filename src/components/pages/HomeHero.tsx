@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, memo } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface HomeHeroProps {
   isActive?: boolean;
@@ -9,6 +10,7 @@ interface HomeHeroProps {
 // 使用React.memo优化性能，避免不必要的重渲染
 export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProps) {
   const [mounted, setMounted] = useState(false);
+  const { t } = useLanguage();
 
   // 首次加载时触发动画
   useEffect(() => {
@@ -17,7 +19,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
 
   return (
     <>
-    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-12 sm:pt-16 md:pt-20 pb-32 sm:pb-40 md:pb-48 min-h-[calc(100vh-64px)]">
+    <div className="relative w-full h-full flex flex-col items-center justify-start overflow-hidden pt-12 sm:pt-16 md:pt-20 pb-64 sm:pb-80 md:pb-96 min-h-[calc(100vh+200px)]">
 
       <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-5xl mx-auto flex flex-col items-center justify-center w-full">
         {/* 顶级彩字排版 - 三行垂直排列 */}
@@ -50,7 +52,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 willChange: 'transform',
               }}
             >
-              游戏创新
+              {t('home.hero.innovation_1')}
             </h1>
           </div>
 
@@ -82,7 +84,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 willChange: 'transform',
               }}
             >
-              软件赋能
+              {t('home.hero.innovation_2')}
             </h1>
           </div>
 
@@ -114,7 +116,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
                 willChange: 'transform',
               }}
             >
-              硬件智造
+              {t('home.hero.innovation_3')}
             </h1>
           </div>
         </div>
@@ -129,7 +131,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
             letterSpacing: '0.1em',
           }}
         >
-          三驾马车驱动自主创新
+          {t('home.hero.subtitle')}
         </p>
 
         {/* 核心理念 - 优化间距和尺寸 */}
@@ -142,9 +144,9 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
           }}
         >
           {[
-            { value: '100%', label: '自主创新' },
-            { value: '10+', label: '产品迭代' },
-            { value: '24/7', label: '持续服务' },
+            { value: t('home.hero.innovation_percentage'), label: t('home.hero.innovation_label') },
+            { value: t('home.hero.iteration'), label: t('home.hero.iteration_label') },
+            { value: t('home.hero.service'), label: t('home.hero.service_label') },
           ].map((item, index) => (
             <div
               key={index}
@@ -192,7 +194,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
             className="group relative px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-white text-black font-semibold text-sm sm:text-base md:text-lg rounded-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-white/20"
           >
             <span className="relative z-10 flex items-center gap-2">
-              查看产品
+              {t('cta.view_products')}
               <svg className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
@@ -208,7 +210,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
             className="group relative px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-transparent text-white font-semibold text-sm sm:text-base md:text-lg rounded-lg border border-white/30 overflow-hidden transition-all duration-300 hover:scale-105 hover:border-white/50 hover:bg-white/5 hover:shadow-2xl hover:shadow-white/10"
           >
             <span className="relative z-10 flex items-center gap-2">
-              联系我们
+              {t('cta.contact_us')}
               <svg className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
               </svg>
