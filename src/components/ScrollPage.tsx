@@ -318,20 +318,20 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
           const remainingScroll = scrollHeight - (scrollTop + clientHeight);
 
-          // 向下滑动（deltaY > 0，direction = 1）
+          // 向下滚动鼠标（deltaY > 0，direction = 1）→ 应该往下一页走 → 需要检查是否在页面底部
           if (direction === 1) {
-            if (scrollTop <= 50 && currentPage > 0) {
+            if (remainingScroll <= 50 && currentPage < totalPages - 1) {
               shouldChangePage = true;
             }
           }
-          // 向上滑动（deltaY < 0，direction = -1）
+          // 向上滚动鼠标（deltaY < 0，direction = -1）→ 应该往上一页走 → 需要检查是否在页面顶部
           else {
-            // 首页：直接允许翻页
+            // 首页：向上滚动直接允许翻页
             if (currentPage === 0) {
               shouldChangePage = true;
             }
-            // 其他页面：必须到底部
-            else if (remainingScroll <= 50 && currentPage < totalPages - 1) {
+            // 其他页面：必须到顶部才能往上翻
+            else if (scrollTop <= 50 && currentPage > 0) {
               shouldChangePage = true;
             }
           }
@@ -341,10 +341,10 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         }
 
         if (shouldChangePage) {
-          if (direction === 1 && currentPage > 0) {
-            handlePageChange(currentPage - 1);
-          } else if (direction === -1 && currentPage < totalPages - 1) {
+          if (direction === 1 && currentPage < totalPages - 1) {
             handlePageChange(currentPage + 1);
+          } else if (direction === -1 && currentPage > 0) {
+            handlePageChange(currentPage - 1);
           } else {
             state.isProcessingScroll = false;
           }
