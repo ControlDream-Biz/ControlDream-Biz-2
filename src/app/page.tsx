@@ -23,6 +23,7 @@ export default function Page() {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
   const scrollCheckRef = useRef<NodeJS.Timeout | null>(null);
 
   const handlePageChange = (pageIndex: number) => {
@@ -35,6 +36,7 @@ export default function Page() {
   useEffect(() => {
     if (currentPage !== 0) {
       setShowScrollIndicator(false);
+      setHasScrolled(false);
       return;
     }
 
@@ -48,8 +50,13 @@ export default function Page() {
         const clientHeight = scrollContainer.clientHeight;
         const remainingScroll = scrollHeight - (scrollTop + clientHeight);
 
-        // 当滚动到距离底部小于 200px 时显示指示器
-        if (remainingScroll < 200) {
+        // 标记用户已经滚动过
+        if (scrollTop > 10) {
+          setHasScrolled(true);
+        }
+
+        // 只有当用户滚动过，且滚动到距离底部小于 200px 时才显示指示器
+        if (hasScrolled && remainingScroll < 200) {
           setShowScrollIndicator(true);
         } else {
           setShowScrollIndicator(false);
@@ -57,7 +64,7 @@ export default function Page() {
       }
     };
 
-    // 初始检查
+    // 初始检查（不显示）
     checkScrollPosition();
 
     // 监听滚动事件
@@ -74,7 +81,7 @@ export default function Page() {
         clearTimeout(scrollCheckRef.current);
       }
     };
-  }, [currentPage]);
+  }, [currentPage, hasScrolled]);
 
   useEffect(() => {
     const handlePageChanged = (e: CustomEvent) => {
@@ -97,7 +104,7 @@ export default function Page() {
       {/* 下滑指示器 - 仅在首页且滚动到底部留白区域时显示 */}
       {currentPage === 0 && showScrollIndicator && (
         <div
-          className="fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-50"
+          className="fixed bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-50"
           style={{
             opacity: 1,
             transition: 'all 500ms ease-out',
