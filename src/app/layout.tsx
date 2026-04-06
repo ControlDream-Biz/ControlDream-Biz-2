@@ -194,7 +194,8 @@ export default function RootLayout({
           {/* 性能监控 */}
           <AnalyticsTracker />
 
-          {isDev && <Inspector />}
+          {/* 开发工具 - 暂时禁用以避免 hydration 错误 */}
+          {/* {isDev && <Inspector />} */}
           <GlobalBackground />
           <div id="main-content">
             {children}
