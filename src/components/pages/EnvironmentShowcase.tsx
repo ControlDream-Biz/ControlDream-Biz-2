@@ -108,12 +108,15 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
       const wasInactive = previousIsActiveRef.current === false;
       const shouldTrigger = !initializedRef.current || wasInactive;
 
+      console.log(`EnvironmentShowcase shouldTrigger: ${shouldTrigger}, wasInactive: ${wasInactive}, initialized: ${initializedRef.current}`);
+
       if (shouldTrigger) {
         initializedRef.current = true;
         previousIsActiveRef.current = true;
 
         // 延迟触发，确保页面完全渲染
         const timer = setTimeout(() => {
+          console.log(`EnvironmentShowcase 开始执行动画...`);
           setMounted(true);
 
           // 清空可见索引
@@ -136,14 +139,17 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
         }, 300); // 延迟300ms
 
         return () => clearTimeout(timer);
+      } else {
+        console.log(`EnvironmentShowcase 跳过动画触发`);
       }
     } else {
       // 页面变为非激活时，重置状态
       previousIsActiveRef.current = false;
+      initializedRef.current = false; // 重置初始化状态，允许下次重新触发动画
       setVisibleIndices(new Set());
       console.log(`EnvironmentShowcase 页面变为非激活，清空小字显示`);
     }
-  }, [isActive, areas, pageIndex, mounted]); // 监听所有相关依赖
+  }, [isActive, pageIndex]); // 只监听 isActive 和 pageIndex - 修复黑屏问题
 
   return (
     <div className="relative w-full overflow-hidden" style={{ zIndex: 5 }}>

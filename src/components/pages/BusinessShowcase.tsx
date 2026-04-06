@@ -111,12 +111,15 @@ export const BusinessShowcase = memo(function BusinessShowcase({
       const wasInactive = previousIsActiveRef.current === false;
       const shouldTrigger = !initializedRef.current || wasInactive;
 
+      console.log(`BusinessShowcase shouldTrigger: ${shouldTrigger}, wasInactive: ${wasInactive}, initialized: ${initializedRef.current}`);
+
       if (shouldTrigger) {
         initializedRef.current = true;
         previousIsActiveRef.current = true;
 
         // 延迟触发，确保页面完全渲染
         const timer = setTimeout(() => {
+          console.log(`BusinessShowcase 开始执行动画...`);
           setMounted(true);
 
           // 清空可见索引
@@ -139,14 +142,17 @@ export const BusinessShowcase = memo(function BusinessShowcase({
         }, 300); // 延迟300ms
 
         return () => clearTimeout(timer);
+      } else {
+        console.log(`BusinessShowcase 跳过动画触发`);
       }
     } else {
       // 页面变为非激活时，重置状态
       previousIsActiveRef.current = false;
+      initializedRef.current = false; // 重置初始化状态，允许下次重新触发动画
       setVisibleIndices(new Set());
       console.log(`BusinessShowcase 页面变为非激活，清空小字显示`);
     }
-  }, [isActive, businesses, pageIndex, mounted]); // 监听所有相关依赖
+  }, [isActive, pageIndex]); // 只监听 isActive 和 pageIndex
 
 
   return (
