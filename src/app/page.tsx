@@ -106,13 +106,10 @@ export default function Page() {
       {/* 下滑指示器 - 仅在首页且滚动到底部留白区域时显示 */}
       {currentPage === 0 && showScrollIndicator && (
         <div
-          className="fixed bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 cursor-pointer z-[100] px-6 py-4 rounded-2xl"
+          className="fixed bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-[100]"
           style={{
             opacity: 1,
             transition: 'all 500ms ease-out',
-            background: 'rgba(0, 0, 0, 0.6)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
           }}
           onClick={() => {
             const event = new CustomEvent('jump-to-page', { detail: { pageIndex: 1 } });
