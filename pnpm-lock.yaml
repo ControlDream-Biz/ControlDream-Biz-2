@@ -176,6 +176,9 @@ importers:
       vaul:
         specifier: ^1.1.2
         version: 1.1.2(@types/react-dom@19.2.3(@types/react@19.2.14))(@types/react@19.2.14)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      ws:
+        specifier: ^8.20.0
+        version: 8.20.0
       zod:
         specifier: ^4.3.5
         version: 4.3.6
@@ -198,6 +201,9 @@ importers:
       '@types/react-dom':
         specifier: ^19
         version: 19.2.3(@types/react@19.2.14)
+      '@types/ws':
+        specifier: ^8.18.1
+        version: 8.18.1
       autoprefixer:
         specifier: ^10.4.27
         version: 10.4.27(postcss@8.5.8)
@@ -226,7 +232,7 @@ importers:
         specifier: ^3.4.0
         version: 3.4.19(tsx@4.21.0)(yaml@1.10.3)
       tsup:
-        specifier: ^8.3.5
+        specifier: ^8.5.1
         version: 8.5.1(jiti@1.21.7)(postcss@8.5.8)(tsx@4.21.0)(typescript@5.9.3)(yaml@1.10.3)
       tsx:
         specifier: ^4.19.2
