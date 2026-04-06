@@ -279,7 +279,7 @@ export function detectXSSPattern(input: string): {
       if (pattern.test(lowerInput)) {
         patterns.push(pattern.source);
         if (level === 'critical' || (level === 'high' && severity !== 'critical')) {
-          severity = level as any;
+          severity = level as 'low' | 'medium' | 'high' | 'critical';
         }
       }
     }
@@ -400,7 +400,7 @@ export function validateReferer(
 /**
  * 安全的JSON解析
  */
-export function safeJSONParse<T = any>(
+export function safeJSONParse<T = unknown>(
   input: string,
   defaultValue: T
 ): T | null {
@@ -418,7 +418,7 @@ export function safeJSONParse<T = any>(
 /**
  * 安全的JSON字符串化
  */
-export function safeJSONStringify(obj: any, space?: number): string {
+export function safeJSONStringify(obj: unknown, space?: number): string {
   try {
     // 防止循环引用
     const seen = new WeakSet();

@@ -349,7 +349,7 @@ export function validateStringLength(
 }
 
 // 批量验证对象字段
-export function validateObject<T extends Record<string, any>>(
+export function validateObject<T extends Record<string, unknown>>(
   obj: T,
   schema: {
     [K in keyof T]?: (value: T[K]) => { valid: boolean; error?: string };
@@ -373,12 +373,12 @@ export function validateObject<T extends Record<string, any>>(
 }
 
 // 移除空值
-export function removeEmptyValues<T extends Record<string, any>>(obj: T): Partial<T> {
+export function removeEmptyValues<T extends Record<string, unknown>>(obj: T): Partial<T> {
   const result: Partial<T> = {};
 
   for (const [key, value] of Object.entries(obj)) {
     if (value !== null && value !== undefined && value !== '') {
-      result[key as keyof T] = value;
+      result[key as keyof T] = value as T[keyof T];
     }
   }
 
@@ -386,7 +386,7 @@ export function removeEmptyValues<T extends Record<string, any>>(obj: T): Partia
 }
 
 // 深度清理对象
-export function sanitizeObject<T extends Record<string, any>>(
+export function sanitizeObject<T extends Record<string, unknown>>(
   obj: T,
   options: {
     removeXSS?: boolean;
@@ -418,7 +418,7 @@ export function sanitizeObject<T extends Record<string, any>>(
 
       result[key as keyof T] = cleaned as T[keyof T];
     } else if (typeof value === 'object' && value !== null) {
-      result[key as keyof T] = sanitizeObject(value, options);
+      result[key as keyof T] = sanitizeObject(value as Record<string, unknown>, options) as T[keyof T];
     }
   }
 

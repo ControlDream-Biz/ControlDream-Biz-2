@@ -95,14 +95,14 @@ const nextConfig: NextConfig = {
 
       // Terser 配置 - 代码压缩
       if (config.optimization && config.optimization.minimizer) {
-        config.optimization.minimizer = config.optimization.minimizer.map((minimizer: { constructor: { name: string }; options: { terserOptions: any } }) => {
+        config.optimization.minimizer = config.optimization.minimizer.map((minimizer: { constructor: { name: string }; options: { terserOptions: Record<string, unknown> } }) => {
           if (minimizer.constructor.name === 'TerserPlugin') {
             minimizer.options = {
               ...minimizer.options,
               terserOptions: {
-                ...minimizer.options.terserOptions,
+                ...(minimizer.options as { terserOptions?: Record<string, unknown> }).terserOptions,
                 compress: {
-                  ...minimizer.options.terserOptions.compress,
+                  ...((minimizer.options as { terserOptions?: { compress?: Record<string, unknown> } }).terserOptions?.compress || {}),
                   drop_console: false, // 已在 obfuscator 中禁用
                   drop_debugger: true, // 删除 debugger
                   pure_funcs: [], // 已在 obfuscator 中处理
@@ -110,7 +110,7 @@ const nextConfig: NextConfig = {
                   passes: 3, // 多次压缩
                 },
                 mangle: {
-                  ...minimizer.options.terserOptions.mangle,
+                  ...((minimizer.options as { terserOptions?: { mangle?: Record<string, unknown> } }).terserOptions?.mangle || {}),
                   safari10: true, // 兼容 Safari 10
                   keep_fnames: false, // 混淆函数名
                   keep_classnames: false, // 混淆类名
@@ -119,7 +119,7 @@ const nextConfig: NextConfig = {
                   },
                 },
                 output: {
-                  ...minimizer.options.terserOptions.output,
+                  ...((minimizer.options as { terserOptions?: { output?: Record<string, unknown> } }).terserOptions?.output || {}),
                   comments: false, // 删除注释
                   beautify: false, // 不美化代码
                 },

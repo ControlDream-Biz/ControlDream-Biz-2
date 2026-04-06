@@ -16,7 +16,7 @@ import { logSecurityEvent, SecurityEventType, SecuritySeverity } from './securit
 export function detectZeroDayExploit(request: {
   url: string;
   headers: Record<string, string>;
-  body?: any;
+  body?: Record<string, unknown> | string | null;
 }): {
   detected: boolean;
   severity: 'low' | 'medium' | 'high' | 'critical';
@@ -382,7 +382,7 @@ const aptIndicators = new Map<string, Set<string>>();
 export function detectAPTIndicators(
   ip: string,
   userAgent: string,
-  payload: any
+  payload: Record<string, unknown>
 ): {
   detected: boolean;
   indicators: string[];
@@ -452,7 +452,7 @@ export function detectAPTIndicators(
 /**
  * 检测加密货币挖矿
  */
-export function detectCryptoMining(payload: any, userAgent: string): {
+export function detectCryptoMining(payload: Record<string, unknown>, userAgent: string): {
   detected: boolean;
   type: string[];
   severity: 'medium' | 'high' | 'critical';
@@ -712,7 +712,7 @@ export function sanitizeLogInput(input: string): string {
 /**
  * 检测 HTTP 请求走私
  */
-export function detectHTTPSmuggling(headers: Record<string, string>, body?: any): {
+export function detectHTTPSmuggling(headers: Record<string, string>, body?: Record<string, unknown> | string | null): {
   detected: boolean;
   type: string[];
   severity: 'high' | 'critical';
@@ -808,7 +808,7 @@ export function detectHTTPResponseSplitting(input: string): {
 /**
  * 检测 GraphQL 注入
  */
-export function detectGraphQLInjection(query: string, variables: any): {
+export function detectGraphQLInjection(query: string, variables: Record<string, unknown>): {
   detected: boolean;
   severity: 'medium' | 'high' | 'critical';
   threats: string[];
@@ -871,7 +871,7 @@ export function detectGraphQLInjection(query: string, variables: any): {
 /**
  * 检测 NoSQL 注入
  */
-export function detectNoSQLInjection(input: any): {
+export function detectNoSQLInjection(input: Record<string, unknown> | unknown[]): {
   detected: boolean;
   severity: 'medium' | 'high' | 'critical';
   threats: string[];
@@ -1073,7 +1073,7 @@ export function detectSSRF(url: string): {
 export function detectPollutionAttack(
   url: string,
   headers: Record<string, string>,
-  body?: any
+  body?: Record<string, unknown> | string | null
 ): {
   detected: boolean;
   severity: 'high' | 'critical';
@@ -1142,7 +1142,7 @@ export function detectPollutionAttack(
 /**
  * 检测原型污染
  */
-export function detectPrototypePollution(input: any): {
+export function detectPrototypePollution(input: Record<string, unknown> | unknown[]): {
   detected: boolean;
   severity: 'critical';
 } {

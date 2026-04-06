@@ -42,7 +42,7 @@ export interface SecurityEvent {
   method?: string;
   userId?: string;
   sessionId?: string;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
   resolved?: boolean;
   resolvedAt?: string;
   resolvedBy?: string;
@@ -88,7 +88,7 @@ export function logSecurityEvent(params: {
   method?: string;
   userId?: string;
   sessionId?: string;
-  details: Record<string, any>;
+  details: Record<string, unknown>;
 }): string {
   const eventId = generateEventId();
 

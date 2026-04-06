@@ -346,7 +346,7 @@ export function detectSessionHijacking(
  */
 function logSecurityEvent(
   type: string,
-  data: Record<string, any>
+  data: Record<string, unknown>
 ): void {
   const event = {
     timestamp: new Date().toISOString(),

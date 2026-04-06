@@ -79,10 +79,10 @@ export function checkIframe(): boolean {
 export function checkCodeIntegrity(): boolean {
   // 检查关键函数是否存在
   const requiredFunctions = ['Security', 'SecurityProtection'];
-  const hasRequiredFunctions = requiredFunctions.some(fn => typeof (window as any)[fn] === 'function');
+  const hasRequiredFunctions = requiredFunctions.some(fn => typeof (window as unknown as Record<string, unknown>)[fn] === 'function');
 
   // 检查关键全局变量是否被修改
-  const hasModifiedGlobals = (window as any).__security_flag__ !== undefined;
+  const hasModifiedGlobals = (window as unknown as Record<string, unknown>).__security_flag__ !== undefined;
 
   return !hasRequiredFunctions && !hasModifiedGlobals;
 }
@@ -234,8 +234,8 @@ export function initSecurityProtection(): void {
   addCopyrightMetadata();
 
   // 4. 添加安全标志
-  (window as any).__security_protected__ = true;
-  (window as any).__copyright__ = COPYRIGHT_INFO;
+  (window as unknown as Record<string, unknown>).__security_protected__ = true;
+  (window as unknown as Record<string, unknown>).__copyright__ = COPYRIGHT_INFO;
 
   console.log(
     `%c© ${COPYRIGHT_INFO.company} ${COPYRIGHT_INFO.year}`,

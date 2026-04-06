@@ -182,15 +182,15 @@ export function validateLimitOffset(limit?: number, offset?: number): {
  * 构建安全的WHERE条件（使用白名单）
  */
 export function buildSafeWhereClause(
-  filters: Record<string, any>,
+  filters: Record<string, unknown>,
   allowedColumns: string[],
   operators: Record<string, string> = {}
 ): {
   valid: boolean;
   error?: string;
-  where?: Record<string, any>;
+  where?: Record<string, unknown>;
 } {
-  const where: Record<string, any> = {};
+  const where: Record<string, unknown> = {};
 
   for (const [key, value] of Object.entries(filters)) {
     // 检查列名是否在白名单中
@@ -264,12 +264,12 @@ export function buildSafeWhereClause(
  * 验证批量查询参数
  */
 export function validateBatchQueryParams(params: {
-  ids?: any[];
+  ids?: (string | number)[];
   allowedIds?: Set<string | number>;
 }): {
   valid: boolean;
   error?: string;
-  sanitized?: { ids?: any[] };
+  sanitized?: { ids?: (string | number)[] };
 } {
   if (!params.ids) {
     return { valid: true };
@@ -289,7 +289,7 @@ export function validateBatchQueryParams(params: {
     };
   }
 
-  const sanitizedIds: any[] = [];
+  const sanitizedIds: (string | number)[] = [];
 
   for (const id of params.ids) {
     // 验证ID格式
@@ -326,12 +326,12 @@ export function validateBatchQueryParams(params: {
  * 构建安全的参数化查询对象
  * 适用于Supabase查询构建器
  */
-export function buildSafeQuery<T extends Record<string, any>>(
+export function buildSafeQuery<T extends Record<string, unknown>>(
   table: string,
   allowedColumns: string[],
   params: {
     select?: string[];
-    filters?: Record<string, any>;
+    filters?: Record<string, unknown>;
     orderBy?: { column: string; ascending?: boolean };
     limit?: number;
     offset?: number;
@@ -342,7 +342,7 @@ export function buildSafeQuery<T extends Record<string, any>>(
   query?: {
     table: string;
     columns?: string[];
-    filters?: Record<string, any>;
+    filters?: Record<string, unknown>;
     orderBy?: { column: string; ascending?: boolean };
     limit?: number;
     offset?: number;
@@ -357,8 +357,15 @@ export function buildSafeQuery<T extends Record<string, any>>(
     };
   }
 
-  const result: any = {
-    table: tableValidation.sanitized,
+  const result: {
+    table: string;
+    columns?: string[];
+    filters?: Record<string, unknown>;
+    orderBy?: { column: string; ascending?: boolean };
+    limit?: number;
+    offset?: number;
+  } = {
+    table: tableValidation.sanitized!,
   };
 
   // 验证选择列
@@ -433,7 +440,7 @@ export function buildSafeQuery<T extends Record<string, any>>(
 /**
  * 清理用户输入，防止SQL注入
  */
-export function sanitizeUserInput<T extends Record<string, any>>(
+export function sanitizeUserInput<T extends Record<string, unknown>>(
   input: T,
   options: {
     removeSQLInjection?: boolean;
@@ -461,7 +468,7 @@ export function sanitizeUserInput<T extends Record<string, any>>(
     if (convertNumbers) {
       for (const [key, value] of Object.entries(cleaned)) {
         if (typeof value === 'string' && !isNaN(Number(value))) {
-          (cleaned as any)[key] = Number(value);
+          (cleaned as Record<string, unknown>)[key] = Number(value);
         }
       }
     }

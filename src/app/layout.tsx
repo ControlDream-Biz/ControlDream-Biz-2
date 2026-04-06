@@ -10,6 +10,7 @@ import { LiveChat } from '@/components/LiveChat';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { AnalyticsTracker } from '@/components/AnalyticsTracker';
 import { SecurityProtection } from '@/components/SecurityProtection';
+import { PerformanceMonitor } from '@/components/PerformanceMonitor';
 
 export const metadata: Metadata = {
   title: {
@@ -191,6 +192,7 @@ export default function RootLayout({
 
           {/* 性能监控 */}
           <AnalyticsTracker />
+          <PerformanceMonitor />
 
           {/* 开发工具 - 暂时禁用以避免 hydration 错误 */}
           {/* {isDev && <Inspector />} */}

@@ -63,7 +63,7 @@ if (typeof setInterval !== 'undefined') {
  * @returns 签名
  */
 export function generateSignature(
-  data: Record<string, any> | string,
+  data: Record<string, unknown> | string,
   secretKey: string = DEFAULT_CONFIG.secretKey,
   timestamp?: number,
   nonce?: string
@@ -102,7 +102,7 @@ export function generateSignature(
  * @returns 签名请求对象
  */
 export function generateSignedRequest(
-  data: Record<string, any> | string,
+  data: Record<string, unknown> | string,
   secretKey: string = DEFAULT_CONFIG.secretKey
 ): SignedRequest & { data: string } {
   const timestamp = Math.floor(Date.now() / 1000);
@@ -125,7 +125,7 @@ export function generateSignedRequest(
  */
 export function verifySignature(
   signedRequest: SignedRequest,
-  data: Record<string, any> | string,
+  data: Record<string, unknown> | string,
   config: SignatureConfig = DEFAULT_CONFIG
 ): SignatureVerificationResult {
   const { timestamp, nonce, signature } = signedRequest;
@@ -170,10 +170,10 @@ export function verifySignature(
  * @param config 签名配置
  * @returns 验证结果
  */
-export function verifyRequestSignature(
+export async function verifyRequestSignature(
   request: Request,
   config: SignatureConfig = DEFAULT_CONFIG
-): SignatureVerificationResult {
+): Promise<SignatureVerificationResult> {
   try {
     // 从 Header 中提取签名信息
     const timestamp = request.headers.get('X-Timestamp');
@@ -188,9 +188,11 @@ export function verifyRequestSignature(
     }
 
     // 获取请求体
-    const body = request.headers.get('content-type')?.includes('application/json')
-      ? request.clone().json() // 克隆请求以避免消费原始请求
-      : '';
+    const bodyPromise = request.headers.get('content-type')?.includes('application/json')
+      ? request.clone().json()
+      : Promise.resolve('');
+
+    const body = await bodyPromise;
 
     return verifySignature(
       {
@@ -198,7 +200,7 @@ export function verifyRequestSignature(
         nonce,
         signature,
       },
-      body || request.url,
+      body || request.url as string | Record<string, unknown>,
       config
     );
   } catch (error) {
@@ -257,11 +259,11 @@ export function signRequest(
  * @param config 签名配置
  * @returns 验证结果
  */
-export function signatureMiddleware(
+export async function signatureMiddleware(
   request: Request,
   config: SignatureConfig = DEFAULT_CONFIG
-): { valid: boolean; response?: Response } {
-  const result = verifyRequestSignature(request, config);
+): Promise<{ valid: boolean; response?: Response }> {
+  const result = await verifyRequestSignature(request, config);
 
   if (!result.valid) {
     return {
