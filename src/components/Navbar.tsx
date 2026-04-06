@@ -3,8 +3,15 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
-// 手机震动工具函数
+// 手机震动工具函数 - 支持用户偏好控制
 function triggerVibration() {
+  // 检查用户是否启用了震动反馈
+  const vibrationEnabled = typeof window !== 'undefined'
+    ? localStorage.getItem('vibration-enabled') !== 'false'
+    : true;
+
+  if (!vibrationEnabled) return;
+
   if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
     try {
       // 震动模式：短震动（50ms）
@@ -13,6 +20,21 @@ function triggerVibration() {
       // 某些设备可能不支持或被禁用，忽略错误
     }
   }
+}
+
+// 切换震动反馈
+function toggleVibration() {
+  if (typeof window !== 'undefined') {
+    const currentSetting = localStorage.getItem('vibration-enabled');
+    const newSetting = currentSetting === 'false' ? 'true' : 'false';
+    localStorage.setItem('vibration-enabled', newSetting);
+  }
+}
+
+// 获取震动反馈状态
+function getVibrationEnabled(): boolean {
+  if (typeof window === 'undefined') return true;
+  return localStorage.getItem('vibration-enabled') !== 'false';
 }
 
 export function Navbar() {
@@ -94,9 +116,9 @@ export function Navbar() {
       </div>
 
       {/* 导航菜单 - 右上角 - 液态玻璃设计系统 */}
-      <nav className="fixed top-4 right-4 z-50 select-none sm:top-4 sm:right-4 lg:top-6 lg:right-6">
+      <nav className="fixed top-4 right-4 z-50 select-none sm:top-4 sm:right-4 lg:top-6 lg:right-6" aria-label="主导航">
         {/* Desktop Navigation - 液态玻璃导航栏 */}
-        <div className="hidden lg:flex items-center gap-1 liquid-glass-nav px-2 py-2">
+        <div className="hidden lg:flex items-center gap-1 liquid-glass-nav px-2 py-2" role="navigation">
           {navItems.map((item) => (
             <button
               key={item.href}
@@ -107,6 +129,8 @@ export function Navbar() {
               className={`liquid-glass-nav-btn text-sm ${
                 currentPage === item.index ? 'active' : ''
               }`}
+              aria-label={`导航到${item.label}`}
+              aria-current={currentPage === item.index ? 'page' : undefined}
             >
               {item.label}
             </button>
@@ -121,6 +145,9 @@ export function Navbar() {
             setMobileMenuOpen(!mobileMenuOpen);
           }}
           className="lg:hidden liquid-glass-menu-btn w-12 h-12 sm:w-12 sm:h-12"
+          aria-label={mobileMenuOpen ? '关闭菜单' : '打开菜单'}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-menu"
         >
           <svg
             width="24"
@@ -133,6 +160,7 @@ export function Navbar() {
             strokeLinejoin="round"
             className="text-white"
             style={{ width: '20px', height: '20px' }}
+            aria-hidden="true"
           >
             {/* 上横杠 → 左竖线 */}
             <line
@@ -175,8 +203,12 @@ export function Navbar() {
       {/* Mobile Menu - 液态玻璃效果 */}
       {mobileMenuOpen && (
         <div
+          id="mobile-menu"
           onClick={() => setMobileMenuOpen(false)}
           className="lg:hidden fixed top-0 left-0 right-0 bottom-0 z-40 liquid-glass-dark flex flex-col items-center justify-center gap-8"
+          role="dialog"
+          aria-modal="true"
+          aria-label="移动端菜单"
         >
           {navItems.map((item, index) => (
             <button
@@ -191,10 +223,27 @@ export function Navbar() {
                   : 'text-white/60 hover:text-white hover:scale-105'
               }`}
               style={{ opacity: 0, animation: `fadeInUp 0.3s linear ${index * 0.05}s forwards` }}
+              aria-label={`导航到${item.label}`}
+              aria-current={currentPage === item.index ? 'page' : undefined}
             >
               {item.label}
             </button>
           ))}
+
+          {/* 震动反馈设置 */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleVibration();
+              window.location.reload();
+            }}
+            className="text-lg sm:text-xl font-medium tracking-tight linear-transition text-white/40 hover:text-white hover:scale-105 flex items-center gap-2"
+            style={{ opacity: 0, animation: `fadeInUp 0.3s linear ${navItems.length * 0.05}s forwards` }}
+            aria-label="切换震动反馈"
+          >
+            <span>{getVibrationEnabled() ? '✓' : '✗'}</span>
+            <span>震动反馈</span>
+          </button>
         </div>
       )}
     </>

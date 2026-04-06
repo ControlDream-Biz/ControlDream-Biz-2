@@ -174,6 +174,47 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
             </div>
           ))}
         </div>
+
+        {/* CTA 按钮组 */}
+        <div
+          className="flex flex-col sm:flex-row gap-3 sm:gap-4 md:gap-6 items-center justify-center mt-8 sm:mt-12 md:mt-16"
+          style={{
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? 'translateY(0)' : 'translateY(30px)',
+            transition: 'all 1000ms ease-out 0.7s',
+          }}
+        >
+          <button
+            onClick={() => {
+              const event = new CustomEvent('jump-to-page', { detail: { pageIndex: 1 } });
+              window.dispatchEvent(event);
+            }}
+            className="group relative px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-white text-black font-semibold text-sm sm:text-base md:text-lg rounded-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-white/20"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              查看产品
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </span>
+            <div className="absolute inset-0 bg-gradient-to-r from-white via-gray-100 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          </button>
+
+          <button
+            onClick={() => {
+              const event = new CustomEvent('jump-to-page', { detail: { pageIndex: 5 } });
+              window.dispatchEvent(event);
+            }}
+            className="group relative px-6 sm:px-8 md:px-10 py-3 sm:py-4 md:py-5 bg-transparent text-white font-semibold text-sm sm:text-base md:text-lg rounded-lg border border-white/30 overflow-hidden transition-all duration-300 hover:scale-105 hover:border-white/50 hover:bg-white/5 hover:shadow-2xl hover:shadow-white/10"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+              联系我们
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+              </svg>
+            </span>
+          </button>
+        </div>
       </div>
     </div>
     </>

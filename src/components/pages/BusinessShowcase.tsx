@@ -18,48 +18,54 @@ const businesses = [
     title: '自主游戏产品',
     subtitle: 'Original Gaming Products',
     icon: Gamepad2,
-    description: '拥有完全自主知识产权的游戏产品，包括原创IP游戏、独立游戏，提供完整的游戏体验与长期运营服务。',
-    features: ['原创游戏IP', '自主发行', '游戏运营', '玩家社区'],
+    description: '拥有完全自主知识产权的游戏产品矩阵，涵盖策略类、角色扮演类、休闲类等多个品类，提供从研发到运营的全生命周期服务。',
+    features: ['原创IP游戏', '自主研发引擎', '长线运营', '全球发行'],
     color: 'from-blue-400 to-blue-600',
-    stat: '10+',
-    statLabel: '自主游戏',
+    stat: '100万+',
+    statLabel: '注册玩家',
     image: '/business-game.jpg',
+    highlight: '代表作：创梦RPG、星际争霸策略版',
     items: [
-      { label: '核心玩法', desc: '回合制战斗 + 策略养成' },
-      { label: '画面表现', desc: '3D角色 + 精美场景' },
-      { label: '社交系统', desc: '公会战 + 好友互动' },
+      { label: '创梦RPG', desc: '回合制策略战斗，深度养成系统，百万级用户好评' },
+      { label: '星际争霸策略版', desc: 'RTS经典玩法，实时对战，全球化竞技平台' },
+      { label: '休闲游戏矩阵', desc: '碎片化娱乐，社交互动，覆盖全年龄段用户' },
+      { label: '核心技术', desc: '自研3D引擎，支持多平台发布，高性能渲染' },
     ],
   },
   {
     title: '软件产品',
     subtitle: 'Software Products',
     icon: Cpu,
-    description: '打造自主知识产权的企业级软件产品，赋能行业数字化升级。',
-    features: ['SaaS平台', '企业工具', '数据智能', '云原生'],
+    description: '打造企业级SaaS平台和智能软件产品，提供云服务、数据智能、API对接等完整解决方案，助力企业数字化转型。',
+    features: ['企业SaaS', '数据智能', 'API生态', '云原生架构'],
     color: 'from-purple-400 to-purple-600',
-    stat: '20+',
-    statLabel: '产品矩阵',
+    stat: '500+',
+    statLabel: '企业客户',
     image: '/business-software.jpg',
+    highlight: '核心产品：创梦云、企业智能管理系统',
     items: [
-      { label: '云服务', desc: '公有云 + 私有云' },
-      { label: '平台能力', desc: 'API + SDK' },
-      { label: '数据安全', desc: '加密 + 权限控制' },
+      { label: '创梦云SaaS平台', desc: '一站式企业服务，支持私有化部署，数据安全保障' },
+      { label: '智能管理系统', desc: 'AI驱动的业务流程自动化，效率提升50%以上' },
+      { label: '数据中台', desc: '统一数据治理，实时数据分析，辅助决策' },
+      { label: 'API开放平台', desc: '标准化接口，快速集成第三方服务' },
     ],
   },
   {
     title: '硬件产品',
     subtitle: 'Hardware Products',
     icon: HardDrive,
-    description: '研发创新智能硬件产品，构建软硬一体化的产品生态。',
+    description: '研发创新智能硬件产品和IoT设备，构建软硬一体化的产品生态，提供从硬件设计到软件服务的完整解决方案。',
     features: ['智能终端', 'IoT设备', '边缘计算', '自主设计'],
     color: 'from-red-400 to-red-600',
-    stat: '30+',
+    stat: '50+',
     statLabel: '技术专利',
     image: '/business-hardware.jpg',
+    highlight: '明星产品：创梦IoT网关、智能传感器',
     items: [
-      { label: '硬件设备', desc: '智能网关 + 传感器' },
-      { label: '软件应用', desc: 'APP控制 + 语音交互' },
-      { label: '生态整合', desc: '多品牌兼容 + 场景联动' },
+      { label: '创梦IoT网关', desc: '支持500+设备接入，边缘计算能力，工业级稳定性' },
+      { label: '智能传感器系列', desc: '多场景覆盖，低功耗设计，超长续航' },
+      { label: '嵌入式开发板', desc: '高性能MCU，丰富接口，开发者友好' },
+      { label: '硬件实验室', desc: '专业测试设备，快速原型验证，一站式服务' },
     ],
   },
 ];
@@ -198,6 +204,14 @@ export const BusinessShowcase = memo(function BusinessShowcase({
                   <p className="text-sm sm:text-base md:text-lg lg:text-xl text-white/70 leading-relaxed">
                     {business.description}
                   </p>
+
+                  {/* 核心产品高亮 */}
+                  <div className="bg-white/5 border border-white/10 rounded-lg px-3 sm:px-4 py-2 sm:py-3">
+                    <p className="text-[10px] sm:text-xs md:text-sm text-white/40 mb-1">核心产品</p>
+                    <p className={`text-sm sm:text-base md:text-lg font-semibold bg-gradient-to-r ${business.color} bg-clip-text text-transparent`}>
+                      {business.highlight}
+                    </p>
+                  </div>
 
                   {/* 特性列表 */}
                   <div className="flex flex-wrap gap-2 sm:gap-3 md:gap-4">

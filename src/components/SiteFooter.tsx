@@ -15,6 +15,10 @@ import {
   Code,
   Briefcase,
   Zap,
+  MessageCircle,
+  Share2,
+  Youtube,
+  Rss,
 } from 'lucide-react';
 
 interface LinkGroup {
@@ -98,14 +102,19 @@ const innovationFeatures = [
 
 const socialLinks = [
   {
-    icon: Globe,
-    href: 'https://www.chuangmeng.com',
-    label: '官网',
+    icon: MessageCircle,
+    href: 'https://weixin.qq.com',
+    label: '微信公众号',
   },
   {
-    icon: Github,
-    href: 'https://github.com/chuangmeng',
-    label: 'GitHub',
+    icon: Share2,
+    href: 'https://weibo.com',
+    label: '微博',
+  },
+  {
+    icon: Youtube,
+    href: 'https://space.bilibili.com',
+    label: 'B站',
   },
   {
     icon: Linkedin,
@@ -113,9 +122,14 @@ const socialLinks = [
     label: 'LinkedIn',
   },
   {
-    icon: Twitter,
-    href: 'https://twitter.com/chuangmeng',
-    label: 'Twitter',
+    icon: Github,
+    href: 'https://github.com/chuangmeng',
+    label: 'GitHub',
+  },
+  {
+    icon: Rss,
+    href: '/rss',
+    label: 'RSS订阅',
   },
 ];
 
