@@ -9,7 +9,7 @@ import { CultureShowcase } from '@/components/pages/CultureShowcase';
 import { ContactShowcase } from '@/components/pages/ContactShowcase';
 import { Navbar } from '@/components/Navbar';
 import { ScrollProgress } from '@/components/ScrollProgress';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Page() {
   const pages = [
@@ -23,8 +23,7 @@ export default function Page() {
 
   const [currentPage, setCurrentPage] = useState(0);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
-  const [hasScrolled, setHasScrolled] = useState(false);
-  const scrollCheckRef = useRef<NodeJS.Timeout | null>(null);
+  const [isContentLoaded, setIsContentLoaded] = useState(false);
 
   const handlePageChange = (pageIndex: number) => {
     // 触发scrollToSection事件，通知ScrollProgress组件
@@ -36,7 +35,7 @@ export default function Page() {
   useEffect(() => {
     if (currentPage !== 0) {
       setShowScrollIndicator(false);
-      setHasScrolled(false);
+      setIsContentLoaded(false);
       return;
     }
 
@@ -50,13 +49,13 @@ export default function Page() {
         const clientHeight = scrollContainer.clientHeight;
         const remainingScroll = scrollHeight - (scrollTop + clientHeight);
 
-        // 标记用户已经滚动过
-        if (scrollTop > 10) {
-          setHasScrolled(true);
+        // 标记内容已加载
+        if (!isContentLoaded) {
+          setIsContentLoaded(true);
         }
 
-        // 只有当用户滚动过，且滚动到距离底部小于 200px 时才显示指示器
-        if (hasScrolled && remainingScroll < 200) {
+        // 只有当内容已加载，且滚动到距离底部小于 200px 时才显示指示器
+        if (isContentLoaded && remainingScroll < 200) {
           setShowScrollIndicator(true);
         } else {
           setShowScrollIndicator(false);
@@ -64,24 +63,24 @@ export default function Page() {
       }
     };
 
-    // 初始检查（不显示）
-    checkScrollPosition();
+    // 延迟一下再开始监听，确保 DOM 已完全渲染
+    const initTimer = setTimeout(() => {
+      checkScrollPosition();
 
-    // 监听滚动事件
-    const scrollContainer = document.querySelector('[data-page-index="0"] .scroll-content');
-    if (scrollContainer) {
-      scrollContainer.addEventListener('scroll', checkScrollPosition);
-    }
+      const scrollContainer = document.querySelector('[data-page-index="0"] .scroll-content');
+      if (scrollContainer) {
+        scrollContainer.addEventListener('scroll', checkScrollPosition);
+      }
+    }, 100);
 
     return () => {
+      clearTimeout(initTimer);
+      const scrollContainer = document.querySelector('[data-page-index="0"] .scroll-content');
       if (scrollContainer) {
         scrollContainer.removeEventListener('scroll', checkScrollPosition);
       }
-      if (scrollCheckRef.current) {
-        clearTimeout(scrollCheckRef.current);
-      }
     };
-  }, [currentPage, hasScrolled]);
+  }, [currentPage, isContentLoaded]);
 
   useEffect(() => {
     const handlePageChanged = (e: CustomEvent) => {
