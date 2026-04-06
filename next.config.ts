@@ -1,5 +1,6 @@
 import type { NextConfig } from 'next';
 import path from 'path';
+import JavaScriptObfuscator from 'javascript-obfuscator';
 
 const nextConfig: NextConfig = {
   // 性能优化配置
@@ -48,7 +49,53 @@ const nextConfig: NextConfig = {
 
     // 生产环境代码混淆和压缩
     if (!dev) {
-      // Terser 配置 - 代码混淆
+      // 添加 JavaScriptObfuscator 插件（多层级混淆）
+      const ObfuscatorPlugin = require('webpack-obfuscator');
+
+      config.plugins.push(
+        new ObfuscatorPlugin({
+          // 基础选项
+          compact: true, // 压缩代码
+          controlFlowFlattening: true, // 控制流扁平化（最强防护）
+          controlFlowFlatteningThreshold: 0.75, // 控制流扁平化阈值
+          deadCodeInjection: true, // 死代码注入
+          deadCodeInjectionThreshold: 0.4, // 死代码注入阈值
+          debugProtection: true, // 调试保护（检测调试器）
+          debugProtectionInterval: true, // 调试保护间隔
+          disableConsoleOutput: true, // 禁用 console 输出
+
+          // 字符串加密
+          stringArray: true, // 字符串数组
+          stringArrayEncoding: ['rc4'], // 字符串编码（RC4）
+          stringArrayIndexShift: true, // 字符串数组索引偏移
+          stringArrayRotate: true, // 字符串数组旋转
+          stringArrayShuffle: true, // 字符串数组随机排序
+          stringArrayWrappersCount: 2, // 字符串数组包装器数量
+          stringArrayWrappersChainedCalls: true, // 字符串数组包装器链式调用
+          stringArrayWrappersParametersMaxCount: 4, // 字符串数组包装器最大参数数
+          stringArrayWrappersType: 'function', // 字符串数组包装器类型
+
+          // 标识符混淆
+          identifierNamesGenerator: 'hexadecimal', // 标识符名称生成器（十六进制）
+          renameGlobals: false, // 不重命名全局变量
+
+          // 自我防护
+          selfDefending: true, // 自我保护（检测格式化）
+          seed: 0x12345678, // 随机数种子（确保每次构建结果一致）
+
+          // 转换
+          transformObjectKeys: true, // 转换对象键
+          unicodeEscapeSequence: false, // 不使用 Unicode 转义序列
+
+          // 排除
+          exclude: ['node_modules/**'], // 排除 node_modules
+
+          // 仅混淆特定文件
+          entryPoint: ['main.js'],
+        })
+      );
+
+      // Terser 配置 - 代码压缩
       if (config.optimization && config.optimization.minimizer) {
         config.optimization.minimizer = config.optimization.minimizer.map((minimizer: any) => {
           if (minimizer.constructor.name === 'TerserPlugin') {
@@ -58,9 +105,9 @@ const nextConfig: NextConfig = {
                 ...minimizer.options.terserOptions,
                 compress: {
                   ...minimizer.options.terserOptions.compress,
-                  drop_console: true, // 删除所有 console
+                  drop_console: false, // 已在 obfuscator 中禁用
                   drop_debugger: true, // 删除 debugger
-                  pure_funcs: ['console.log', 'console.info', 'console.warn'], // 删除特定函数
+                  pure_funcs: [], // 已在 obfuscator 中处理
                   dead_code: true, // 删除死代码
                   passes: 3, // 多次压缩
                 },

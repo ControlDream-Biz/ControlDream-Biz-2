@@ -329,6 +329,223 @@ const AUTHORIZED_DOMAINS = [
   - 每月：更新 WAF 规则库、安全审计、性能优化
   - 每季度：全系统备份、灾难恢复演练、安全渗透测试
 
+## 前端安全增强系统
+
+### 多层级代码混淆
+- **功能概述**: 使用 javascript-obfuscator 替代 Terser，提供高级代码混淆
+- **核心文件**: `next.config.ts` - JavaScriptObfuscator 配置
+- **混淆特性**:
+  - 控制流扁平化（controlFlowFlattening）
+  - 死代码注入（deadCodeInjection）
+  - 字符串加密（stringArray + RC4 编码）
+  - 调试保护（debugProtection + debugProtectionInterval）
+  - 自我保护（selfDefending - 检测格式化）
+  - 标识符混淆（hexadecimal）
+- **防护效果**: 逆向成本提升 10 倍以上
+- **配置**:
+  ```typescript
+  {
+    compact: true,                    // 压缩代码
+    controlFlowFlattening: true,      // 控制流扁平化
+    deadCodeInjection: true,          // 死代码注入
+    debugProtection: true,            // 调试保护
+    stringArrayEncoding: ['rc4'],     // 字符串加密
+    selfDefending: true,              // 自我保护
+  }
+  ```
+
+### 反调试系统
+- **核心组件**: `src/components/AntiDebug.tsx` - 反调试组件
+- **检测能力**:
+  - 调试器断点检测（时间差异检测）
+  - 控制台打开检测（窗口大小变化）
+  - 开发者工具快捷键检测（F12、Ctrl+Shift+I）
+  - 右键菜单禁用
+  - 查看源码禁用（Ctrl+U）
+  - 保存页面禁用（Ctrl+S）
+- **防护措施**:
+  - 检测到调试行为时自动跳转到警告页
+  - 可选清空页面内容
+  - 定时检测（每秒检测一次）
+- **使用方式**:
+  ```typescript
+  import AntiDebug from '@/components/AntiDebug';
+
+  // 在 Layout 或根页面中添加
+  <AntiDebug
+    enabled={true}
+    redirectUrl="/security-warning"
+    clearPage={false}
+  />
+  ```
+
+### 防爬虫/防复制系统
+- **核心组件**: `src/components/AntiCopy.tsx` - 防复制组件
+- **防护能力**:
+  - 禁用右键菜单（contextmenu）
+  - 禁用文本选中（user-select）
+  - 禁用复制（Ctrl+C）
+  - 禁用剪切（Ctrl+X）
+  - 禁用粘贴（Ctrl+V）
+  - 禁用全选（Ctrl+A）
+  - 禁用打印（Ctrl+P）
+  - 禁用拖拽图片
+- **全局样式**: 自动添加 CSS 规则，禁用所有元素的文本选择
+- **特殊处理**: 输入框和文本区域仍可正常选中和输入
+- **使用方式**:
+  ```typescript
+  import AntiCopy from '@/components/AntiCopy';
+
+  // 在 Layout 或根页面中添加
+  <AntiCopy
+    enabled={true}
+    disableRightClick={true}
+    disableSelect={true}
+    disableCopy={true}
+    disableCut={true}
+    disablePaste={true}
+    disableDrag={true}
+    disableShortcuts={true}
+  />
+  ```
+
+### 动态页面水印
+- **核心组件**: `src/components/Watermark.tsx` - 水印组件
+- **水印内容**:
+  - 自定义文本
+  - 用户 ID
+  - 用户名
+  - 访问 IP 地址
+  - 访问时间（每分钟更新）
+- **视觉特性**:
+  - 透明度可调（默认 0.15）
+  - 字体大小可调（默认 16px）
+  - 旋转角度可调（默认 -20°）
+  - 密度可调（gapX、gapY）
+  - 颜色可调
+- **防护效果**: 即使被截图也能追溯溯源
+- **使用方式**:
+  ```typescript
+  import Watermark from '@/components/Watermark';
+
+  // 在 Layout 或根页面中添加
+  <Watermark
+    enabled={true}
+    text="CONFIDENTIAL"
+    userId="user-123"
+    userName="张三"
+    showIP={true}
+    showTime={true}
+    opacity={0.15}
+    rotate={-20}
+  />
+
+  // 或使用简化版本
+  import { SimpleWatermark } from '@/components/Watermark';
+  <SimpleWatermark text="机密文档" />
+  ```
+
+### Referer/Origin 双重校验
+- **核心文件**: `src/lib/security/referer-check.ts` - Referer/Origin 验证工具
+- **验证机制**:
+  - Referer 头验证（验证请求来源页面）
+  - Origin 头验证（验证跨域请求来源）
+  - 域名白名单验证（支持通配符）
+  - 严格模式（两个都必须通过）
+  - 非严格模式（至少一个通过）
+- **防护能力**:
+  - 防止 CSRF 攻击
+  - 防止接口被直接调用
+  - 防止静态资源被直接访问
+- **使用方式**:
+  ```typescript
+  import { refererMiddleware } from '@/lib/security/referer-check';
+
+  // 在 API Route 中使用
+  export async function GET(request: NextRequest) {
+    const { valid, response } = refererMiddleware(request, ['example.com', '*.example.com']);
+
+    if (!valid) {
+      return response; // 返回 403 错误
+    }
+
+    // 处理正常请求
+    return NextResponse.json({ data: '...' });
+  }
+  ```
+
+### 静态资源 URL 签名
+- **核心文件**: `src/lib/security/resource-signature.ts` - 资源签名工具
+- **签名机制**:
+  - HMAC-SHA256 签名算法
+  - 时间戳验证（防止签名被滥用）
+  - 时效限制（默认 1 小时）
+  - 签名缓存（避免重复签名）
+- **防护能力**:
+  - 防止资源被直接扒取
+  - 防止资源缓存滥用
+  - 防止资源链接被分享
+- **使用方式**:
+  ```typescript
+  import { signImageURL, getOrSignResourceURL } from '@/lib/security/resource-signature';
+
+  // 生成签名 URL
+  const signedUrl = signImageURL('/images/logo.png', 3600);
+  // /images/logo.png?expires=1234567890&signature=abc123
+
+  // 或使用带缓存的版本
+  const signedUrl = getOrSignResourceURL('/images/logo.png');
+
+  // 在图片中使用
+  <img src={signedUrl} alt="Logo" />
+  ```
+
+### 前端安全组件汇总
+- **AntiDebug**: 反调试组件，检测调试器和开发者工具
+- **AntiCopy**: 防复制组件，禁用右键、复制、粘贴等操作
+- **Watermark**: 页面水印组件，显示用户信息和时间戳
+- **SimpleWatermark**: 简化水印组件，仅显示文本
+
+### 安全增强集成建议
+1. 在根 Layout 中添加所有安全组件：
+   ```typescript
+   import AntiDebug from '@/components/AntiDebug';
+   import AntiCopy from '@/components/AntiCopy';
+   import Watermark from '@/components/Watermark';
+
+   export default function RootLayout({ children }) {
+     return (
+       <html>
+         <body>
+           <AntiDebug />
+           <AntiCopy />
+           <Watermark />
+           {children}
+         </body>
+       </html>
+     );
+   }
+   ```
+
+2. 在所有 API Route 中添加 Referer 验证：
+   ```typescript
+   import { refererMiddleware } from '@/lib/security/referer-check';
+
+   export async function POST(request: NextRequest) {
+     const { valid, response } = refererMiddleware(request);
+     if (!valid) return response;
+
+     // 处理请求
+   }
+   ```
+
+3. 对敏感图片资源使用签名 URL：
+   ```typescript
+   import { getOrSignResourceURL } from '@/lib/security/resource-signature';
+
+   const sensitiveImageUrl = getOrSignResourceURL('/images/secret.png');
+   ```
+
 ## 交互动画系统
 
 ### 动画类型
