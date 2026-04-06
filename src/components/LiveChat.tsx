@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { MessageCircle, X, Send, Minimize2, Maximize2, User } from 'lucide-react';
+import { X, Send, Minimize2, Maximize2, User } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -68,24 +68,53 @@ export function LiveChat() {
   const getFallbackResponse = useCallback((userInput: string): string => {
     const input = userInput.toLowerCase();
 
+    // 产品相关
     if (input.includes('产品') || input.includes('service')) {
-      return '我们的产品包括游戏创新、软件赋能、硬件智造三大板块。您想了解哪方面的详细信息呢？';
+      return '我们的产品包括游戏创新、软件赋能、硬件智造三大板块。\n\n🎮 游戏创新：自主研发高品质游戏产品，提供游戏引擎技术支持\n💻 软件赋能：企业级软件开发、云计算解决方案、AI应用开发\n🔧 硬件智造：高性能计算机设备、游戏外设、嵌入式系统\n\n您想了解哪方面的详细信息呢？';
     }
-    if (input.includes('合作') || input.includes('partner')) {
-      return '非常感谢您对我们产品的兴趣！请通过页面下方的联系表单或拨打客服电话联系我们，我们会尽快与您沟通合作事宜。';
+    if (input.includes('游戏')) {
+      return '我们的游戏创新板块提供：\n\n🎮 原创游戏IP开发\n🎮 游戏引擎技术支持与优化\n🎮 游戏定制开发、美术外包、技术咨询\n🎮 游戏运营与发行服务\n\n如果您有具体的项目需求，欢迎联系我们！';
     }
-    if (input.includes('价格') || input.includes('price') || input.includes('费用')) {
-      return '我们的产品方案根据具体需求定制，价格会有所不同。建议您先联系我们进行需求评估，我们会提供详细的报价方案。';
+    if (input.includes('软件') || input.includes('开发') || input.includes('app')) {
+      return '我们的软件赋能板块包括：\n\n💻 企业级软件开发与系统集成\n💻 云计算解决方案与SaaS产品\n💻 人工智能应用开发与数据服务\n💻 数字化转型技术支持\n\n我们可以为各行业提供定制化的解决方案。';
     }
-    if (input.includes('联系') || input.includes('contact')) {
-      return '您可以通过以下方式联系我们：\n• 客服热线：400-XXX-XXXX\n• 邮箱：contact@chuangmeng.com\n• 或填写页面下方的联系表单';
-    }
-    if (input.includes('谢谢') || input.includes('thank')) {
-      return '不客气！如果您还有其他问题，随时可以联系我们。祝您生活愉快！';
+    if (input.includes('硬件') || input.includes('设备') || input.includes('iot')) {
+      return '我们的硬件智造板块涵盖：\n\n🔧 高性能计算机设备研发与生产\n🔧 游戏外设及周边产品设计制造\n🔧 嵌入式系统开发与物联网解决方案\n🔧 硬件定制化服务\n\n我们拥有完整的硬件研发和生产能力。';
     }
 
-    return '感谢您的咨询！我们的专业客服人员会尽快为您解答。您也可以通过页面下方的联系方式直接与我们取得联系。';
-  }, []);
+    // 合作相关
+    if (input.includes('合作') || input.includes('partner')) {
+      return '非常感谢您对我们产品的兴趣！我们非常重视合作伙伴关系。\n\n📞 请通过以下方式联系我们：\n• 客服热线：400-XXX-XXXX\n• 邮箱：contact@chuangmeng.com\n• 或填写页面下方的联系表单\n\n我们会尽快与您沟通合作事宜！';
+    }
+
+    // 价格相关
+    if (input.includes('价格') || input.includes('price') || input.includes('费用') || input.includes('报价')) {
+      return '我们的产品方案根据具体需求定制，价格会有所不同。\n\n💰 我们提供灵活的定价方案：\n• 按项目定价\n• 按使用量定价\n• 定制化方案\n\n建议您先联系我们进行需求评估，我们会提供详细的报价方案。';
+    }
+
+    // 联系方式
+    if (input.includes('联系') || input.includes('contact') || input.includes('电话') || input.includes('邮箱')) {
+      return '您可以通过以下方式联系我们：\n\n📞 客服热线：400-XXX-XXXX（7×12小时服务）\n📧 邮箱：contact@chuangmeng.com\n🌐 官网：https://chuangmeng.com\n📍 地址：中国 · 深圳\n\n或填写页面下方的联系表单，我们会尽快回复您！';
+    }
+
+    // 公司介绍
+    if (input.includes('公司') || input.includes('介绍') || input.includes('about') || input.includes('我们')) {
+      return '创梦计算机系统有限公司是一家专注于数字娱乐与智能科技领域的创新型企业。\n\n🏢 我们的使命：\n专注自主产品研发与运营，打造游戏、软件、硬件三大领域的自主产品生态体系。\n\n🏆 我们的优势：\n• 经验丰富的技术研发团队\n• 多项自主知识产权\n• 完善的客户服务体系\n• 与多家知名企业建立长期合作\n\n欢迎了解更多！';
+    }
+
+    // 感谢语
+    if (input.includes('谢谢') || input.includes('thank') || input.includes('感谢')) {
+      return '不客气！🙏\n\n如果您还有其他问题，随时可以联系我们。祝您生活愉快！\n\n我们会一直在这里为您提供帮助。';
+    }
+
+    // 问候语
+    if (input.includes('你好') || input.includes('hello') || input.includes('hi') || input.includes('早上好') || input.includes('下午好') || input.includes('晚上好')) {
+      return '您好！很高兴为您服务！👋\n\n我是您的专属客服专员，工号：' + agentId + '\n\n请问有什么可以帮助您的？您可以询问关于：\n• 我们的产品和服务\n• 合作事宜\n• 价格信息\n• 联系方式';
+    }
+
+    // 默认回复
+    return '感谢您的咨询！🤝\n\n我们的专业客服人员会尽快为您解答。\n\n您也可以通过以下方式直接与我们取得联系：\n📞 客服热线：400-XXX-XXXX\n📧 邮箱：contact@chuangmeng.com\n\n请问还有什么我可以帮您的吗？';
+  }, [agentId]);
 
   const handleSendMessage = useCallback(async () => {
     if (!inputValue.trim()) return;
@@ -183,7 +212,7 @@ export function LiveChat() {
       };
       setMessages((prev) => [...prev, fallbackMessage]);
     }
-  }, [inputValue, messages, generateId, getFallbackResponse]);
+  }, [inputValue, messages, generateId, getFallbackResponse, agentId]);
 
   const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
