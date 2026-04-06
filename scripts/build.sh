@@ -11,6 +11,9 @@ pnpm install --prefer-frozen-lockfile --prefer-offline --loglevel debug --report
 echo "Building the Next.js project..."
 pnpm next build
 
+echo "Removing source maps for security..."
+find .next -name "*.map" -delete
+
 echo "Bundling server with tsup..."
 pnpm tsup src/server.ts --format cjs --platform node --target node20 --outDir dist --no-splitting --no-minify
 

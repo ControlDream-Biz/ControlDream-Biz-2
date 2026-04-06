@@ -191,6 +191,79 @@
 - **页面错误边界**: `src/app/error.tsx` - 处理页面级错误
 - **加载状态**: `src/app/loading.tsx` - 优雅的加载动画
 
+## 安全保护系统
+
+### 功能概述
+- **域名授权**: 检查域名是否在授权列表中
+- **代码混淆**: 生产环境自动混淆和压缩代码
+- **源码保护**: 禁用 Source Maps 防止源码泄露
+- **盗版检测**: 检测未经授权的部署和使用
+- **运行时保护**: 检测开发者工具、iframe嵌套等
+
+### 核心文件
+- **安全配置**: `next.config.ts` - Webpack 和 Terser 混淆配置
+- **保护模块**: `src/lib/security/protection.ts` - 运行时安全检查
+- **安全组件**: `src/components/SecurityProtection.tsx` - 客户端安全初始化
+- **代理服务**: `src/proxy.ts` - DDoS、SQL注入、XSS 防护
+
+### 安全特性
+
+#### 代码混淆和压缩
+- **Terser 混淆**: 混淆函数名、类名和属性名
+- **死代码删除**: 自动删除未使用的代码
+- **console 删除**: 生产环境移除所有 console 输出
+- **多次压缩**: 3次压缩确保最大化混淆
+
+#### 安全响应头
+- **X-Frame-Options: DENY** - 防止点击劫持
+- **X-Content-Type-Options: nosniff** - 防止MIME嗅探
+- **X-XSS-Protection** - XSS 过滤器
+- **Strict-Transport-Security** - HTTPS 强制
+- **Content-Security-Policy** - 内容安全策略
+- **Referrer-Policy** - 引用策略
+- **Permissions-Policy** - 权限策略
+
+#### 源码保护
+- **Source Maps 禁用**: 生产环境不生成源码映射
+- **模块ID确定化**: 防止缓存投毒
+- **代码完整性校验**: 检测代码是否被修改
+- **版权水印**: 页面右下角显示版权信息
+
+### 环境变量配置
+```bash
+# 应用版本
+NEXT_PUBLIC_APP_VERSION=1.0.0
+
+# 授权域名（多个域名用逗号分隔）
+NEXT_PUBLIC_AUTHORIZED_DOMAIN=chuangmeng.com,www.chuangmeng.com
+
+# 安全标志
+NEXT_PUBLIC_SECURITY_ENABLED=true
+```
+
+### 安全检查机制
+1. **域名检查**: 每次加载时验证域名授权
+2. **iframe 检测**: 检测是否被非法嵌套
+3. **开发者工具检测**: 检测是否打开调试工具
+4. **代码完整性**: 检测关键函数是否被修改
+
+### 授权域名配置
+编辑 `src/lib/security/protection.ts` 中的 `AUTHORIZED_DOMAINS` 数组：
+```typescript
+const AUTHORIZED_DOMAINS = [
+  process.env.NEXT_PUBLIC_AUTHORIZED_DOMAIN || '',
+  'localhost',
+  '127.0.0.1',
+  'dev.coze.site',
+];
+```
+
+### 版权保护
+- 自动添加版权元数据
+- 页面右下角显示水印
+- 控制台显示版权信息
+- 安全警告页面显示版权
+
 ## 交互动画系统
 
 ### 动画类型

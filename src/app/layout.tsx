@@ -9,6 +9,7 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { LiveChat } from '@/components/LiveChat';
 import { LanguageProvider } from '@/contexts/LanguageContext';
 import { AnalyticsTracker } from '@/components/AnalyticsTracker';
+import { SecurityProtection } from '@/components/SecurityProtection';
 
 export const metadata: Metadata = {
   title: {
@@ -173,6 +174,9 @@ export default function RootLayout({
       </head>
       <body className="antialiased font-sans">
         <LanguageProvider>
+          {/* 安全保护 */}
+          <SecurityProtection />
+
           {/* Skip to Content 链接 - 提升键盘导航体验 */}
           <a
             href="#main-content"
