@@ -1,5 +1,5 @@
 import { db, conversations, messages, visitors, pageViews } from './index';
-import { eq, desc, and } from 'drizzle-orm';
+import { eq, desc } from 'drizzle-orm';
 
 // ========== Conversation Operations ==========
 

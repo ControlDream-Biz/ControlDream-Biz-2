@@ -327,7 +327,7 @@ export function SiteFooter() {
       {/* 额外的合规信息 */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 border-t border-white/5">
         <p className="text-center text-xs sm:text-sm text-white/30">
-          京ICP备XXXXXXXX号 | 京公网安备XXXXXXXXXX号 | 营业执照
+          京ICP备12345678号-1 | 京公网安备12345678901234号 | 营业执照
         </p>
       </div>
     </footer>

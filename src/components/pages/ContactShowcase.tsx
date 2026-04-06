@@ -24,7 +24,7 @@ interface FormErrors {
 }
 
 // 使用React.memo优化性能
-export const ContactShowcase = memo(function ContactShowcase({ isActive = true }: ContactShowcaseProps) {
+export const ContactShowcase = memo(function ContactShowcase({ isActive: _isActive = true }: ContactShowcaseProps) {
   const [mounted, setMounted] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     name: '',

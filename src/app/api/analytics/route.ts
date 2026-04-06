@@ -6,7 +6,7 @@ import { getAnalytics, createOrUpdateVisitor, logPageView } from '@/lib/db/queri
  * 用于收集和分析用户访问数据
  */
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     const analytics = await getAnalytics();
     return NextResponse.json({ success: true, analytics });

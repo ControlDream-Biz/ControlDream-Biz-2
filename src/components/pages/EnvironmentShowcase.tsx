@@ -85,10 +85,10 @@ const getAreas = (t: (key: string) => string) => [
 
 export const EnvironmentShowcase = memo(function EnvironmentShowcase({
   isActive = true,
-  dragOffset = 0,
-  isDragging = false,
+  dragOffset: _dragOffset = 0,
+  isDragging: _isDragging = false,
   pageIndex = 0,
-  currentPage = 0
+  currentPage: _currentPage = 0
 }: EnvironmentShowcaseProps) {
   const [mounted, setMounted] = useState(false);
   const [visibleIndices, setVisibleIndices] = useState<Set<number>>(new Set());
@@ -115,7 +115,7 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
         previousIsActiveRef.current = true;
 
         // 延迟触发，确保页面完全渲染
-        const timer = setTimeout(() => {
+        setTimeout(() => {
           console.log(`EnvironmentShowcase 开始执行动画...`);
           setMounted(true);
 

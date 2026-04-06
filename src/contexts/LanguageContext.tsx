@@ -20,7 +20,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setMounted(true);
     const savedLang = localStorage.getItem('language') as Language;
-    if (savedLang && ['zh', 'en', 'ja', 'ko', 'fr', 'de', 'es'].includes(savedLang)) {
+    if (savedLang && ['zh', 'en', 'zh-tw'].includes(savedLang)) {
       setLanguage(savedLang);
     }
   }, []);
@@ -56,7 +56,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   }, [mounted, language]);
 
   const toggleLanguage = () => {
-    const languages: Language[] = ['zh', 'en', 'ja', 'ko', 'fr', 'de', 'es'];
+    const languages: Language[] = ['zh', 'en', 'zh-tw'];
     const currentIndex = languages.indexOf(language);
     const nextIndex = (currentIndex + 1) % languages.length;
     const newLang = languages[nextIndex];
@@ -69,11 +69,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       const langMap: Record<Language, string> = {
         zh: 'zh-CN',
         en: 'en',
-        ja: 'ja',
-        ko: 'ko',
-        fr: 'fr',
-        de: 'de',
-        es: 'es',
+        'zh-tw': 'zh-TW',
       };
       document.documentElement.lang = langMap[newLang];
     }

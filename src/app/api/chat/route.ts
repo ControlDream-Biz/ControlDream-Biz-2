@@ -22,7 +22,7 @@ const CUSTOMER_SERVICE_SYSTEM_PROMPT = `
 公司信息：
 - 公司名称：创梦计算机系统有限公司（Chuangmeng Computer Systems Co., Ltd.）
 - 主要业务：游戏创新、软件赋能、硬件智造
-- 客服热线：400-XXX-XXXX
+- 客服热线：400-888-8888
 - 邮箱：contact@chuangmeng.com
 - 官网：https://chuangmeng.com
 

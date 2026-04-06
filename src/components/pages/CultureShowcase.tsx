@@ -8,7 +8,7 @@ interface CultureShowcaseProps {
   isActive?: boolean;
 }
 
-export const CultureShowcase = memo(function CultureShowcase({ isActive = true }: CultureShowcaseProps) {
+export const CultureShowcase = memo(function CultureShowcase({ isActive: _isActive = true }: CultureShowcaseProps) {
   const [mounted, setMounted] = useState(false);
   const { t } = useLanguage();
 

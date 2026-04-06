@@ -112,7 +112,7 @@ const getTeamStats = (t: (key: string) => string) => [
   { value: '100%', label: t('about.team.stats4') },
 ];
 
-export const AboutShowcase = memo(function AboutShowcase({ isActive = true }: AboutShowcaseProps) {
+export const AboutShowcase = memo(function AboutShowcase({ isActive: _isActive = true }: AboutShowcaseProps) {
   const [mounted, setMounted] = useState(false);
   const { t } = useLanguage();
   const clients = getClients(t);

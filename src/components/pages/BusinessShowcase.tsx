@@ -88,10 +88,10 @@ const getBusinesses = (t: (key: string) => string) => [
 
 export const BusinessShowcase = memo(function BusinessShowcase({
   isActive = true,
-  dragOffset = 0,
-  isDragging = false,
+  dragOffset: _dragOffset = 0,
+  isDragging: _isDragging = false,
   pageIndex = 0,
-  currentPage = 0
+  currentPage: _currentPage = 0
 }: BusinessShowcaseProps) {
   const [mounted, setMounted] = useState(false);
   const [visibleIndices, setVisibleIndices] = useState<Set<number>>(new Set());
@@ -118,7 +118,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
         previousIsActiveRef.current = true;
 
         // 延迟触发，确保页面完全渲染
-        const timer = setTimeout(() => {
+        setTimeout(() => {
           console.log(`BusinessShowcase 开始执行动画...`);
           setMounted(true);
 

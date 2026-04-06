@@ -8,7 +8,7 @@ interface HomeHeroProps {
 }
 
 // 使用React.memo优化性能，避免不必要的重渲染
-export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProps) {
+export const HomeHero = memo(function HomeHero({ isActive: _isActive = true }: HomeHeroProps) {
   const [mounted, setMounted] = useState(false);
   const { t } = useLanguage();
 

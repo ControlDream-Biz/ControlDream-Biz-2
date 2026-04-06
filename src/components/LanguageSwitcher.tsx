@@ -1,6 +1,6 @@
 'use client';
 
-import { Languages, ChevronDown } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { languages, languageFlags, type Language } from '@/lib/i18n/translations';
