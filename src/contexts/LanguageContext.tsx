@@ -20,20 +20,32 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     setMounted(true);
     const savedLang = localStorage.getItem('language') as Language;
-    if (savedLang && (savedLang === 'zh' || savedLang === 'en')) {
+    if (savedLang && ['zh', 'en', 'ja', 'ko', 'fr', 'de', 'es'].includes(savedLang)) {
       setLanguage(savedLang);
     }
   }, []);
 
   const toggleLanguage = () => {
-    const newLang: Language = language === 'zh' ? 'en' : 'zh';
+    const languages: Language[] = ['zh', 'en', 'ja', 'ko', 'fr', 'de', 'es'];
+    const currentIndex = languages.indexOf(language);
+    const nextIndex = (currentIndex + 1) % languages.length;
+    const newLang = languages[nextIndex];
     setLanguage(newLang);
     if (typeof window !== 'undefined') {
       localStorage.setItem('language', newLang);
       // 触发自定义事件通知其他组件
       window.dispatchEvent(new CustomEvent('language-changed', { detail: { language: newLang } }));
       // 更新 HTML lang 属性
-      document.documentElement.lang = newLang === 'zh' ? 'zh-CN' : 'en';
+      const langMap: Record<Language, string> = {
+        zh: 'zh-CN',
+        en: 'en',
+        ja: 'ja',
+        ko: 'ko',
+        fr: 'fr',
+        de: 'de',
+        es: 'es',
+      };
+      document.documentElement.lang = langMap[newLang];
     }
   };
 

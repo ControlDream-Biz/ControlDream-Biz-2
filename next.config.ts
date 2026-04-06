@@ -20,14 +20,20 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60, // 图片缓存时间（秒）
     qualities: [70, 75, 80, 85, 90, 95], // 支持多种图片质量
+    dangerouslyAllowSVG: false, // 禁止SVG
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
-  // SWC压缩
-  // swcMinify: true, // Next.js 16 默认启用
+  // 移动端性能优化
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production', // 生产环境移除console
+  },
 
-  // 实验性功能
+  // 代码分割优化
   experimental: {
     optimizePackageImports: ['lucide-react', '@radix-ui/react-icons'], // 优化包导入
+    optimizeCss: true, // CSS优化
+    scrollRestoration: true, // 滚动位置恢复
   },
 
   // Webpack配置
@@ -39,6 +45,27 @@ const nextConfig: NextConfig = {
         fs: false,
       };
     }
+
+    // 代码分割
+    config.optimization = {
+      ...config.optimization,
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            enforce: true,
+          },
+        },
+      },
+    };
 
     return config;
   },
@@ -57,9 +84,6 @@ const nextConfig: NextConfig = {
 
   // 生产环境优化
   productionBrowserSourceMaps: false, // 禁用源码映射（生产环境）
-  
-  // 优化CSS
-  // optimizeCss: true, // Next.js 默认优化
 
   // 重定向
   async redirects() {
@@ -68,6 +92,25 @@ const nextConfig: NextConfig = {
         source: '/home',
         destination: '/',
         permanent: true,
+      },
+    ];
+  },
+
+  // 响应式图片提示
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          {
+            key: 'X-DNS-Prefetch-Control',
+            value: 'on'
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'SAMEORIGIN'
+          },
+        ],
       },
     ];
   },

@@ -19,10 +19,24 @@
 │   └── start.sh            # 生产环境启动脚本
 ├── src/
 │   ├── app/                # 页面路由与布局
+│   │   ├── api/            # API 路由
+│   │   │   ├── chat/       # 智能客服 API
+│   │   │   ├── analytics/  # 数据分析 API
+│   │   │   └── admin/      # 后台管理 API
+│   │   ├── admin/          # 后台管理页面
+│   │   └── globals.css     # 全局样式与动画
 │   ├── components/ui/      # Shadcn UI 组件库
+│   ├── components/         # 自定义组件
+│   │   ├── LiveChat.tsx    # 智能客服组件
+│   │   ├── LanguageSwitcher.tsx  # 语言切换组件
+│   │   └── OptimizedImage.tsx    # 优化图片组件
+│   ├── contexts/           # React Context
+│   │   └── LanguageContext.tsx   # 语言切换上下文
 │   ├── hooks/              # 自定义 Hooks
 │   ├── lib/                # 工具库
-│   │   └── utils.ts        # 通用工具函数 (cn)
+│   │   ├── i18n/           # 国际化
+│   │   ├── db/             # 数据库连接与查询
+│   │   └── animations/     # 动画工具库
 │   └── server.ts           # 自定义服务端入口
 ├── next.config.ts          # Next.js 配置
 ├── package.json            # 项目依赖管理
@@ -81,5 +95,101 @@
 3. 点击"接管对话"进入人工客服模式
 4. 输入消息回复用户
 5. 点击"释放接管"交还给 AI 客服
+
+## 多语言支持 (i18n)
+
+### 支持语言
+- 中文
+- English (英语)
+- 日本語 (日语)
+- 한국어 (韩语)
+- Français (法语)
+- Deutsch (德语)
+- Español (西班牙语)
+
+### 核心文件
+- **语言上下文**: `src/contexts/LanguageContext.tsx` - 提供语言切换状态管理
+- **切换组件**: `src/components/LanguageSwitcher.tsx` - 下拉式语言切换器
+- **翻译配置**: `src/lib/i18n/translations.ts` - 多语言翻译文本
+
+### 使用说明
+1. 使用 `LanguageSwitcher` 组件在页面中添加语言切换功能
+2. 通过 `useLanguage` Hook 获取当前语言和切换函数
+3. 在组件中使用 `getTranslation(language, key)` 获取翻译文本
+
+## 数据库集成
+
+### 数据库类型
+- **主数据库**: PostgreSQL (通过环境变量 `DATABASE_URL` 配置)
+- **备选方案**: 内存模式（未配置数据库连接时自动启用）
+
+### 核心文件
+- **Schema**: `src/lib/db/schema.ts` - 数据库表结构定义
+- **连接**: `src/lib/db/index.ts` - 数据库连接配置
+- **查询**: `src/lib/db/queries.ts` - CRUD 操作函数
+
+### 数据表
+- **conversations**: 对话记录
+- **messages**: 消息记录
+- **visitors**: 访客信息
+- **pageViews**: 页面访问记录
+
+## 数据分析功能
+
+### 功能概述
+- 访客统计（总数、最近30天）
+- 页面浏览统计
+- 语言分布分析
+- 对话数量统计
+
+### 核心文件
+- **API 路由**: `src/app/api/analytics/route.ts` - 数据分析接口
+- **查询函数**: `src/lib/db/queries.ts` 中的 `getAnalytics()`
+
+### 使用说明
+1. GET `/api/analytics` - 获取统计数据
+2. POST `/api/analytics` - 记录访客和页面浏览数据
+   - `action: 'track_visitor'` - 追踪访客
+   - `action: 'track_page_view'` - 追踪页面浏览
+
+## 性能优化
+
+### 移动端优化
+- **图片懒加载**: 使用 `OptimizedImage` 组件实现基于 IntersectionObserver 的懒加载
+- **代码分割**: Webpack 配置自动分割 vendor 和 common 代码
+- **图片格式**: 优先使用 AVIF 和 WebP 格式
+- **响应式图片**: 根据设备尺寸自动调整图片大小
+
+### 核心文件
+- **优化配置**: `next.config.ts` - Webpack 和性能优化配置
+- **优化组件**: `src/components/OptimizedImage.tsx` - 图片懒加载组件
+
+### 生产环境优化
+- 移除 console.log
+- 启用 Gzip 压缩
+- 优化包导入 (lucide-react, @radix-ui/react-icons)
+- 滚动位置恢复
+
+## 交互动画系统
+
+### 动画类型
+- **滚动动画**: 元素进入视口时的淡入、滑动效果
+- **悬停动画**: 缩放、阴影、旋转等悬停效果
+- **页面过渡**: 页面切换时的过渡动画
+- **关键帧动画**: 内置多种 CSS 动画效果
+
+### 核心文件
+- **动画库**: `src/lib/animations/index.tsx` - 动画工具函数和组件
+- **全局样式**: `src/app/globals.css` - 关键帧动画定义
+
+### 可用组件
+- `ScrollReveal` - 滚动触发的显示动画
+- `HoverAnimation` - 悬停效果
+- `PageTransition` - 页面切换动画
+- `FadeIn`, `SlideUp`, `ScaleIn` - 简单动画组件
+
+### 可用 Hooks
+- `useScrollAnimation` - 滚动视窗检测
+- `usePageTransition` - 页面过渡效果
 
 

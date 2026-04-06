@@ -1,6 +1,26 @@
-// 完整的双语翻译数据库
+// 多语言翻译系统
 
-export type Language = 'zh' | 'en';
+export type Language = 'zh' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es';
+
+export const languages = {
+  zh: '中文',
+  en: 'English',
+  ja: '日本語',
+  ko: '한국어',
+  fr: 'Français',
+  de: 'Deutsch',
+  es: 'Español',
+};
+
+export const languageFlags = {
+  zh: '🇨🇳',
+  en: '🇺🇸',
+  ja: '🇯🇵',
+  ko: '🇰🇷',
+  fr: '🇫🇷',
+  de: '🇩🇪',
+  es: '🇪🇸',
+};
 
 // 导出翻译字典
 export const translations: Record<Language, Record<string, string>> = {
@@ -683,6 +703,156 @@ export const translations: Record<Language, Record<string, string>> = {
     'chat.welcome': 'Hello! I am Chuangmeng customer service. How can I help you?',
     'chat.connecting': 'Connecting to customer service...',
     'chat.offline': 'Customer service is currently offline. Please leave a message.',
+  },
+  ja: {
+    // ========== Navigation ==========
+    'nav.home': 'ホーム',
+    'nav.business': '事業領域',
+    'nav.environment': 'オフィス環境',
+    'nav.about': '会社概要',
+    'nav.culture': '企業文化',
+    'nav.contact': 'お問い合わせ',
+    // ========== Core ==========
+    'home.hero.innovation': 'ゲーム革新 · ソフトウェア · ハードウェア',
+    'business.title': '事業領域',
+    'environment.title': 'オフィス環境',
+    'about.title': '会社概要',
+    'culture.title': '企業文化',
+    'contact.title': 'お問い合わせ',
+    // ========== Language ==========
+    'language.switch': '言語を切り替え',
+    'language.chinese': '中文',
+    'language.english': 'English',
+    'language.japanese': '日本語',
+    // ========== Common ==========
+    'button.submit': '送信',
+    'button.cancel': 'キャンセル',
+    'cta.contact_us': 'お問い合わせ',
+    'cta.learn_more': '詳しく見る',
+    // ========== Chat ==========
+    'chat.title': 'オンラインサポート',
+    'chat.send': '送信',
+    'chat.welcome': 'こんにちは！創夢のカスタマーサービスです。何かお手伝いできることはありますか？',
+  },
+  ko: {
+    // ========== Navigation ==========
+    'nav.home': '홈',
+    'nav.business': '사업 분야',
+    'nav.environment': '사무실 환경',
+    'nav.about': '회사 소개',
+    'nav.culture': '기업 문화',
+    'nav.contact': '연락처',
+    // ========== Core ==========
+    'home.hero.innovation': '게임 혁신 · 소프트웨어 · 하드웨어',
+    'business.title': '사업 분야',
+    'environment.title': '사무실 환경',
+    'about.title': '회사 소개',
+    'culture.title': '기업 문화',
+    'contact.title': '연락처',
+    // ========== Language ==========
+    'language.switch': '언어 변경',
+    'language.chinese': '中文',
+    'language.english': 'English',
+    'language.korean': '한국어',
+    // ========== Common ==========
+    'button.submit': '제출',
+    'button.cancel': '취소',
+    'cta.contact_us': '연락처',
+    'cta.learn_more': '더 알아보기',
+    // ========== Chat ==========
+    'chat.title': '온라인 지원',
+    'chat.send': '보내기',
+    'chat.welcome': '안녕하세요! 창멍 고객센터입니다. 어떻게 도와드릴까요?',
+  },
+  fr: {
+    // ========== Navigation ==========
+    'nav.home': 'Accueil',
+    'nav.business': 'Domaines d\'activité',
+    'nav.environment': 'Environnement de bureau',
+    'nav.about': 'À propos',
+    'nav.culture': 'Culture d\'entreprise',
+    'nav.contact': 'Contact',
+    // ========== Core ==========
+    'home.hero.innovation': 'Innovation Gaming · Logiciel · Matériel',
+    'business.title': 'Domaines d\'activité',
+    'environment.title': 'Environnement de bureau',
+    'about.title': 'À propos',
+    'culture.title': 'Culture d\'entreprise',
+    'contact.title': 'Contact',
+    // ========== Language ==========
+    'language.switch': 'Changer de langue',
+    'language.chinese': '中文',
+    'language.english': 'English',
+    'language.french': 'Français',
+    // ========== Common ==========
+    'button.submit': 'Soumettre',
+    'button.cancel': 'Annuler',
+    'cta.contact_us': 'Contact',
+    'cta.learn_more': 'En savoir plus',
+    // ========== Chat ==========
+    'chat.title': 'Support en ligne',
+    'chat.send': 'Envoyer',
+    'chat.welcome': 'Bonjour! Je suis le service client Chuangmeng. Comment puis-je vous aider?',
+  },
+  de: {
+    // ========== Navigation ==========
+    'nav.home': 'Startseite',
+    'nav.business': 'Geschäftsbereiche',
+    'nav.environment': 'Büroumgebung',
+    'nav.about': 'Über uns',
+    'nav.culture': 'Unternehmenskultur',
+    'nav.contact': 'Kontakt',
+    // ========== Core ==========
+    'home.hero.innovation': 'Gaming-Innovation · Software · Hardware',
+    'business.title': 'Geschäftsbereiche',
+    'environment.title': 'Büroumgebung',
+    'about.title': 'Über uns',
+    'culture.title': 'Unternehmenskultur',
+    'contact.title': 'Kontakt',
+    // ========== Language ==========
+    'language.switch': 'Sprache wechseln',
+    'language.chinese': '中文',
+    'language.english': 'English',
+    'language.german': 'Deutsch',
+    // ========== Common ==========
+    'button.submit': 'Absenden',
+    'button.cancel': 'Abbrechen',
+    'cta.contact_us': 'Kontakt',
+    'cta.learn_more': 'Mehr erfahren',
+    // ========== Chat ==========
+    'chat.title': 'Online-Support',
+    'chat.send': 'Senden',
+    'chat.welcome': 'Hallo! Ich bin der Chuangmeng-Kundenservice. Wie kann ich Ihnen helfen?',
+  },
+  es: {
+    // ========== Navigation ==========
+    'nav.home': 'Inicio',
+    'nav.business': 'Áreas de Negocio',
+    'nav.environment': 'Entorno de Oficina',
+    'nav.about': 'Sobre Nosotros',
+    'nav.culture': 'Cultura Empresarial',
+    'nav.contact': 'Contacto',
+    // ========== Core ==========
+    'home.hero.innovation': 'Innovación Gaming · Software · Hardware',
+    'business.title': 'Áreas de Negocio',
+    'environment.title': 'Entorno de Oficina',
+    'about.title': 'Sobre Nosotros',
+    'culture.title': 'Cultura Empresarial',
+    'contact.title': 'Contacto',
+    // ========== Language ==========
+    'language.switch': 'Cambiar idioma',
+    'language.chinese': '中文',
+    'language.english': 'English',
+    'language.spanish': 'Español',
+    // ========== Common ==========
+    'button.submit': 'Enviar',
+    'button.cancel': 'Cancelar',
+    'cta.contact_us': 'Contacto',
+    'cta.learn_more': 'Saber más',
+    // ========== Chat ==========
+    'chat.title': 'Soporte en línea',
+    'chat.send': 'Enviar',
+    'chat.welcome': '¡Hola! Soy el servicio al cliente de Chuangmeng. ¿Cómo puedo ayudarle?',
   },
 };
 

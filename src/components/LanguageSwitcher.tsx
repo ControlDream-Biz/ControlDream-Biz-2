@@ -1,17 +1,29 @@
 'use client';
 
-import { Languages } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Languages, ChevronDown } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-
-export type Language = 'zh' | 'en';
+import { languages, languageFlags, type Language } from '@/lib/i18n/translations';
 
 export function LanguageSwitcher() {
-  const { language, toggleLanguage, t } = useLanguage();
+  const { language, setLanguage, t } = useLanguage();
   const [mounted, setMounted] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
   // 防止服务端渲染时渲染
@@ -19,33 +31,92 @@ export function LanguageSwitcher() {
     return null;
   }
 
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang);
+    setIsOpen(false);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('language', lang);
+      window.dispatchEvent(new CustomEvent('language-changed', { detail: { language: lang } }));
+    }
+  };
+
   return (
     <>
       {/* 桌面端语言切换器 */}
-      <button
-        onClick={toggleLanguage}
-        className="fixed top-6 right-[360px] z-[150] flex items-center gap-1.5 px-2 py-1.5 bg-black/30 backdrop-blur-md border border-white/20 rounded-lg hover:bg-black/50 transition-all duration-300 lg:flex hidden"
-        aria-label="切换语言 / Switch Language"
-        title={t('language.switch')}
-      >
-        <Languages className="w-3.5 h-3.5 text-white/60" />
-        <span className="text-xs font-medium text-white/90">
-          {language === 'zh' ? t('language.chinese') : t('language.english')}
-        </span>
-      </button>
+      <div className="fixed top-6 right-[360px] z-[150] lg:flex hidden" ref={dropdownRef}>
+        <div className="relative">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex items-center gap-1.5 px-2 py-1.5 bg-black/30 backdrop-blur-md border border-white/20 rounded-lg hover:bg-black/50 transition-all duration-300"
+            aria-label="切换语言 / Switch Language"
+            title={t('language.switch')}
+          >
+            <span className="text-sm">{languageFlags[language]}</span>
+            <span className="text-xs font-medium text-white/90">
+              {languages[language]}
+            </span>
+            <ChevronDown className={`w-3 h-3 text-white/60 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          {/* 下拉菜单 */}
+          {isOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-black/90 backdrop-blur-md border border-white/20 rounded-lg shadow-xl overflow-hidden">
+              {Object.entries(languages).map(([lang, name]) => (
+                <button
+                  key={lang}
+                  onClick={() => handleLanguageChange(lang as Language)}
+                  className={`w-full flex items-center gap-2 px-4 py-2 text-sm transition-colors ${
+                    language === lang
+                      ? 'bg-white/20 text-white'
+                      : 'text-white/70 hover:bg-white/10 hover:text-white'
+                  }`}
+                >
+                  <span className="text-lg">{languageFlags[lang as Language]}</span>
+                  <span>{name}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* 移动端语言切换器 */}
-      <button
-        onClick={toggleLanguage}
-        className="fixed top-20 right-4 z-[150] flex items-center gap-1 px-2 py-1.5 bg-black/30 backdrop-blur-md border border-white/20 rounded-lg hover:bg-black/50 transition-all duration-300 lg:hidden flex"
-        aria-label="切换语言 / Switch Language"
-        title={t('language.switch')}
-      >
-        <Languages className="w-3 h-3 text-white/60" />
-        <span className="text-[11px] font-medium text-white/90">
-          {language === 'zh' ? '中文' : 'EN'}
-        </span>
-      </button>
+      <div className="fixed top-20 right-4 z-[150] lg:hidden flex" ref={dropdownRef}>
+        <div className="relative">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex items-center gap-1 px-2 py-1.5 bg-black/30 backdrop-blur-md border border-white/20 rounded-lg hover:bg-black/50 transition-all duration-300"
+            aria-label="切换语言 / Switch Language"
+            title={t('language.switch')}
+          >
+            <span className="text-sm">{languageFlags[language]}</span>
+            <span className="text-[11px] font-medium text-white/90">
+              {language === 'zh' ? '中文' : language === 'en' ? 'EN' : languages[language].slice(0, 2).toUpperCase()}
+            </span>
+            <ChevronDown className={`w-3 h-3 text-white/60 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          </button>
+
+          {/* 移动端下拉菜单 */}
+          {isOpen && (
+            <div className="absolute right-0 mt-2 w-40 bg-black/90 backdrop-blur-md border border-white/20 rounded-lg shadow-xl overflow-hidden">
+              {Object.entries(languages).map(([lang, name]) => (
+                <button
+                  key={lang}
+                  onClick={() => handleLanguageChange(lang as Language)}
+                  className={`w-full flex items-center gap-2 px-3 py-2 text-xs transition-colors ${
+                    language === lang
+                      ? 'bg-white/20 text-white'
+                      : 'text-white/70 hover:bg-white/10 hover:text-white'
+                  }`}
+                >
+                  <span className="text-base">{languageFlags[lang as Language]}</span>
+                  <span>{name}</span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
     </>
   );
 }
