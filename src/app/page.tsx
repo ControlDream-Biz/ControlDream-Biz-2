@@ -7,7 +7,9 @@ import { EnvironmentShowcase } from '@/components/pages/EnvironmentShowcase';
 import { AboutShowcase } from '@/components/pages/AboutShowcase';
 import { CultureShowcase } from '@/components/pages/CultureShowcase';
 import { ContactShowcase } from '@/components/pages/ContactShowcase';
+import { Navbar } from '@/components/Navbar';
 import { ScrollProgress } from '@/components/ScrollProgress';
+import { Breadcrumbs, pageBreadcrumbs, pageNames } from '@/components/Breadcrumbs';
 import { useState, useEffect, useRef } from 'react';
 
 export default function Page() {
@@ -103,6 +105,11 @@ export default function Page() {
 
   return (
     <>
+      <Navbar />
+      <Breadcrumbs
+        items={pageBreadcrumbs[currentPage] || []}
+        currentPage={pageNames[currentPage] || 'home'}
+      />
       <ScrollContainer onPageChange={handlePageChange}>{pages}</ScrollContainer>
       <ScrollProgress />
 
