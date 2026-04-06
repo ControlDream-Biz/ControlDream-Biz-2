@@ -3,6 +3,7 @@
 import { useEffect, useState, memo } from 'react';
 import { Mail, Phone, MapPin, Send, AlertCircle, CheckCircle } from 'lucide-react';
 import { SiteFooter } from '@/components/SiteFooter';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface ContactShowcaseProps {
   isActive?: boolean;
@@ -34,6 +35,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const { t } = useLanguage();
 
   // 首次加载时触发动画
   useEffect(() => {
@@ -46,32 +48,32 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
 
     // 姓名验证
     if (!formData.name.trim()) {
-      newErrors.name = '请输入您的姓名';
+      newErrors.name = t('contact.form.error.name');
     } else if (formData.name.trim().length < 2) {
-      newErrors.name = '姓名至少需要2个字符';
+      newErrors.name = t('contact.form.error.name.short');
     }
 
     // 邮箱验证
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!formData.email.trim()) {
-      newErrors.email = '请输入邮箱地址';
+      newErrors.email = t('contact.form.error.email');
     } else if (!emailRegex.test(formData.email)) {
-      newErrors.email = '请输入有效的邮箱地址';
+      newErrors.email = t('contact.form.error.email.invalid');
     }
 
     // 电话验证
     const phoneRegex = /^1[3-9]\d{9}$/;
     if (!formData.phone.trim()) {
-      newErrors.phone = '请输入联系电话';
+      newErrors.phone = t('contact.form.error.phone');
     } else if (!phoneRegex.test(formData.phone)) {
-      newErrors.phone = '请输入有效的手机号码';
+      newErrors.phone = t('contact.form.error.phone.invalid');
     }
 
     // 消息验证
     if (!formData.message.trim()) {
-      newErrors.message = '请输入消息内容';
+      newErrors.message = t('contact.form.error.message');
     } else if (formData.message.trim().length < 10) {
-      newErrors.message = '消息内容至少需要10个字符';
+      newErrors.message = t('contact.form.error.message.short');
     }
 
     setErrors(newErrors);
@@ -148,10 +150,10 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
           }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-3 sm:mb-4 md:mb-6 tracking-tight leading-tight">
-            联系我们
+            {t('contact.title')}
           </h2>
           <p className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/60 font-light leading-relaxed">
-            探索合作机会，共创产品生态
+            {t('contact.subtitle')}
           </p>
         </div>
 
@@ -159,14 +161,14 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
         {submitStatus === 'success' && (
           <div className="fixed top-24 right-6 z-50 bg-green-500/20 border border-green-500/50 text-green-400 px-6 py-4 rounded-lg flex items-center gap-3 animate-in slide-in-from-right-5 duration-300">
             <CheckCircle className="w-5 h-5" />
-            <span className="font-medium">消息已发送成功！我们会尽快回复您。</span>
+            <span className="font-medium">{t('contact.form.success')}</span>
           </div>
         )}
 
         {submitStatus === 'error' && (
           <div className="fixed top-24 right-6 z-50 bg-red-500/20 border border-red-500/50 text-red-400 px-6 py-4 rounded-lg flex items-center gap-3 animate-in slide-in-from-right-5 duration-300">
             <AlertCircle className="w-5 h-5" />
-            <span className="font-medium">发送失败，请稍后重试。</span>
+            <span className="font-medium">{t('contact.form.error')}</span>
           </div>
         )}
 
@@ -188,11 +190,11 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
                   <Mail className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-blue-400" />
                 </div>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white">
-                  电子邮箱
+                  {t('contact.email.title')}
                 </h3>
               </div>
               <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/60 font-medium pl-16 sm:pl-19 md:pl-22">
-                contact@chuangmeng.com
+                {t('contact.email.value')}
               </p>
             </div>
 
@@ -203,11 +205,11 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
                   <Phone className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-purple-400" />
                 </div>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white">
-                  联系电话
+                  {t('contact.phone.title')}
                 </h3>
               </div>
               <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/60 font-medium pl-16 sm:pl-19 md:pl-22">
-                +86 400-XXX-XXXX
+                {t('contact.phone.value')}
               </p>
             </div>
 
@@ -218,11 +220,11 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
                   <MapPin className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-red-400" />
                 </div>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white">
-                  公司地址
+                  {t('contact.address.title')}
                 </h3>
               </div>
               <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/60 font-medium leading-relaxed pl-16 sm:pl-19 md:pl-22">
-                北京市朝阳区创新大厦 A座 1001室
+                {t('contact.address.value')}
               </p>
             </div>
           </div>
@@ -238,7 +240,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
             }}
           >
             <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-8 sm:mb-10">
-              发送消息
+              {t('contact.form.title')}
             </h3>
 
             <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
@@ -248,7 +250,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
                   htmlFor="name"
                   className="block text-sm sm:text-base md:text-lg text-white/60 font-medium mb-3 sm:mb-4"
                 >
-                  您的姓名
+                  {t('contact.form.name')}
                 </label>
                 <input
                   type="text"
@@ -256,7 +258,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
                   value={formData.name}
                   onChange={handleInputChange('name')}
                   required
-                  placeholder="请输入您的姓名"
+                  placeholder={t('contact.form.name.placeholder')}
                   className={`w-full bg-transparent border-b-2 py-3 sm:py-4 text-white placeholder-white/30 focus:outline-none transition-all duration-300 text-base sm:text-lg md:text-xl ${
                     errors.name ? 'border-red-500' : 'border-white/20 focus:border-white/40'
                   }`}
@@ -275,7 +277,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
                   htmlFor="email"
                   className="block text-sm sm:text-base md:text-lg text-white/60 font-medium mb-3 sm:mb-4"
                 >
-                  邮箱地址
+                  {t('contact.form.email')}
                 </label>
                 <input
                   type="email"
@@ -283,7 +285,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
                   value={formData.email}
                   onChange={handleInputChange('email')}
                   required
-                  placeholder="your@email.com"
+                  placeholder={t('contact.form.email.placeholder')}
                   className={`w-full bg-transparent border-b-2 py-3 sm:py-4 text-white placeholder-white/30 focus:outline-none transition-all duration-300 text-base sm:text-lg md:text-xl ${
                     errors.email ? 'border-red-500' : 'border-white/20 focus:border-white/40'
                   }`}
@@ -302,7 +304,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
                   htmlFor="phone"
                   className="block text-sm sm:text-base md:text-lg text-white/60 font-medium mb-3 sm:mb-4"
                 >
-                  联系电话
+                  {t('contact.form.phone')}
                 </label>
                 <input
                   type="tel"
@@ -310,7 +312,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
                   value={formData.phone}
                   onChange={handleInputChange('phone')}
                   required
-                  placeholder="请输入手机号码"
+                  placeholder={t('contact.form.phone.placeholder')}
                   className={`w-full bg-transparent border-b-2 py-3 sm:py-4 text-white placeholder-white/30 focus:outline-none transition-all duration-300 text-base sm:text-lg md:text-xl ${
                     errors.phone ? 'border-red-500' : 'border-white/20 focus:border-white/40'
                   }`}
@@ -329,7 +331,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
                   htmlFor="message"
                   className="block text-sm sm:text-base md:text-lg text-white/60 font-medium mb-3 sm:mb-4"
                 >
-                  消息内容
+                  {t('contact.form.message')}
                 </label>
                 <textarea
                   id="message"
@@ -337,7 +339,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
                   onChange={handleInputChange('message')}
                   required
                   rows={5}
-                  placeholder="请输入您的消息（至少10个字符）..."
+                  placeholder={t('contact.form.message.placeholder')}
                   className={`w-full bg-transparent border-b-2 py-3 sm:py-4 text-white placeholder-white/30 focus:outline-none transition-all duration-300 resize-none text-base sm:text-lg md:text-xl ${
                     errors.message ? 'border-red-500' : 'border-white/20 focus:border-white/40'
                   }`}
@@ -359,12 +361,12 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
                 {isSubmitting ? (
                   <>
                     <div className="w-6 h-6 border-2 border-black/30 border-t-black rounded-full animate-spin" />
-                    <span>发送中...</span>
+                    <span>{t('contact.form.sending')}</span>
                   </>
                 ) : (
                   <>
                     <Send className="w-6 h-6" />
-                    <span>发送消息</span>
+                    <span>{t('contact.form.submit')}</span>
                   </>
                 )}
               </button>
@@ -383,7 +385,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
           }}
         >
           <p className="text-xs sm:text-sm md:text-base lg:text-lg xl:text-xl text-white/40 font-light">
-            感谢关注，期待与您共同打造行业领先的自主产品
+            {t('contact.thankyou')}
           </p>
         </div>
       </div>

@@ -3,6 +3,7 @@
 import { useEffect, useState, memo, useRef } from 'react';
 import Image from 'next/image';
 import { Mail, Coffee, Users, Monitor, Zap, Wifi } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface EnvironmentShowcaseProps {
   isActive?: boolean;
@@ -13,71 +14,71 @@ interface EnvironmentShowcaseProps {
 }
 
 // 使用React.memo优化性能
-const areas = [
+const getAreas = (t: (key: string) => string) => [
   {
-    title: '前台接待',
+    title: t('environment.area1.title'),
     icon: Mail,
-    description: '现代化办公前台，简约大气的设计展现企业品牌形象，专业接待团队为访客提供贴心服务。',
+    description: t('environment.area1.description'),
     color: 'from-blue-400 to-blue-600',
     image: '/env-reception.jpg',
     items: [
-      { label: '品牌展示', desc: '企业文化墙' },
-      { label: '接待服务', desc: '专业前台团队' },
+      { label: t('environment.area1.item1.label'), desc: t('environment.area1.item1.desc') },
+      { label: t('environment.area1.item2.label'), desc: t('environment.area1.item2.desc') },
     ],
   },
   {
-    title: '休息区',
+    title: t('environment.area2.title'),
     icon: Coffee,
-    description: '精心设计的员工休息空间，配备舒适沙发、茶饮设施，让团队在工作间隙放松身心、激发灵感。',
+    description: t('environment.area2.description'),
     color: 'from-purple-400 to-purple-600',
     image: '/env-lounge.jpg',
     items: [
-      { label: '舒适设施', desc: '沙发 + 茶饮' },
-      { label: '休闲空间', desc: '放松身心' },
+      { label: t('environment.area2.item1.label'), desc: t('environment.area2.item1.desc') },
+      { label: t('environment.area2.item2.label'), desc: t('environment.area2.item2.desc') },
     ],
   },
   {
-    title: '会议室',
+    title: t('environment.area3.title'),
     icon: Users,
-    description: '配备专业会议设备和智能协作系统的高效会议室，支持远程会议与团队协作，提升沟通效率。',
+    description: t('environment.area3.description'),
     color: 'from-red-400 to-red-600',
     image: '/env-meeting.jpg',
     items: [
-      { label: '会议设备', desc: '智能协作系统' },
-      { label: '远程支持', desc: '视频会议' },
+      { label: t('environment.area3.item1.label'), desc: t('environment.area3.item1.desc') },
+      { label: t('environment.area3.item2.label'), desc: t('environment.area3.item2.desc') },
     ],
   },
   {
-    title: '工作区',
+    title: t('environment.area4.title'),
     icon: Monitor,
-    description: '开放式创意办公环境，配备人体工学椅、升降桌、多屏显示器，为团队打造舒适高效的工作空间。',
+    description: t('environment.area4.description'),
     color: 'from-blue-400 to-purple-600',
     image: '/env-workspace.jpg',
     items: [
-      { label: '人体工学', desc: '升降桌 + 人体工学椅' },
-      { label: '多屏支持', desc: '多显示器配置' },
+      { label: t('environment.area4.item1.label'), desc: t('environment.area4.item1.desc') },
+      { label: t('environment.area4.item2.label'), desc: t('environment.area4.item2.desc') },
     ],
   },
   {
-    title: '研发中心',
+    title: t('environment.area5.title'),
     icon: Zap,
-    description: '配备高性能计算设备、专用测试仪器、硬件实验室的研发中心，为产品创新提供强大技术支撑。',
+    description: t('environment.area5.description'),
     color: 'from-purple-400 to-red-600',
     image: '/env-lab.jpg',
     items: [
-      { label: '高性能设备', desc: '专用测试仪器' },
-      { label: '硬件实验室', desc: '产品创新支撑' },
+      { label: t('environment.area5.item1.label'), desc: t('environment.area5.item1.desc') },
+      { label: t('environment.area5.item2.label'), desc: t('environment.area5.item2.desc') },
     ],
   },
   {
-    title: '网络设施',
+    title: t('environment.area6.title'),
     icon: Wifi,
-    description: '千兆光纤网络、企业级网络安全系统、备用电源保障，确保业务连续性和数据安全。',
+    description: t('environment.area6.description'),
     color: 'from-blue-400 to-red-600',
     image: '/env-network.jpg',
     items: [
-      { label: '千兆光纤', desc: '高速网络' },
-      { label: '安全保障', desc: '企业级安全系统' },
+      { label: t('environment.area6.item1.label'), desc: t('environment.area6.item1.desc') },
+      { label: t('environment.area6.item2.label'), desc: t('environment.area6.item2.desc') },
     ],
   },
 ];
@@ -93,6 +94,9 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
   const [visibleIndices, setVisibleIndices] = useState<Set<number>>(new Set());
   const previousIsActiveRef = useRef(isActive);
   const initializedRef = useRef(false);
+  const { t } = useLanguage();
+
+  const areas = getAreas(t);
 
   // 页面激活时触发动画
   useEffect(() => {

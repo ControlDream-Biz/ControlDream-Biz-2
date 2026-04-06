@@ -3,6 +3,7 @@
 import { useEffect, useState, memo, useRef } from 'react';
 import Image from 'next/image';
 import { Gamepad2, Cpu, HardDrive } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface BusinessShowcaseProps {
   isActive?: boolean;
@@ -13,59 +14,74 @@ interface BusinessShowcaseProps {
 }
 
 // 使用React.memo优化性能
-const businesses = [
+const getBusinesses = (t: (key: string) => string) => [
   {
-    title: '自主游戏产品',
-    subtitle: 'Original Gaming Products',
+    title: t('business.gaming.title'),
+    subtitle: t('business.gaming.subtitle'),
     icon: Gamepad2,
-    description: '拥有完全自主知识产权的游戏产品矩阵，涵盖策略类、角色扮演类、休闲类等多个品类，提供从研发到运营的全生命周期服务。',
-    features: ['原创IP游戏', '自主研发引擎', '长线运营', '全球发行'],
+    description: t('business.gaming.description'),
+    features: [
+      t('business.gaming.feature1'),
+      t('business.gaming.feature2'),
+      t('business.gaming.feature3'),
+      t('business.gaming.feature4')
+    ],
     color: 'from-blue-400 to-blue-600',
-    stat: '100万+',
-    statLabel: '注册玩家',
+    stat: t('business.gaming.stat'),
+    statLabel: t('business.gaming.statLabel'),
     image: '/business-game.jpg',
-    highlight: '代表作：创梦RPG、星际争霸策略版',
+    highlight: t('business.gaming.highlight'),
     items: [
-      { label: '创梦RPG', desc: '回合制策略战斗，深度养成系统，百万级用户好评' },
-      { label: '星际争霸策略版', desc: 'RTS经典玩法，实时对战，全球化竞技平台' },
-      { label: '休闲游戏矩阵', desc: '碎片化娱乐，社交互动，覆盖全年龄段用户' },
-      { label: '核心技术', desc: '自研3D引擎，支持多平台发布，高性能渲染' },
+      { label: t('business.gaming.item1.label'), desc: t('business.gaming.item1.desc') },
+      { label: t('business.gaming.item2.label'), desc: t('business.gaming.item2.desc') },
+      { label: t('business.gaming.item3.label'), desc: t('business.gaming.item3.desc') },
+      { label: t('business.gaming.item4.label'), desc: t('business.gaming.item4.desc') },
     ],
   },
   {
-    title: '软件产品',
-    subtitle: 'Software Products',
+    title: t('business.software.title'),
+    subtitle: t('business.software.subtitle'),
     icon: Cpu,
-    description: '打造企业级SaaS平台和智能软件产品，提供云服务、数据智能、API对接等完整解决方案，助力企业数字化转型。',
-    features: ['企业SaaS', '数据智能', 'API生态', '云原生架构'],
+    description: t('business.software.description'),
+    features: [
+      t('business.software.feature1'),
+      t('business.software.feature2'),
+      t('business.software.feature3'),
+      t('business.software.feature4')
+    ],
     color: 'from-purple-400 to-purple-600',
-    stat: '500+',
-    statLabel: '企业客户',
+    stat: t('business.software.stat'),
+    statLabel: t('business.software.statLabel'),
     image: '/business-software.jpg',
-    highlight: '核心产品：创梦云、企业智能管理系统',
+    highlight: t('business.software.highlight'),
     items: [
-      { label: '创梦云SaaS平台', desc: '一站式企业服务，支持私有化部署，数据安全保障' },
-      { label: '智能管理系统', desc: 'AI驱动的业务流程自动化，效率提升50%以上' },
-      { label: '数据中台', desc: '统一数据治理，实时数据分析，辅助决策' },
-      { label: 'API开放平台', desc: '标准化接口，快速集成第三方服务' },
+      { label: t('business.software.item1.label'), desc: t('business.software.item1.desc') },
+      { label: t('business.software.item2.label'), desc: t('business.software.item2.desc') },
+      { label: t('business.software.item3.label'), desc: t('business.software.item3.desc') },
+      { label: t('business.software.item4.label'), desc: t('business.software.item4.desc') },
     ],
   },
   {
-    title: '硬件产品',
-    subtitle: 'Hardware Products',
+    title: t('business.hardware.title'),
+    subtitle: t('business.hardware.subtitle'),
     icon: HardDrive,
-    description: '研发创新智能硬件产品和IoT设备，构建软硬一体化的产品生态，提供从硬件设计到软件服务的完整解决方案。',
-    features: ['智能终端', 'IoT设备', '边缘计算', '自主设计'],
+    description: t('business.hardware.description'),
+    features: [
+      t('business.hardware.feature1'),
+      t('business.hardware.feature2'),
+      t('business.hardware.feature3'),
+      t('business.hardware.feature4')
+    ],
     color: 'from-red-400 to-red-600',
-    stat: '50+',
-    statLabel: '技术专利',
+    stat: t('business.hardware.stat'),
+    statLabel: t('business.hardware.statLabel'),
     image: '/business-hardware.jpg',
-    highlight: '明星产品：创梦IoT网关、智能传感器',
+    highlight: t('business.hardware.highlight'),
     items: [
-      { label: '创梦IoT网关', desc: '支持500+设备接入，边缘计算能力，工业级稳定性' },
-      { label: '智能传感器系列', desc: '多场景覆盖，低功耗设计，超长续航' },
-      { label: '嵌入式开发板', desc: '高性能MCU，丰富接口，开发者友好' },
-      { label: '硬件实验室', desc: '专业测试设备，快速原型验证，一站式服务' },
+      { label: t('business.hardware.item1.label'), desc: t('business.hardware.item1.desc') },
+      { label: t('business.hardware.item2.label'), desc: t('business.hardware.item2.desc') },
+      { label: t('business.hardware.item3.label'), desc: t('business.hardware.item3.desc') },
+      { label: t('business.hardware.item4.label'), desc: t('business.hardware.item4.desc') },
     ],
   },
 ];
@@ -81,6 +97,9 @@ export const BusinessShowcase = memo(function BusinessShowcase({
   const [visibleIndices, setVisibleIndices] = useState<Set<number>>(new Set());
   const previousIsActiveRef = useRef(isActive);
   const initializedRef = useRef(false);
+  const { t } = useLanguage();
+
+  const businesses = getBusinesses(t);
 
   // 页面激活时触发动画
   useEffect(() => {
