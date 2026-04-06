@@ -62,8 +62,8 @@ export function LanguageSwitcher() {
 
   return (
     <>
-      {/* 桌面端语言切换器 */}
-      <div className="fixed top-6 right-[360px] z-[150] lg:flex hidden" ref={desktopRef}>
+      {/* 桌面端语言切换器 - 放在导航栏左侧 */}
+      <div className="fixed top-6 left-64 z-[45] lg:flex hidden" ref={desktopRef}>
         <div className="relative">
           <button
             onClick={() => setIsDesktopOpen(!isDesktopOpen)}
@@ -100,8 +100,8 @@ export function LanguageSwitcher() {
         </div>
       </div>
 
-      {/* 移动端语言切换器 */}
-      <div className="fixed top-20 right-4 z-[150] lg:hidden flex" ref={mobileRef}>
+      {/* 移动端语言切换器 - 放在Logo右侧 */}
+      <div className="fixed top-6 left-52 z-[50] lg:hidden flex" ref={mobileRef}>
         <div className="relative">
           <button
             onClick={() => setIsMobileOpen(!isMobileOpen)}

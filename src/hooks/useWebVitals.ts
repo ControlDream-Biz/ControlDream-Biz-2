@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-export function reportWebVitals(metric: any) {
+export function reportWebVitals(metric: { name: string; value: number; id: string; delta: number; rating: string }) {
   if (process.env.NODE_ENV === 'production') {
     // 发送到 Analytics API
     fetch('/api/analytics', {

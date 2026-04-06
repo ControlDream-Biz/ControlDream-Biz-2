@@ -43,7 +43,7 @@ export function usePageTracking() {
 export function useEventTracking() {
   const { language } = useLanguage();
 
-  const trackEvent = async (eventName: string, properties?: Record<string, any>) => {
+  const trackEvent = async (eventName: string, properties?: Record<string, unknown>) => {
     try {
       await fetch('/api/analytics', {
         method: 'POST',

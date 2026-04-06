@@ -226,6 +226,9 @@ export function LiveChat() {
       {/* 客服聊天窗口 */}
       {isOpen && (
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="chat-title"
           className={`fixed bottom-24 sm:bottom-32 right-4 z-[150] bg-black/95 border border-white/10 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${
             isMinimized ? 'w-80 h-16' : 'w-80 sm:w-96 h-[500px] sm:h-[600px]'
           }`}
@@ -234,10 +237,10 @@ export function LiveChat() {
           <div className="flex items-center justify-between p-4 border-b border-white/10 bg-gradient-to-r from-blue-500/10 to-purple-500/10">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                <User className="w-5 h-5 text-white" />
+                <User className="w-5 h-5 text-white" aria-hidden="true" />
               </div>
               <div>
-                <h3 className="text-white font-semibold">{agentName}</h3>
+                <h3 id="chat-title" className="text-white font-semibold">{agentName}</h3>
                 <div className="flex items-center gap-2">
                   <p className="text-xs text-green-400 flex items-center gap-1">
                     <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
@@ -269,7 +272,7 @@ export function LiveChat() {
           {/* 消息列表 */}
           {!isMinimized && (
             <>
-              <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[calc(100%-140px)]">
+              <div className="flex-1 overflow-y-auto p-4 space-y-4 h-[calc(100%-140px)]" role="log" aria-live="polite" aria-atomic="false">
                 {messages.map((message) => (
                   <div
                     key={message.id}
@@ -315,10 +318,12 @@ export function LiveChat() {
                 <div className="flex gap-2">
                   <input
                     type="text"
+                    id="chat-input"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyPress={handleKeyPress}
                     placeholder="输入消息..."
+                    aria-label="输入消息"
                     className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white placeholder-white/30 focus:outline-none focus:border-white/30 focus:bg-white/10 transition-all"
                   />
                   <button
