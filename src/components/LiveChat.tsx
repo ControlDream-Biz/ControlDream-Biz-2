@@ -123,6 +123,13 @@ export function LiveChat() {
     return () => window.removeEventListener('open-live-chat', handleOpenChat as EventListener);
   }, []);
 
+  // 监听关闭聊天事件（更新 FloatingButtons 状态）
+  useEffect(() => {
+    if (!isOpen) {
+      window.dispatchEvent(new CustomEvent('chat-window-closed'));
+    }
+  }, [isOpen]);
+
   // WebSocket 连接管理
   useEffect(() => {
     if (!userId || !isOpen) return;
@@ -374,17 +381,6 @@ export function LiveChat() {
 
   return (
     <>
-      {/* 聊天按钮 */}
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-24 sm:bottom-32 right-4 z-[150] w-14 h-14 bg-white/90 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center shadow-lg hover:scale-110 hover:bg-white transition-all"
-          aria-label="打开客服"
-        >
-          <MessageCircle className="w-6 h-6 text-gray-700" />
-        </button>
-      )}
-
       {/* 客服聊天窗口 */}
       {isOpen && (
         <div

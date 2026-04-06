@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { MessageCircle } from 'lucide-react';
 
 // 手机震动工具函数
 function triggerVibration() {
@@ -16,6 +17,7 @@ function triggerVibration() {
 
 export default function FloatingButtons() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [chatOpen, setChatOpen] = useState(false);
   const backToTopClickCount = useRef(0);
   const backToTopTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -48,13 +50,29 @@ export default function FloatingButtons() {
     }
   };
 
+  // 打开客服窗口
+  const openChat = () => {
+    triggerVibration();
+    setChatOpen(true);
+    window.dispatchEvent(new CustomEvent('open-live-chat'));
+  };
+
   useEffect(() => {
     const handlePageChange = (e: CustomEvent<{ pageIndex: number }>) => {
       setCurrentPage(e.detail.pageIndex);
     };
 
+    // 监听聊天窗口关闭事件
+    const handleChatClose = () => {
+      setChatOpen(false);
+    };
+
     window.addEventListener('page-changed', handlePageChange as EventListener);
-    return () => window.removeEventListener('page-changed', handlePageChange as EventListener);
+    window.addEventListener('chat-window-closed', handleChatClose as EventListener);
+    return () => {
+      window.removeEventListener('page-changed', handlePageChange as EventListener);
+      window.removeEventListener('chat-window-closed', handleChatClose as EventListener);
+    };
   }, []);
 
   return (
@@ -72,6 +90,18 @@ export default function FloatingButtons() {
           <path d="M18 15l-6-6-6 6" />
         </svg>
       </button>
+
+      {/* 客服按钮 - 玻璃样式 */}
+      {!chatOpen && (
+        <button
+          onClick={openChat}
+          className="fixed bottom-28 right-4 z-[150] w-12 h-12 bg-white/10 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center text-white hover:bg-white/20 hover:scale-110 transition-all duration-300 shadow-lg"
+          title="在线客服"
+          style={{ pointerEvents: 'auto' }}
+        >
+          <MessageCircle className="w-5 h-5" />
+        </button>
+      )}
     </>
   );
 }
