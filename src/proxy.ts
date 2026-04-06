@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
- * 全球顶级安全防护中间件
+ * 全球顶级安全防护代理
  * 防御：DDoS攻击、SQL注入、XSS、CSRF等
  */
 
@@ -212,8 +212,8 @@ function createSecurityResponse(reason: string, statusCode: number = 429) {
   );
 }
 
-// 中间件主逻辑
-export function middleware(request: NextRequest) {
+// 代理主逻辑
+export function proxy(request: NextRequest) {
   const ip = getClientIdentifier(request);
   const pathname = request.nextUrl.pathname;
   const method = request.method.toUpperCase();
@@ -296,11 +296,3 @@ export function middleware(request: NextRequest) {
 
   return response;
 }
-
-// 配置中间件匹配路径
-export const config = {
-  matcher: [
-    // 匹配所有路径
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)$).*)',
-  ],
-};

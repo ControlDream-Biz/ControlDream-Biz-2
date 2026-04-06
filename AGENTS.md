@@ -213,4 +213,37 @@
 - `useScrollAnimation` - 滚动视窗检测
 - `usePageTransition` - 页面过渡效果
 
+## 已知问题
+
+### 构建警告
+
+#### url.parse() 废弃警告
+- **警告**: `DeprecationWarning: url.parse() behavior is not standardized`
+- **来源**: `@react-dev-inspector/middleware@2.0.1` 依赖包
+- **影响**: 不影响应用功能和构建，仅为 Node.js 运行时废弃提示
+- **状态**: 已在 `KNOWN_ISSUES.md` 中记录，等待包更新
+- **临时方案**: 设置 `NODE_OPTIONS="--no-deprecation"` 可抑制警告
+
+#### Proxy 迁移 ✅
+- **状态**: 已完成 middleware → proxy 迁移
+- **变更**: `src/middleware.ts` → `src/proxy.ts`
+- **结果**: 构建警告已消除
+
+## 维护指南
+
+### 添加新翻译
+1. 在 `src/lib/i18n/complete-translations.ts` 对应模块添加
+2. 运行 `npx tsx scripts/final-update-translations.ts` 自动生成繁体中文
+3. 运行 `pnpm ts-check` 确保无类型错误
+
+### 更新依赖
+- 使用 `pnpm update <package>` 更新单个包
+- 使用 `pnpm update --latest` 更新所有包到最新版本
+- 更新后运行 `pnpm ts-check` 和 `pnpm build` 验证
+
+### 构建失败排查
+1. 检查 TypeScript 错误：`pnpm ts-check`
+2. 检查构建日志：`tail -n 50 /app/work/logs/bypass/app.log`
+3. 清理缓存：`rm -rf .next && pnpm build`
+
 
