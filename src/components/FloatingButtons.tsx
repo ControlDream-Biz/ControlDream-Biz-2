@@ -15,10 +15,7 @@ function triggerVibration() {
 }
 
 export default function FloatingButtons() {
-  const [isCustomerServiceOpen, setIsCustomerServiceOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
-  const isInitialized = useRef(false);
-  const shouldHidePopup = useRef(false);
   const backToTopClickCount = useRef(0);
   const backToTopTimer = useRef<NodeJS.Timeout | null>(null);
 
@@ -51,9 +48,6 @@ export default function FloatingButtons() {
     }
   };
 
-  // 客服弹窗状态
-  const [customerServiceClicked, setCustomerServiceClicked] = useState(false);
-
   useEffect(() => {
     const handlePageChange = (e: CustomEvent<{ pageIndex: number }>) => {
       setCurrentPage(e.detail.pageIndex);
@@ -62,43 +56,6 @@ export default function FloatingButtons() {
     window.addEventListener('page-changed', handlePageChange as EventListener);
     return () => window.removeEventListener('page-changed', handlePageChange as EventListener);
   }, []);
-
-  // 自动显示客服弹窗（仅首次）
-  useEffect(() => {
-    if (!isInitialized.current) {
-      isInitialized.current = true;
-
-      // 3秒后自动弹出客服提示
-      const timer = setTimeout(() => {
-        if (!shouldHidePopup.current && !customerServiceClicked) {
-          setIsCustomerServiceOpen(true);
-          // 5秒后自动关闭
-          setTimeout(() => {
-            setIsCustomerServiceOpen(false);
-          }, 5000);
-        }
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [customerServiceClicked]);
-
-  // 关闭客服弹窗
-  const closeCustomerService = () => {
-    setIsCustomerServiceOpen(false);
-    shouldHidePopup.current = true;
-  };
-
-  // 点击客服按钮
-  const handleCustomerServiceClick = () => {
-    triggerVibration();
-    setCustomerServiceClicked(true);
-    setIsCustomerServiceOpen(false);
-    shouldHidePopup.current = true;
-    // 触发 LiveChat 打开事件
-    const event = new CustomEvent('open-live-chat', { detail: {} });
-    window.dispatchEvent(event);
-  };
 
   return (
     <>
@@ -115,42 +72,6 @@ export default function FloatingButtons() {
           <path d="M18 15l-6-6-6 6" />
         </svg>
       </button>
-
-      {/* 客服按钮 - 右下角（在回到顶部下方） */}
-      <button
-        onClick={handleCustomerServiceClick}
-        className="fixed bottom-4 right-4 z-[150] w-10 h-10 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-all duration-300"
-        style={{
-          pointerEvents: 'auto',
-        }}
-        title="联系客服"
-      >
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
-        </svg>
-      </button>
-
-      {/* 客服弹窗提示 */}
-      {isCustomerServiceOpen && (
-        <div
-          className="fixed bottom-20 right-20 z-[100] px-3 py-2 rounded-lg bg-black/80 backdrop-blur-md border border-white/20 text-white text-xs max-w-[180px]"
-          style={{
-            pointerEvents: 'auto',
-            animation: 'fadeInUp 0.3s ease-out',
-          }}
-        >
-          <div className="flex items-center gap-1.5">
-            <span className="text-sm">💬</span>
-            <span className="whitespace-nowrap text-[11px]">需要帮助？点击联系客服</span>
-          </div>
-          <button
-            onClick={closeCustomerService}
-            className="absolute top-0.5 right-0.5 w-4 h-4 flex items-center justify-center text-white/60 hover:text-white transition-colors text-xs"
-          >
-            ×
-          </button>
-        </div>
-      )}
     </>
   );
 }
