@@ -7,6 +7,7 @@ import { GlobalBackground } from '@/components/GlobalBackground';
 import { PageProgressBar } from '@/components/PageProgressBar';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { LiveChat } from '@/components/LiveChat';
+import { LanguageProvider } from '@/contexts/LanguageContext';
 
 export const metadata: Metadata = {
   title: {
@@ -169,27 +170,29 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased font-sans">
-        {/* Skip to Content 链接 - 提升键盘导航体验 */}
-        <a
-          href="#main-content"
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[200] bg-white text-black px-4 py-2 rounded-lg font-semibold focus:outline-none focus:ring-4 focus:ring-white/50"
-        >
-          跳转到主要内容
-        </a>
+        <LanguageProvider>
+          {/* Skip to Content 链接 - 提升键盘导航体验 */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[200] bg-white text-black px-4 py-2 rounded-lg font-semibold focus:outline-none focus:ring-4 focus:ring-white/50"
+          >
+            跳转到主要内容
+          </a>
 
-        {/* 页面加载进度条 */}
-        <PageProgressBar />
+          {/* 页面加载进度条 */}
+          <PageProgressBar />
 
-        {/* 语言切换器 */}
-        <LanguageSwitcher />
+          {/* 语言切换器 */}
+          <LanguageSwitcher />
 
-        {isDev && <Inspector />}
-        <GlobalBackground />
-        <div id="main-content">
-          {children}
-        </div>
-        <FloatingButtons />
-        <LiveChat />
+          {isDev && <Inspector />}
+          <GlobalBackground />
+          <div id="main-content">
+            {children}
+          </div>
+          <FloatingButtons />
+          <LiveChat />
+        </LanguageProvider>
       </body>
     </html>
   );

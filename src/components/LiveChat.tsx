@@ -30,6 +30,17 @@ export function LiveChat() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isTyping]);
 
+  // 监听打开聊天事件
+  useEffect(() => {
+    const handleOpenChat = () => {
+      setIsOpen(true);
+      setIsMinimized(false);
+    };
+
+    window.addEventListener('open-live-chat', handleOpenChat as EventListener);
+    return () => window.removeEventListener('open-live-chat', handleOpenChat as EventListener);
+  }, []);
+
   const handleSendMessage = () => {
     if (!inputValue.trim()) return;
 
@@ -91,18 +102,6 @@ export function LiveChat() {
 
   return (
     <>
-      {/* 客服按钮 */}
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="fixed bottom-24 sm:bottom-32 right-4 z-[150] w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full shadow-lg shadow-blue-500/30 hover:shadow-blue-500/50 hover:scale-110 transition-all duration-300 flex items-center justify-center group"
-          aria-label="在线客服"
-        >
-          <MessageCircle className="w-6 h-6 text-white group-hover:scale-110 transition-transform duration-300" />
-          <span className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse"></span>
-        </button>
-      )}
-
       {/* 客服聊天窗口 */}
       {isOpen && (
         <div

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 // 手机震动工具函数 - 支持用户偏好控制
 function triggerVibration() {
@@ -40,14 +41,15 @@ function getVibrationEnabled(): boolean {
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
+  const { language, t } = useLanguage();
 
   const navItems = [
-    { label: '首页', href: '#home', index: 0 },
-    { label: '业务领域', href: '#business', index: 1 },
-    { label: '办公环境', href: '#environment', index: 2 },
-    { label: '关于我们', href: '#about', index: 3 },
-    { label: '企业文化', href: '#culture', index: 4 },
-    { label: '联系我们', href: '#contact', index: 5 },
+    { label: t('nav.home'), href: '#home', index: 0 },
+    { label: t('nav.business'), href: '#business', index: 1 },
+    { label: t('nav.environment'), href: '#environment', index: 2 },
+    { label: t('nav.about'), href: '#about', index: 3 },
+    { label: t('nav.culture'), href: '#culture', index: 4 },
+    { label: t('nav.contact'), href: '#contact', index: 5 },
   ];
 
   useEffect(() => {
@@ -93,19 +95,19 @@ export function Navbar() {
 
         {/* 公司名称 */}
         <div className="flex flex-col justify-center linear-transition">
-          {/* 公司名称 - 统一字体大小 */}
-          <div className="text-[10px] font-semibold text-white tracking-tight leading-tight sm:text-[11px] lg:text-xs select-none">
-            创梦计算机系统有限公司
+          {/* 中文公司名 */}
+          <div className="text-[10px] font-bold text-white tracking-tight leading-none mb-0.5 sm:text-[11px] lg:text-xs select-none">
+            {language === 'zh' ? '创梦计算机系统有限公司' : 'Chuangmeng Computer System Co., Ltd.'}
           </div>
 
-          {/* 英文副标题 - 稍小但保持一致 */}
+          {/* 英文副标题 */}
           <div
-            className="text-[7px] sm:text-[8px] lg:text-[9px] text-white/80 font-medium uppercase select-none leading-tight mt-0.5"
+            className="text-[4px] sm:text-[5px] lg:text-[6px] text-white/70 font-medium uppercase select-none leading-none"
             style={{
-              letterSpacing: '0.08em'
+              letterSpacing: '0.15em'
             }}
           >
-            <span className="hidden sm:inline">
+            <span className="hidden sm:inline" style={{ letterSpacing: '0.12em' }}>
               CHUANGMENG COMPUTER SYSTEM
             </span>
             <span className="sm:hidden">

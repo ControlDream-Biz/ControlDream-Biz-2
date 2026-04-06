@@ -95,9 +95,9 @@ export default function FloatingButtons() {
     setCustomerServiceClicked(true);
     setIsCustomerServiceOpen(false);
     shouldHidePopup.current = true;
-    // 这里可以跳转到联系我们页面
-    const contactEvent = new CustomEvent('jump-to-page', { detail: { pageIndex: 5 } });
-    window.dispatchEvent(contactEvent);
+    // 触发 LiveChat 打开事件
+    const event = new CustomEvent('open-live-chat', { detail: {} });
+    window.dispatchEvent(event);
   };
 
   return (
