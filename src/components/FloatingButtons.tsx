@@ -102,10 +102,10 @@ export default function FloatingButtons() {
 
   return (
     <>
-      {/* 回到顶部按钮 */}
+      {/* 回到顶部按钮 - 右下角 */}
       <button
         onClick={scrollToTop}
-        className="fixed bottom-24 left-4 z-50 w-12 h-12 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-all duration-300"
+        className="fixed bottom-24 right-4 z-50 w-12 h-12 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-all duration-300"
         style={{
           pointerEvents: 'auto',
         }}
@@ -116,10 +116,10 @@ export default function FloatingButtons() {
         </svg>
       </button>
 
-      {/* 客服按钮 */}
+      {/* 客服按钮 - 右下角（在回到顶部下方） */}
       <button
         onClick={handleCustomerServiceClick}
-        className="fixed bottom-24 right-4 z-50 w-12 h-12 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-all duration-300"
+        className="fixed bottom-4 right-4 z-50 w-12 h-12 rounded-full bg-black/30 backdrop-blur-md border border-white/20 flex items-center justify-center text-white hover:bg-black/50 transition-all duration-300"
         style={{
           pointerEvents: 'auto',
         }}
@@ -133,7 +133,7 @@ export default function FloatingButtons() {
       {/* 客服弹窗提示 */}
       {isCustomerServiceOpen && (
         <div
-          className="fixed bottom-40 right-4 z-50 px-4 py-3 rounded-lg bg-black/80 backdrop-blur-md border border-white/20 text-white text-sm"
+          className="fixed bottom-20 right-4 z-50 px-4 py-3 rounded-lg bg-black/80 backdrop-blur-md border border-white/20 text-white text-sm"
           style={{
             pointerEvents: 'auto',
             animation: 'fadeInUp 0.3s ease-out',
