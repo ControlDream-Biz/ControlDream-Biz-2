@@ -378,10 +378,10 @@ export function LiveChat() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-24 sm:bottom-32 right-4 z-[150] w-14 h-14 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+          className="fixed bottom-24 sm:bottom-32 right-4 z-[150] w-14 h-14 bg-white/90 backdrop-blur-sm border border-white/20 rounded-full flex items-center justify-center shadow-lg hover:scale-110 hover:bg-white transition-all"
           aria-label="打开客服"
         >
-          <MessageCircle className="w-6 h-6 text-white" />
+          <MessageCircle className="w-6 h-6 text-gray-700" />
         </button>
       )}
 
