@@ -56,7 +56,10 @@ export default function Page() {
         }
 
         // 计算是否应该显示指示器
-        const shouldShow = !isInitialLoadRef.current && remainingScroll < 200;
+        // 根据屏幕尺寸动态调整阈值
+        const screenWidth = window.innerWidth;
+        const threshold = screenWidth < 640 ? 150 : screenWidth < 768 ? 180 : 220; // 手机/平板/桌面
+        const shouldShow = !isInitialLoadRef.current && remainingScroll < threshold;
 
         // 使用 requestAnimationFrame 确保状态更新
         requestAnimationFrame(() => {
@@ -73,6 +76,8 @@ export default function Page() {
       const scrollContainer = document.querySelector('[data-page-index="0"] .scroll-content');
       if (scrollContainer) {
         scrollContainer.addEventListener('scroll', checkScrollPosition, { passive: true });
+        // 初始检查一次
+        checkScrollPosition();
       }
     }, 100);
 
