@@ -1,29 +1,49 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { MessageCircle, X, Send, Minimize2, Maximize2 } from 'lucide-react';
+import { MessageCircle, X, Send, Minimize2, Maximize2, User } from 'lucide-react';
 
 interface Message {
   id: string;
   type: 'user' | 'bot';
   content: string;
   timestamp: Date;
+  agentId?: string; // 客服工号
 }
 
 export function LiveChat() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      id: '1',
-      type: 'bot',
-      content: '您好！欢迎来到创梦计算机系统有限公司。请问有什么可以帮助您的？',
-      timestamp: new Date(),
-    },
-  ]);
+  const [agentId, setAgentId] = useState<string>(''); // 客服工号
+  const [agentName, setAgentName] = useState<string>('客服专员'); // 客服名称
+  const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // 生成随机工号
+  const generateAgentId = useCallback(() => {
+    const prefix = 'CS'; // Customer Service
+    const randomNum = Math.floor(Math.random() * 8999) + 1000; // 1000-9999
+    return `${prefix}-${randomNum}`;
+  }, []);
+
+  // 初始化时生成工号和欢迎消息
+  useEffect(() => {
+    const newAgentId = generateAgentId();
+    setAgentId(newAgentId);
+    setAgentName(`客服专员 ${newAgentId}`);
+
+    setMessages([
+      {
+        id: '1',
+        type: 'bot',
+        content: '您好！欢迎来到创梦计算机系统有限公司。我是您的专属客服，请问有什么可以帮助您的？',
+        timestamp: new Date(),
+        agentId: newAgentId,
+      },
+    ]);
+  }, [generateAgentId]);
 
   // 自动滚动到底部
   useEffect(() => {
@@ -101,7 +121,8 @@ export function LiveChat() {
         },
         body: JSON.stringify({
           message: currentInput,
-          history
+          history,
+          agentId // 传递工号
         }),
       });
 
@@ -116,6 +137,7 @@ export function LiveChat() {
         type: 'bot',
         content: '',
         timestamp: new Date(),
+        agentId: agentId, // 添加工号
       };
 
       // 先添加空消息
@@ -183,14 +205,18 @@ export function LiveChat() {
           <div className="flex items-center justify-between p-4 border-b border-white/10 bg-gradient-to-r from-blue-500/10 to-purple-500/10">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                <MessageCircle className="w-5 h-5 text-white" />
+                <User className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h3 className="text-white font-semibold">在线客服</h3>
-                <p className="text-xs text-green-400 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
-                  在线
-                </p>
+                <h3 className="text-white font-semibold">{agentName}</h3>
+                <div className="flex items-center gap-2">
+                  <p className="text-xs text-green-400 flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span>
+                    在线
+                  </p>
+                  <span className="text-xs text-white/40">|</span>
+                  <p className="text-xs text-white/60">工号: {agentId}</p>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -227,6 +253,11 @@ export function LiveChat() {
                           : 'bg-white/10 text-white/90'
                       }`}
                     >
+                      {message.type === 'bot' && message.agentId && (
+                        <div className="flex items-center gap-1 mb-1">
+                          <span className="text-[10px] text-white/50">工号: {message.agentId}</span>
+                        </div>
+                      )}
                       <p className="text-sm leading-relaxed whitespace-pre-line">{message.content}</p>
                       <p className="text-[10px] text-white/50 mt-1 text-right">
                         {message.timestamp.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })}
