@@ -122,6 +122,12 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className={`${inter.variable} ${notoSansSC.variable} ${notoSerifSC.variable}`}>
       <head>
+        {/* PWA Manifest */}
+        <link rel="manifest" href="/manifest.json" />
+        <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.png" />
+        <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+        <meta name="apple-mobile-web-app-title" content="创梦" />
+
         {/* 资源预加载 - 优化性能 */}
         <link rel="preconnect" href="https://fonts.googleapis.cn" />
         <link rel="preconnect" href="https://fonts.gstatic.cn" crossOrigin="anonymous" />

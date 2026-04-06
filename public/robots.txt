@@ -1,0 +1,17 @@
+# robots.txt - 创梦计算机系统有限公司
+
+# 允许所有爬虫
+User-agent: *
+Allow: /
+
+# 禁止爬取特定目录
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+Disallow: /private/
+
+# 站点地图
+Sitemap: https://chuangmeng.com/sitemap.xml
+
+# 爬取延迟（可选，默认为1秒）
+Crawl-delay: 1
