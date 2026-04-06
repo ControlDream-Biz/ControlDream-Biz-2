@@ -140,8 +140,6 @@ export const BusinessShowcase = memo(function BusinessShowcase({
             }, 400 + i * 200);
           }
         }, 300); // 延迟300ms
-
-        return () => clearTimeout(timer);
       } else {
         console.log(`BusinessShowcase 跳过动画触发`);
       }

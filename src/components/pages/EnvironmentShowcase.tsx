@@ -137,8 +137,6 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
             }, 400 + i * 200);
           }
         }, 300); // 延迟300ms
-
-        return () => clearTimeout(timer);
       } else {
         console.log(`EnvironmentShowcase 跳过动画触发`);
       }
