@@ -175,6 +175,7 @@ interface ScrollContainerProps {
 export function ScrollContainer({ children, onPageChange }: ScrollContainerProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState(0);
   const dragOffsetRef = useRef(0);
   const totalPages = children.length;
 
@@ -208,8 +209,8 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const now = performance.now();
       const delta = e.deltaY;
 
-      // 节流：150ms内只处理一次
-      if (now - state.lastWheelTime < 150) {
+      // 【可优化】节流时间调整：从 150ms 优化到 100ms，提高响应速度
+      if (now - state.lastWheelTime < 100) {
         return;
       }
 
@@ -223,7 +224,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
         const clientHeight = scrollContainer.clientHeight;
         const remainingScroll = scrollHeight - (scrollTop + clientHeight);
 
-        // 检查是否在边界
+        // 【核心翻页逻辑 - 禁止修改】边界检测阈值：5px
         const atTop = scrollTop <= 5;
         const atBottom = remainingScroll <= 5;
 
@@ -285,6 +286,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       state.touchStartY = touch.clientY;
       state.touchStartTime = performance.now();
       dragOffsetRef.current = 0;
+      setDragOffset(0);
       setIsDragging(false);
     };
 
@@ -329,12 +331,14 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       if (shouldPreventDefault && Math.abs(deltaY) > 10) {
         e.preventDefault();
         dragOffsetRef.current = deltaY;
+        setDragOffset(deltaY);
         setIsDragging(true);
       }
     };
 
-    const handleTouchEnd = (e: TouchEvent) => {
+    const handleTouchEnd = () => {
       setIsDragging(false);
+      setDragOffset(0);
 
       const deltaY = Math.abs(dragOffsetRef.current);
       const direction = dragOffsetRef.current > 0 ? 1 : -1;
@@ -442,7 +446,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           key={index}
           index={index}
           currentPage={currentPage}
-          dragOffset={dragOffsetRef.current}
+          dragOffset={dragOffset}
           isDragging={isDragging}
         >
           {child}

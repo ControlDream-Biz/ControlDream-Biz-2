@@ -44,7 +44,8 @@ export function LiveChat() {
   // 生成唯一ID的辅助函数
   const generateId = useCallback(() => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, []);
 
-  const getBotResponse = useCallback((userInput: string): string => {
+  // 回退的简单回复逻辑（当 API 失败时使用）
+  const getFallbackResponse = useCallback((userInput: string): string => {
     const input = userInput.toLowerCase();
 
     if (input.includes('产品') || input.includes('service')) {
@@ -66,7 +67,7 @@ export function LiveChat() {
     return '感谢您的咨询！我们的专业客服人员会尽快为您解答。您也可以通过页面下方的联系方式直接与我们取得联系。';
   }, []);
 
-  const handleSendMessage = useCallback(() => {
+  const handleSendMessage = useCallback(async () => {
     if (!inputValue.trim()) return;
 
     // 添加用户消息
@@ -77,24 +78,90 @@ export function LiveChat() {
       timestamp: new Date(),
     };
     setMessages((prev) => [...prev, userMessage]);
+    const currentInput = inputValue;
     setInputValue('');
 
     // 模拟客服正在输入
     setIsTyping(true);
 
-    // 模拟客服回复
-    setTimeout(() => {
-      setIsTyping(false);
-      const botResponse = getBotResponse(inputValue);
-      const botMessage: Message = {
-        id: generateId(),
+    try {
+      // 准备消息历史（不包括系统提示词，只发送最近10条消息以节省token）
+      const history = messages
+        .slice(-10)
+        .map(msg => ({
+          role: msg.type === 'user' ? 'user' : 'assistant',
+          content: msg.content
+        }));
+
+      // 调用 AI 客服 API
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: currentInput,
+          history
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to get response');
+      }
+
+      // 创建一个空的机器人消息
+      const botMessageId = generateId();
+      const initialBotMessage: Message = {
+        id: botMessageId,
         type: 'bot',
-        content: botResponse,
+        content: '',
         timestamp: new Date(),
       };
-      setMessages((prev) => [...prev, botMessage]);
-    }, 1500);
-  }, [inputValue, generateId, getBotResponse]);
+
+      // 先添加空消息
+      setMessages((prev) => [...prev, initialBotMessage]);
+
+      // 读取流式响应
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+
+      if (reader) {
+        let accumulatedContent = '';
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+
+          const chunk = decoder.decode(value, { stream: true });
+          accumulatedContent += chunk;
+
+          // 实时更新消息内容
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === botMessageId
+                ? { ...msg, content: accumulatedContent }
+                : msg
+            )
+          );
+        }
+      }
+
+      setIsTyping(false);
+    } catch (error) {
+      console.error('Failed to get bot response:', error);
+      setIsTyping(false);
+
+      // 回退到简单的关键词匹配
+      const fallbackResponse = getFallbackResponse(currentInput);
+      const fallbackMessage: Message = {
+        id: generateId(),
+        type: 'bot',
+        content: fallbackResponse,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, fallbackMessage]);
+    }
+  }, [inputValue, messages, generateId, getFallbackResponse]);
 
   const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
