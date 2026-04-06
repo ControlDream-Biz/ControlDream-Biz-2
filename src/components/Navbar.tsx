@@ -118,6 +118,138 @@ export function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* 导航菜单 - 右上角 - 液态玻璃设计系统 */}
+      <nav className="fixed top-4 right-4 z-[50] select-none sm:top-4 sm:right-4 lg:top-6 lg:right-6" aria-label="主导航">
+        {/* Desktop Navigation - 液态玻璃导航栏 */}
+        <div className="hidden lg:flex items-center gap-1 liquid-glass-nav px-2 py-2" role="navigation">
+          {navItems.map((item) => (
+            <button
+              key={item.href}
+              onClick={(e) => {
+                e.stopPropagation();
+                scrollToSection(item.href, item.index);
+              }}
+              className={`liquid-glass-nav-btn text-sm ${
+                currentPage === item.index ? 'active' : ''
+              }`}
+              aria-label={`导航到${item.label}`}
+              aria-current={currentPage === item.index ? 'page' : undefined}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Mobile Menu Button - 精简双竖线 - 右上角 */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            triggerVibration();
+            setMobileMenuOpen(!mobileMenuOpen);
+          }}
+          className="lg:hidden liquid-glass-menu-btn w-12 h-12 sm:w-12 sm:h-12"
+          aria-label={mobileMenuOpen ? '关闭菜单' : '打开菜单'}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-menu"
+        >
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-white"
+            style={{ width: '20px', height: '20px' }}
+            aria-hidden="true"
+          >
+            {/* 上横杠 → 左竖线 */}
+            <line
+              x1={mobileMenuOpen ? 6 : 4}
+              y1={mobileMenuOpen ? 6 : 6}
+              x2={mobileMenuOpen ? 6 : 20}
+              y2={mobileMenuOpen ? 18 : 6}
+              style={{
+                transition: 'all 0.25s linear',
+              }}
+            />
+
+            {/* 中横杠 → 右竖线 */}
+            <line
+              x1={mobileMenuOpen ? 18 : 4}
+              y1={mobileMenuOpen ? 6 : 12}
+              x2={mobileMenuOpen ? 18 : 20}
+              y2={mobileMenuOpen ? 18 : 12}
+              style={{
+                transition: 'all 0.25s linear 0.05s',
+              }}
+            />
+
+            {/* 下横杠 - 快速消失 */}
+            <line
+              x1="4"
+              y1="18"
+              x2="20"
+              y2="18"
+              style={{
+                transition: 'opacity 0.15s linear 0s, transform 0.15s linear 0s',
+                opacity: mobileMenuOpen ? 0 : 1,
+                transform: mobileMenuOpen ? 'scaleX(0)' : 'scaleX(1)',
+              }}
+            />
+          </svg>
+        </button>
+      </nav>
+
+      {/* Mobile Menu - 液态玻璃效果 */}
+      {mobileMenuOpen && (
+        <div
+          id="mobile-menu"
+          onClick={() => setMobileMenuOpen(false)}
+          className="lg:hidden fixed top-0 left-0 right-0 bottom-0 z-40 liquid-glass-dark flex flex-col items-center justify-center gap-8"
+          role="dialog"
+          aria-modal="true"
+          aria-label="移动端菜单"
+        >
+          {navItems.map((item, index) => (
+            <button
+              key={item.href}
+              onClick={(e) => {
+                e.stopPropagation();
+                scrollToSection(item.href, item.index);
+              }}
+              className={`text-2xl sm:text-3xl font-semibold tracking-tight linear-transition ${
+                currentPage === item.index
+                  ? 'text-white scale-105'
+                  : 'text-white/60 hover:text-white hover:scale-105'
+              }`}
+              style={{ opacity: 0, animation: `fadeInUp 0.3s linear ${index * 0.05}s forwards` }}
+              aria-label={`导航到${item.label}`}
+              aria-current={currentPage === item.index ? 'page' : undefined}
+            >
+              {item.label}
+            </button>
+          ))}
+
+          {/* 震动反馈设置 */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              toggleVibration();
+              window.location.reload();
+            }}
+            className="text-lg sm:text-xl font-medium tracking-tight linear-transition text-white/40 hover:text-white hover:scale-105 flex items-center gap-2"
+            style={{ opacity: 0, animation: `fadeInUp 0.3s linear ${navItems.length * 0.05}s forwards` }}
+            aria-label="切换震动反馈"
+          >
+            <span>{getVibrationEnabled() ? '✓' : '✗'}</span>
+            <span>震动反馈</span>
+          </button>
+        </div>
+      )}
     </>
   );
 }

@@ -1,18 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { initDatabase } from "@/lib/db/init";
-import {
-  getConversations,
-  getConversationWithMessages,
-  takeOverConversation,
-  releaseConversation,
-  createMessage,
-  getConversationStats,
-} from "@/lib/db/queries";
 
 /**
  * 后台管理 API 路由
  *
- * 用于管理客服对话、人工接管等功能，所有数据持久化到数据库
+ * 用于管理客服对话、人工接管等功能
  */
 
 export async function GET(request: NextRequest) {
@@ -20,85 +11,69 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const action = searchParams.get('action');
 
-    // 初始化数据库
-    try {
-      await initDatabase();
-    } catch (error) {
-      console.error('[后台] 数据库初始化失败:', error);
-      return NextResponse.json({ error: 'Database initialization failed' }, { status: 500 });
-    }
-
     if (action === 'list') {
       // 获取所有对话列表
-      const limit = parseInt(searchParams.get('limit') || '50');
-      const offset = parseInt(searchParams.get('offset') || '0');
+      // 这里应该从数据库获取真实数据
+      const conversations = [
+        {
+          id: 'conv-1',
+          userId: 'user-123',
+          agentId: 'CS-4567',
+          status: 'active',
+          messageCount: 5,
+          lastMessage: '好的，我明白了',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 'conv-2',
+          userId: 'user-456',
+          agentId: 'CS-7890',
+          status: 'waiting',
+          messageCount: 2,
+          lastMessage: '我想了解产品详情',
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      ];
 
-      const conversations = await getConversations(limit, offset);
-
-      // 格式化数据
-      const formattedConversations = conversations.map(conv => ({
-        id: conv.id,
-        userId: conv.userId,
-        agentId: conv.agentId,
-        status: conv.status,
-        messageCount: conv.messageCount,
-        lastMessage: conv.lastMessage || '',
-        isHumanTakeover: conv.isHumanTakeover === 1,
-        createdAt: conv.createdAt,
-        updatedAt: conv.updatedAt,
-      }));
-
-      return NextResponse.json({ success: true, conversations: formattedConversations });
+      return NextResponse.json({ success: true, conversations });
     }
 
     if (action === 'detail' && searchParams.get('id')) {
       // 获取对话详情
-      const conversationId = parseInt(searchParams.get('id') || '0');
+      const conversationId = searchParams.get('id');
 
-      if (!conversationId || isNaN(conversationId)) {
-        return NextResponse.json({ error: 'Invalid conversation ID' }, { status: 400 });
-      }
-
-      const conversation = await getConversationWithMessages(conversationId);
-
-      if (!conversation) {
-        return NextResponse.json({ error: 'Conversation not found' }, { status: 404 });
-      }
-
-      // 格式化数据
-      const formattedConversation = {
-        id: conversation.id,
-        userId: conversation.userId,
-        agentId: conversation.agentId,
-        status: conversation.status,
-        messageCount: conversation.messageCount,
-        lastMessage: conversation.lastMessage || '',
-        isHumanTakeover: conversation.isHumanTakeover === 1,
-        createdAt: conversation.createdAt,
-        updatedAt: conversation.updatedAt,
-        messages: conversation.messages.map(msg => ({
-          id: msg.id,
-          type: msg.type,
-          content: msg.content,
-          senderId: msg.senderId,
-          agentId: msg.agentId,
-          isRead: msg.isRead === 1,
-          createdAt: msg.createdAt,
-        })),
+      // 这里应该从数据库获取真实数据
+      const conversation = {
+        id: conversationId,
+        userId: 'user-123',
+        agentId: 'CS-4567',
+        status: 'active',
+        messages: [
+          {
+            id: 'msg-1',
+            type: 'user',
+            content: '你们公司主要做什么的？',
+            timestamp: new Date(),
+          },
+          {
+            id: 'msg-2',
+            type: 'agent',
+            content: '您好！我们公司主要专注于三大业务板块：游戏创新、软件赋能和硬件智造。',
+            timestamp: new Date(),
+          },
+        ],
+        createdAt: new Date(),
+        updatedAt: new Date(),
       };
 
-      return NextResponse.json({ success: true, conversation: formattedConversation });
-    }
-
-    if (action === 'stats') {
-      // 获取统计数据
-      const stats = await getConversationStats();
-      return NextResponse.json({ success: true, stats });
+      return NextResponse.json({ success: true, conversation });
     }
 
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
   } catch (error) {
-    console.error('[后台] GET API error:', error);
+    console.error('Admin chat API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -108,27 +83,13 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    // 初始化数据库
-    try {
-      await initDatabase();
-    } catch (error) {
-      console.error('[后台] 数据库初始化失败:', error);
-      return NextResponse.json({ error: 'Database initialization failed' }, { status: 500 });
-    }
-
     const { action, conversationId, message } = await request.json();
 
     if (action === 'takeover') {
       // 人工接管对话
-      const id = parseInt(conversationId);
+      console.log('接管对话:', conversationId);
 
-      if (!id || isNaN(id)) {
-        return NextResponse.json({ error: 'Invalid conversation ID' }, { status: 400 });
-      }
-
-      await takeOverConversation(id);
-      console.log('[后台] 接管对话:', id);
-
+      // 这里应该更新数据库，标记对话为人工接管状态
       return NextResponse.json({
         success: true,
         message: '成功接管对话',
@@ -138,15 +99,9 @@ export async function POST(request: NextRequest) {
 
     if (action === 'release') {
       // 释放对话（交还给 AI）
-      const id = parseInt(conversationId);
+      console.log('释放对话:', conversationId);
 
-      if (!id || isNaN(id)) {
-        return NextResponse.json({ error: 'Invalid conversation ID' }, { status: 400 });
-      }
-
-      await releaseConversation(id);
-      console.log('[后台] 释放对话:', id);
-
+      // 这里应该更新数据库，标记对话为 AI 状态
       return NextResponse.json({
         success: true,
         message: '成功释放对话',
@@ -155,50 +110,22 @@ export async function POST(request: NextRequest) {
 
     if (action === 'send') {
       // 发送人工客服消息
-      const id = parseInt(conversationId);
+      console.log('发送人工消息:', { conversationId, message });
 
-      if (!id || isNaN(id)) {
-        return NextResponse.json({ error: 'Invalid conversation ID' }, { status: 400 });
-      }
-
-      if (!message || typeof message !== 'string') {
-        return NextResponse.json({ error: 'Invalid message' }, { status: 400 });
-      }
-
-      // 保存消息到数据库
-      const newMessage = await createMessage({
-        conversationId: id,
-        type: 'agent',
-        content: message,
-        senderId: 'ADMIN',
-        agentId: 'ADMIN',
-        isRead: 1,
-      });
-
-      console.log('[后台] 发送人工消息:', { conversationId: id, message });
-
-      // TODO: 这里应该通过 WebSocket 或 SSE 推送给用户
-      // 目前仅保存到数据库
+      // 这里应该：
+      // 1. 将消息保存到数据库
+      // 2. 通过 WebSocket 或 SSE 推送给用户
 
       return NextResponse.json({
         success: true,
         message: '消息已发送',
-        messageId: newMessage.id,
-      });
-    }
-
-    if (action === 'init') {
-      // 初始化数据库
-      await initDatabase();
-      return NextResponse.json({
-        success: true,
-        message: '数据库初始化成功',
+        messageId: `msg-${Date.now()}`,
       });
     }
 
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
   } catch (error) {
-    console.error('[后台] POST API error:', error);
+    console.error('Admin chat API error:', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
