@@ -133,7 +133,7 @@ export default function FloatingButtons() {
       {/* 客服弹窗提示 */}
       {isCustomerServiceOpen && (
         <div
-          className="fixed bottom-20 right-20 z-[100] px-4 py-3 rounded-lg bg-black/80 backdrop-blur-md border border-white/20 text-white text-sm max-w-[200px]"
+          className="fixed bottom-24 right-24 z-[100] px-4 py-3 rounded-lg bg-black/80 backdrop-blur-md border border-white/20 text-white text-sm max-w-[200px]"
           style={{
             pointerEvents: 'auto',
             animation: 'fadeInUp 0.3s ease-out',

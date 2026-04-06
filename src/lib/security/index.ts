@@ -18,6 +18,9 @@ export * from './csrf-xss-defense';
 // 安全日志和监控
 export * from './security-logger';
 
+// 高级威胁防御
+export * from './advanced-threat-defense';
+
 // 重新导出常用工具的简化版本
 import {
   checkInputSecurity,
@@ -60,6 +63,19 @@ import {
   generateSecurityReport,
   getIPThreatScore,
 } from './security-logger';
+
+import {
+  detectZeroDayExploit,
+  detectSocialEngineeringAttack,
+  detectAPIAbuse,
+  detectBot,
+  detectMaliciousFile,
+  detectHTTPSmuggling,
+  detectGraphQLInjection,
+  detectNoSQLInjection,
+  detectSSRF,
+  detectPrototypePollution,
+} from './advanced-threat-defense';
 
 // 统一的安全配置
 export const SECURITY_CONFIG = {
@@ -320,6 +336,18 @@ export default {
   getSecurityAlerts,
   generateSecurityReport,
   getIPThreatScore,
+
+  // 高级威胁防御
+  detectZeroDayExploit,
+  detectSocialEngineeringAttack,
+  detectAPIAbuse,
+  detectBot,
+  detectMaliciousFile,
+  detectHTTPSmuggling,
+  detectGraphQLInjection,
+  detectNoSQLInjection,
+  detectSSRF,
+  detectPrototypePollution,
 
   // 配置
   SECURITY_CONFIG,
