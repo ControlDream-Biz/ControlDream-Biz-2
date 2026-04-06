@@ -104,12 +104,13 @@ export const BusinessShowcase = memo(function BusinessShowcase({
   // 页面激活时触发动画
   useEffect(() => {
     console.log(`BusinessShowcase 触发动画: pageIndex=${pageIndex}, isActive=${isActive}, mounted=${mounted}, previousActive=${previousIsActiveRef.current}, initialized=${initializedRef.current}`);
-    
+
     // 在页面激活时触发动画（包括初始化和页面切换）
     if (isActive) {
       // 检查是否需要触发动画（第一次激活或从非激活变为激活）
-      const shouldTrigger = !initializedRef.current || !previousIsActiveRef.current;
-      
+      const wasInactive = previousIsActiveRef.current === false;
+      const shouldTrigger = !initializedRef.current || wasInactive;
+
       if (shouldTrigger) {
         initializedRef.current = true;
         previousIsActiveRef.current = true;
@@ -139,18 +140,18 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
         return () => clearTimeout(timer);
       }
-    } else if (previousIsActiveRef.current) {
+    } else {
       // 页面变为非激活时，重置状态
       previousIsActiveRef.current = false;
       setVisibleIndices(new Set());
       console.log(`BusinessShowcase 页面变为非激活，清空小字显示`);
     }
-  }, [isActive]); // 只监听 isActive
+  }, [isActive, businesses, pageIndex, mounted]); // 监听所有相关依赖
 
 
   return (
     <div className="relative w-full overflow-hidden" style={{ zIndex: 5 }}>
-      <div className="relative z-10 w-full flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
+      <div className="relative z-10 w-full flex flex-col items-start justify-start px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
         {/* 标题 */}
         <div
           className="text-center mb-12 sm:mb-16 md:mb-20 lg:mb-24"

@@ -139,7 +139,7 @@ export const ContactShowcase = memo(function ContactShowcase({ isActive = true }
         }}
       />
 
-      <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
+      <div className="relative z-10 flex flex-col items-start justify-start px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
         {/* 标题 */}
         <div
           className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16"
