@@ -11,10 +11,12 @@ import { Navbar } from '@/components/Navbar';
 import { ScrollProgress } from '@/components/ScrollProgress';
 import { useState, useEffect, useRef } from 'react';
 import { usePageTracking } from '@/hooks/useAnalytics';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Page() {
   // 集成页面浏览追踪
   usePageTracking();
+  const { t } = useLanguage();
   const pages = [
     <HomeHero key="home" />,
     <BusinessShowcase key="business" />,
@@ -126,7 +128,7 @@ export default function Page() {
         >
           {/* 手机端：简单箭头 */}
           <div className="flex flex-col items-center gap-1 sm:hidden">
-            <span className="text-white/50 text-xs tracking-widest">下滑</span>
+            <span className="text-white/50 text-xs tracking-widest">{t('home.scroll_down')}</span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50 animate-bounce">
               <path d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
@@ -134,7 +136,7 @@ export default function Page() {
 
           {/* 平板端：圆形边框 */}
           <div className="hidden sm:flex md:hidden flex-col items-center gap-2">
-            <span className="text-white/50 text-xs tracking-widest">下滑</span>
+            <span className="text-white/50 text-xs tracking-widest">{t('home.scroll_down')}</span>
             <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
               <div
                 className="w-1 h-3 bg-white/50 rounded-full animate-bounce"
@@ -147,7 +149,7 @@ export default function Page() {
 
           {/* 桌面端：大号圆形边框 */}
           <div className="hidden md:flex flex-col items-center gap-2">
-            <span className="text-white/50 text-xs tracking-widest">下滑</span>
+            <span className="text-white/50 text-xs tracking-widest">{t('home.scroll_down')}</span>
             <div className="w-8 h-12 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
               <div
                 className="w-1.5 h-4 bg-white/50 rounded-full animate-bounce"

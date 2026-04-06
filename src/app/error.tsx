@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function Error({
   error,
@@ -9,6 +10,8 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const { t } = useLanguage();
+
   useEffect(() => {
     console.error('Application error:', error);
   }, [error]);
@@ -18,23 +21,23 @@ export default function Error({
       <div className="text-center p-8 max-w-md">
         <h1 className="text-6xl font-bold text-red-500 mb-4">500</h1>
         <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-4">
-          出错了
+          {t('error.server')}
         </h2>
         <p className="text-gray-600 dark:text-gray-300 mb-6">
-          {error.message || '应用程序遇到了意外错误。'}
+          {error.message || t('error.server')}
         </p>
         <div className="flex gap-4 justify-center">
           <button
             onClick={reset}
             className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
           >
-            重试
+            {t('button.back')}
           </button>
           <button
             onClick={() => window.location.href = '/'}
             className="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors font-medium dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
           >
-            返回首页
+            {t('nav.home')}
           </button>
         </div>
       </div>
