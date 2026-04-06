@@ -10,8 +10,11 @@ import { ContactShowcase } from '@/components/pages/ContactShowcase';
 import { Navbar } from '@/components/Navbar';
 import { ScrollProgress } from '@/components/ScrollProgress';
 import { useState, useEffect, useRef } from 'react';
+import { usePageTracking } from '@/hooks/useAnalytics';
 
 export default function Page() {
+  // 集成页面浏览追踪
+  usePageTracking();
   const pages = [
     <HomeHero key="home" />,
     <BusinessShowcase key="business" />,

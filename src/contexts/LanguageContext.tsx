@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { translations, Language, t } from '@/lib/i18n/translations';
+import { translations, Language } from '@/lib/i18n/translations';
 
 interface LanguageContextType {
   language: Language;
@@ -24,6 +24,36 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       setLanguage(savedLang);
     }
   }, []);
+
+  // 追踪访客信息（仅在首次加载时）
+  useEffect(() => {
+    if (!mounted) return;
+
+    const trackVisitor = async () => {
+      try {
+        await fetch('/api/analytics', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'track_visitor',
+            language: language,
+            userAgent: navigator.userAgent,
+            referrer: document.referrer || '',
+            screen: `${window.screen.width}x${window.screen.height}`,
+          }),
+        });
+      } catch (error) {
+        console.warn('Failed to track visitor:', error);
+      }
+    };
+
+    // 检查是否已经追踪过本次会话
+    const sessionTracked = sessionStorage.getItem('visitor_tracked');
+    if (!sessionTracked) {
+      trackVisitor();
+      sessionStorage.setItem('visitor_tracked', 'true');
+    }
+  }, [mounted, language]);
 
   const toggleLanguage = () => {
     const languages: Language[] = ['zh', 'en', 'ja', 'ko', 'fr', 'de', 'es'];

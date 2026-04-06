@@ -110,12 +110,18 @@
 ### 核心文件
 - **语言上下文**: `src/contexts/LanguageContext.tsx` - 提供语言切换状态管理
 - **切换组件**: `src/components/LanguageSwitcher.tsx` - 下拉式语言切换器
-- **翻译配置**: `src/lib/i18n/translations.ts` - 多语言翻译文本
+- **翻译配置**: `src/lib/i18n/translations.ts` - 多语言翻译文本（307个翻译键，7种语言完整翻译）
 
 ### 使用说明
 1. 使用 `LanguageSwitcher` 组件在页面中添加语言切换功能
 2. 通过 `useLanguage` Hook 获取当前语言和切换函数
-3. 在组件中使用 `getTranslation(language, key)` 获取翻译文本
+3. 在组件中使用 `t(key)` 获取翻译文本
+
+### Analytics 集成
+- **访客追踪**: LanguageContext 中自动追踪首次访客信息
+- **页面浏览**: 使用 `usePageTracking` Hook 追踪页面访问
+- **自定义事件**: 使用 `useEventTracking` Hook 追踪用户交互事件
+- **核心文件**: `src/hooks/useAnalytics.ts`
 
 ## 数据库集成
 
@@ -169,6 +175,21 @@
 - 启用 Gzip 压缩
 - 优化包导入 (lucide-react, @radix-ui/react-icons)
 - 滚动位置恢复
+
+### 资源优化
+- **图片优化**: 删除冗余Logo文件（节省7.3MB空间）
+- **图片质量配置**: 优化为6个质量级别（70, 75, 80, 85, 90, 95）
+- **图片格式支持**: AVIF 和 WebP 现代格式
+
+### SEO 优化
+- **Sitemap**: `src/app/sitemap.ts` - 自动生成站点地图
+- **Robots.txt**: `src/app/robots.txt` - 搜索引擎爬虫规则
+- **元数据优化**: 完整的 OpenGraph 和 Twitter Card 支持
+
+### 错误处理
+- **全局错误边界**: `src/app/global-error.tsx` - 处理严重错误
+- **页面错误边界**: `src/app/error.tsx` - 处理页面级错误
+- **加载状态**: `src/app/loading.tsx` - 优雅的加载动画
 
 ## 交互动画系统
 
