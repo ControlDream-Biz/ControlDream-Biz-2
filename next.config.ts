@@ -119,9 +119,8 @@ const nextConfig: NextConfig = {
         ...config.optimization,
         moduleIds: 'deterministic',
       };
-
-      // 禁用 Source Maps（防止源码泄露）
-      config.devtool = false;
+      // 注意：不要设置 config.devtool = false，这会导致 Turbopack 错误
+      // 使用 productionBrowserSourceMaps: false 禁用浏览器端 source maps
     }
 
     return config;
