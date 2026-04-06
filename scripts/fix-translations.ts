@@ -91,7 +91,7 @@ function generateTranslationString(translations: Record<string, string>): string
 }
 
 // 生成每个模块的翻译代码
-function generateModules(translations: any) {
+function generateModules(translations: Record<string, Record<string, string>>) {
   return `
   // ========== Common ==========
   ...${generateTranslationString(translations.common)},

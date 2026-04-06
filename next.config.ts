@@ -1,6 +1,6 @@
 import type { NextConfig } from 'next';
 import path from 'path';
-import JavaScriptObfuscator from 'javascript-obfuscator';
+import WebpackObfuscator from 'webpack-obfuscator';
 
 const nextConfig: NextConfig = {
   // 性能优化配置
@@ -50,10 +50,8 @@ const nextConfig: NextConfig = {
     // 生产环境代码混淆和压缩
     if (!dev) {
       // 添加 JavaScriptObfuscator 插件（多层级混淆）
-      const ObfuscatorPlugin = require('webpack-obfuscator');
-
       config.plugins.push(
-        new ObfuscatorPlugin({
+        new WebpackObfuscator({
           // 基础选项
           compact: true, // 压缩代码
           controlFlowFlattening: true, // 控制流扁平化（最强防护）
@@ -97,7 +95,7 @@ const nextConfig: NextConfig = {
 
       // Terser 配置 - 代码压缩
       if (config.optimization && config.optimization.minimizer) {
-        config.optimization.minimizer = config.optimization.minimizer.map((minimizer: any) => {
+        config.optimization.minimizer = config.optimization.minimizer.map((minimizer: { constructor: { name: string }; options: { terserOptions: any } }) => {
           if (minimizer.constructor.name === 'TerserPlugin') {
             minimizer.options = {
               ...minimizer.options,
