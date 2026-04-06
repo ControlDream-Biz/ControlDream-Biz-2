@@ -17,7 +17,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
 
   return (
     <>
-    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-8 pb-48 sm:pt-12 sm:pb-56 md:pt-16 md:pb-64">
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-8 pb-16 sm:pt-12 sm:pb-20 md:pt-16 md:pb-24">
 
       <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-5xl mx-auto flex flex-col items-center justify-center">
         {/* 顶级彩字排版 - 三行垂直排列 */}
@@ -176,53 +176,6 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
         </div>
       </div>
     </div>
-
-      {/* 往下滑动指示器 - 固定在屏幕底部 */}
-      <div
-        className="fixed bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20"
-        style={{
-          opacity: mounted ? 1 : 0,
-          transition: 'all 1000ms ease-out 0.8s',
-        }}
-        onClick={() => {
-          const event = new CustomEvent('jump-to-page', { detail: { pageIndex: 1 } });
-          window.dispatchEvent(event);
-        }}
-      >
-          {/* 手机端：简单箭头 */}
-          <div className="flex flex-col items-center gap-1 sm:hidden">
-            <span className="text-white/50 text-xs tracking-widest">下滑</span>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-white/50 animate-bounce">
-              <path d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-            </svg>
-          </div>
-
-          {/* 平板端：圆形边框 */}
-          <div className="hidden sm:flex md:hidden flex-col items-center gap-2">
-            <span className="text-white/50 text-xs tracking-widest">下滑</span>
-            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
-              <div
-                className="w-1 h-3 bg-white/50 rounded-full animate-bounce"
-                style={{
-                  animation: 'scroll-indicator 1.5s ease-in-out infinite',
-                }}
-              />
-            </div>
-          </div>
-
-          {/* 桌面端：大号圆形边框 */}
-          <div className="hidden md:flex flex-col items-center gap-2">
-            <span className="text-white/50 text-xs tracking-widest">下滑</span>
-            <div className="w-8 h-12 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
-              <div
-                className="w-1.5 h-4 bg-white/50 rounded-full animate-bounce"
-                style={{
-                  animation: 'scroll-indicator 1.5s ease-in-out infinite',
-                }}
-              />
-            </div>
-          </div>
-      </div>
     </>
   );
 });
