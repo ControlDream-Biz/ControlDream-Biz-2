@@ -8,6 +8,7 @@ import { PageProgressBar } from '@/components/PageProgressBar';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { LiveChat } from '@/components/LiveChat';
 import { LanguageProvider } from '@/contexts/LanguageContext';
+import { AnalyticsTracker } from '@/components/AnalyticsTracker';
 
 export const metadata: Metadata = {
   title: {
@@ -185,6 +186,9 @@ export default function RootLayout({
 
           {/* 语言切换器 */}
           <LanguageSwitcher />
+
+          {/* 性能监控 */}
+          <AnalyticsTracker />
 
           {isDev && <Inspector />}
           <GlobalBackground />

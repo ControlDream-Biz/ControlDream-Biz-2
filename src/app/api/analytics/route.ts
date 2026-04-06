@@ -34,6 +34,20 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: true, pageView });
     }
 
+    if (action === 'track_metric') {
+      // Web Vitals 指标追踪
+      console.log('Web Vitals:', data);
+      // 这里可以保存到数据库或发送到监控服务
+      return NextResponse.json({ success: true, metric: data.metric });
+    }
+
+    if (action === 'track_event') {
+      // 自定义事件追踪
+      console.log('Custom Event:', data);
+      // 这里可以保存到数据库
+      return NextResponse.json({ success: true, event: data });
+    }
+
     return NextResponse.json({ error: 'Invalid action' }, { status: 400 });
   } catch (error) {
     console.error('Analytics API error:', error);
