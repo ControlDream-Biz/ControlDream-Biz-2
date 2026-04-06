@@ -76,7 +76,7 @@ export function LanguageSwitcher() {
   return (
     <button
       onClick={toggleLanguage}
-      className="fixed top-4 right-auto sm:right-20 lg:right-24 z-50 flex items-center gap-2 px-3 py-2 bg-white/5 border border-white/20 rounded-lg hover:bg-white/10 transition-all duration-300"
+      className="fixed top-4 right-16 sm:right-16 lg:right-24 z-[150] flex items-center gap-2 px-3 py-2 bg-black/30 backdrop-blur-md border border-white/20 rounded-lg hover:bg-black/50 transition-all duration-300"
       aria-label="切换语言 / Switch Language"
     >
       <Languages className="w-4 h-4 text-white/60" />
