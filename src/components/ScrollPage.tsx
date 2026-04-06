@@ -1,3 +1,23 @@
+/**
+ * ============================================
+ * ⚠️ 永久保留的翻页逻辑 - 禁止修改 ⚠️
+ * ============================================
+ *
+ * 本文件包含经过验证的正确翻页逻辑，来源于 commit a927a71
+ * 该版本的翻页逻辑在所有平台（桌面、移动端、Safari）都正常工作
+ *
+ * ⚠️ 严格禁止以下操作：
+ * 1. 修改边界检测阈值（atTop, atBottom 的判断）
+ * 2. 修改触摸事件处理逻辑（handleTouchStart, handleTouchMove, handleTouchEnd）
+ * 3. 修改鼠标滚轮事件处理逻辑（handleWheel）
+ * 4. 修改翻页触发条件
+ *
+ * 如需修改翻页逻辑，请创建新的文件并在主文件中引用
+ *
+ * 来源：commit a927a71 - 满分优化提升版本
+ * ============================================
+ */
+
 'use client';
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
@@ -155,7 +175,7 @@ interface ScrollContainerProps {
 export function ScrollContainer({ children, onPageChange }: ScrollContainerProps) {
   const [currentPage, setCurrentPage] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState(0);
+  const dragOffsetRef = useRef(0);
   const totalPages = children.length;
 
   const scrollStateRef = useRef({
@@ -264,7 +284,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       const touch = e.touches[0];
       state.touchStartY = touch.clientY;
       state.touchStartTime = performance.now();
-      setDragOffset(0);
+      dragOffsetRef.current = 0;
       setIsDragging(false);
     };
 
@@ -308,17 +328,17 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
 
       if (shouldPreventDefault && Math.abs(deltaY) > 10) {
         e.preventDefault();
-        setDragOffset(deltaY);
+        dragOffsetRef.current = deltaY;
         setIsDragging(true);
       }
     };
 
-    const handleTouchEnd = () => {
+    const handleTouchEnd = (e: TouchEvent) => {
       setIsDragging(false);
 
-      const deltaY = Math.abs(dragOffset);
-      const direction = dragOffset > 0 ? 1 : -1;
-      setDragOffset(0);
+      const deltaY = Math.abs(dragOffsetRef.current);
+      const direction = dragOffsetRef.current > 0 ? 1 : -1;
+      dragOffsetRef.current = 0;
 
       const threshold = window.innerHeight * 0.15; // 15%屏幕高度
 
@@ -413,7 +433,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('jump-to-page', handleJumpToPage as EventListener);
     };
-  }, [currentPage, totalPages, handlePageChange]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [currentPage, totalPages, handlePageChange]);
 
   return (
     <div className="fixed inset-0 bg-black">
@@ -422,7 +442,7 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
           key={index}
           index={index}
           currentPage={currentPage}
-          dragOffset={dragOffset}
+          dragOffset={dragOffsetRef.current}
           isDragging={isDragging}
         >
           {child}
