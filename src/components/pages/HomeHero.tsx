@@ -17,7 +17,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
 
   return (
     <>
-      <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-8 pb-16 sm:pt-12 sm:pb-20 md:pt-16 md:pb-24">
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-8 pb-32 sm:pt-12 sm:pb-40 md:pt-16 md:pb-48">
 
       <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-5xl mx-auto flex flex-col items-center justify-center">
         {/* 顶级彩字排版 - 三行垂直排列 */}
@@ -175,10 +175,11 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
           ))}
         </div>
       </div>
+    </div>
 
       {/* 往下滑动指示器 - 固定在屏幕底部 */}
       <div
-        className="fixed bottom-0 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20 pb-4"
+        className="fixed bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-20"
         style={{
           opacity: mounted ? 1 : 0,
           transition: 'all 1000ms ease-out 0.8s',
@@ -221,7 +222,6 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
               />
             </div>
           </div>
-        </div>
       </div>
     </>
   );
