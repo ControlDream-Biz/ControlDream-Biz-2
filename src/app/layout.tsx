@@ -6,6 +6,8 @@ import './fonts.css';
 import FloatingButtons from '@/components/FloatingButtons';
 import { GlobalBackground } from '@/components/GlobalBackground';
 import { PageProgressBar } from '@/components/PageProgressBar';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { LiveChat } from '@/components/LiveChat';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const notoSansSC = Noto_Sans_SC({
@@ -189,12 +191,16 @@ export default function RootLayout({
         {/* 页面加载进度条 */}
         <PageProgressBar />
 
+        {/* 语言切换器 */}
+        <LanguageSwitcher />
+
         {isDev && <Inspector />}
         <GlobalBackground />
         <div id="main-content">
           {children}
         </div>
         <FloatingButtons />
+        <LiveChat />
       </body>
     </html>
   );

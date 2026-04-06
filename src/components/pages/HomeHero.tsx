@@ -17,18 +17,18 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
 
   return (
     <>
-    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-12 sm:pt-16 md:pt-20 pb-32 sm:pb-40 md:pb-48">
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden pt-12 sm:pt-16 md:pt-20 pb-32 sm:pb-40 md:pb-48 min-h-[calc(100vh-64px)]">
 
-      <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-5xl mx-auto flex flex-col items-center justify-center">
+      <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-5xl mx-auto flex flex-col items-center justify-center w-full">
         {/* 顶级彩字排版 - 三行垂直排列 */}
-        <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-8 mb-4 sm:mb-6 md:mb-8 lg:mb-12">
+        <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-4 md:space-y-6 lg:space-y-8 mb-4 sm:mb-6 md:mb-8 lg:mb-12 w-full">
           {/* 第一行：游戏创新 - 橙红色渐变 */}
           <div
             className="w-full flex justify-center"
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(40px)',
-              transition: 'all 1000ms ease-out',
+              transition: 'all 600ms ease-out',
             }}
           >
             <h1
@@ -60,7 +60,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(40px)',
-              transition: 'all 1000ms ease-out 0.1s',
+              transition: 'all 600ms ease-out 0.1s',
             }}
           >
             <h1
@@ -92,7 +92,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
             style={{
               opacity: mounted ? 1 : 0,
               transform: mounted ? 'translateY(0)' : 'translateY(40px)',
-              transition: 'all 1000ms ease-out 0.2s',
+              transition: 'all 600ms ease-out 0.2s',
             }}
           >
             <h1
@@ -125,7 +125,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'all 1000ms ease-out 0.3s',
+            transition: 'all 600ms ease-out 0.3s',
             letterSpacing: '0.1em',
           }}
         >
@@ -138,7 +138,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'all 1000ms ease-out 0.5s',
+            transition: 'all 600ms ease-out 0.5s',
           }}
         >
           {[
@@ -181,7 +181,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
           style={{
             opacity: mounted ? 1 : 0,
             transform: mounted ? 'translateY(0)' : 'translateY(30px)',
-            transition: 'all 1000ms ease-out 0.7s',
+            transition: 'all 600ms ease-out 0.7s',
           }}
         >
           <button

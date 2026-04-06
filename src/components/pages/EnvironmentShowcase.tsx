@@ -182,7 +182,10 @@ export const EnvironmentShowcase = memo(function EnvironmentShowcase({
                       src={area.image}
                       alt={area.title}
                       fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transform group-hover:scale-105 transition-transform duration-700"
+                      quality={85}
+                      loading="lazy"
                     />
                   </div>
                   <div

@@ -173,7 +173,10 @@ export const BusinessShowcase = memo(function BusinessShowcase({
                       src={business.image}
                       alt={business.title}
                       fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw"
                       className="object-cover transform group-hover:scale-105 transition-transform duration-700"
+                      quality={85}
+                      priority={businessIndex < 2}
                     />
                   </div>
                   <div
