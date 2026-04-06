@@ -150,7 +150,7 @@ export const BusinessShowcase = memo(function BusinessShowcase({
 
   return (
     <div className="relative w-full overflow-hidden" style={{ zIndex: 5 }}>
-      <div className="relative z-10 w-full flex flex-col items-start justify-start px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
+      <div className="relative z-10 w-full flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
         {/* 标题 */}
         <div
           className="text-center mb-12 sm:mb-16 md:mb-20 lg:mb-24"
@@ -161,10 +161,10 @@ export const BusinessShowcase = memo(function BusinessShowcase({
           }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-black text-white mb-3 sm:mb-4 md:mb-6 tracking-tight leading-tight">
-            自主产品矩阵
+            {t('business.title')}
           </h2>
           <p className="text-sm sm:text-base md:text-xl lg:text-2xl xl:text-3xl text-white/60 font-light leading-relaxed">
-            以创新驱动，打造软硬一体化的自主产品生态
+            {t('business.subtitle')}
           </p>
         </div>
 

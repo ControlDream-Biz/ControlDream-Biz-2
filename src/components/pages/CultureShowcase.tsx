@@ -27,7 +27,7 @@ export const CultureShowcase = memo(function CultureShowcase({ isActive = true }
         }}
       />
 
-      <div className="relative z-10 flex flex-col items-center justify-start px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
+      <div className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 md:px-8 max-w-7xl mx-auto py-8 sm:py-12 md:py-16">
         {/* 标题 */}
         <div
           className="text-center mb-12 sm:mb-16 md:mb-20 lg:mb-24"

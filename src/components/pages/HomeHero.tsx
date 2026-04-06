@@ -19,7 +19,7 @@ export const HomeHero = memo(function HomeHero({ isActive = true }: HomeHeroProp
 
   return (
     <>
-    <div className="relative w-full h-full flex flex-col items-center justify-start overflow-hidden pt-12 sm:pt-16 md:pt-20 pb-64 sm:pb-80 md:pb-96 min-h-[calc(100vh+200px)]">
+    <div className="relative w-full h-full flex flex-col items-center justify-start overflow-hidden pt-12 sm:pt-16 md:pt-20 pb-32 sm:pb-40 md:pb-48 min-h-[calc(100vh+100px)]">
 
       <div className="relative z-10 text-center px-4 sm:px-6 md:px-8 max-w-5xl mx-auto flex flex-col items-center justify-center w-full">
         {/* 顶级彩字排版 - 三行垂直排列 */}
