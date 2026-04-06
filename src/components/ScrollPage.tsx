@@ -196,6 +196,17 @@ export function ScrollContainer({ children, onPageChange }: ScrollContainerProps
       scrollStateRef.current.isProcessingScroll = false;
       scrollStateRef.current.wheelAccumulator = 0;
 
+      // 如果跳转到首页，重置所有页面的滚动位置
+      if (newPage === 0) {
+        const allPages = document.querySelectorAll('[data-page-index]');
+        allPages.forEach(page => {
+          const scrollContainer = page.querySelector('.scroll-content') as HTMLDivElement;
+          if (scrollContainer) {
+            scrollContainer.scrollTop = 0;
+          }
+        });
+      }
+
       // 触发页面变化事件，通知其他组件当前页码
       const pageChangeEvent = new CustomEvent('page-changed', { detail: { pageIndex: newPage } });
       window.dispatchEvent(pageChangeEvent);
