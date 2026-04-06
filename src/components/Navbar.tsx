@@ -93,19 +93,19 @@ export function Navbar() {
 
         {/* 公司名称 */}
         <div className="flex flex-col justify-center linear-transition">
-          {/* 中文公司名 */}
-          <div className="text-[10px] font-bold text-white tracking-tight leading-none mb-0.5 sm:text-[11px] lg:text-xs select-none">
+          {/* 公司名称 - 统一字体大小 */}
+          <div className="text-[10px] font-semibold text-white tracking-tight leading-tight sm:text-[11px] lg:text-xs select-none">
             创梦计算机系统有限公司
           </div>
 
-          {/* 英文副标题 */}
+          {/* 英文副标题 - 稍小但保持一致 */}
           <div
-            className="text-[4px] sm:text-[5px] lg:text-[6px] text-white/70 font-medium uppercase select-none leading-none"
+            className="text-[7px] sm:text-[8px] lg:text-[9px] text-white/80 font-medium uppercase select-none leading-tight mt-0.5"
             style={{
-              letterSpacing: '0.15em'
+              letterSpacing: '0.08em'
             }}
           >
-            <span className="hidden sm:inline" style={{ letterSpacing: '0.12em' }}>
+            <span className="hidden sm:inline">
               CHUANGMENG COMPUTER SYSTEM
             </span>
             <span className="sm:hidden">
