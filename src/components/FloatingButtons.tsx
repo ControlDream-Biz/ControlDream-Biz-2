@@ -8,7 +8,7 @@ function triggerVibration() {
     try {
       // 震动模式：短震动（50ms）
       navigator.vibrate(50);
-    } catch (error) {
+    } catch {
       // 某些设备可能不支持或被禁用，忽略错误
     }
   }

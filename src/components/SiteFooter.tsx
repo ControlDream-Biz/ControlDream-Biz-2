@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import {
-  Twitter,
   Linkedin,
   Github,
   Mail,

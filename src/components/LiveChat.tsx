@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { MessageCircle, X, Send, Minimize2, Maximize2, Check } from 'lucide-react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+import { MessageCircle, X, Send, Minimize2, Maximize2 } from 'lucide-react';
 
 interface Message {
   id: string;
@@ -41,37 +41,10 @@ export function LiveChat() {
     return () => window.removeEventListener('open-live-chat', handleOpenChat as EventListener);
   }, []);
 
-  const handleSendMessage = () => {
-    if (!inputValue.trim()) return;
+  // 生成唯一ID的辅助函数
+  const generateId = useCallback(() => `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`, []);
 
-    // 添加用户消息
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      type: 'user',
-      content: inputValue,
-      timestamp: new Date(),
-    };
-    setMessages((prev) => [...prev, userMessage]);
-    setInputValue('');
-
-    // 模拟客服正在输入
-    setIsTyping(true);
-
-    // 模拟客服回复
-    setTimeout(() => {
-      setIsTyping(false);
-      const botResponse = getBotResponse(inputValue);
-      const botMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'bot',
-        content: botResponse,
-        timestamp: new Date(),
-      };
-      setMessages((prev) => [...prev, botMessage]);
-    }, 1500);
-  };
-
-  const getBotResponse = (userInput: string): string => {
+  const getBotResponse = useCallback((userInput: string): string => {
     const input = userInput.toLowerCase();
 
     if (input.includes('产品') || input.includes('service')) {
@@ -91,14 +64,44 @@ export function LiveChat() {
     }
 
     return '感谢您的咨询！我们的专业客服人员会尽快为您解答。您也可以通过页面下方的联系方式直接与我们取得联系。';
-  };
+  }, []);
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleSendMessage = useCallback(() => {
+    if (!inputValue.trim()) return;
+
+    // 添加用户消息
+    const userMessage: Message = {
+      id: generateId(),
+      type: 'user',
+      content: inputValue,
+      timestamp: new Date(),
+    };
+    setMessages((prev) => [...prev, userMessage]);
+    setInputValue('');
+
+    // 模拟客服正在输入
+    setIsTyping(true);
+
+    // 模拟客服回复
+    setTimeout(() => {
+      setIsTyping(false);
+      const botResponse = getBotResponse(inputValue);
+      const botMessage: Message = {
+        id: generateId(),
+        type: 'bot',
+        content: botResponse,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, botMessage]);
+    }, 1500);
+  }, [inputValue, generateId, getBotResponse]);
+
+  const handleKeyPress = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
-  };
+  }, [handleSendMessage]);
 
   return (
     <>

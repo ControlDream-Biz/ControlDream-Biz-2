@@ -149,7 +149,6 @@ export function ParticleBackground() {
     // 电脑端106个粒子：左上、右上、左下、右下各16个，中间36个
     const particlesPerCorner = isMobile ? 8 : 16;
     const cornerParticles = particlesPerCorner * 4; // 4个角落
-    const middleParticles = particleCount - cornerParticles;
 
     // 四个角落区域
     const corners = [
