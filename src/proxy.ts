@@ -149,6 +149,12 @@ function checkMissingHeaders(request: NextRequest): boolean {
   const userAgent = request.headers.get('user-agent');
   const accept = request.headers.get('accept');
   const host = request.headers.get('host');
+  const pathname = request.nextUrl.pathname;
+
+  // 静态资源请求不需要严格检查头部
+  if (pathname.match(/\.(jpg|jpeg|png|gif|webp|svg|ico|css|js|woff|woff2|ttf|eot)$/i)) {
+    return false;
+  }
 
   // 缺少基本头部可能是自动化工具
   if (!userAgent && !accept && !host) {
