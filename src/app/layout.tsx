@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Inspector } from 'react-dev-inspector';
-import { Inter, Noto_Sans_SC, Noto_Serif_SC } from 'next/font/google';
 import './globals.css';
 import './fonts.css';
 import FloatingButtons from '@/components/FloatingButtons';
@@ -8,20 +7,6 @@ import { GlobalBackground } from '@/components/GlobalBackground';
 import { PageProgressBar } from '@/components/PageProgressBar';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { LiveChat } from '@/components/LiveChat';
-
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
-const notoSansSC = Noto_Sans_SC({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-noto-sans-sc',
-  display: 'swap',
-});
-const notoSerifSC = Noto_Serif_SC({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '900'],
-  variable: '--font-noto-serif-sc',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   title: {
@@ -120,7 +105,7 @@ export default function RootLayout({
   const isDev = process.env.COZE_PROJECT_ENV === 'DEV';
 
   return (
-    <html lang="zh-CN" className={`${inter.variable} ${notoSansSC.variable} ${notoSerifSC.variable}`}>
+    <html lang="zh-CN">
       <head>
         {/* PWA Manifest */}
         <link rel="manifest" href="/manifest.json" />
@@ -128,9 +113,7 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
         <meta name="apple-mobile-web-app-title" content="创梦" />
 
-        {/* 资源预加载 - 优化性能 */}
-        <link rel="preconnect" href="https://fonts.googleapis.cn" />
-        <link rel="preconnect" href="https://fonts.gstatic.cn" crossOrigin="anonymous" />
+        {/* 资源预加载 - Logo */}
         <link rel="preload" href="/logo-cm-transparent.png" as="image" type="image/png" />
 
         {/* 结构化数据 - 组织信息 */}
@@ -185,7 +168,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`antialiased font-sans`}>
+      <body className="antialiased font-sans">
         {/* Skip to Content 链接 - 提升键盘导航体验 */}
         <a
           href="#main-content"
