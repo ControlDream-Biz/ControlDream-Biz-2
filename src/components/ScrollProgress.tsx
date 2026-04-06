@@ -42,32 +42,6 @@ export function ScrollProgress() {
     };
   }, []);
 
-  useEffect(() => {
-    const handleScrollToSection = (e: CustomEvent<{ sectionIndex: number }>) => {
-      const newPage = e.detail.sectionIndex;
-      setCurrentPage(newPage);
-      setShowLabel(true); // 显示当前页面标签
-
-      // 清除之前的定时器
-      if (stayTimerRef.current) {
-        clearTimeout(stayTimerRef.current);
-      }
-
-      // 3秒后隐藏标签（行业标准）
-      stayTimerRef.current = setTimeout(() => {
-        setShowLabel(false);
-      }, 3000);
-    };
-
-    window.addEventListener('scrollToSection', handleScrollToSection as EventListener);
-    return () => {
-      window.removeEventListener('scrollToSection', handleScrollToSection as EventListener);
-      if (stayTimerRef.current) {
-        clearTimeout(stayTimerRef.current);
-      }
-    };
-  }, []);
-
   const scrollToSection = (index: number) => {
     const event = new CustomEvent('scrollToSection', { detail: { sectionIndex: index } });
     window.dispatchEvent(event);
@@ -94,8 +68,12 @@ export function ScrollProgress() {
                   }
                 `}
                 style={{
-                  top: '50%',
-                  transform: `translateY(-50%)`,
+                  // 计算标签的 top 值，确保不会被顶部导航栏遮挡
+                  // 导航栏高度约 60px，所以标签中心最小应为 60px
+                  // 圆点容器高度 12px，top: 50% 意味着标签中心在圆点容器中心
+                  // 对于前几个圆点，调整 top 值，使其不被遮挡
+                  top: index < 4 ? `${60 + (index - 3) * 12}px` : '50%',
+                  transform: index < 4 ? 'translateY(-50%)' : 'translateY(-50%)',
                   transition: 'all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1)',
                 }}
               >
