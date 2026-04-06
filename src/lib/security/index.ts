@@ -3,6 +3,26 @@
  * 统一导出所有安全工具
  */
 
+// 类型定义 - 从 security-logger 导入，因为它定义了 enum
+export { SecurityEventType, SecuritySeverity } from './security-logger';
+
+// 其他类型
+export type {
+  SecurityEventLog,
+  RateLimitConfig,
+  ValidationResult,
+  IPThreatLevel,
+} from './types';
+
+// 导入类型供内部使用
+import type {
+  ValidationResult,
+  SecurityEventLog,
+} from './types';
+
+// 从 security-logger 导入类型供内部使用
+import { SecurityEventType, SecuritySeverity } from './security-logger';
+
 // 输入验证和清理
 export * from './input-validator';
 
@@ -206,8 +226,8 @@ export class SecurityValidator {
     if (universalCheck.isUniversal) {
       errors.push('检测到万能密码或SQL注入尝试');
       logSecurityEvent({
-        type: 'UNIVERSAL_PASSWORD' as any,
-        severity: 'critical' as any,
+        type: SecurityEventType.UNIVERSAL_PASSWORD,
+        severity: SecuritySeverity.CRITICAL,
         ip,
         userAgent: '',
         details: { username, patterns: universalCheck.patterns },
@@ -231,14 +251,10 @@ export class SecurityValidator {
    * 验证API请求
    */
   static validateAPIRequest(
-    params: Record<string, any>,
+    params: Record<string, string>,
     allowedColumns: string[],
     ip: string
-  ): {
-    valid: boolean;
-    errors: string[];
-    sanitized?: Record<string, any>;
-  } {
+  ): ValidationResult<Record<string, string>> {
     const errors: string[] = [];
 
     // 清理参数
@@ -255,8 +271,8 @@ export class SecurityValidator {
         if (attempt.isAttempt) {
           errors.push(`参数 ${key} 包含SQL注入代码`);
           logSecurityEvent({
-            type: 'SQL_INJECTION' as any,
-            severity: attempt.severity as any,
+            type: SecurityEventType.SQL_INJECTION,
+            severity: attempt.severity as SecuritySeverity,
             ip,
             userAgent: '',
             details: { key, patterns: attempt.patterns },

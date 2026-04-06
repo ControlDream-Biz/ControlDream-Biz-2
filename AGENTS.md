@@ -679,4 +679,196 @@ const AUTHORIZED_DOMAINS = [
 
 ---
 
+## 测试系统
+
+### 测试框架
+- **测试框架**: Jest
+- **测试环境**: jsdom（浏览器环境模拟）
+- **覆盖率工具**: Jest Coverage
+- **测试库**: @testing-library/react、@testing-library/jest-dom
+
+### 测试配置
+- **配置文件**: `jest.config.ts` - Jest 配置
+- **Setup 文件**: `jest.setup.js` - 测试环境初始化
+- **测试脚本**:
+  - `pnpm test` - 运行所有测试
+  - `pnpm test:watch` - 监听模式运行测试
+  - `pnpm test:coverage` - 生成覆盖率报告
+
+### 测试文件位置
+- **工具函数测试**: `src/lib/__tests__/`
+- **组件测试**: `src/components/__tests__/`
+- **API 测试**: `src/app/api/__tests__/`
+
+### 已实现测试
+1. **安全系统测试** (`src/lib/__tests__/security.test.ts`)
+   - 输入验证（邮箱、URL、手机号）
+   - SQL 注入检测
+   - XSS 攻击检测
+
+2. **组件测试** (`src/components/__tests__/LanguageSwitcher.test.tsx`)
+   - 语言切换器渲染测试
+   - 交互功能测试
+
+### 测试规范
+- 测试文件命名：`*.test.ts`、`*.test.tsx`、`*.spec.ts`、`*.spec.tsx`
+- 测试文件位置：与源文件同级或在 `__tests__` 目录下
+- 使用 `describe` 组织测试套件
+- 使用 `it/test` 编写测试用例
+- 使用 `expect/assert` 进行断言
+
+### 编写新测试指南
+1. **工具函数测试**:
+   ```typescript
+   import { describe, it, expect } from '@jest/globals';
+   import { myFunction } from '../lib/myModule';
+
+   describe('myFunction', () => {
+     it('应该返回正确结果', () => {
+       const result = myFunction('input');
+       expect(result).toBe('expected');
+     });
+   });
+   ```
+
+2. **组件测试**:
+   ```typescript
+   import { render, screen, fireEvent } from '@testing-library/react';
+   import MyComponent from '../components/MyComponent';
+
+   describe('MyComponent', () => {
+     it('应该渲染组件', () => {
+       render(<MyComponent />);
+       expect(screen.getByText('Hello')).toBeInTheDocument();
+     });
+   });
+   ```
+
+3. **Mock Context/Hook**:
+   ```typescript
+   jest.mock('../contexts/MyContext', () => ({
+     useMyContext: () => ({
+       value: 'test',
+       setValue: jest.fn(),
+     }),
+   }));
+   ```
+
+---
+
+## CI/CD 系统
+
+### CI/CD 平台
+- **平台**: GitHub Actions
+- **配置文件**: `.github/workflows/ci-cd.yml`
+
+### 工作流程
+
+#### 1. 代码质量检查 (code-quality)
+- 检出代码
+- 设置 Node.js 24
+- 安装依赖（pnpm）
+- TypeScript 类型检查
+- ESLint 检查
+- 运行测试
+
+#### 2. 构建测试 (build)
+- 构建生产版本
+- 验证构建产物
+
+#### 3. 安全扫描 (security-scan)
+- 依赖安全检查（pnpm audit）
+- 代码安全检查（敏感信息泄露检测）
+
+#### 4. 性能测试 (performance)
+- 分析包大小
+- 验证构建产物
+
+#### 5. 部署 (deploy)
+- 仅在 main 分支推送时触发
+- 部署到生产环境
+- 部署后验证
+
+### 触发条件
+- **Push**: main、develop 分支
+- **Pull Request**: 到 main、develop 分支
+
+### 环境变量配置
+在 GitHub Actions Secrets 中配置：
+- `DATABASE_URL`: 数据库连接字符串
+- `NEXT_PUBLIC_APP_VERSION`: 应用版本
+- `NEXT_PUBLIC_AUTHORIZED_DOMAIN`: 授权域名
+- 其他生产环境变量
+
+### 部署检查清单
+- [ ] 代码质量检查通过
+- [ ] TypeScript 类型检查通过
+- [ ] ESLint 检查通过（或已知错误已记录）
+- [ ] 测试通过
+- [ ] 构建成功
+- [ ] 安全扫描无高危漏洞
+- [ ] 性能测试通过
+- [ ] 部署成功
+- [ ] 部署验证通过
+
+### 本地运行 CI/CD
+在本地模拟 CI/CD 流程：
+```bash
+# 1. 安装依赖
+pnpm install
+
+# 2. 类型检查
+pnpm ts-check
+
+# 3. 代码检查
+pnpm lint
+
+# 4. 运行测试
+pnpm test
+
+# 5. 构建
+pnpm build
+
+# 6. 安全检查
+pnpm audit
+```
+
+---
+
+## 持续集成实践
+
+### 分支策略
+- **main**: 生产环境分支，代码经过完整测试
+- **develop**: 开发环境分支，最新开发代码
+- **feature/***: 功能分支，从 develop 分出
+
+### 提交规范
+遵循 Conventional Commits 规范：
+- `feat:` 新功能
+- `fix:` Bug 修复
+- `refactor:` 重构
+- `docs:` 文档更新
+- `test:` 测试相关
+- `chore:` 构建/工具相关
+
+### Pull Request 流程
+1. 从 develop 创建功能分支
+2. 开发功能并提交
+3. 推送到远程仓库
+4. 创建 Pull Request 到 develop
+5. 自动触发 CI/CD 检查
+6. 代码审查
+7. 合并到 develop
+
+### 发布流程
+1. 从 develop 创建 release 分支
+2. 运行完整测试
+3. 代码审查
+4. 合并到 main
+5. 自动触发部署到生产环境
+6. 打 Tag
+7. 更新版本号
+
+---
+
 
