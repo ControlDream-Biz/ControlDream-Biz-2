@@ -106,7 +106,7 @@ export default function Page() {
       {/* 下滑指示器 - 仅在首页且滚动到底部留白区域时显示 */}
       {currentPage === 0 && showScrollIndicator && (
         <div
-          className="fixed bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-50"
+          className="fixed bottom-20 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 cursor-pointer z-50"
           style={{
             opacity: 1,
             transition: 'all 500ms ease-out',
