@@ -11,7 +11,7 @@ export const languages = {
 export const languageFlags = {
   zh: '🇨🇳',
   en: '🇺🇸',
-  'zh-tw': '🇹🇼',
+  'zh-tw': '🇭🇰',
 };
 
 
