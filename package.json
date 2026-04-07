@@ -15,10 +15,10 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "electron:dev": "concurrently \"pnpm dev\" \"wait-on http://localhost:5000 && electron .\"",
-    "electron:build": "pnpm build && electron-builder",
-    "electron:build:win": "pnpm build && electron-builder --win",
-    "electron:build:mac": "pnpm build && electron-builder --mac",
-    "electron:build:linux": "pnpm build && electron-builder --linux"
+    "electron:build": "pnpm build && electron-builder --config.npmRebuild=false --config.nodeGypRebuild=false",
+    "electron:build:win": "pnpm build && electron-builder --win --config.npmRebuild=false --config.nodeGypRebuild=false",
+    "electron:build:mac": "pnpm build && electron-builder --mac --config.npmRebuild=false --config.nodeGypRebuild=false",
+    "electron:build:linux": "pnpm build && electron-builder --linux --config.npmRebuild=false --config.nodeGypRebuild=false"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.958.0",
