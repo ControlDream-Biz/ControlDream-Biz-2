@@ -1,6 +1,8 @@
 {
-  "name": "projects",
-  "version": "0.1.0",
+  "name": "ControlDream-Biz-2",
+  "version": "1.0.0",
+  "description": "创梦企业管理后台 - 基于 Next.js 和 Electron 的跨平台桌面应用",
+  "author": "ControlDream",
   "private": true,
   "scripts": {
     "build": "bash ./scripts/build.sh",
@@ -61,8 +63,6 @@
     "drizzle-kit": "^0.31.8",
     "drizzle-orm": "^0.45.1",
     "drizzle-zod": "^0.8.3",
-    "electron": "^41.1.1",
-    "electron-builder": "^26.8.1",
     "electron-is-dev": "^3.0.1",
     "embla-carousel-react": "^8.6.0",
     "input-otp": "^1.4.2",
@@ -96,6 +96,8 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.27",
+    "electron": "^41.1.1",
+    "electron-builder": "^26.8.1",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
     "javascript-obfuscator": "^5.4.1",
