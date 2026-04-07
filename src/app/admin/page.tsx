@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { 
-  LayoutDashboard, 
-  Settings, 
-  FileText, 
-  Users, 
-  BarChart3, 
+import {
+  LayoutDashboard,
+  Settings,
+  FileText,
+  Users,
+  BarChart3,
   Database,
   Folder,
   Home,
@@ -14,6 +14,7 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { PWAInstallPrompt } from '@/components/PWAInstallPrompt'
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard')
@@ -25,6 +26,20 @@ export default function AdminDashboard() {
   })
 
   useEffect(() => {
+    // 注册Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker
+          .register('/sw.js')
+          .then((registration) => {
+            console.log('Service Worker 注册成功:', registration.scope)
+          })
+          .catch((error) => {
+            console.log('Service Worker 注册失败:', error)
+          })
+      })
+    }
+
     // 模拟数据，实际应该从API获取
     setStats({
       totalVisits: 12345,
@@ -179,6 +194,7 @@ export default function AdminDashboard() {
           </div>
         </main>
       </div>
+      <PWAInstallPrompt />
     </div>
   )
 }

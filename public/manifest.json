@@ -1,13 +1,12 @@
 {
-  "name": "创梦计算机系统有限公司",
-  "short_name": "创梦",
-  "description": "专注自主产品研发与运营，打造游戏、软件、硬件三大领域的自主产品生态体系",
-  "start_url": "/",
+  "name": "创梦管理后台",
+  "short_name": "创梦后台",
+  "description": "创梦计算机系统有限公司管理后台",
+  "start_url": "/admin",
   "display": "standalone",
-  "background_color": "#0a0a0a",
-  "theme_color": "#0a0a0a",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
   "orientation": "portrait-primary",
-  "categories": ["business", "technology"],
   "icons": [
     {
       "src": "/icon-192.png",
@@ -22,34 +21,21 @@
       "purpose": "any maskable"
     }
   ],
+  "categories": ["business", "productivity"],
   "shortcuts": [
     {
-      "name": "业务领域",
-      "short_name": "业务",
-      "description": "了解我们的业务领域",
-      "url": "/business",
+      "name": "内容管理",
+      "short_name": "内容",
+      "description": "管理网站内容",
+      "url": "/admin/content",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
     {
-      "name": "联系我们",
-      "short_name": "联系",
-      "description": "联系方式",
-      "url": "/contact",
+      "name": "数据分析",
+      "short_name": "分析",
+      "description": "查看网站数据",
+      "url": "/admin/analytics",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
-    }
-  ],
-  "screenshots": [
-    {
-      "src": "/screenshot-mobile.png",
-      "sizes": "540x720",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "/screenshot-desktop.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide"
     }
   ]
 }
