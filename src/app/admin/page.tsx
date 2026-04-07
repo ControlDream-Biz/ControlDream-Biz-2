@@ -15,6 +15,7 @@ import {
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { PWAInstallPrompt } from '@/components/PWAInstallPrompt'
+import { ElectronDashboard } from '@/components/ElectronDashboard'
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('dashboard')
@@ -162,6 +163,9 @@ export default function AdminDashboard() {
                 />
               </div>
             </div>
+
+            {/* Electron 桌面应用功能 */}
+            <ElectronDashboard />
 
             {/* 最近活动 */}
             <div className="bg-white rounded-lg shadow p-6">
